@@ -1,0 +1,32 @@
+{
+  "name": "narvik",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "postinstall": "rimraf node_modules/ace-builds/src node_modules/ace-builds/src-min node_modules/ace-builds/src-noconflict",
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "tauri": "tauri"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@solidjs/router": "^0.13.3",
+    "@tauri-apps/api": "^1",
+    "ace-builds": "^1.33.2",
+    "postinstall": "^0.10.3",
+    "solid-js": "^1.7.8"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1",
+    "@types/ace": "^0.0.52",
+    "daisyui": "^4.11.1",
+    "rimraf": "^5.0.7",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.0.2",
+    "vite": "^5.0.0",
+    "vite-plugin-solid": "^2.8.0"
+  }
+}

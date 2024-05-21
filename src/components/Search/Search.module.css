@@ -1,0 +1,42 @@
+.searchContainer {
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  height: 32px;
+  padding: 10px;
+  outline: none;
+  cursor: default;
+}
+
+.searchInput:hover {
+  opacity: 0.9;
+}
+
+.suggestionsContainer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.suggestionsList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.suggestionsList li:last-child {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+
+.suggestionItem {
+  padding: 10px;
+  cursor: pointer;
+}
