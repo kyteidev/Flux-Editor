@@ -70,10 +70,10 @@ function SearchBar() {
         autocomplete="off"
         autocorrect="off"
         style={{
-          "border-top-left-radius": "20px",
-          "border-top-right-radius": "20px",
-          "border-bottom-left-radius": query().length === 0 || !isFocused() ? "20px" : "0",
-          "border-bottom-right-radius": query().length === 0 || !isFocused() ? "20px" : "0",
+          "border-top-left-radius": "15px",
+          "border-top-right-radius": "15px",
+          "border-bottom-left-radius": query().length === 0 || !isFocused() ? "15px" : "0",
+          "border-bottom-right-radius": query().length === 0 || !isFocused() ? "15px" : "0",
         }}
       />
       <Show when={isFocused()}>

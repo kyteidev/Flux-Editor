@@ -16,6 +16,9 @@
         "all": false,
         "open": true
       },
+      "os": {
+        "all": true
+      },
       "window": {
         "all": false,
         "startDragging": true,

@@ -27,10 +27,6 @@ function MacControls() {
 
   //TODO fix alt issue
   const [isAltPressed, setIsAltPressed] = createSignal(false);
-
-  const [isMinimizePressed, setMinimizePressed] = createSignal(false);
-  const [isClosePressed, setClosePressed] = createSignal(false);
-  const [isFullscreenPressed, setFullscreenPressed] = createSignal(false);
   //const key = "Alt";
 
   const checkFullscreen = async () => {
@@ -112,17 +108,8 @@ function MacControls() {
       >
         <div class="flex flex-row">
           <button
-            class="cursor-default"
+            class="cursor-default w-[12px] h-[12px] rounded-full bg-[#FF5F57] active:bg-[#fd978e]"
             onClick={closeWindow}
-            onMouseDown={() => setClosePressed(true)}
-            onMouseUp={() => setClosePressed(false)}
-            onMouseLeave={() => setClosePressed(false)}
-            style={{
-              width: "12px",
-              height: "12px",
-              "background-color": isClosePressed() ? "#fd978e" : "#FF5F57",
-              "border-radius": "50%",
-            }}
           >
             {isHovered() && (
               <div class="flex justify-center">
@@ -144,17 +131,8 @@ function MacControls() {
         </div>
         <div class="flex flex-row relative">
           <button
-            class="cursor-default"
+            class="cursor-default w-[12px] h-[12px] rounded-full bg-[#febc2e] active:bg-[#ffec67]"
             onClick={minimizeWindow}
-            onMouseDown={() => setMinimizePressed(true)}
-            onMouseUp={() => setMinimizePressed(false)}
-            onMouseLeave={() => setMinimizePressed(false)}
-            style={{
-              width: "12px",
-              height: "12px",
-              "background-color": isMinimizePressed() ? "#ffec67" : "#febc2e",
-              "border-radius": "50%",
-            }}
           >
             {isHovered() && (
               <div class="flex justify-center">
@@ -178,17 +156,8 @@ function MacControls() {
         </div>
         <div class="flex flex-row relative">
           <button
-            class="cursor-default"
+            class="cursor-default w-[12px] h-[12px] rounded-full bg-[#28c840] active:bg-[#64f77c]"
             onClick={isAltPressed() ? maximizeWindow : fullscreenWindow}
-            onMouseDown={() => setFullscreenPressed(true)}
-            onMouseUp={() => setFullscreenPressed(false)}
-            onMouseLeave={() => setFullscreenPressed(false)}
-            style={{
-              width: "12px",
-              height: "12px",
-              "background-color": isFullscreenPressed() ? "#64f77c" : "#28c840",
-              "border-radius": "50%",
-            }}
           >
             {isHovered() && (
               <div class="flex justify-center">
