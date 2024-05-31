@@ -102,7 +102,7 @@ function MacControls() {
   return (
     <Show when={!isFullscreen()}>
       <div
-        class="flex space-x-2 absolute top-4 left-4 ml-0"
+        class="flex space-x-2 absolute top-[14px] left-4 ml-0"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

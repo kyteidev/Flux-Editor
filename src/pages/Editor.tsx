@@ -5,7 +5,7 @@ import WindowControls from "../components/WindowControls/WindowControls";
 function Editor() {
   return (
     <div>
-      <header data-tauri-drag-region class="header w-full h-10 bg-base-100" />
+      <header data-tauri-drag-region class="header w-full h-10 bg-base-200" />
       <div>
         <AceEditor />
       </div>

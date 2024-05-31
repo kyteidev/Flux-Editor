@@ -6,3 +6,7 @@
 header, h1, button, input, p {
   font-family: 'inter', sans-serif;
 }
+
+body {
+  overflow: hidden;
+}

@@ -22,7 +22,6 @@
   "devDependencies": {
     "@tauri-apps/cli": "^1",
     "@types/ace": "^0.0.52",
-    "daisyui": "^4.11.1",
     "rimraf": "^5.0.7",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.0.2",

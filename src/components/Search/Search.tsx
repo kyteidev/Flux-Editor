@@ -56,46 +56,74 @@ function SearchBar() {
   };
 
   return (
-    <div class={styles.searchContainer}>
+    <div class="relative">
+      {/* Search Input */}
       <input
-        class={`bg-primary hover:bg-secondary text-primary-content ${styles.searchInput} ${
-          isFocused() ? styles.focused : ""
-        }`}
+        class={`bg-primary hover:bg-primary-hover text-content w-full h-[26px] p-[10px] outline-none`}
         type="text"
         value={query()}
         onInput={handleInputChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        placeholder="Search..."
+        placeholder="Search"
         autocomplete="off"
         autocorrect="off"
         style={{
-          "border-top-left-radius": "15px",
-          "border-top-right-radius": "15px",
-          "border-bottom-left-radius": query().length === 0 || !isFocused() ? "15px" : "0",
-          "border-bottom-right-radius": query().length === 0 || !isFocused() ? "15px" : "0",
+          "border-top-left-radius": "0.75rem",
+          "border-top-right-radius": "0.75rem",
+          "border-bottom-left-radius":
+            query().length === 0 || !isFocused() ? "0.75rem" : "0",
+          "border-bottom-right-radius":
+            query().length === 0 || !isFocused() ? "0.75rem" : "0",
         }}
       />
       <Show when={isFocused()}>
+        {/* Displays line when query is not empty and is focused */}
         <div
-          class="absolute bottom-0 left-0 w-full bg-gray-300"
-          style={{ height: query().length === 0 ? "0" : "1px" }}
-        ></div>
-        {query() && isLoading() && <div>Loading...</div>}
+          class="w-full bg-content opacity-50"
+          style={{ height: query().length === 0 || !isFocused() ? "0" : "1px" }}
+        />
+        {/* Displays loading while loading results */}
+        {query() && isLoading() && (
+          <div
+            class={`bg-primary text-content absolute top-full left-0 w-full border-t-0`}
+            style={{
+              "border-bottom-left-radius": "0.75rem",
+              "border-bottom-right-radius": "0.75rem",
+              "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <ul class={styles.suggestionsList}>
+              <li class="p-[5px] flex items-center cursor-default">
+                Loading...
+              </li>
+            </ul>
+          </div>
+        )}
+        {/* Displays results if query is not empty and there are results */}
         {query() && Object.keys(filteredSuggestions()).length > 0 && (
           <div
-            class={`bg-primary text-primary-content ${styles.suggestionsContainer}`}
+            class={`bg-primary text-content absolute top-full left-0 w-full border-t-0`}
+            style={{
+              "border-bottom-left-radius": "0.75rem",
+              "border-bottom-right-radius": "0.75rem",
+              "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
+            }}
           >
             <ul class={styles.suggestionsList}>
               <For each={Object.keys(filteredSuggestions())}>
                 {(category) => (
                   <>
-                    <li>
+                    <li class="pl-2">
                       <strong>{category}</strong>
                     </li>
                     <For each={filteredSuggestions()[category]}>
                       {(suggestion) => (
-                        <li class={`hover:bg-secondary ${styles.suggestionItem}`}>{suggestion.name}</li>
+                        <li
+                          class={`hover:bg-primary-hover pl-5 pb-1 h-[26px] flex items-center cursor-pointer`}
+                        >
+                          {suggestion.name}
+                        </li>
                       )}
                     </For>
                   </>
@@ -104,14 +132,22 @@ function SearchBar() {
             </ul>
           </div>
         )}
+        {/* Displays no results if query is not empty and there are no results */}
         {!isLoading() &&
           Object.keys(filteredSuggestions()).length === 0 &&
           query() && (
             <div
-              class={`bg-primary text-primary-content ${styles.suggestionsContainer}`}
+              class={`bg-primary text-content absolute top-full left-0 w-full border-t-0`}
+              style={{
+                "border-bottom-left-radius": "0.75rem",
+                "border-bottom-right-radius": "0.75rem",
+                "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
+              }}
             >
               <ul class={styles.suggestionsList}>
-                <li class={styles.suggestionItem}>No results found</li>
+                <li class="p-[5px] flex items-center cursor-default">
+                  No results found
+                </li>
               </ul>
             </div>
           )}

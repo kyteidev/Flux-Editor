@@ -1,24 +1,3 @@
-.searchContainer {
-  position: relative;
-}
-
-.searchInput {
-  width: 100%;
-  height: 26px;
-  padding: 10px;
-  outline: none;
-}
-
-.suggestionsContainer {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  border-top: none;
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .suggestionsList {
   list-style-type: none;
   margin: 0;
@@ -28,10 +7,4 @@
 .suggestionsList li:last-child {
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
-}
-
-
-.suggestionItem {
-  padding: 5px;
-  cursor: pointer;
 }

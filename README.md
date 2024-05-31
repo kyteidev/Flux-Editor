@@ -60,7 +60,7 @@ To clone this repository, use the following git command in your dev environment:
 
 ## Contributing <a name="contributing"></a>
 
-Since Narvik is open-source, anyone can contribute! There are many ways you can do that, like submitting bug reports, feature requests, or just by starring this repo and sharing with others! All contributions are greatly appreciated. For more info and guidelines, see [here](ADD LINK TO CONTRIBUTING.MD)
+UNDER CONSTRUCTION
 
 ## License <a name="license"></a>
 
