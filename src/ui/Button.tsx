@@ -5,17 +5,18 @@ interface Props {
   text: string;
 }
 
-function Button(props: Props) {
+const Button = (props: Props) => {
   return (
     <button
-      class={`p-2 transition ease-in-out rounded-xl bg-primary hover:bg-primary-hover active:scale-95 duration-300`}
+      class={`rounded-xl bg-primary p-2 transition duration-300 ease-in-out hover:bg-primary-hover active:scale-95`}
       style={{ width: `${props.width}px`, height: `${props.height}px` }}
       onClick={props.action}
-      tabIndex={-1}
     >
-      <div class="text-content flex justify-center items-center">{props.text}</div>
+      <div class="flex items-center justify-center text-content">
+        {props.text}
+      </div>
     </button>
   );
-}
+};
 
 export default Button;

@@ -1,0 +1,43 @@
+*:focus {
+  outline: none;
+}
+
+@font-face {
+  font-family: 'inter';
+  src: url('../../assets/Inter.ttf') format('truetype');
+}
+
+header, h1, button, input, p, input, textarea {
+  font-family: 'inter', sans-serif;
+}
+
+body {
+  overflow: hidden;
+}
+
+dialog {
+  opacity: 0;
+}
+
+dialog[open] {
+  animation: fadein 0.2s ease-in-out forwards;
+}
+
+@keyframes fadein{
+  0%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+
+@keyframes fadeout{
+  0%{
+    opacity:1;
+  }
+  100%{
+    opacity:0;
+  }
+}

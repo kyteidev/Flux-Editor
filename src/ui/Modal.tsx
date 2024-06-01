@@ -7,7 +7,7 @@ interface Props {
   children: JSX.Element;
 }
 
-function Modal(props: Props) {
+const Modal = (props: Props) => {
   return (
     <div
       style={{
@@ -29,14 +29,13 @@ function Modal(props: Props) {
           width: `${props.width}%`,
           height: `${props.height}%`,
           "z-index": "1000",
-          "padding-left": "1.5rem",
-          "padding-top": "1rem",
+          "padding": "1.5em",
         }}
       >
         {props.children}
       </div>
     </div>
   );
-}
+};
 
 export default Modal;

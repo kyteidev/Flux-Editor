@@ -7,18 +7,22 @@ interface Props {
   action: () => void;
 }
 
-function ButtonIcon(props: Props) {
+const ButtonIcon = (props: Props) => {
   return (
     <button
-      class={`p-2 transition ease-in-out rounded-xl bg-primary hover:bg-primary-hover active:scale-95 duration-300`}
-      style={{ width: `${props.size}`, height: `${props.size}`, "border-radius": `${props.rounding}px` }}
+      class={`rounded-xl bg-primary p-2 transition duration-300 ease-in-out hover:bg-primary-hover active:scale-95`}
+      style={{
+        width: `${props.size}`,
+        height: `${props.size}`,
+        "border-radius": `${props.rounding}px`,
+      }}
       onClick={props.action}
     >
-      <div class="flex justify-center items-center">
+      <div class="flex items-center justify-center">
         <props.icon />
       </div>
     </button>
   );
-}
+};
 
 export default ButtonIcon;
