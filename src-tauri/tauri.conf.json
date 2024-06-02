@@ -20,11 +20,17 @@
         "open": true,
         "save": false
       },
-      "shell": {
+      "fs": {
         "all": false,
-        "open": true
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "createDir": true
       },
       "os": {
+        "all": true
+      },
+      "path": {
         "all": true
       },
       "window": {

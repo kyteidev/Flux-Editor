@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "node_modules/ace-builds"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

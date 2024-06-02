@@ -10,10 +10,12 @@ import Input from "../ui/Input";
 import ButtonBg from "../ui/ButtonBg";
 import { dialog } from "@tauri-apps/api";
 import { createSignal } from "solid-js";
+import { cloneRepo, getRepoPath } from "../utils/git/clone.ts";
 
 const Welcome = () => {
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = createSignal<string>("File");
+  // used as directory path for new open, and clone functions
   const [dirPath, setDirPath] = createSignal<string>("");
   const [name, setName] = createSignal<string>("");
 
@@ -23,10 +25,22 @@ const Welcome = () => {
         setDirPath(path.toString() + "/");
       }
     });
-    console.log(dirPath());
   };
 
+  const clone = () => {
+    if (dirPath() != "") {
+      cloneRepo(dirPath());
+      openEditor("clone");
+    } else {
+      dialog.message("Please enter a valid URL.", {
+        title: "Error",
+        type: "error",
+      });
+    }
+  }
+
   const openEditor = (action: string) => {
+    const editorPath = "/editor";
     if (action === "new") {
       if (name() === "") {
         console.log(selectedType());
@@ -42,21 +56,24 @@ const Welcome = () => {
           type: "error",
         });
       } else {
-        const path = "/editor";
         appWindow.setSize(new LogicalSize(1280, 800));
-        navigate(path + "?path=" + dirPath() + "&name=" + name());
+        navigate(editorPath + "?path=" + dirPath() + "&name=" + name());
       }
     } else if (action === "open") {
       if (dirPath() != "") {
-        const path = "/editor";
         appWindow.setSize(new LogicalSize(1280, 800));
-        navigate(path + "?path=" + dirPath());
+        navigate(editorPath + "?path=" + dirPath());
+      }
+    } else if (action === "clone") {
+      if (dirPath() != "") {
+        appWindow.setSize(new LogicalSize(1280, 800));
+        navigate(editorPath + "?path=" + getRepoPath());
       }
     }
   };
 
   return (
-    <div class="h-screen bg-base-200">
+    <div class="h-screen bg-base-200 select-none">
       {/* draggable region */}
       <div data-tauri-drag-region class="h-12 w-full" />
       {/* logo and title */}
@@ -64,13 +81,12 @@ const Welcome = () => {
         <img
           src={icon}
           alt="icon"
-          width="200vh"
-          height="120vh"
           draggable="false"
+          style={{ width: "200px", height: "auto" }}
         />
         <h1 class="text-9xl text-content">narvik</h1>
       </div>
-      {/* pop-ups */}
+      {/* new-modal */}
       <dialog id="modal-new">
         <Modal width={60} height={60} bgColor="bg-base-200">
           <div class="flex-col space-y-4">
@@ -141,6 +157,54 @@ const Welcome = () => {
           </div>
         </Modal>
       </dialog>
+      {/* clone-modal */}
+      <dialog id="modal-clone">
+        <Modal width={60} height={35} bgColor="bg-base-200">
+          <div class="flex-col space-y-3">
+            <div class="flex items-center space-x-3">
+              <p class="inline-block text-xl text-content">URL</p>
+              <Input
+                width="100%"
+                height="40px"
+                placeholder="e.g. https://github.com/narvikdev/narvik.git"
+                value=""
+                onChange={setDirPath}
+              />
+            </div>
+            <p class="text-xs text-content">
+              Only github.com and gitlab.com are supported.
+            </p>
+          </div>
+          <div
+            class="flex space-x-[12px]"
+            style={{
+              position: "absolute",
+              bottom: `calc(32.5% + 1.5em)`,
+              right: `calc(20% + 1.5em)`,
+            }}
+          >
+            <ButtonBg
+              text="Cancel"
+              width="80px"
+              height="40px"
+              action={() => {
+                const modal = document.getElementById(
+                  "modal-clone",
+                ) as HTMLDialogElement;
+                if (modal) {
+                  modal.close();
+                }
+              }}
+            />
+            <Button
+              text="Clone"
+              width={80}
+              height={40}
+              action={() => clone()}
+            />
+          </div>
+        </Modal>
+      </dialog>
       {/* buttons */}
       <div class="h-100 relative top-[15vh] w-full">
         <div class="flex justify-center space-x-20">
@@ -181,7 +245,12 @@ const Welcome = () => {
               rounding={50}
               icon={IconClone}
               action={() => {
-                
+                const modal = document.getElementById(
+                  "modal-clone",
+                ) as HTMLDialogElement;
+                if (modal) {
+                  modal.showModal();
+                }
               }}
             />
             <p class="relative top-2 text-center text-content">Clone...</p>
