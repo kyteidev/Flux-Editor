@@ -19,6 +19,8 @@ const Welcome = () => {
   const [dirPath, setDirPath] = createSignal<string>("");
   const [name, setName] = createSignal<string>("");
 
+  const [isCloning, setIsCloning] = createSignal<boolean>(false);
+
   const openDir = () => {
     dialog.open({ directory: true, multiple: false }).then((path) => {
       if (path) {
@@ -27,17 +29,27 @@ const Welcome = () => {
     });
   };
 
-  const clone = () => {
+  const clone = async () => {
     if (dirPath() != "") {
-      cloneRepo(dirPath());
-      openEditor("clone");
+      try {
+        setIsCloning(true);
+        await cloneRepo(dirPath());
+        setIsCloning(false);
+        openEditor("clone");
+      } catch (error) {
+        dialog.message(`${error}`, {
+          title: "Failed to clone repository",
+          type: "error",
+        });
+        console.error(`Error cloning repository: ${error}`);
+      }
     } else {
       dialog.message("Please enter a valid URL.", {
-        title: "Error",
+        title: "Failed to clone repository",
         type: "error",
       });
     }
-  }
+  };
 
   const openEditor = (action: string) => {
     const editorPath = "/editor";
@@ -73,7 +85,7 @@ const Welcome = () => {
   };
 
   return (
-    <div class="h-screen bg-base-200 select-none">
+    <div class="h-screen select-none bg-base-200">
       {/* draggable region */}
       <div data-tauri-drag-region class="h-12 w-full" />
       {/* logo and title */}
@@ -171,9 +183,6 @@ const Welcome = () => {
                 onChange={setDirPath}
               />
             </div>
-            <p class="text-xs text-content">
-              Only github.com and gitlab.com are supported.
-            </p>
           </div>
           <div
             class="flex space-x-[12px]"
@@ -200,7 +209,8 @@ const Welcome = () => {
               text="Clone"
               width={80}
               height={40}
-              action={() => clone()}
+              loading={isCloning()}
+              action={clone}
             />
           </div>
         </Modal>
