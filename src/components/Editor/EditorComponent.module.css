@@ -1,0 +1,47 @@
+@font-face {
+  font-family: "notosans";
+  src: url("../../assets/fonts/NotoSansMono.ttf") format("truetype");
+}
+
+.component {
+  font-family: "notosans", monospace;
+}
+.lineNumbers {
+  user-select: none;
+  text-align: right;
+  overflow: hidden;
+  line-height: 1.5em;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  width: 64px;
+  min-width: 64px;
+  max-width: 64px;
+}
+
+.lineNumber {
+  padding-left: 10px; /* Add padding to align numbers */
+  width: 100%; /* Ensure the numbers take up full width */
+  text-align: right;
+  direction: rtl;
+}
+
+.highlightedLine {
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+  width: 64px;
+  height: 1.5em;
+}
+
+textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: #f8f8f8;
+  font-family: monospace;
+  white-space: pre;
+  flex-grow: 1;
+  z-index: 0;
+}

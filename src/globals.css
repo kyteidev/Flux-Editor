@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'inter';
-  src: url('../../assets/Inter.ttf') format('truetype');
+  src: url('../../assets/fonts/Inter.ttf') format('truetype');
 }
 
 header, h1, button, input, p, input, textarea {

@@ -554,6 +554,40 @@ video {
   --tw-contain-style:  ;
 }
 
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
 .fixed {
   position: fixed;
 }
@@ -566,12 +600,12 @@ video {
   position: relative;
 }
 
-.left-0 {
-  left: 0px;
+.sticky {
+  position: sticky;
 }
 
-.left-1\/3 {
-  left: 33.333333%;
+.left-0 {
+  left: 0px;
 }
 
 .left-4 {
@@ -618,6 +652,50 @@ video {
   top: 100%;
 }
 
+.left-16 {
+  left: 4rem;
+}
+
+.left-10 {
+  left: 2.5rem;
+}
+
+.top-10 {
+  top: 2.5rem;
+}
+
+.left-\[64px\] {
+  left: 64px;
+}
+
+.bottom-0 {
+  bottom: 0px;
+}
+
+.left-\[10px\] {
+  left: 10px;
+}
+
+.right-\[10px\] {
+  right: 10px;
+}
+
+.right-\[-10px\] {
+  right: -10px;
+}
+
+.z-0 {
+  z-index: 0;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.z-20 {
+  z-index: 20;
+}
+
 .ml-0 {
   margin-left: 0px;
 }
@@ -654,12 +732,77 @@ video {
   height: 26px;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .h-screen {
   height: 100vh;
 }
 
-.w-1\/3 {
-  width: 33.333333%;
+.h-max {
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.h-\[100px\] {
+  height: 100px;
+}
+
+.h-\[500px\] {
+  height: 500px;
+}
+
+.h-\[1\.5em\] {
+  height: 1.5em;
+}
+
+.max-h-full {
+  max-height: 100%;
+}
+
+.max-h-\[100px\] {
+  max-height: 100px;
+}
+
+.max-h-screen {
+  max-height: 100vh;
+}
+
+.max-h-\[500px\] {
+  max-height: 500px;
+}
+
+.max-h-\[300px\] {
+  max-height: 300px;
+}
+
+.max-h-\[66\%\] {
+  max-height: 66%;
+}
+
+.max-h-\[66vh\] {
+  max-height: 66vh;
+}
+
+.min-h-full {
+  min-height: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.min-h-\[100px\] {
+  min-height: 100px;
+}
+
+.min-h-10 {
+  min-height: 2.5rem;
+}
+
+.min-h-\[34vh\] {
+  min-height: 34vh;
 }
 
 .w-10 {
@@ -682,6 +825,42 @@ video {
   width: 100vw;
 }
 
+.w-16 {
+  width: 4rem;
+}
+
+.w-24 {
+  width: 6rem;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-\[64px\] {
+  width: 64px;
+}
+
+.w-\[500\%\] {
+  width: 500%;
+}
+
+.w-\[100px\] {
+  width: 100px;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.flex-shrink {
+  flex-shrink: 1;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -700,8 +879,16 @@ video {
           user-select: none;
 }
 
+.resize-none {
+  resize: none;
+}
+
 .flex-row {
   flex-direction: row;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }
 
 .flex-col {
@@ -768,12 +955,28 @@ video {
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
 .rounded-full {
   border-radius: 9999px;
 }
 
 .rounded-xl {
   border-radius: 0.75rem;
+}
+
+.border {
+  border-width: 1px;
 }
 
 .border-t-0 {
@@ -819,6 +1022,15 @@ video {
   background-color: rgb(50 94 143 / var(--tw-bg-opacity));
 }
 
+.bg-base-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(13 15 18 / var(--tw-bg-opacity));
+}
+
+.bg-opacity-0 {
+  --tw-bg-opacity: 0;
+}
+
 .fill-content {
   fill: #f3f4f6;
 }
@@ -833,6 +1045,14 @@ video {
 
 .p-\[5px\] {
   padding: 5px;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-0 {
+  padding: 0px;
 }
 
 .pb-1 {
@@ -851,8 +1071,20 @@ video {
   padding-left: 1.25rem;
 }
 
+.pt-\[0\.7rem\] {
+  padding-top: 0.7rem;
+}
+
+.pt-0 {
+  padding-top: 0px;
+}
+
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .text-9xl {
@@ -865,6 +1097,24 @@ video {
   line-height: 1.75rem;
 }
 
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-\[16em\] {
+  font-size: 16em;
+}
+
+.leading-5 {
+  line-height: 1.25rem;
+}
+
 .text-content {
   --tw-text-opacity: 1;
   color: rgb(243 244 246 / var(--tw-text-opacity));
@@ -872,6 +1122,10 @@ video {
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+.opacity-20 {
+  opacity: 0.2;
 }
 
 .outline-none {
