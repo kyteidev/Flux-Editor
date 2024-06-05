@@ -6,6 +6,7 @@
 .component {
   font-family: "notosans", monospace;
 }
+
 .lineNumbers {
   user-select: none;
   text-align: right;
@@ -21,8 +22,8 @@
 }
 
 .lineNumber {
-  padding-left: 10px; /* Add padding to align numbers */
-  width: 100%; /* Ensure the numbers take up full width */
+  padding-left: 10px;
+  width: 100%;
   text-align: right;
   direction: rtl;
 }
@@ -35,13 +36,35 @@
   height: 1.5em;
 }
 
-textarea {
-  border: none;
-  outline: none;
-  resize: none;
-  background-color: #f8f8f8;
-  font-family: monospace;
-  white-space: pre;
+.textarea, .highlighted {
+  white-space: nowrap;
+  display: flex;
+  font-size: medium;
   flex-grow: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto !important;
+}
+
+.textarea, .highlighted, .highlighted * {
+  font-family: "notosans", monospace !important;
+  border: none !important;
+  border-radius: 0% !important;
+  outline: none !important;
+  resize: none;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.textarea {
+  z-index: 1;
+  color: transparent;
+  background: transparent;
+}
+
+.highlighted {
   z-index: 0;
 }

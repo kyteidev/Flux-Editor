@@ -1,5 +1,8 @@
-import { createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, onCleanup, onMount } from "solid-js";
 import styles from "./EditorComponent.module.css";
+import Prism from "prismjs";
+import "prismjs/themes/prism-tomorrow.min.css"; //funky and twilight themes are broken
+import "prismjs/components/prism-javascript";
 
 interface Props {
   lang: string;
@@ -30,15 +33,41 @@ const EditorComponent = (props: Props) => {
   const handleInput = (event: Event) => {
     const value = (event.target as HTMLTextAreaElement).value;
     setContent(value);
+    const highlightedContent = document.querySelector("#highlighting-content");
+
+    if (value[value.length - 1] == "\n") {
+      setContent(value + "\n");
+    }
+
+    if (highlightedContent) {
+      highlightedContent.innerHTML = value
+        .replace(new RegExp("&", "g"), "&amp;")
+        .replace(new RegExp("<", "g"), "&lt;");
+      Prism.highlightAll();
+    }
     updateLineNumbers(value);
+    updateSelectedLine(event);
+
+    handleScroll();
+  };
+
+  const handleBlur = () => {
+    setSelectedLine(-1);
   };
 
   let textareaRef: HTMLTextAreaElement | undefined;
 
   const handleScroll = () => {
     const lineNumbersDiv = document.getElementById("line-numbers");
-    if (lineNumbersDiv  && textareaRef) {
+    const highlightedContentPre = document.getElementById("highlighting");
+    if (lineNumbersDiv && highlightedContentPre && textareaRef) {
       lineNumbersDiv.scrollTop = textareaRef.scrollTop;
+
+      highlightedContentPre.scrollTop = textareaRef.scrollTop;
+      highlightedContentPre.scrollLeft = textareaRef.scrollLeft;
+
+      console.log(textareaRef.scrollTop);
+      console.log(highlightedContentPre.scrollTop);
     }
   };
 
@@ -51,14 +80,11 @@ const EditorComponent = (props: Props) => {
     if (event.key === "Tab") {
       event.preventDefault();
 
-      // Insert tab character at the current cursor position
       const updatedValue =
         value.substring(0, start) + "\t" + value.substring(end);
 
-      // Update the textarea value with the tab character
       textarea.value = updatedValue;
 
-      // Set the cursor position after the tab character
       textarea.selectionStart = textarea.selectionEnd = start + 1;
     } else if (
       event.key === "ArrowUp" ||
@@ -68,7 +94,6 @@ const EditorComponent = (props: Props) => {
     ) {
       event.preventDefault();
 
-      // Calculate the new cursor position based on the arrow key press
       let newStart = start;
       let newEnd = end;
       if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
@@ -81,11 +106,9 @@ const EditorComponent = (props: Props) => {
         newEnd = newStart;
       }
 
-      // Update the selected line state
       const newSelectedLine = value.substring(0, newStart).split("\n").length;
       setSelectedLine(newSelectedLine);
 
-      // Update the cursor position
       textarea.setSelectionRange(newStart, newEnd);
     }
   };
@@ -93,21 +116,13 @@ const EditorComponent = (props: Props) => {
   onMount(() => {
     if (textareaRef) {
       textareaRef.addEventListener("click", updateSelectedLine);
-      textareaRef.addEventListener("input", updateSelectedLine);
-      textareaRef.addEventListener("scroll", handleScroll);
       textareaRef.addEventListener("keydown", handleKeyDown);
     }
-  });
-
-  createEffect(() => {
-    console.log("hello world");
   });
 
   onCleanup(() => {
     if (textareaRef) {
       textareaRef.removeEventListener("click", updateSelectedLine);
-      textareaRef.removeEventListener("input", updateSelectedLine);
-      textareaRef.removeEventListener("scroll", handleScroll);
       textareaRef.removeEventListener("keydown", handleKeyDown);
     }
   });
@@ -118,16 +133,15 @@ const EditorComponent = (props: Props) => {
         {/* FIXME: remove relative positioning to make line highlights extends to the edge, but it will not scroll with line numbers */}
         <div
           id="line-numbers"
-          class={`relative bg-base-200 p-3 pt-0 h-full text-content ${styles.lineNumbers} ${styles.component}`}
+          class={`relative h-full bg-base-200 p-3 pt-0 text-content ${styles.lineNumbers} ${styles.component}`}
         >
           {lines().map((line, index) => (
             <div class="flex">
-              <div id={line} class={`${styles.lineNumber}`}>{line}</div>
+              <div class={`${styles.lineNumber}`}>{line}</div>
               <div
-              id={`${line}-highlight`}
                 class={
                   index + 1 === selectedLine()
-                    ? `highlight absolute left-0 bg-content z-10 opacity-20 ${styles.highlightedLine}`
+                    ? `absolute left-0 z-10 bg-content opacity-20 ${styles.highlightedLine}`
                     : ""
                 }
               />
@@ -135,17 +149,26 @@ const EditorComponent = (props: Props) => {
           ))}
         </div>
       </div>
-      <div class="relative flex w-full flex-grow">
+      <div class="relative flex w-full flex-grow flex-col">
         <textarea
-          id="textarea"
           ref={textareaRef}
-          class={`flex w-full flex-grow resize-none flex-col bg-base-300 p-0 text-content ${styles.component}`}
+          id="editing"
+          onInput={handleInput}
+          onscroll={handleScroll}
           autocomplete="off"
           autocapitalize="off"
           spellcheck={false}
-          value={content()}
-          onInput={handleInput}
-        />
+          onfocus={updateSelectedLine}
+          onblur={handleBlur}
+          class={`caret-content ${styles.textarea}`}
+        ></textarea>
+        <pre
+          id="highlighting"
+          aria-hidden="true"
+          class={`bg-base-300 text-content ${styles.highlighted}`}
+        >
+          <code class="language-javascript" id="highlighting-content"></code>
+        </pre>
       </div>
     </div>
   );

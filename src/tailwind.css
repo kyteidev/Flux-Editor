@@ -684,6 +684,10 @@ video {
   right: -10px;
 }
 
+.left-5 {
+  left: 1.25rem;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -1118,6 +1122,10 @@ video {
 .text-content {
   --tw-text-opacity: 1;
   color: rgb(243 244 246 / var(--tw-text-opacity));
+}
+
+.caret-content {
+  caret-color: #f3f4f6;
 }
 
 .opacity-50 {
