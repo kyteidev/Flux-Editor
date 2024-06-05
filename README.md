@@ -1,12 +1,11 @@
 <p align="center"><img src="./src/assets/narvik-logo.svg"
      alt="narvik logo"
-     width="100px"
-     height="100px" />
+     width="160px"
+     height="160px" />
 </p>
 
 <h1 align="center">Narvik</h1>
-git push -u origin main
-A minimalist, fast, lightweight, and open-source half-IDE for multiple languages, made with Tauri and SolidJS. Narvik's code editor is currently powered by [Ace Editor](https://ace.c9.io/). Narvik is designed to be easy to use, so that new developers can quickly start coding, instead of doing the setup hassle on other editors and IDEs.
+A minimalist, fast, lightweight, and open-source code editor for multiple languages, made with Tauri and SolidJS.
 
 ## Status
 
