@@ -700,6 +700,10 @@ video {
   z-index: 20;
 }
 
+.z-50 {
+  z-index: 50;
+}
+
 .ml-0 {
   margin-left: 0px;
 }
@@ -759,6 +763,10 @@ video {
 
 .h-\[1\.5em\] {
   height: 1.5em;
+}
+
+.h-\[1\.5rem\] {
+  height: 1.5rem;
 }
 
 .max-h-full {
@@ -1134,6 +1142,10 @@ video {
 
 .opacity-20 {
   opacity: 0.2;
+}
+
+.opacity-0 {
+  opacity: 0;
 }
 
 .outline-none {

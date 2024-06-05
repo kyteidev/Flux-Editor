@@ -13,6 +13,33 @@ const EditorComponent = (props: Props) => {
   const [lines, setLines] = createSignal(["1"]);
   const [selectedLine, setSelectedLine] = createSignal(-1);
 
+  let lineNumbersDiv: HTMLElement | null;
+  let highlightedContentPre: HTMLElement | null;
+  let highlightedLine: HTMLElement | null;
+  let textareaRef: HTMLTextAreaElement | undefined;
+
+  onMount(() => {
+    lineNumbersDiv = document.getElementById("line-numbers");
+    highlightedContentPre = document.getElementById("highlighting");
+    highlightedLine = document.getElementById("highlighted-line");
+
+    if (highlightedLine) {
+      highlightedLine.style.height = "0";
+    }
+
+    if (textareaRef) {
+      textareaRef.addEventListener("click", updateSelectedLine);
+      textareaRef.addEventListener("keydown", handleKeyDown);
+    }
+  });
+
+  onCleanup(() => {
+    if (textareaRef) {
+      textareaRef.removeEventListener("click", updateSelectedLine);
+      textareaRef.removeEventListener("keydown", handleKeyDown);
+    }
+  });
+
   const updateSelectedLine = (event: Event) => {
     const textarea = event.target as HTMLTextAreaElement;
     const start = textarea.selectionStart;
@@ -20,6 +47,27 @@ const EditorComponent = (props: Props) => {
     const lineNumber = value.substring(0, start).split("\n").length;
 
     setSelectedLine(lineNumber);
+
+    if (highlightedLine) {
+      highlightedLine.style.height = "1.5em";
+    }
+  };
+
+  const calcHighlightLinePos = () => {
+    if (highlightedLine && textareaRef) {
+      highlightedLine.style.top = `calc(${selectedLine() - 1} * 1.5rem - ${textareaRef?.scrollTop}px)`;
+
+      const highlightedLinePos = highlightedLine.getBoundingClientRect();
+      const textareaPos = textareaRef.getBoundingClientRect();
+      if (highlightedLinePos.top < textareaPos.top) {
+        highlightedLine.style.height = `calc(1.5em - (${textareaPos.top}px - ${highlightedLinePos.top}px))`;
+        highlightedLine.style.top = "0";
+      } else if (highlightedLinePos.bottom > textareaPos.bottom) {
+        highlightedLine.style.height = `calc(${textareaPos.bottom}px - ${highlightedLinePos.top}px)`;
+      } else {
+        highlightedLine.style.height = "1.5em";
+      }
+    }
   };
 
   const updateLineNumbers = (value: string) => {
@@ -33,7 +81,10 @@ const EditorComponent = (props: Props) => {
   const handleInput = (event: Event) => {
     const value = (event.target as HTMLTextAreaElement).value;
     setContent(value);
-    const highlightedContent = document.querySelector("#highlighting-content");
+
+    // [start] source:
+
+    const highlightedContent = document.getElementById("highlighting-content");
 
     if (value[value.length - 1] == "\n") {
       setContent(value + "\n");
@@ -45,6 +96,9 @@ const EditorComponent = (props: Props) => {
         .replace(new RegExp("<", "g"), "&lt;");
       Prism.highlightAll();
     }
+
+    // [end]
+
     updateLineNumbers(value);
     updateSelectedLine(event);
 
@@ -53,21 +107,20 @@ const EditorComponent = (props: Props) => {
 
   const handleBlur = () => {
     setSelectedLine(-1);
+
+    if (highlightedLine) {
+      highlightedLine.style.height = "0";
+    }
   };
 
-  let textareaRef: HTMLTextAreaElement | undefined;
-
   const handleScroll = () => {
-    const lineNumbersDiv = document.getElementById("line-numbers");
-    const highlightedContentPre = document.getElementById("highlighting");
     if (lineNumbersDiv && highlightedContentPre && textareaRef) {
       lineNumbersDiv.scrollTop = textareaRef.scrollTop;
 
       highlightedContentPre.scrollTop = textareaRef.scrollTop;
       highlightedContentPre.scrollLeft = textareaRef.scrollLeft;
 
-      console.log(textareaRef.scrollTop);
-      console.log(highlightedContentPre.scrollTop);
+      calcHighlightLinePos();
     }
   };
 
@@ -113,43 +166,31 @@ const EditorComponent = (props: Props) => {
     }
   };
 
-  onMount(() => {
-    if (textareaRef) {
-      textareaRef.addEventListener("click", updateSelectedLine);
-      textareaRef.addEventListener("keydown", handleKeyDown);
-    }
-  });
-
-  onCleanup(() => {
-    if (textareaRef) {
-      textareaRef.removeEventListener("click", updateSelectedLine);
-      textareaRef.removeEventListener("keydown", handleKeyDown);
-    }
-  });
-
   return (
     <div class="flex h-full w-full">
       <div class="relative">
-        {/* FIXME: remove relative positioning to make line highlights extends to the edge, but it will not scroll with line numbers */}
         <div
           id="line-numbers"
           class={`relative h-full bg-base-200 p-3 pt-0 text-content ${styles.lineNumbers} ${styles.component}`}
         >
-          {lines().map((line, index) => (
+          {lines().map((line) => (
             <div class="flex">
               <div class={`${styles.lineNumber}`}>{line}</div>
-              <div
-                class={
-                  index + 1 === selectedLine()
-                    ? `absolute left-0 z-10 bg-content opacity-20 ${styles.highlightedLine}`
-                    : ""
-                }
-              />
             </div>
           ))}
         </div>
       </div>
-      <div class="relative flex w-full flex-grow flex-col">
+      <div
+        class="relative flex w-full flex-grow flex-col"
+        id="editor-container"
+      >
+        <div
+          id="highlighted-line"
+          class="absolute z-50 h-[1.5rem] w-full bg-content opacity-20"
+          style={{
+            top: `calc(${selectedLine() - 1} * 1.5rem - ${textareaRef?.scrollTop}px)`,
+          }}
+        ></div>
         <textarea
           ref={textareaRef}
           id="editing"
