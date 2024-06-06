@@ -14,12 +14,14 @@ const EditorComponent = (props: Props) => {
   const [selectedLine, setSelectedLine] = createSignal(-1);
 
   let lineNumbersDiv: HTMLElement | null;
+  let highlightedContent: HTMLElement | null;
   let highlightedContentPre: HTMLElement | null;
   let highlightedLine: HTMLElement | null;
   let textareaRef: HTMLTextAreaElement | undefined;
 
   onMount(() => {
     lineNumbersDiv = document.getElementById("line-numbers");
+    highlightedContent = document.getElementById("highlighting-content");
     highlightedContentPre = document.getElementById("highlighting");
     highlightedLine = document.getElementById("highlighted-line");
 
@@ -29,14 +31,12 @@ const EditorComponent = (props: Props) => {
 
     if (textareaRef) {
       textareaRef.addEventListener("click", updateSelectedLine);
-      textareaRef.addEventListener("keydown", handleKeyDown);
     }
   });
 
   onCleanup(() => {
     if (textareaRef) {
       textareaRef.removeEventListener("click", updateSelectedLine);
-      textareaRef.removeEventListener("keydown", handleKeyDown);
     }
   });
 
@@ -77,29 +77,33 @@ const EditorComponent = (props: Props) => {
     );
     setLines(lineNumbers);
   };
+  const updateContent = () => {
+    // [start] source (with modifications): https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
 
-  const handleInput = (event: Event) => {
-    const value = (event.target as HTMLTextAreaElement).value;
-    setContent(value);
+    if (textareaRef) {
+      if (textareaRef.value[textareaRef.value.length - 1] == "\n") {
+        textareaRef.value = textareaRef.value + "";
+      }
 
-    // [start] source:
-
-    const highlightedContent = document.getElementById("highlighting-content");
-
-    if (value[value.length - 1] == "\n") {
-      setContent(value + "\n");
-    }
-
-    if (highlightedContent) {
-      highlightedContent.innerHTML = value
-        .replace(new RegExp("&", "g"), "&amp;")
-        .replace(new RegExp("<", "g"), "&lt;");
-      Prism.highlightAll();
+      if (highlightedContent) {
+        highlightedContent.innerHTML = textareaRef.value
+          .replace(new RegExp("&", "g"), "&amp;")
+          .replace(new RegExp("<", "g"), "&lt;");
+        Prism.highlightAll();
+      }
     }
 
     // [end]
+  };
 
-    updateLineNumbers(value);
+  const handleInput = (event: Event) => {
+
+    updateContent();
+
+    if (textareaRef) {
+        updateLineNumbers(textareaRef.value);
+    }
+    
     updateSelectedLine(event);
 
     handleScroll();
@@ -126,43 +130,44 @@ const EditorComponent = (props: Props) => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const textarea = event.target as HTMLTextAreaElement;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
+    const selectionStart = textarea.selectionStart;
+    const selectionEnd = textarea.selectionEnd;
     const value = textarea.value;
 
     if (event.key === "Tab") {
       event.preventDefault();
 
       const updatedValue =
-        value.substring(0, start) + "\t" + value.substring(end);
+        value.substring(0, selectionStart) +
+        "\t" +
+        value.substring(selectionEnd);
 
       textarea.value = updatedValue;
 
-      textarea.selectionStart = textarea.selectionEnd = start + 1;
+      updateContent();
+
     } else if (
       event.key === "ArrowUp" ||
       event.key === "ArrowDown" ||
       event.key === "ArrowLeft" ||
       event.key === "ArrowRight"
     ) {
-      event.preventDefault();
+        
+      let newStart = selectionStart;
 
-      let newStart = start;
-      let newEnd = end;
       if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-        const prevLineStart = value.indexOf("\n", end);
+        const prevLineStart = value.indexOf("\n", selectionEnd);
         newStart = prevLineStart === -1 ? value.length - 1 : prevLineStart - 1;
-        newEnd = newStart;
-      } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-        const nextLineStart = value.indexOf("\n", end);
+      } else if (event.key === "ArrowDown") {
+        const nextLineStart = value.indexOf("\n", selectionEnd);
         newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
-        newEnd = newStart;
+      } else if (event.key === "ArrowRight" && value[selectionEnd] === "\n") {
+        const nextLineStart = value.indexOf("\n", selectionEnd);
+        newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
       }
 
       const newSelectedLine = value.substring(0, newStart).split("\n").length;
       setSelectedLine(newSelectedLine);
-
-      textarea.setSelectionRange(newStart, newEnd);
     }
   };
 
@@ -186,7 +191,7 @@ const EditorComponent = (props: Props) => {
       >
         <div
           id="highlighted-line"
-          class="absolute z-50 h-[1.5rem] w-full bg-content opacity-20"
+          class="absolute z-50 h-[1.5rem] w-full bg-content opacity-10"
           style={{
             top: `calc(${selectedLine() - 1} * 1.5rem - ${textareaRef?.scrollTop}px)`,
           }}
@@ -195,6 +200,7 @@ const EditorComponent = (props: Props) => {
           ref={textareaRef}
           id="editing"
           onInput={handleInput}
+          onkeydown={handleKeyDown}
           onscroll={handleScroll}
           autocomplete="off"
           autocapitalize="off"

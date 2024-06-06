@@ -37,7 +37,7 @@
 }
 
 .textarea, .highlighted {
-  white-space: nowrap;
+  white-space: pre;
   display: flex;
   font-size: medium;
   flex-grow: 1;
@@ -57,11 +57,12 @@
   resize: none;
   margin: 0 !important;
   padding: 0 !important;
+  tab-size: 2 !important;
 }
 
 .textarea {
   z-index: 1;
-  color: transparent;
+  color: yellow;
   background: transparent;
 }
 
