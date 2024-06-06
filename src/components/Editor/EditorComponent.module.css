@@ -28,14 +28,6 @@
   direction: rtl;
 }
 
-.highlightedLine {
-  pointer-events: none;
-  margin: 0;
-  padding: 0;
-  width: 64px;
-  height: 1.5em;
-}
-
 .textarea, .highlighted {
   white-space: pre;
   display: flex;
@@ -62,7 +54,7 @@
 
 .textarea {
   z-index: 1;
-  color: yellow;
+  color: transparent;
   background: transparent;
 }
 

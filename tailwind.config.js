@@ -1,33 +1,33 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./src/globals.css"],
   theme: {
     colors: {
-      primary: "#325e8f",
+      primary: "var(--primary)",
 
-      "primary-hover": "#6090C7",
+      "primary-hover": "var(--primary-hover)",
 
-      content: "#f3f4f6",
+      content: "var(--content)",
 
-      accent: "#1e3a8a",
+      accent: "var(--accent)",
 
-      neutral: "#6b7280",
+      neutral: "var(--neutral)",
 
-      "base-100": "#2e3742",
+      "base-100": "var(--base-100)",
 
-      "base-100-hover": "#3f4b5a",
+      "base-100-hover": "var(--base-100-hover)",
 
-      "base-200": "#1d232a",
+      "base-200": "var(--base-200)",
 
-      "base-300": "#0d0f12",
+      "base-300": "var(--base-300)",
 
-      info: "#1e40af",
+      info: "var(--info)",
 
-      success: "#16a34a",
+      success: "var(--success)",
 
-      warning: "#ca8a04",
+      warning: "var(--warning)",
 
-      error: "#b91c1c",
+      error: "var(--error)",
     },
   },
   plugins: [],

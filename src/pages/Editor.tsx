@@ -15,7 +15,7 @@ const Editor = () => {
       <header data-tauri-drag-region class="header min-h-10 w-full bg-base-200 flex-shrink-0" />
       <div class="flex flex-col flex-grow">
         <div class="h-full max-h-[66vh]">
-          <EditorComponent lang="js" />
+          <EditorComponent lang="javascript" />
         </div>
         <div class="bg-base-200 w-full flex-grow"></div>
       </div>

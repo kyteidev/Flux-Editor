@@ -1,14 +1,38 @@
+:root {
+  --primary: #325e8f;
+  --primary-hover: #6090C7;
+  --content: #f3f4f6;
+  --accent: #1e3a8a;
+  --neutral: #6b7280;
+
+  --base-100: #2e3742;
+  --base-100-hover: #3f4b5a;
+  --base-200: #1d232a;
+  --base-300: #13151a;
+
+  --info: #1e40af;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #b91c1c;
+}
+
 *:focus {
   outline: none;
 }
 
 @font-face {
-  font-family: 'inter';
-  src: url('../../assets/fonts/Inter.ttf') format('truetype');
+  font-family: "inter";
+  src: url("../../assets/fonts/Inter.ttf") format("truetype");
 }
 
-header, h1, button, input, p, input, textarea {
-  font-family: 'inter', sans-serif;
+header,
+h1,
+button,
+input,
+p,
+input,
+textarea {
+  font-family: "inter", sans-serif;
 }
 
 body {
@@ -23,21 +47,20 @@ dialog[open] {
   animation: fadein 0.2s ease-in-out forwards;
 }
 
-@keyframes fadein{
-  0%{
-    opacity:0;
+@keyframes fadein {
+  0% {
+    opacity: 0;
   }
-  100%{
-    opacity:1;
+  100% {
+    opacity: 1;
   }
 }
 
-
-@keyframes fadeout{
-  0%{
-    opacity:1;
+@keyframes fadeout {
+  0% {
+    opacity: 1;
   }
-  100%{
-    opacity:0;
+  100% {
+    opacity: 0;
   }
 }

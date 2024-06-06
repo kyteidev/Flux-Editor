@@ -1,7 +1,7 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
 import styles from "./EditorComponent.module.css";
 import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.min.css"; //funky and twilight themes are broken
+import "./themes/dark.css"; //funky and twilight themes are broken
 import "prismjs/components/prism-javascript";
 
 interface Props {
@@ -9,7 +9,6 @@ interface Props {
 }
 
 const EditorComponent = (props: Props) => {
-  const [content, setContent] = createSignal("");
   const [lines, setLines] = createSignal(["1"]);
   const [selectedLine, setSelectedLine] = createSignal(-1);
 
@@ -39,6 +38,8 @@ const EditorComponent = (props: Props) => {
       textareaRef.removeEventListener("click", updateSelectedLine);
     }
   });
+
+  // highlight line
 
   const updateSelectedLine = (event: Event) => {
     const textarea = event.target as HTMLTextAreaElement;
@@ -70,13 +71,19 @@ const EditorComponent = (props: Props) => {
     }
   };
 
-  const updateLineNumbers = (value: string) => {
-    const linesArray = value.split("\n");
-    const lineNumbers = Array.from({ length: linesArray.length }, (_, i) =>
-      (i + 1).toString(),
-    );
-    setLines(lineNumbers);
+  // update line numbers
+
+  const updateLineNumbers = () => {
+    if (textareaRef) {
+      const linesArray = textareaRef.value.split("\n");
+      const lineNumbers = Array.from({ length: linesArray.length }, (_, i) =>
+        (i + 1).toString(),
+      );
+      setLines(lineNumbers);
+    }
   };
+
+  // updates <code> content for syntax highlighting
   const updateContent = () => {
     // [start] source (with modifications): https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
 
@@ -89,7 +96,8 @@ const EditorComponent = (props: Props) => {
         highlightedContent.innerHTML = textareaRef.value
           .replace(new RegExp("&", "g"), "&amp;")
           .replace(new RegExp("<", "g"), "&lt;");
-        Prism.highlightAll();
+
+        Prism.highlightElement(highlightedContent);
       }
     }
 
@@ -97,13 +105,10 @@ const EditorComponent = (props: Props) => {
   };
 
   const handleInput = (event: Event) => {
-
     updateContent();
 
-    if (textareaRef) {
-        updateLineNumbers(textareaRef.value);
-    }
-    
+    updateLineNumbers();
+
     updateSelectedLine(event);
 
     handleScroll();
@@ -144,15 +149,15 @@ const EditorComponent = (props: Props) => {
 
       textarea.value = updatedValue;
 
-      updateContent();
+      textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
 
+      updateContent();
     } else if (
       event.key === "ArrowUp" ||
       event.key === "ArrowDown" ||
       event.key === "ArrowLeft" ||
       event.key === "ArrowRight"
     ) {
-        
       let newStart = selectionStart;
 
       if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
@@ -168,6 +173,21 @@ const EditorComponent = (props: Props) => {
 
       const newSelectedLine = value.substring(0, newStart).split("\n").length;
       setSelectedLine(newSelectedLine);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+
+      const newValue =
+        value.substring(0, selectionStart) +
+        "\n" +
+        value.substring(selectionEnd);
+
+      textarea.value = newValue;
+
+      textarea.setSelectionRange(selectionStart + 1, selectionStart + 1);
+
+      updateContent();
+      updateLineNumbers();
+      updateSelectedLine(event);
     }
   };
 
@@ -191,7 +211,7 @@ const EditorComponent = (props: Props) => {
       >
         <div
           id="highlighted-line"
-          class="absolute z-50 h-[1.5rem] w-full bg-content opacity-10"
+          class="pointer-events-none absolute z-50 h-[1.5rem] w-full bg-content opacity-10"
           style={{
             top: `calc(${selectedLine() - 1} * 1.5rem - ${textareaRef?.scrollTop}px)`,
           }}
