@@ -1,9 +1,9 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import styles from "./EditorComponent.module.css";
 import Prism from "prismjs";
 import "./themes/dark.css"; //funky and twilight themes are broken
 import "prismjs/components/prism-javascript.min";
-import { getClosingBracket } from "./utils/getClosingBracket";
+import { getClosingChar } from "./utils/getClosingChar";
 
 interface Props {
   lang: string;
@@ -28,28 +28,20 @@ const EditorComponent = (props: Props) => {
     if (highlightedLine) {
       highlightedLine.style.height = "0";
     }
-
-    if (textareaRef) {
-      textareaRef.addEventListener("click", updateSelectedLine);
-    }
-  });
-
-  onCleanup(() => {
-    if (textareaRef) {
-      textareaRef.removeEventListener("click", updateSelectedLine);
-    }
   });
 
   // highlight line
 
   const updateSelectedLine = () => {
-    if (textareaRef) {
-      const start = textareaRef.selectionStart;
-      const value = textareaRef.value;
-      const lineNumber = value.substring(0, start).split("\n").length;
+    setTimeout(() => {
+      if (textareaRef) {
+        const start = textareaRef.selectionStart;
+        const value = textareaRef.value;
+        const lineNumber = value.substring(0, start).split("\n").length;
 
-      setSelectedLine(lineNumber);
-    }
+        setSelectedLine(lineNumber);
+      }
+    }, 0);
 
     if (highlightedLine) {
       highlightedLine.style.height = "1.5em";
@@ -74,7 +66,6 @@ const EditorComponent = (props: Props) => {
   };
 
   // update line numbers
-
   const updateLineNumbers = () => {
     if (textareaRef) {
       const linesArray = textareaRef.value.split("\n");
@@ -145,6 +136,9 @@ const EditorComponent = (props: Props) => {
     const selectionEnd = textarea.selectionEnd;
     const value = textarea.value;
 
+    const openingBrackets = ["(", "[", "{"];
+    const charsWithClosingChars = [...openingBrackets, '"', "'"];
+
     if (event.key === "Tab") {
       event.preventDefault();
 
@@ -181,9 +175,9 @@ const EditorComponent = (props: Props) => {
       setSelectedLine(newSelectedLine);
     } else if (event.key === "Enter") {
       if (
-        textarea.value.charAt(textarea.selectionStart - 1) === "{" ||
-        textarea.value.charAt(textarea.selectionStart - 1) === "(" ||
-        textarea.value.charAt(textarea.selectionStart - 1) === "["
+        openingBrackets.includes(
+          textarea.value.charAt(textarea.selectionStart - 1),
+        )
       ) {
         event.preventDefault();
 
@@ -198,12 +192,12 @@ const EditorComponent = (props: Props) => {
 
         updateContent();
       }
-    } else if (event.key === "(" || event.key === "[" || event.key === "{") {
+    } else if (charsWithClosingChars.includes(event.key)) {
       event.preventDefault();
       const newValue =
         value.substring(0, selectionStart) +
         event.key +
-        getClosingBracket(event.key) +
+        getClosingChar(event.key) +
         value.substring(selectionEnd);
 
       textarea.value = newValue;
@@ -211,9 +205,11 @@ const EditorComponent = (props: Props) => {
       updateContent();
     } else if (event.key === "Backspace") {
       if (
-        textarea.value.charAt(selectionStart) === "}" ||
-        textarea.value.charAt(selectionStart) === ")" ||
-        textarea.value.charAt(selectionStart) === "]"
+        charsWithClosingChars.includes(
+          textarea.value.charAt(selectionStart - 1),
+        ) &&
+        textarea.value.charAt(selectionStart) ===
+          getClosingChar(textarea.value.charAt(selectionStart - 1))
       ) {
         event.preventDefault();
 
@@ -260,6 +256,7 @@ const EditorComponent = (props: Props) => {
           id="editing"
           onInput={handleInput}
           onkeydown={handleKeyDown}
+          onmousedown={updateSelectedLine}
           onscroll={handleScroll}
           autocomplete="off"
           autocapitalize="off"
