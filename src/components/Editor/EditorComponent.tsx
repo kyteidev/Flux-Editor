@@ -1,9 +1,12 @@
 import { createSignal, onMount } from "solid-js";
-import styles from "./EditorComponent.module.css";
 import Prism from "prismjs";
-import "./themes/dark.css"; //funky and twilight themes are broken
-import "prismjs/components/prism-javascript.min";
 import { getClosingChar } from "./utils/getClosingChar";
+import styles from "./EditorComponent.module.css";
+import "./themes/dark.css";
+
+// PrismJS plugins
+import "prismjs/plugins/match-braces/prism-match-braces.min.js";
+import "prismjs/plugins/autoloader/prism-autoloader.min.js";
 
 interface Props {
   lang: string;
@@ -270,7 +273,8 @@ const EditorComponent = (props: Props) => {
           aria-hidden="true"
           class={`bg-base-300 text-content ${styles.highlighted}`}
         >
-          <code class="language-javascript" id="highlighting-content"></code>
+          {/* match-braces doesn't work */}
+          <code class={`language-${props.lang} match-braces rainbow-braces`} id="highlighting-content"></code>
         </pre>
       </div>
     </div>

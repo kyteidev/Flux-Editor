@@ -48,15 +48,15 @@ pre[class*="language-"] {
 }
 
 .token.boolean,
-.token.number,
-.token.function {
+.token.number {
   color: #f08d49;
 }
 
 .token.property,
 .token.class-name,
 .token.constant,
-.token.symbol {
+.token.symbol,
+.token.function {
   color: #efe22d;
 }
 
@@ -96,4 +96,28 @@ pre[class*="language-"] {
 
 .token.inserted {
   color: green;
+}
+
+/* colors for matching brackets */
+
+.rainbow-braces .token.punctuation.brace-level-1,
+.rainbow-braces .token.punctuation.brace-level-4,
+.rainbow-braces .token.punctuation.brace-level-7,
+.rainbow-braces .token.punctuation.brace-level-10 {
+	color: #7d9ff6;
+	opacity: 1;
+}
+.rainbow-braces .token.punctuation.brace-level-2,
+.rainbow-braces .token.punctuation.brace-level-5,
+.rainbow-braces .token.punctuation.brace-level-8,
+.rainbow-braces .token.punctuation.brace-level-11 {
+	color: #76f463;
+	opacity: 1;
+}
+.rainbow-braces .token.punctuation.brace-level-3,
+.rainbow-braces .token.punctuation.brace-level-6,
+.rainbow-braces .token.punctuation.brace-level-9,
+.rainbow-braces .token.punctuation.brace-level-12 {
+	color: #f34853;
+	opacity: 1;
 }
