@@ -1,6 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 import Prism from "prismjs";
-import { getClosingChar } from "./utils/getClosingChar";
+import { getClosingChar } from "../../utils/getClosingChar";
 import styles from "./EditorComponent.module.css";
 import "./themes/dark.css";
 
