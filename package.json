@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "tailwind-build": "npx tailwindcss -i ./src/input.css -o ./src/tailwind.css --watch"
   },
   "license": "MIT",
   "dependencies": {
