@@ -2,7 +2,8 @@ import { createSignal, onCleanup, onMount } from "solid-js";
 import styles from "./EditorComponent.module.css";
 import Prism from "prismjs";
 import "./themes/dark.css"; //funky and twilight themes are broken
-import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-javascript.min";
+import { getClosingBracket } from "./utils/getClosingBracket";
 
 interface Props {
   lang: string;
@@ -41,13 +42,14 @@ const EditorComponent = (props: Props) => {
 
   // highlight line
 
-  const updateSelectedLine = (event: Event) => {
-    const textarea = event.target as HTMLTextAreaElement;
-    const start = textarea.selectionStart;
-    const value = textarea.value;
-    const lineNumber = value.substring(0, start).split("\n").length;
+  const updateSelectedLine = () => {
+    if (textareaRef) {
+      const start = textareaRef.selectionStart;
+      const value = textareaRef.value;
+      const lineNumber = value.substring(0, start).split("\n").length;
 
-    setSelectedLine(lineNumber);
+      setSelectedLine(lineNumber);
+    }
 
     if (highlightedLine) {
       highlightedLine.style.height = "1.5em";
@@ -102,14 +104,17 @@ const EditorComponent = (props: Props) => {
     }
 
     // [end]
+
+    updateLineNumbers();
+    updateSelectedLine();
   };
 
-  const handleInput = (event: Event) => {
+  const handleInput = () => {
     updateContent();
 
     updateLineNumbers();
 
-    updateSelectedLine(event);
+    updateSelectedLine();
 
     handleScroll();
   };
@@ -133,6 +138,7 @@ const EditorComponent = (props: Props) => {
     }
   };
 
+  // handle custom functions on specific key presses
   const handleKeyDown = (event: KeyboardEvent) => {
     const textarea = event.target as HTMLTextAreaElement;
     const selectionStart = textarea.selectionStart;
@@ -174,20 +180,53 @@ const EditorComponent = (props: Props) => {
       const newSelectedLine = value.substring(0, newStart).split("\n").length;
       setSelectedLine(newSelectedLine);
     } else if (event.key === "Enter") {
-      event.preventDefault();
+      if (
+        textarea.value.charAt(textarea.selectionStart - 1) === "{" ||
+        textarea.value.charAt(textarea.selectionStart - 1) === "(" ||
+        textarea.value.charAt(textarea.selectionStart - 1) === "["
+      ) {
+        event.preventDefault();
 
+        const updatedValue =
+          value.substring(0, selectionStart) +
+          "\n\t\n" +
+          value.substring(selectionEnd);
+
+        textarea.value = updatedValue;
+
+        textarea.selectionStart = textarea.selectionEnd = selectionStart + 2;
+
+        updateContent();
+      }
+    } else if (event.key === "(" || event.key === "[" || event.key === "{") {
+      event.preventDefault();
       const newValue =
         value.substring(0, selectionStart) +
-        "\n" +
+        event.key +
+        getClosingBracket(event.key) +
         value.substring(selectionEnd);
 
       textarea.value = newValue;
-
-      textarea.setSelectionRange(selectionStart + 1, selectionStart + 1);
-
+      textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
       updateContent();
-      updateLineNumbers();
-      updateSelectedLine(event);
+    } else if (event.key === "Backspace") {
+      if (
+        textarea.value.charAt(selectionStart) === "}" ||
+        textarea.value.charAt(selectionStart) === ")" ||
+        textarea.value.charAt(selectionStart) === "]"
+      ) {
+        event.preventDefault();
+
+        const updatedValue =
+          textarea.value.substring(0, selectionStart - 1) +
+          textarea.value.substring(selectionStart + 1);
+
+        textarea.value = updatedValue;
+
+        textarea.selectionStart = textarea.selectionEnd = selectionStart - 1;
+
+        updateContent();
+      }
     }
   };
 
