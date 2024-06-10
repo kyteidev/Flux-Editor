@@ -25,14 +25,9 @@
   src: url("../../assets/fonts/Inter.ttf") format("truetype");
 }
 
-header,
-h1,
-button,
-input,
-p,
-input,
-textarea {
+* {
   font-family: "inter", sans-serif;
+  color: var(--content);
 }
 
 body {

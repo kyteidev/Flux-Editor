@@ -3,10 +3,6 @@
   src: url("../../assets/fonts/NotoSansMono.ttf") format("truetype");
 }
 
-.component {
-  font-family: "notosans", monospace;
-}
-
 .lineNumbers {
   user-select: none;
   text-align: right;
@@ -26,9 +22,11 @@
   width: 100%;
   text-align: right;
   direction: rtl;
+  font-family: "notosans", monospace !important;
 }
 
-.textarea, .highlighted {
+.textarea,
+.highlighted {
   white-space: pre;
   display: flex;
   font-size: medium;
@@ -41,7 +39,9 @@
   overflow: auto !important;
 }
 
-.textarea, .highlighted, .highlighted * {
+.textarea,
+.highlighted,
+.highlighted * {
   font-family: "notosans", monospace !important;
   border: none !important;
   border-radius: 0% !important;

@@ -234,7 +234,7 @@ const EditorComponent = (props: Props) => {
       <div class="relative">
         <div
           id="line-numbers"
-          class={`relative h-full bg-base-200 p-3 pt-0 text-content ${styles.lineNumbers} ${styles.component}`}
+          class={`relative h-full bg-base-200 p-3 pt-0 text-content ${styles.lineNumbers}`}
         >
           {lines().map((line) => (
             <div class="flex">
@@ -274,7 +274,10 @@ const EditorComponent = (props: Props) => {
           class={`bg-base-300 text-content ${styles.highlighted}`}
         >
           {/* match-braces doesn't work */}
-          <code class={`language-${props.lang} match-braces rainbow-braces`} id="highlighting-content"></code>
+          <code
+            class={`language-${props.lang} match-braces rainbow-braces`}
+            id="highlighting-content"
+          ></code>
         </pre>
       </div>
     </div>
