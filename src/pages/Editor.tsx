@@ -1,4 +1,5 @@
 import EditorComponent from "../components/Editor/EditorComponent";
+import FileBrowser from "../components/FileBrowser/FileBrowser";
 import SplitPane from "../components/SplitPane/SplitPane";
 import WindowControls from "../components/WindowControls/WindowControls";
 import { useSearchParams } from "@solidjs/router";
@@ -17,19 +18,21 @@ const Editor = () => {
         data-tauri-drag-region
         class="header min-h-10 w-full flex-shrink-0 bg-base-200"
       />
-      <SplitPane>
-        <SplitPane vertical={true}>
-          <div></div>
+      <div style={{ "max-height": `calc(100vh - 2.5em)` }}>
+        <SplitPane grow={true}>
+          <SplitPane vertical={true} width={280}>
+            <FileBrowser dir={dir()} />
+          </SplitPane>
+          <SplitPane vertical={true} grow={true}>
+            <div class="h-full max-h-[66vh]">
+              <EditorComponent lang="javascript" />
+            </div>
+            <div class="w-full flex-grow bg-base-200"></div>
+          </SplitPane>
         </SplitPane>
-        <SplitPane vertical={true}>
-          <div class="h-full max-h-[66vh]">
-            <EditorComponent lang="javascript" />
-          </div>
-          <div class="w-full flex-grow bg-base-200"></div>
-        </SplitPane>
-      </SplitPane>
-      <div>
-        <WindowControls />
+        <div>
+          <WindowControls />
+        </div>
       </div>
     </div>
   );
