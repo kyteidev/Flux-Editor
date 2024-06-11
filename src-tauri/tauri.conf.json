@@ -25,7 +25,8 @@
         "readFile": true,
         "writeFile": true,
         "readDir": true,
-        "createDir": true
+        "createDir": true,
+        "scope": { "allow": ["$HOME/**"] }
       },
       "os": {
         "all": true

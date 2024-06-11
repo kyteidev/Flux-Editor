@@ -18,7 +18,12 @@ const Editor = () => {
         data-tauri-drag-region
         class="header min-h-10 w-full flex-shrink-0 bg-base-200"
       />
-      <div style={{ "max-height": `calc(100vh - 2.5em)` }}>
+      <div
+        style={{
+          "max-height": `calc(100vh - 2.5em)`,
+          "min-height": `calc(100vh - 2.5em)`,
+        }}
+      >
         <SplitPane grow={true}>
           <SplitPane vertical={true} width={280}>
             <FileBrowser dir={dir()} />
