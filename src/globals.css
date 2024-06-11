@@ -1,6 +1,6 @@
 :root {
   --primary: #325e8f;
-  --primary-hover: #6090C7;
+  --primary-hover: #6090c7;
   --content: #f3f4f6;
   --accent: #1e3a8a;
   --neutral: #6b7280;
@@ -16,30 +16,9 @@
   --error: #b91c1c;
 }
 
-*:focus {
-  outline: none;
-}
-
 @font-face {
   font-family: "inter";
   src: url("../../assets/fonts/Inter.ttf") format("truetype");
-}
-
-* {
-  font-family: "inter", sans-serif;
-  color: var(--content);
-}
-
-body {
-  overflow: hidden;
-}
-
-dialog {
-  opacity: 0;
-}
-
-dialog[open] {
-  animation: fadein 0.2s ease-in-out forwards;
 }
 
 @keyframes fadein {
@@ -58,4 +37,26 @@ dialog[open] {
   100% {
     opacity: 0;
   }
+}
+
+* {
+  font-family: "inter", sans-serif;
+  color: var(--content);
+  user-select: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+body {
+  overflow: hidden;
+}
+
+dialog {
+  opacity: 0;
+}
+
+dialog[open] {
+  animation: fadein 0.2s ease-in-out forwards;
 }
