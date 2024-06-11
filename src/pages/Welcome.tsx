@@ -11,6 +11,7 @@ import ButtonBg from "../ui/ButtonBg";
 import { dialog } from "@tauri-apps/api";
 import { createSignal } from "solid-js";
 import { cloneRepo, getRepoPath } from "../utils/git/clone.ts";
+import { checkDirValidity } from "../utils/checkDir.ts";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const Welcome = () => {
             " name.",
           { title: "Error", type: "error" },
         );
-      } else if (dirPath() === "") {
+      } else if (dirPath() === "" || checkDirValidity(dirPath()) === false) {
         dialog.message("Please select a valid directory.", {
           title: "Error",
           type: "error",

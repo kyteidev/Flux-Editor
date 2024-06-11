@@ -54,6 +54,7 @@ const EditorComponent = (props: Props) => {
   const calcHighlightLinePos = () => {
     if (highlightedLine && textareaRef) {
       highlightedLine.style.top = `calc(${selectedLine() - 1} * 1.5rem - ${textareaRef?.scrollTop}px)`;
+      highlightedLine.style.height = "1.5em";
 
       const highlightedLinePos = highlightedLine.getBoundingClientRect();
       const textareaPos = textareaRef.getBoundingClientRect();
