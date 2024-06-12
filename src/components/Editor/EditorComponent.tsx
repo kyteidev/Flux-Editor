@@ -1,6 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 import Prism from "prismjs";
-import { getClosingChar } from "../../utils/getClosingChar";
+import { getClosingChar } from "../../utils/char";
 import styles from "./EditorComponent.module.css";
 import "./themes/dark.css";
 
@@ -235,11 +235,13 @@ const EditorComponent = (props: Props) => {
       <div class="relative">
         <div
           id="line-numbers"
-          class={`relative h-full bg-base-200 p-3 pt-0 text-content ${styles.lineNumbers}`}
+          class={`relative m-0 flex h-full w-[64px] min-w-[64px] max-w-[64px] select-none flex-col overflow-y-hidden bg-base-200 p-3 pt-0 text-right text-base text-content`}
         >
           {lines().map((line) => (
             <div class="flex">
-              <div class={`${styles.lineNumber}`}>{line}</div>
+              <div class={`w-full pl-[10px] text-right ${styles.lineNumber}`}>
+                {line}
+              </div>
             </div>
           ))}
         </div>
@@ -267,12 +269,12 @@ const EditorComponent = (props: Props) => {
           spellcheck={false}
           onfocus={updateSelectedLine}
           onblur={handleBlur}
-          class={`caret-content ${styles.textarea}`}
+          class={`text-transparent bg-transparent z-10 caret-content ${styles.textarea}`}
         ></textarea>
         <pre
           id="highlighting"
           aria-hidden="true"
-          class={`bg-base-300 text-content ${styles.highlighted}`}
+          class={`z-0 bg-base-300 text-content ${styles.highlighted}`}
         >
           {/* match-braces doesn't work */}
           <code

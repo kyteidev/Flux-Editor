@@ -1,7 +1,12 @@
 import { useNavigate } from "@solidjs/router";
 import icon from "../assets/narvik-logo.svg";
 import { LogicalSize, appWindow } from "@tauri-apps/api/window";
-import { IconClone, IconClose, IconNew, IconOpen } from "../utils/Icons";
+import {
+  IconClone,
+  IconClose,
+  IconNew,
+  IconOpen,
+} from "../components/Icons/Icons.tsx";
 import ButtonIcon from "../ui/ButtonIcon";
 import Modal from "../ui/Modal";
 import Button from "../ui/Button";
@@ -10,8 +15,8 @@ import Input from "../ui/Input";
 import ButtonBg from "../ui/ButtonBg";
 import { dialog } from "@tauri-apps/api";
 import { createSignal } from "solid-js";
-import { cloneRepo, getRepoPath } from "../utils/git/clone.ts";
-import { checkDirValidity } from "../utils/checkDir.ts";
+import { cloneRepo, getRepoPath } from "../utils/git.ts";
+import { checkDirValidity } from "../utils/dir.ts";
 
 const Welcome = () => {
   const navigate = useNavigate();

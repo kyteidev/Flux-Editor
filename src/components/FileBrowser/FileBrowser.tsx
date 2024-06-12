@@ -1,7 +1,7 @@
 import { readDir } from "@tauri-apps/api/fs";
 import path from "path-browserify";
 import { For, Show, createSignal, onMount } from "solid-js";
-import { IconExpand, IconUnexpand } from "../../utils/Icons";
+import { IconExpand, IconUnexpand } from "../Icons/Icons";
 
 interface Props {
   dir: string;

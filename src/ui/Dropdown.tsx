@@ -2,7 +2,7 @@ import { For, Show } from "solid-js";
 import { createSignal } from "solid-js";
 
 import styles from "./css/Dropdown.module.css";
-import { IconExpand, IconUnexpand } from "../utils/Icons";
+import { IconExpand, IconUnexpand } from "../components/Icons/Icons";
 
 interface Props {
   items: string[];

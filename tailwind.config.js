@@ -28,6 +28,8 @@ module.exports = {
       warning: "var(--warning)",
 
       error: "var(--error)",
+
+      transparent: "transparent",
     },
   },
   plugins: [],
