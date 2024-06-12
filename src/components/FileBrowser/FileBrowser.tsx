@@ -37,7 +37,11 @@ const FileBrowser = (props: Props) => {
     }
   };
 
-  const renderItem = (contents: string[], parentDir: string) => {
+  const renderItem = (
+    contents: string[],
+    parentDir: string,
+    firstRender: boolean,
+  ) => {
     return (
       <For each={contents}>
         {(dirName) => {
@@ -73,9 +77,17 @@ const FileBrowser = (props: Props) => {
               <div
                 class="flex cursor-pointer select-none items-center pl-6 text-content hover:bg-base-100 active:bg-base-100-hover"
                 onclick={() => {
-                  setOpen(!open());
+                  if (isFolder()) {
+                    setOpen(!open());
+                  }
                 }}
               >
+                <Show when={!firstRender}>
+                  <div class="absolute" style={{ "font-size": "2.05em" }}>
+                    |
+                  </div>
+                  <div class="w-[0.5em]" />
+                </Show>
                 <Show when={isFolder()}>
                   <Show when={open()} fallback={<IconExpand />}>
                     <IconUnexpand />
@@ -89,6 +101,7 @@ const FileBrowser = (props: Props) => {
                     {renderItem(
                       dirNestedContents(),
                       path.join(parentDir, dirName),
+                      false,
                     )}
                   </div>
                 </Show>
@@ -106,7 +119,7 @@ const FileBrowser = (props: Props) => {
         {props.workspaceName ?? "" + "/" + props.projectName ?? ""}
       </div>
       <div class="h-6" />
-      {renderItem(dirContents(), props.dir)}
+      {renderItem(dirContents(), props.dir, true)}
     </div>
   );
 };
