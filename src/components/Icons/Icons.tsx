@@ -1,3 +1,5 @@
+// SOURCE: Google Material Symbols (fonts.google.com/icons). SVG icons licensed under Apache 2.0.
+
 export const IconClose = () => {
   return (
     <svg
@@ -78,6 +80,52 @@ export const IconUnexpand = () => {
       fill="#e8eaed"
     >
       <path d="m296-345-56-56 240-240 240 240-56 56-184-184-184 184Z" />
+    </svg>
+  );
+};
+
+export const IconLineVertical = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="-5 0 24 24"
+    >
+      <g transform="matrix(0.0519999427 0 0 2.9519991025 12 12)">
+        <path
+          style="fill: var(--content); opacity: 1;"
+          transform=" translate(0, 0)"
+          d="M -4.05954 -4.05954 L 4.05954 -4.05954 L 4.05954 4.05954 L -4.05954 4.05954 z"
+          stroke-linecap="round"
+        />
+      </g>
+    </svg>
+  );
+};
+
+export const IconGit = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M16 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+      <path d="M12 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+      <path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+      <path d="M12 15v-6" />
+      <path d="M15 11l-2 -2" />
+      <path d="M11 7l-1.9 -1.9" />
+      <path d="M13.446 2.6l7.955 7.954a2.045 2.045 0 0 1 0 2.892l-7.955 7.955a2.045 2.045 0 0 1 -2.892 0l-7.955 -7.955a2.045 2.045 0 0 1 0 -2.892l7.955 -7.955a2.045 2.045 0 0 1 2.892 0z" />
     </svg>
   );
 };

@@ -278,7 +278,7 @@ const EditorComponent = (props: Props) => {
         >
           {/* match-braces doesn't work */}
           <code
-            class={`language-${props.lang} match-braces rainbow-braces`}
+            class={`language-${props.lang} match-braces rainbow-braces select-none`}
             id="highlighting-content"
           ></code>
         </pre>
