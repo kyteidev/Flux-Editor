@@ -16,11 +16,6 @@
   --error: #b91c1c;
 }
 
-@font-face {
-  font-family: "inter";
-  src: url("../../assets/fonts/Inter.ttf") format("truetype");
-}
-
 @keyframes fadein {
   0% {
     opacity: 0;
@@ -39,8 +34,10 @@
   }
 }
 
-* {
-  font-family: "inter", sans-serif;
+*,
+*::before,
+*::after {
+  font-family: system-ui, sans-serif;
   color: var(--content);
   user-select: none;
 }
@@ -51,6 +48,12 @@
 
 body {
   overflow: hidden;
+}
+
+input,
+textarea {
+  user-select: initial;
+  -webkit-user-select: initial;
 }
 
 dialog {

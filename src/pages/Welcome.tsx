@@ -30,6 +30,12 @@ const Welcome = () => {
 
   onMount(() => logger(false, "Welcome.tsx", "Mounted Welcome screen"));
 
+  const resetValues = () => {
+    setSelectedType("File");
+    setDirPath("");
+    setName("");
+  };
+
   const openDir = () => {
     dialog.open({ directory: true, multiple: false }).then((path) => {
       if (path) {
@@ -168,6 +174,7 @@ const Welcome = () => {
               width="80px"
               height="40px"
               action={() => {
+                resetValues();
                 const modal = document.getElementById(
                   "modal-new",
                 ) as HTMLDialogElement;
@@ -213,6 +220,7 @@ const Welcome = () => {
               width="80px"
               height="40px"
               action={() => {
+                resetValues();
                 const modal = document.getElementById(
                   "modal-clone",
                 ) as HTMLDialogElement;
@@ -241,6 +249,7 @@ const Welcome = () => {
               rounding={50}
               icon={IconNew}
               action={() => {
+                resetValues();
                 const modal = document.getElementById(
                   "modal-new",
                 ) as HTMLDialogElement;

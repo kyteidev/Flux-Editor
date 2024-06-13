@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
 
@@ -7,8 +8,8 @@ export default defineConfig(async () => ({
 
   build: {
     rollupOptions: {
-      external: []
-    }
+      external: [],
+    },
   },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
