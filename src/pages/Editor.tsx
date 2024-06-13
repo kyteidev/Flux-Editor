@@ -4,13 +4,17 @@ import SplitPane from "../components/SplitPane/SplitPane";
 import WindowControls from "../components/WindowControls/WindowControls";
 import { useSearchParams } from "@solidjs/router";
 import { createSignal, onMount } from "solid-js";
+import { logger } from "../logger";
 
 const Editor = () => {
   const [params] = useSearchParams();
 
   const [dir, setDir] = createSignal<string>("");
 
-  onMount(() => setDir(params.path ?? ""));
+  onMount(() => {
+    setDir(params.path ?? "");
+    logger(false, "Editor.tsx", "Editor mounted");
+  });
 
   return (
     <div class="flex h-screen max-h-screen w-screen flex-col">

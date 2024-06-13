@@ -26,6 +26,7 @@
         "writeFile": true,
         "readDir": true,
         "createDir": true,
+        "exists": true,
         "scope": { "allow": ["$HOME/**"] }
       },
       "os": {

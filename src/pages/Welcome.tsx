@@ -14,9 +14,10 @@ import Dropdown from "../ui/Dropdown";
 import Input from "../ui/Input";
 import ButtonBg from "../ui/ButtonBg";
 import { dialog } from "@tauri-apps/api";
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { cloneRepo, getRepoPath } from "../utils/git.ts";
 import { checkDirValidity } from "../utils/dir.ts";
+import { logger } from "../logger.ts";
 
 const Welcome = () => {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ const Welcome = () => {
   const [name, setName] = createSignal<string>("");
 
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
+
+  onMount(() => logger(false, "Welcome.tsx", "Mounted Welcome screen"));
 
   const openDir = () => {
     dialog.open({ directory: true, multiple: false }).then((path) => {
@@ -48,12 +51,14 @@ const Welcome = () => {
           type: "error",
         });
         console.error(`Error cloning repository: ${error}`);
+        logger(true, "Welcome.tsx", error as string);
       }
     } else {
       dialog.message("Please enter a valid URL.", {
         title: "Failed to clone repository",
         type: "error",
       });
+      logger(true, "Welcome.tsx", "Invalid clone URL");
     }
   };
 
@@ -61,18 +66,23 @@ const Welcome = () => {
     const editorPath = "/editor";
     if (action === "new") {
       if (name() === "") {
-        console.log(selectedType());
         dialog.message(
           "Please enter a valid " +
             selectedType().toLocaleLowerCase() +
             " name.",
           { title: "Error", type: "error" },
         );
+        logger(
+          true,
+          "Welcome.tsx",
+          "Invalid " + selectedType().toLocaleLowerCase() + " name",
+        );
       } else if (dirPath() === "" || checkDirValidity(dirPath()) === false) {
         dialog.message("Please select a valid directory.", {
           title: "Error",
           type: "error",
         });
+        logger(true, "Welcome.tsx", "Invalid directory");
       } else {
         appWindow.setSize(new LogicalSize(1280, 800));
         navigate(editorPath + "?path=" + dirPath() + "&name=" + name());

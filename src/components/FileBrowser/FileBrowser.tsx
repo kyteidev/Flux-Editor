@@ -2,6 +2,7 @@ import { readDir } from "@tauri-apps/api/fs";
 import path from "path-browserify";
 import { For, Show, createSignal, onMount } from "solid-js";
 import { IconExpand, IconUnexpand } from "../Icons/Icons";
+import { logger } from "../../logger";
 
 interface Props {
   dir: string;
@@ -32,6 +33,7 @@ const FileBrowser = (props: Props) => {
     } catch (error) {
       if (!(error as string).includes("Not a directory")) {
         console.error(`Error fetching directory contents: ${error}`);
+        logger(true, "FileBrowser.tsx", error as string);
       }
       return [error as string];
     }
@@ -67,8 +69,9 @@ const FileBrowser = (props: Props) => {
               })
               .catch((error: string) => {
                 setIsFolder(false);
-                console.error(`Error fetching directory contents: ${error}`);
                 setDirNestedContents([]);
+                console.error(`Error fetching directory contents: ${error}`);
+                logger(true, "FileBrowser.tsx", error as string);
               });
           }
 
