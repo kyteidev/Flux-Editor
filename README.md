@@ -16,13 +16,13 @@ A minimalist, fast, lightweight, and open-source code editor for multiple langua
 ![issues](https://img.shields.io/github/issues/kyteidev/narvik)
 ![downloads](https://img.shields.io/github/downloads/kyteidev/narvik/total)
 
-
-# Table of Contents 
+# Table of Contents
 
 - [Features](#features)
 - [Why choose Narvik?](#why-choose)
 - [Getting Started](#getting-started)
-    - [Cloning the repo](#cloning)
+  - [Cloning the repo](#cloning)
+- [Known Issues](#known-issues)
 - [Contributors](#contributors)
 - [Contributing](#contributing)
 - [License](#license)
@@ -30,6 +30,7 @@ A minimalist, fast, lightweight, and open-source code editor for multiple langua
 ## Features <a name="features"></a>
 
 Narvik boasts a ton of features, some of which are unique. Below are some of the key features of Narvik:
+
 - Multi-language support
 - Incredibly lightweight
 - Cross-platform
@@ -49,9 +50,13 @@ Narvik is also incredibly lightweight, as it was designed with simplicity and pe
 
 ### Cloning the repo <a name="cloning"></a>
 
-To clone this repository, use the following git command in your dev environment: 
+To clone this repository, use the following git command in your dev environment:
 
-``` git clone https://github.com/kyteidev/narvik.git ```
+`git clone https://github.com/kyteidev/narvik.git`
+
+## Known Issues <a name="known-issues"></a>
+
+- Caret height is not corrent on the first line (probably webview issue)
 
 ## Contributors <a name="contributors"></a>
 
