@@ -1,6 +1,6 @@
 // SOURCE: Tabler Icons (tabler.io/icons) unless otherwise stated. SVG icons licensed under MIT.
 
-export const FileDefault = () => {
+export const Default = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@ export const FileDefault = () => {
   );
 };
 
-export const FileMarkdown = () => {
+export const Markdown = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ export const FileMarkdown = () => {
   );
 };
 
-export const FileZip = () => {
+export const Zip = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +71,7 @@ export const FileZip = () => {
 };
 
 // SOURCE: Google Material Symbols (fonts.google.com/icons). SVG icon licensed under Apache 2.0.
-export const FileImage = () => {
+export const Image = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@ export const FileImage = () => {
   );
 };
 
-export const FileSVG = () => {
+export const SVG = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +110,7 @@ export const FileSVG = () => {
   );
 };
 
-export const FileVideo = () => {
+export const Video = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +131,7 @@ export const FileVideo = () => {
   );
 };
 
-export const FileTypescript = () => {
+export const Typescript = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +154,7 @@ export const FileTypescript = () => {
   );
 };
 
-export const FileJavascript = () => {
+export const Javascript = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@ export const FileJavascript = () => {
   );
 };
 
-export const FileRust = () => {
+export const Rust = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -200,7 +200,7 @@ export const FileRust = () => {
   );
 };
 
-export const FilePython = () => {
+export const Python = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +224,7 @@ export const FilePython = () => {
   );
 };
 
-export const FileHTML = () => {
+export const HTML = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -245,7 +245,7 @@ export const FileHTML = () => {
   );
 };
 
-export const FileCSS = () => {
+export const CSS = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +266,7 @@ export const FileCSS = () => {
   );
 };
 
-export const FileCSharp = () => {
+export const CSharp = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -290,7 +290,7 @@ export const FileCSharp = () => {
   );
 };
 
-export const FileKotlin = () => {
+export const Kotlin = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +313,7 @@ export const FileKotlin = () => {
   );
 };
 
-export const FileCPlusPlus = () => {
+export const CPlusPlus = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -337,7 +337,7 @@ export const FileCPlusPlus = () => {
   );
 };
 
-export const FileConfig = () => {
+export const Config = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -361,7 +361,7 @@ export const FileConfig = () => {
   );
 };
 
-export const FileSvelte = () => {
+export const Svelte = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -382,7 +382,7 @@ export const FileSvelte = () => {
   );
 };
 
-export const FileVue = () => {
+export const Vue = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -403,7 +403,7 @@ export const FileVue = () => {
   );
 };
 
-export const FileC = () => {
+export const C = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -423,7 +423,7 @@ export const FileC = () => {
   );
 };
 
-export const FileJava = () => {
+export const Java = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -447,7 +447,7 @@ export const FileJava = () => {
   );
 };
 
-export const FileGolang = () => {
+export const Golang = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -471,7 +471,7 @@ export const FileGolang = () => {
   );
 };
 
-export const FilePHP = () => {
+export const PHP = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -495,7 +495,7 @@ export const FilePHP = () => {
   );
 };
 
-export const FileSwift = () => {
+export const Swift = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -515,7 +515,7 @@ export const FileSwift = () => {
   );
 };
 
-export const FileReact = () => {
+export const React = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -541,7 +541,7 @@ export const FileReact = () => {
   );
 };
 
-export const FileBrainfuck = () => {
+export const Brainfuck = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -565,7 +565,7 @@ export const FileBrainfuck = () => {
   );
 };
 
-export const FileTerminal = () => {
+export const Terminal = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -586,7 +586,7 @@ export const FileTerminal = () => {
   );
 };
 
-export const FileFont = () => {
+export const Font = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -609,7 +609,7 @@ export const FileFont = () => {
   );
 };
 
-export const FileCPPHeader = () => {
+export const CPPHeader = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -627,6 +627,201 @@ export const FileCPPHeader = () => {
       <path d="M10 16v-8" />
       <path d="M14 8v8" />
       <path d="M10 12h4" />
+    </svg>
+  );
+};
+
+export const Tailwind = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M11.667 6c-2.49 0 -4.044 1.222 -4.667 3.667c.933 -1.223 2.023 -1.68 3.267 -1.375c.71 .174 1.217 .68 1.778 1.24c.916 .912 2 1.968 4.288 1.968c2.49 0 4.044 -1.222 4.667 -3.667c-.933 1.223 -2.023 1.68 -3.267 1.375c-.71 -.174 -1.217 -.68 -1.778 -1.24c-.916 -.912 -1.975 -1.968 -4.288 -1.968zm-4 6.5c-2.49 0 -4.044 1.222 -4.667 3.667c.933 -1.223 2.023 -1.68 3.267 -1.375c.71 .174 1.217 .68 1.778 1.24c.916 .912 1.975 1.968 4.288 1.968c2.49 0 4.044 -1.222 4.667 -3.667c-.933 1.223 -2.023 1.68 -3.267 1.375c-.71 -.174 -1.217 -.68 -1.778 -1.24c-.916 -.912 -1.975 -1.968 -4.288 -1.968z" />
+    </svg>
+  );
+};
+
+export const Vite = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 4.5l6 -1.5l-2 6.5l2 -.5l-4 7v-5l-3 1z" />
+      <path d="M15 6.5l7 -1.5l-10 17l-10 -17l7.741 1.5" />
+    </svg>
+  );
+};
+
+export const Readme = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+      <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+      <path d="M11 14h1v4h1" />
+      <path d="M12 11h.01" />
+    </svg>
+  );
+};
+
+export const License = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+      <path d="M14 9.75a3.016 3.016 0 0 0 -4.163 .173a2.993 2.993 0 0 0 0 4.154a3.016 3.016 0 0 0 4.163 .173" />
+    </svg>
+  );
+};
+
+export const NodeJS = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 9v8.044a2 2 0 0 1 -2.996 1.734l-1.568 -.9a3 3 0 0 1 -1.436 -2.561v-6.635a3 3 0 0 1 1.436 -2.56l6 -3.667a3 3 0 0 1 3.128 0l6 3.667a3 3 0 0 1 1.436 2.561v6.634a3 3 0 0 1 -1.436 2.56l-6 3.667a3 3 0 0 1 -3.128 0" />
+      <path d="M17 9h-3.5a1.5 1.5 0 0 0 0 3h2a1.5 1.5 0 0 1 0 3h-3.5" />
+    </svg>
+  );
+};
+
+export const Icon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M2 5m0 3a3 3 0 0 1 3 -3h14a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-14a3 3 0 0 1 -3 -3z" />
+      <path d="M6 10v4" />
+      <path d="M11 10a2 2 0 1 0 0 4" />
+      <path d="M16 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+    </svg>
+  );
+};
+
+export const NextJS = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 15v-6l7.745 10.65a9 9 0 1 1 2.255 -1.993" />
+      <path d="M15 12v-3" />
+    </svg>
+  );
+};
+
+export const SASS = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+      <path d="M12 10.523c2.46 -.826 4 -.826 4 -2.155c0 -1.366 -1.347 -1.366 -2.735 -1.366c-1.91 0 -3.352 .49 -4.537 1.748c-.848 .902 -1.027 2.449 -.153 3.307c.973 .956 3.206 1.789 2.884 3.493c-.233 1.235 -1.469 1.823 -2.617 1.202c-.782 -.424 -.454 -1.746 .626 -2.512s2.822 -.992 4.1 -.24c.98 .575 1.046 1.724 .434 2.193" />
+    </svg>
+  );
+};
+
+export const Text = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+      <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+      <path d="M9 9l1 0" />
+      <path d="M9 13l6 0" />
+      <path d="M9 17l6 0" />
     </svg>
   );
 };

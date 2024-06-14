@@ -8,36 +8,7 @@ import {
   IconUnexpand,
 } from "../Icons/Icons";
 import { logger } from "../../logger";
-import {
-  FileBrainfuck,
-  FileC,
-  FileCPPHeader,
-  FileCPlusPlus,
-  FileCSS,
-  FileCSharp,
-  FileConfig,
-  FileDefault,
-  FileFont,
-  FileGolang,
-  FileHTML,
-  FileImage,
-  FileJava,
-  FileJavascript,
-  FileKotlin,
-  FileMarkdown,
-  FilePHP,
-  FilePython,
-  FileReact,
-  FileRust,
-  FileSVG,
-  FileSvelte,
-  FileSwift,
-  FileTerminal,
-  FileTypescript,
-  FileVideo,
-  FileVue,
-  FileZip,
-} from "../Icons/FileIcons";
+import * as FI from "../Icons/FileIcons";
 
 interface Props {
   dir: string;
@@ -45,63 +16,85 @@ interface Props {
   projectName?: string;
 }
 
+const specialFileIcons: { [key: string]: () => JSX.Element } = {
+  "tailwind.config.js": FI.Tailwind,
+  "vite.config.js": FI.Vite,
+  "vite.config.ts": FI.Vite,
+  readme: FI.Readme,
+  "readme.md": FI.Readme,
+  license: FI.License,
+  "license.md": FI.License,
+  "package.json": FI.NodeJS,
+  "package-lock.json": FI.NodeJS,
+  "next.config.js": FI.NextJS,
+  "next.config.ts": FI.NextJS,
+};
+
 const fileIcons: { [key: string]: () => JSX.Element } = {
   // TODO: Add more efficient icon lookup and icons
 
   // code langs
-  ".md": FileMarkdown,
-  ".ts": FileTypescript,
-  ".js": FileJavascript,
-  ".rs": FileRust,
-  ".py": FilePython,
-  ".html": FileHTML,
-  ".css": FileCSS,
-  ".scss": FileCSS,
-  ".sass": FileCSS,
-  ".cs": FileCSharp,
-  ".kt": FileKotlin,
-  ".cpp": FileCPlusPlus,
-  ".svelte": FileSvelte,
-  ".php": FilePHP,
-  ".go": FileGolang,
-  ".swift": FileSwift,
-  ".java": FileJava,
-  ".sh": FileTerminal,
-  ".bat": FileTerminal,
-  ".c": FileC,
-  ".vue": FileVue,
-  ".h": FileCPPHeader,
-  ".tsx": FileReact,
-  ".jsx": FileReact,
-  ".bf": FileBrainfuck,
+  ".md": FI.Markdown,
+  ".ts": FI.Typescript,
+  ".js": FI.Javascript,
+  ".rs": FI.Rust,
+  ".py": FI.Python,
+  ".html": FI.HTML,
+  ".css": FI.CSS,
+  ".scss": FI.SASS,
+  ".sass": FI.SASS,
+  ".cs": FI.CSharp,
+  ".kt": FI.Kotlin,
+  ".cpp": FI.CPlusPlus,
+  ".svelte": FI.Svelte,
+  ".php": FI.PHP,
+  ".go": FI.Golang,
+  ".swift": FI.Swift,
+  ".java": FI.Java,
+  ".sh": FI.Terminal,
+  ".bat": FI.Terminal,
+  ".c": FI.C,
+  ".vue": FI.Vue,
+  ".h": FI.CPPHeader,
+  ".tsx": FI.React,
+  ".jsx": FI.React,
+  ".bf": FI.Brainfuck,
 
   // config files
-  ".json": FileConfig,
-  ".yaml": FileConfig,
-  ".toml": FileConfig,
+  ".json": FI.Config,
+  ".yaml": FI.Config,
+  ".toml": FI.Config,
 
   // images
-  ".png": FileImage,
-  ".jpg": FileImage,
-  ".heic": FileImage,
-  ".gif": FileImage,
-  ".webp": FileImage,
-  ".svg": FileSVG,
+  ".png": FI.Image,
+  ".jpg": FI.Image,
+  ".jpeg": FI.Image,
+  ".heic": FI.Image,
+  ".gif": FI.Image,
+  ".webp": FI.Image,
+  ".svg": FI.SVG,
 
   // videos
-  ".mov": FileVideo,
-  ".mp4": FileVideo,
-  ".avi": FileVideo,
-  ".webm": FileVideo,
-  ".flv": FileVideo,
+  ".mov": FI.Video,
+  ".mp4": FI.Video,
+  ".avi": FI.Video,
+  ".webm": FI.Video,
+  ".flv": FI.Video,
+  ".mkv": FI.Video,
 
   // other assets
-  ".zip": FileZip,
+  ".zip": FI.Zip,
+  ".rar": FI.Zip,
   ".gitignore": IconGit,
-  ".ttf": FileFont,
-  ".otf": FileFont,
-  ".woff": FileFont,
-  ".woff2": FileFont,
+  ".ttf": FI.Font,
+  ".otf": FI.Font,
+  ".woff": FI.Font,
+  ".woff2": FI.Font,
+  ".icns": FI.Icon,
+  ".ico": FI.Icon,
+  ".txt": FI.Text,
+  ".rtf": FI.Text,
+  ".pdf": FI.Text,
 };
 
 const FileBrowser = (props: Props) => {
@@ -148,34 +141,36 @@ const FileBrowser = (props: Props) => {
             string[]
           >([]);
 
+          // TODO: This is rerun every time a folder is opened, so optimize this!
           if (dirName[0] != ".") {
             getDirContents(path.join(parentDir, dirName))
               .then((contents) => {
                 setDirNestedContents(contents);
-                if (dirNestedContents()[0] !== undefined) {
-                  if (dirNestedContents()[0].includes("Not a directory")) {
-                    setIsFolder(false); // if name includes "Not a directory", it's not a folder
-                  } else {
-                    setIsFolder(true);
-                  }
+                if (
+                  dirNestedContents()[0] !== undefined &&
+                  dirNestedContents()[0].includes("Not a directory")
+                ) {
+                  setIsFolder(false); // if name includes "Not a directory", it's not a folder
                 } else {
                   setIsFolder(true);
                 }
               })
               .catch((error: string) => {
-                setIsFolder(false);
                 setDirNestedContents([]);
                 console.error(`Error fetching directory contents: ${error}`);
                 logger(true, "FileBrowser.tsx", error as string);
               });
           }
 
-          // checks file extension
-          // TODO: add support for special files, e.g., vite config or tailwind config
-          const fileExtension = isFolder() ? "" : path.extname(dirName);
-          const FileIconComponent = fileIcons[fileExtension.toLowerCase()] || (
-            <FileDefault />
-          );
+          // if file name matches special file name, set special icon. Otherwise check file extension
+          let FileIconComponent =
+            specialFileIcons[dirName.toLowerCase()] || undefined;
+          if (FileIconComponent === undefined) {
+            // checks file extension
+            const fileExtension = isFolder() ? "" : path.extname(dirName);
+            FileIconComponent =
+              fileIcons[fileExtension.toLowerCase()] || FI.Default;
+          }
 
           return (
             <div class="relative block">
@@ -194,16 +189,18 @@ const FileBrowser = (props: Props) => {
                   }}
                 >
                   <Show when={!firstRender} fallback={<div class="w-4" />}>
-                    <div class="absolute">
+                    <div class="absolute opacity-80">
                       <IconLineVertical />
                     </div>
                     <div class="w-4" />
                   </Show>
-                  <Show when={isFolder()} fallback={<FileIconComponent />}>
-                    <Show when={open()} fallback={<IconExpand />}>
-                      <IconUnexpand />
+                  <div class="opacity-80">
+                    <Show when={isFolder()} fallback={<FileIconComponent />}>
+                      <Show when={open()} fallback={<IconExpand />}>
+                        <IconUnexpand />
+                      </Show>
                     </Show>
-                  </Show>
+                  </div>
                   {dirName}
                 </div>
               </div>
