@@ -1,3 +1,15 @@
+/*
+Copyright © 2024 Narvik Contributors.
+
+This file is part of Narvik Editor.
+
+Narvik Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+*/
+
 import { createSignal, createEffect, For, Show } from "solid-js";
 import styles from "./Search.module.css";
 
@@ -40,7 +52,7 @@ function SearchBar() {
     Object.keys(currentSuggestions).forEach((category) => {
       const filteredCategorySuggestions = currentSuggestions[category].filter(
         (suggestion) =>
-          suggestion.name.toLowerCase().includes(query().toLowerCase())
+          suggestion.name.toLowerCase().includes(query().toLowerCase()),
       );
       if (filteredCategorySuggestions.length > 0) {
         newFilteredSuggestions[category] = filteredCategorySuggestions;
@@ -59,7 +71,7 @@ function SearchBar() {
     <div class="relative">
       {/* Search Input */}
       <input
-        class={`bg-primary hover:bg-primary-hover text-content w-full h-[26px] p-[10px] outline-none`}
+        class={`h-[26px] w-full bg-primary p-[10px] text-content outline-none hover:bg-primary-hover`}
         type="text"
         value={query()}
         onInput={handleInputChange}
@@ -86,7 +98,7 @@ function SearchBar() {
         {/* Displays loading while loading results */}
         {query() && isLoading() && (
           <div
-            class={`bg-primary text-content absolute top-full left-0 w-full border-t-0`}
+            class={`absolute left-0 top-full w-full border-t-0 bg-primary text-content`}
             style={{
               "border-bottom-left-radius": "0.75rem",
               "border-bottom-right-radius": "0.75rem",
@@ -94,7 +106,7 @@ function SearchBar() {
             }}
           >
             <ul class={styles.suggestionsList}>
-              <li class="p-[5px] flex items-center cursor-default">
+              <li class="flex cursor-default items-center p-[5px]">
                 Loading...
               </li>
             </ul>
@@ -103,7 +115,7 @@ function SearchBar() {
         {/* Displays results if query is not empty and there are results */}
         {query() && Object.keys(filteredSuggestions()).length > 0 && (
           <div
-            class={`bg-primary text-content absolute top-full left-0 w-full border-t-0`}
+            class={`absolute left-0 top-full w-full border-t-0 bg-primary text-content`}
             style={{
               "border-bottom-left-radius": "0.75rem",
               "border-bottom-right-radius": "0.75rem",
@@ -120,7 +132,7 @@ function SearchBar() {
                     <For each={filteredSuggestions()[category]}>
                       {(suggestion) => (
                         <li
-                          class={`hover:bg-primary-hover pl-5 pb-1 h-[26px] flex items-center cursor-pointer`}
+                          class={`flex h-[26px] cursor-pointer items-center pb-1 pl-5 hover:bg-primary-hover`}
                         >
                           {suggestion.name}
                         </li>
@@ -137,7 +149,7 @@ function SearchBar() {
           Object.keys(filteredSuggestions()).length === 0 &&
           query() && (
             <div
-              class={`bg-primary text-content absolute top-full left-0 w-full border-t-0`}
+              class={`absolute left-0 top-full w-full border-t-0 bg-primary text-content`}
               style={{
                 "border-bottom-left-radius": "0.75rem",
                 "border-bottom-right-radius": "0.75rem",
@@ -145,7 +157,7 @@ function SearchBar() {
               }}
             >
               <ul class={styles.suggestionsList}>
-                <li class="p-[5px] flex items-center cursor-default">
+                <li class="flex cursor-default items-center p-[5px]">
                   No results found
                 </li>
               </ul>

@@ -1,4 +1,4 @@
-// SOURCE: Tabler Icons (tabler.io/icons) unless otherwise stated. SVG icons licensed under MIT.
+// All icons sourced from Tabler Icons (tabler.io/icons) unless otherwise stated. SVG icons licensed under MIT.
 
 export const Default = () => {
   return (
@@ -70,7 +70,7 @@ export const Zip = () => {
   );
 };
 
-// SOURCE: Google Material Symbols (fonts.google.com/icons). SVG icon licensed under Apache 2.0.
+// Image icon sourced from Google Material Symbols (fonts.google.com/icons). SVG icon licensed under Apache 2.0.
 export const Image = () => {
   return (
     <svg

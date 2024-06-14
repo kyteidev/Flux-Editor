@@ -1,3 +1,15 @@
+/*
+Copyright © 2024 Narvik Contributors.
+
+This file is part of Narvik Editor.
+
+Narvik Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+*/
+
 import { appWindow } from "@tauri-apps/api/window";
 import { createSignal, createEffect } from "solid-js";
 
@@ -27,12 +39,10 @@ function GnomeControls() {
   });
 
   return (
-    <div
-      class="flex absolute top-2 right-2 ml-0 space-x-[13px]"
-    >
+    <div class="absolute right-2 top-2 ml-0 flex space-x-[13px]">
       <div class="flex flex-row">
         <button
-          class="cursor-default w-6 h-6 bg-base-100 rounded-full hover:bg-[#424242] active:bg-[#565656] invert"
+          class="h-6 w-6 cursor-default rounded-full bg-base-100 invert hover:bg-[#424242] active:bg-[#565656]"
           onClick={minimizeWindow}
         >
           <div class="flex justify-center">
@@ -52,9 +62,9 @@ function GnomeControls() {
           </div>
         </button>
       </div>
-      <div class="flex flex-row relative">
+      <div class="relative flex flex-row">
         <button
-          class="cursor-default w-6 h-6 bg-base-100 rounded-full hover:bg-[#424242] active:bg-[#565656] invert"
+          class="h-6 w-6 cursor-default rounded-full bg-base-100 invert hover:bg-[#424242] active:bg-[#565656]"
           onClick={maximizeWindow}
         >
           {isMaximized() ? (
@@ -92,9 +102,9 @@ function GnomeControls() {
           )}
         </button>
       </div>
-      <div class="flex flex-row relative">
+      <div class="relative flex flex-row">
         <button
-          class="cursor-default w-6 h-6 bg-base-100 rounded-full hover:bg-[#424242] active:bg-[#565656] invert"
+          class="h-6 w-6 cursor-default rounded-full bg-base-100 invert hover:bg-[#424242] active:bg-[#565656]"
           onClick={closeWindow}
         >
           <div class="flex justify-center">

@@ -1,3 +1,15 @@
+/*
+Copyright © 2024 Narvik Contributors.
+
+This file is part of Narvik Editor.
+
+Narvik Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+*/
+
 import { appWindow } from "@tauri-apps/api/window";
 import { createSignal, createEffect } from "solid-js";
 
@@ -27,12 +39,10 @@ function WinControls() {
   });
 
   return (
-    <div
-      class="flex absolute top-0 right-0 ml-0"
-    >
+    <div class="absolute right-0 top-0 ml-0 flex">
       <div class="flex flex-row">
         <button
-          class="cursor-default w-10 h-10 bg-transparent hover:bg-black/[.05] active:bg-white/[.04]"
+          class="bg-transparent hover:bg-black/[.05] active:bg-white/[.04] h-10 w-10 cursor-default"
           onClick={minimizeWindow}
         >
           <div class="flex justify-center">
@@ -52,9 +62,9 @@ function WinControls() {
           </div>
         </button>
       </div>
-      <div class="flex flex-row relative">
+      <div class="relative flex flex-row">
         <button
-          class="cursor-default h-10 w-10 bg-transparent hover:bg-black/[.05] active:bg-white/[.04]"
+          class="bg-transparent hover:bg-black/[.05] active:bg-white/[.04] h-10 w-10 cursor-default"
           onClick={maximizeWindow}
         >
           {isMaximized() ? (
@@ -92,9 +102,9 @@ function WinControls() {
           )}
         </button>
       </div>
-      <div class="flex flex-row relative">
+      <div class="relative flex flex-row">
         <button
-          class="cursor-default w-10 h-10 bg-transparent hover:bg-[#c42b1c]"
+          class="bg-transparent h-10 w-10 cursor-default hover:bg-[#c42b1c]"
           onClick={closeWindow}
         >
           <div class="flex justify-center">
