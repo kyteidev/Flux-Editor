@@ -24,20 +24,17 @@ export const initLogger = () => {
 export const logger = async (error: boolean, file: string, message: string) => {
   const appLogDirPath = await appLogDir();
 
-  const logPath = path.join(appLogDirPath, `${logFileName}.log`);
+  const logPath = path.join(appLogDirPath, `${logFileName}`);
 
   const timeInfo = `[${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}.${currentTime.getMilliseconds()}]`;
 
-  if (await fs.exists(appLogDirPath)) {
-    await fs.writeFile(
-      logPath,
-      `${timeInfo} [${error ? "ERROR" : "LOG"}] - ${file} - ${message}\n`,
-    );
-  } else {
+  if (!(await fs.exists(appLogDirPath))) {
     await fs.createDir(appLogDirPath);
-    await fs.writeFile(
-      logPath,
-      `${timeInfo} [${error ? "ERROR" : "LOG"}] - ${file} - ${message}\n`,
-    );
   }
+
+  await fs.writeFile(
+    logPath,
+    `${timeInfo} [${error ? "ERROR" : "LOG"}] - ${file} - ${message}\n`,
+    { append: true },
+  );
 };

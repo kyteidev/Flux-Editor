@@ -116,16 +116,7 @@ const EditorComponent = (props: Props) => {
     updateSelectedLine();
   };
 
-  const handleInput = () => {
-    updateContent();
-
-    updateLineNumbers();
-
-    updateSelectedLine();
-
-    handleScroll();
-  };
-
+  const handleInput = () => updateContent();
   const handleBlur = () => {
     setSelectedLine(-1);
 
@@ -146,8 +137,8 @@ const EditorComponent = (props: Props) => {
   };
 
   // handle custom functions on specific key presses
-  const handleKeyDown = (event: KeyboardEvent) => {
-    const textarea = event.target as HTMLTextAreaElement;
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const textarea = e.target as HTMLTextAreaElement;
     const selectionStart = textarea.selectionStart;
     const selectionEnd = textarea.selectionEnd;
     const value = textarea.value;
@@ -155,8 +146,8 @@ const EditorComponent = (props: Props) => {
     const openingBrackets = ["(", "[", "{"];
     const charsWithClosingChars = [...openingBrackets, '"', "'"];
 
-    if (event.key === "Tab") {
-      event.preventDefault();
+    if (e.key === "Tab") {
+      e.preventDefault();
 
       const updatedValue =
         value.substring(0, selectionStart) +
@@ -169,33 +160,33 @@ const EditorComponent = (props: Props) => {
 
       updateContent();
     } else if (
-      event.key === "ArrowUp" ||
-      event.key === "ArrowDown" ||
-      event.key === "ArrowLeft" ||
-      event.key === "ArrowRight"
+      e.key === "ArrowUp" ||
+      e.key === "ArrowDown" ||
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight"
     ) {
-      let newStart = selectionStart;
+      let newStart = selectionStart; // ignore if showing "declared not never used", its being used below
 
-      if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
         const prevLineStart = value.indexOf("\n", selectionEnd);
         newStart = prevLineStart === -1 ? value.length - 1 : prevLineStart - 1;
-      } else if (event.key === "ArrowDown") {
+      } else if (e.key === "ArrowDown") {
         const nextLineStart = value.indexOf("\n", selectionEnd);
         newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
-      } else if (event.key === "ArrowRight" && value[selectionEnd] === "\n") {
+      } else if (e.key === "ArrowRight" && value[selectionEnd] === "\n") {
         const nextLineStart = value.indexOf("\n", selectionEnd);
         newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
       }
 
-      const newSelectedLine = value.substring(0, newStart).split("\n").length;
-      setSelectedLine(newSelectedLine);
-    } else if (event.key === "Enter") {
+      updateLineNumbers();
+      updateSelectedLine();
+    } else if (e.key === "Enter") {
       if (
         openingBrackets.includes(
           textarea.value.charAt(textarea.selectionStart - 1),
         )
       ) {
-        event.preventDefault();
+        e.preventDefault();
 
         const updatedValue =
           value.substring(0, selectionStart) +
@@ -208,18 +199,21 @@ const EditorComponent = (props: Props) => {
 
         updateContent();
       }
-    } else if (charsWithClosingChars.includes(event.key)) {
-      event.preventDefault();
+
+      updateLineNumbers();
+      updateSelectedLine();
+    } else if (charsWithClosingChars.includes(e.key)) {
+      e.preventDefault();
       const newValue =
         value.substring(0, selectionStart) +
-        event.key +
-        getClosingChar(event.key) +
+        e.key +
+        getClosingChar(e.key) +
         value.substring(selectionEnd);
 
       textarea.value = newValue;
       textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
       updateContent();
-    } else if (event.key === "Backspace") {
+    } else if (e.key === "Backspace") {
       if (
         charsWithClosingChars.includes(
           textarea.value.charAt(selectionStart - 1),
@@ -227,7 +221,7 @@ const EditorComponent = (props: Props) => {
         textarea.value.charAt(selectionStart) ===
           getClosingChar(textarea.value.charAt(selectionStart - 1))
       ) {
-        event.preventDefault();
+        e.preventDefault();
 
         const updatedValue =
           textarea.value.substring(0, selectionStart - 1) +
@@ -240,6 +234,8 @@ const EditorComponent = (props: Props) => {
         updateContent();
       }
     }
+
+    handleScroll();
   };
 
   return (

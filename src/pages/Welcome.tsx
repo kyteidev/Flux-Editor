@@ -48,11 +48,13 @@ const Welcome = () => {
     setName("");
   };
 
-  const openDir = () => {
+  const openDir = async () => {
     dialog.open({ directory: true, multiple: false }).then((path) => {
       if (path) {
         setDirPath(path.toString() + "/");
       }
+
+      openEditor("open");
     });
   };
 
@@ -103,7 +105,15 @@ const Welcome = () => {
         logger(true, "Welcome.tsx", "Invalid directory");
       } else {
         appWindow.setSize(new LogicalSize(1280, 800));
-        navigate(editorPath + "?path=" + dirPath() + "&name=" + name());
+        navigate(
+          editorPath +
+            "?path=" +
+            dirPath() +
+            "&type=" +
+            selectedType() +
+            "&name=" +
+            name(),
+        );
       }
     } else if (action === "open") {
       if (dirPath() != "") {
@@ -280,7 +290,6 @@ const Welcome = () => {
               icon={IconOpen}
               action={() => {
                 openDir();
-                openEditor("open");
               }}
             />
             <p class="relative top-2 text-center text-content">Open...</p>

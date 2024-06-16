@@ -56,9 +56,11 @@ function SplitPane(props: Props) {
     // FIXME: Hidden children becomes visible when resizing window to reveal them.
 
     if (props.vertical) {
+      const cursorOffsetY: number = Math.abs(e.clientY - firstHeight());
+
       if (props.firstMinSize && newHeight <= props.firstMinSize) {
         setFirstHeight(props.firstMinSize);
-        if (Math.abs(e.clientY - firstHeight()) >= 80 && props.canFirstHide) {
+        if (cursorOffsetY >= 80 && props.canFirstHide) {
           setFirstHeight(0);
         }
       } else if (
@@ -66,16 +68,18 @@ function SplitPane(props: Props) {
         newHeight >= windowHeight - props.secondMinSize
       ) {
         setFirstHeight(windowHeight - props.secondMinSize);
-        if (Math.abs(e.clientY - firstHeight()) >= 80 && props.canSecondHide) {
+        if (cursorOffsetY >= 80 && props.canSecondHide) {
           setFirstHeight(windowHeight - 3);
         }
       } else {
         setFirstHeight(newHeight);
       }
     } else {
+      const cursorOffsetX: number = Math.abs(e.clientX - firstWidth());
+
       if (props.firstMinSize && newWidth <= props.firstMinSize) {
         setFirstWidth(props.firstMinSize);
-        if (Math.abs(e.clientX - firstWidth()) >= 80 && props.canFirstHide) {
+        if (cursorOffsetX >= 80 && props.canFirstHide) {
           setFirstWidth(0);
         }
       } else if (
@@ -83,7 +87,7 @@ function SplitPane(props: Props) {
         newWidth >= windowWidth - props.secondMinSize
       ) {
         setFirstWidth(windowWidth - props.secondMinSize);
-        if (Math.abs(e.clientX - firstWidth()) >= 80 && props.canSecondHide) {
+        if (cursorOffsetX >= 80 && props.canSecondHide) {
           setFirstWidth(windowWidth - 3);
         }
       } else {
