@@ -10,13 +10,14 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
 */
 
-import EditorComponent from "../components/Editor/EditorComponent";
 import FileBrowser from "../components/FileBrowser/FileBrowser";
 import SplitPane from "../components/SplitPane/SplitPane";
 import WindowControls from "../components/WindowControls/WindowControls";
 import { useSearchParams } from "@solidjs/router";
 import { createSignal, onMount } from "solid-js";
 import { logger } from "../logger";
+import EditorComponent from "../components/Editor/EditorComponent";
+import EditorTabs from "../components/Editor/components/EditorTabs";
 
 const Editor = () => {
   const [params] = useSearchParams();
@@ -59,6 +60,9 @@ const Editor = () => {
           <SplitPane vertical={true} grow={true} size={500}>
             <EditorComponent lang="javascript" />
             <div class="h-full w-full bg-base-200"></div>
+            <div>
+              <EditorTabs />
+            </div>
           </SplitPane>
         </SplitPane>
         <div>

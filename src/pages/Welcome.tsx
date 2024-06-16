@@ -318,7 +318,7 @@ const Welcome = () => {
           class="transition ease-in-out hover:opacity-70"
           onClick={() => appWindow.close()}
         >
-          <div class="flex justify-center">
+          <div class="flex h-9 w-9 justify-center">
             <IconClose />
           </div>
         </button>

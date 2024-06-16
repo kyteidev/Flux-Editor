@@ -19,13 +19,79 @@ import "./themes/dark.css";
 // PrismJS plugins
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 import "prismjs/plugins/autoloader/prism-autoloader.min.js";
+import { fs } from "@tauri-apps/api";
 
 interface Props {
   lang: string;
 }
 
+const [lines, setLines] = createSignal(["1"]);
+
+export const openFile = (path: string) => {
+  const textarea = document.getElementById("editing") as HTMLTextAreaElement;
+  if (path === "blank") {
+    textarea.value = "";
+    highlightContent();
+    updateLineNumbers();
+  } else {
+    fs.readTextFile(path).then((data) => {
+      textarea.value = data;
+
+      highlightContent();
+      updateLineNumbers();
+    });
+  }
+};
+
+// update line numbers
+const updateLineNumbers = () => {
+  const textareaRef = document.getElementById("editing") as HTMLTextAreaElement;
+  if (textareaRef) {
+    const linesArray = textareaRef.value.split("\n");
+    const lineNumbers = Array.from({ length: linesArray.length }, (_, i) =>
+      (i + 1).toString(),
+    );
+    setLines(lineNumbers);
+  }
+};
+
+const highlightContent = () => {
+  const textareaRef = document.getElementById("editing") as HTMLTextAreaElement;
+  const highlightedContent = document.getElementById("highlighting-content");
+
+  // [start] source (with modifications): https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
+
+  if (textareaRef) {
+    let fixLastLine = false;
+    const selectionStart = textareaRef.selectionStart;
+
+    if (textareaRef.value[textareaRef.value.length - 1] == "\n") {
+      textareaRef.value = textareaRef.value + " ";
+      fixLastLine = true;
+    }
+
+    if (highlightedContent) {
+      highlightedContent.innerHTML = textareaRef.value
+        .replace(new RegExp("&", "g"), "&amp;")
+        .replace(new RegExp("<", "g"), "&lt;");
+
+      Prism.highlightElement(highlightedContent);
+    }
+
+    if (fixLastLine && textareaRef.value[textareaRef.value.length - 1] == " ") {
+      textareaRef.value = textareaRef.value.substring(
+        0,
+        textareaRef.value.length - 1,
+      );
+
+      textareaRef.selectionStart = textareaRef.selectionEnd = selectionStart;
+    }
+  }
+
+  // [end]
+};
+
 const EditorComponent = (props: Props) => {
-  const [lines, setLines] = createSignal(["1"]);
   const [selectedLine, setSelectedLine] = createSignal(-1);
 
   let lineNumbersDiv: HTMLElement | null;
@@ -81,42 +147,17 @@ const EditorComponent = (props: Props) => {
     }
   };
 
-  // update line numbers
-  const updateLineNumbers = () => {
-    if (textareaRef) {
-      const linesArray = textareaRef.value.split("\n");
-      const lineNumbers = Array.from({ length: linesArray.length }, (_, i) =>
-        (i + 1).toString(),
-      );
-      setLines(lineNumbers);
-    }
-  };
-
   // updates <code> content for syntax highlighting
   const updateContent = () => {
-    // [start] source (with modifications): https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
-
-    if (textareaRef) {
-      if (textareaRef.value[textareaRef.value.length - 1] == "\n") {
-        textareaRef.value = textareaRef.value + "";
-      }
-
-      if (highlightedContent) {
-        highlightedContent.innerHTML = textareaRef.value
-          .replace(new RegExp("&", "g"), "&amp;")
-          .replace(new RegExp("<", "g"), "&lt;");
-
-        Prism.highlightElement(highlightedContent);
-      }
-    }
-
-    // [end]
-
+    highlightContent();
     updateLineNumbers();
     updateSelectedLine();
   };
 
-  const handleInput = () => updateContent();
+  const handleInput = () => {
+    updateContent();
+    handleScroll();
+  };
   const handleBlur = () => {
     setSelectedLine(-1);
 
@@ -127,10 +168,10 @@ const EditorComponent = (props: Props) => {
 
   const handleScroll = () => {
     if (lineNumbersDiv && highlightedContentPre && textareaRef) {
-      lineNumbersDiv.scrollTop = textareaRef.scrollTop;
-
       highlightedContentPre.scrollTop = textareaRef.scrollTop;
       highlightedContentPre.scrollLeft = textareaRef.scrollLeft;
+
+      lineNumbersDiv.scrollTop = highlightedContentPre.scrollTop;
 
       calcHighlightLinePos();
     }
@@ -198,6 +239,7 @@ const EditorComponent = (props: Props) => {
         textarea.selectionStart = textarea.selectionEnd = selectionStart + 2;
 
         updateContent();
+        setTimeout(() => calcHighlightLinePos(), 0);
       }
 
       updateLineNumbers();
@@ -238,6 +280,8 @@ const EditorComponent = (props: Props) => {
     handleScroll();
   };
 
+  // FIXME: make this more efficient, and fix positioning issues, so this doesn't rely on parent element's position styles
+
   return (
     <div class="flex h-full w-full select-none">
       <div class="relative">
@@ -277,7 +321,7 @@ const EditorComponent = (props: Props) => {
           spellcheck={false}
           onfocus={updateSelectedLine}
           onblur={handleBlur}
-          class={`text-transparent bg-transparent z-10 caret-content ${styles.textarea}`}
+          class={`z-10 bg-transparent text-transparent caret-content ${styles.textarea}`}
         ></textarea>
         <pre
           id="highlighting"

@@ -5,9 +5,9 @@ export const IconClose = () => {
     <svg
       class="fill-content"
       xmlns="http://www.w3.org/2000/svg"
-      height="36px"
+      height="100%"
       viewBox="0 -960 960 960"
-      width="36px"
+      width="100%"
     >
       <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
     </svg>

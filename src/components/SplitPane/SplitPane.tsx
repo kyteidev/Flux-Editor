@@ -30,6 +30,7 @@ function SplitPane(props: Props) {
   // [start] SOURCE: https://www.answeroverflow.com/m/1094940238150897664
   const firstChild = () => children(() => props.children).toArray()[0];
   const secondChild = () => children(() => props.children).toArray()[1];
+  const optionalChild = () => children(() => props.children).toArray()[2]; // configured for editor tabs
   // [end]
 
   const [isDragging, setIsDragging] = createSignal(false);
@@ -122,6 +123,7 @@ function SplitPane(props: Props) {
       onmouseleave={handleMouseUp}
       onmousemove={handleMouseMove}
     >
+      {optionalChild()}
       <div
         class="relative"
         style={{

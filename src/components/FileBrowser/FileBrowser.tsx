@@ -21,6 +21,7 @@ import {
 } from "../Icons/Icons";
 import { logger } from "../../logger";
 import * as FI from "../Icons/FileIcons";
+import { addTab } from "../Editor/components/EditorTabs";
 
 interface Props {
   dir: string;
@@ -113,13 +114,13 @@ const FileBrowser = (props: Props) => {
   const [dirContents, setDirContents] = createSignal<string[]>([]);
 
   onMount(async () => {
-    const contents = await getDirContents(
+    const contents = await getPathContents(
       path.join(props.dir, props.workspaceName ?? "", props.projectName ?? ""),
     );
     setDirContents(contents);
   });
 
-  const getDirContents = async (dirPath: string): Promise<string[]> => {
+  const getPathContents = async (dirPath: string): Promise<string[]> => {
     try {
       const contents = await readDir(dirPath);
       const nonEmptyContents = contents
@@ -146,25 +147,25 @@ const FileBrowser = (props: Props) => {
   ) => {
     return (
       <For each={contents}>
-        {(dirName) => {
+        {(itemName) => {
           const [open, setOpen] = createSignal(false);
-          const [isFolder, setIsFolder] = createSignal();
+          const [isDir, setIsDir] = createSignal();
           const [dirNestedContents, setDirNestedContents] = createSignal<
             string[]
           >([]);
 
           // TODO: This is rerun every time a folder is opened, so optimize this!
-          if (dirName[0] != ".") {
-            getDirContents(path.join(parentDir, dirName))
+          if (itemName[0] != ".") {
+            getPathContents(path.join(parentDir, itemName))
               .then((contents) => {
                 setDirNestedContents(contents);
                 if (
                   dirNestedContents()[0] !== undefined &&
                   dirNestedContents()[0].includes("Not a directory")
                 ) {
-                  setIsFolder(false); // if name includes "Not a directory", it's not a folder
+                  setIsDir(false); // if name includes "Not a directory", it's not a folder
                 } else {
-                  setIsFolder(true);
+                  setIsDir(true);
                 }
               })
               .catch((error: string) => {
@@ -176,10 +177,10 @@ const FileBrowser = (props: Props) => {
 
           // if file name matches special file name, set special icon. Otherwise check file extension
           let FileIconComponent =
-            specialFileIcons[dirName.toLowerCase()] || undefined;
+            specialFileIcons[itemName.toLowerCase()] || undefined;
           if (FileIconComponent === undefined) {
             // checks file extension
-            const fileExtension = isFolder() ? "" : path.extname(dirName);
+            const fileExtension = isDir() ? "" : path.extname(itemName);
             FileIconComponent =
               fileIcons[fileExtension.toLowerCase()] || FI.Default;
           }
@@ -189,8 +190,10 @@ const FileBrowser = (props: Props) => {
               <div
                 class="min-w-fit cursor-pointer select-none text-content hover:bg-base-100 active:bg-base-100-hover"
                 onclick={() => {
-                  if (isFolder()) {
+                  if (isDir()) {
                     setOpen(!open());
+                  } else {
+                    addTab([itemName, path.join(parentDir, itemName)]);
                   }
                 }}
               >
@@ -207,13 +210,13 @@ const FileBrowser = (props: Props) => {
                     <div class="w-4" />
                   </Show>
                   <div class="opacity-80">
-                    <Show when={isFolder()} fallback={<FileIconComponent />}>
+                    <Show when={isDir()} fallback={<FileIconComponent />}>
                       <Show when={open()} fallback={<IconFolder />}>
                         <IconFolderOpen />
                       </Show>
                     </Show>
                   </div>
-                  <span class="whitespace-nowrap">{dirName}</span>
+                  <span class="whitespace-nowrap">{itemName}</span>
                 </div>
               </div>
               <div class="block">
@@ -221,7 +224,7 @@ const FileBrowser = (props: Props) => {
                   <div class="">
                     {renderItem(
                       dirNestedContents(),
-                      path.join(parentDir, dirName),
+                      path.join(parentDir, itemName),
                       false,
                       howNested + 1,
                     )}
