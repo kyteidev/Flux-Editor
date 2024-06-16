@@ -243,7 +243,7 @@ const EditorComponent = (props: Props) => {
   };
 
   return (
-    <div class="flex h-full w-full">
+    <div class="flex h-full w-full select-none">
       <div class="relative">
         <div
           id="line-numbers"

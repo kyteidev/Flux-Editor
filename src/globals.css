@@ -60,6 +60,8 @@ You should have received a copy of the GNU General Public License along with Nar
 
 body {
   overflow: hidden;
+  user-select: none;
+  cursor: default;
 }
 
 input,

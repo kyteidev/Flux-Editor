@@ -40,15 +40,25 @@ const Editor = () => {
           "min-height": `calc(100vh - 2.5em)`,
         }}
       >
-        <SplitPane grow={true}>
-          <SplitPane vertical={true} width={280}>
+        <SplitPane
+          grow={true}
+          size={280}
+          firstMinSize={200}
+          secondMinSize={500}
+          canFirstHide={true}
+        >
+          <div
+            style={{
+              height: `calc(100vh - 2.5em)`,
+              "max-height": `calc(100vh - 2.5em)`,
+              "min-height": `calc(100vh - 2.5em)`,
+            }}
+          >
             <FileBrowser dir={dir()} />
-          </SplitPane>
-          <SplitPane vertical={true} grow={true}>
-            <div class="h-full max-h-[66vh]">
-              <EditorComponent lang="javascript" />
-            </div>
-            <div class="w-full flex-grow bg-base-200"></div>
+          </div>
+          <SplitPane vertical={true} grow={true} size={500}>
+            <EditorComponent lang="javascript" />
+            <div class="h-full w-full bg-base-200"></div>
           </SplitPane>
         </SplitPane>
         <div>

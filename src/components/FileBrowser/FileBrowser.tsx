@@ -185,9 +185,9 @@ const FileBrowser = (props: Props) => {
           }
 
           return (
-            <div class="relative block">
+            <div class="relative block min-w-fit">
               <div
-                class="cursor-pointer select-none text-content hover:bg-base-100 active:bg-base-100-hover"
+                class="min-w-fit cursor-pointer select-none text-content hover:bg-base-100 active:bg-base-100-hover"
                 onclick={() => {
                   if (isFolder()) {
                     setOpen(!open());
@@ -213,7 +213,7 @@ const FileBrowser = (props: Props) => {
                       </Show>
                     </Show>
                   </div>
-                  {dirName}
+                  <span class="whitespace-nowrap">{dirName}</span>
                 </div>
               </div>
               <div class="block">
@@ -236,7 +236,7 @@ const FileBrowser = (props: Props) => {
   };
 
   return (
-    <div class="h-full min-h-full w-full min-w-full max-w-full overflow-auto bg-base-200">
+    <div class="h-full min-h-full w-full min-w-full overflow-auto bg-base-200">
       <div class="absolute z-10 block w-full cursor-pointer select-none items-center overflow-hidden overflow-ellipsis bg-base-200 pl-6 font-bold text-content hover:bg-base-100 active:bg-base-100-hover">
         {props.projectName
           ? `${props.workspaceName}/${props.projectName}`
@@ -244,7 +244,9 @@ const FileBrowser = (props: Props) => {
         {/* if no project name, display "No Project" */}
       </div>
       <div class="h-6" />
-      {renderItem(dirContents(), props.dir, true, 0)}
+      <div class="min-w-fit">
+        {renderItem(dirContents(), props.dir, true, 0)}
+      </div>
     </div>
   );
 };

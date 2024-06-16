@@ -1,7 +1,7 @@
 {
   "name": "narvik",
   "version": "0.0.0",
-  "description": "",
+  "description": "a lightweight and fast code editor",
   "type": "module",
   "scripts": {
     "start": "vite",
