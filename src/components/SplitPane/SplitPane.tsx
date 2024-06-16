@@ -56,28 +56,30 @@ function SplitPane(props: Props) {
     // FIXME: Hidden children becomes visible when resizing window to reveal them.
 
     if (props.vertical) {
-      const cursorOffsetY: number = Math.abs(e.clientY - firstHeight());
+      const cursorOffsetY: number = Math.abs(e.clientY - firstHeight()); // gets absolute value to avoid checking for negative numbers
 
       if (props.firstMinSize && newHeight <= props.firstMinSize) {
+        // if first pane should be hidden
         setFirstHeight(props.firstMinSize);
         if (cursorOffsetY >= 80 && props.canFirstHide) {
-          setFirstHeight(0);
+          setFirstHeight(0); // hides first pane
         }
       } else if (
         props.secondMinSize &&
-        newHeight >= windowHeight - props.secondMinSize
+        newHeight >= windowHeight - props.secondMinSize // if second pane should be hidden
       ) {
         setFirstHeight(windowHeight - props.secondMinSize);
         if (cursorOffsetY >= 80 && props.canSecondHide) {
-          setFirstHeight(windowHeight - 3);
+          setFirstHeight(windowHeight - 3); // sets first height to window height, minus height of splitter
         }
       } else {
         setFirstHeight(newHeight);
       }
     } else {
-      const cursorOffsetX: number = Math.abs(e.clientX - firstWidth());
+      const cursorOffsetX: number = Math.abs(e.clientX - firstWidth()); // gets absolute value to avoid checking for negative numbers
 
       if (props.firstMinSize && newWidth <= props.firstMinSize) {
+        // same as above, but for horizontal split panes
         setFirstWidth(props.firstMinSize);
         if (cursorOffsetX >= 80 && props.canFirstHide) {
           setFirstWidth(0);
@@ -97,6 +99,7 @@ function SplitPane(props: Props) {
   };
 
   const handleUnhide = () => {
+    // unhides split pane when splitter is clicked
     if (props.vertical) {
       if (firstHeight() === 0 && props.firstMinSize) {
         setFirstHeight(props.firstMinSize);
@@ -115,7 +118,7 @@ function SplitPane(props: Props) {
   return (
     <div
       class={`flex ${props.grow && "flex-grow"} ${props.vertical && "flex-col"} relative max-h-full min-h-full`}
-      onmouseup={handleMouseUp}
+      onmouseup={handleMouseUp} // these events are located in parent element to continue dragging when mouse leaves splitter
       onmouseleave={handleMouseUp}
       onmousemove={handleMouseMove}
     >
@@ -139,7 +142,7 @@ function SplitPane(props: Props) {
           onclick={handleUnhide}
         />
       </Show>
-      {secondChild()}
+      {secondChild()} {/* second child takes up rest of space */}
     </div>
   );
 }
