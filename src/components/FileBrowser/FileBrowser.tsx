@@ -14,10 +14,10 @@ import { readDir } from "@tauri-apps/api/fs";
 import path from "path-browserify";
 import { For, JSX, Show, createSignal, onMount } from "solid-js";
 import {
-  IconExpand,
+  IconFolder,
+  IconFolderOpen,
   IconGit,
   IconLineVertical,
-  IconUnexpand,
 } from "../Icons/Icons";
 import { logger } from "../../logger";
 import * as FI from "../Icons/FileIcons";
@@ -208,8 +208,8 @@ const FileBrowser = (props: Props) => {
                   </Show>
                   <div class="opacity-80">
                     <Show when={isFolder()} fallback={<FileIconComponent />}>
-                      <Show when={open()} fallback={<IconExpand />}>
-                        <IconUnexpand />
+                      <Show when={open()} fallback={<IconFolder />}>
+                        <IconFolderOpen />
                       </Show>
                     </Show>
                   </div>
