@@ -100,6 +100,9 @@ const EditorComponent = (props: Props) => {
   let highlightedLine: HTMLElement | null;
   let textareaRef: HTMLTextAreaElement | undefined;
 
+  let hasSaved = true;
+  let savedContent: string;
+
   onMount(() => {
     lineNumbersDiv = document.getElementById("line-numbers");
     highlightedContent = document.getElementById("highlighting-content");
@@ -157,6 +160,16 @@ const EditorComponent = (props: Props) => {
   const handleInput = () => {
     updateContent();
     handleScroll();
+
+    if (hasSaved) {
+      hasSaved = false;
+    } else {
+      setTimeout(() => {
+        if (savedContent === textareaRef?.value) {
+          hasSaved = true;
+        }
+      }, 1000);
+    }
   };
   const handleBlur = () => {
     setSelectedLine(-1);
