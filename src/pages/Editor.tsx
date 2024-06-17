@@ -14,10 +14,13 @@ import FileBrowser from "../components/FileBrowser/FileBrowser";
 import SplitPane from "../components/SplitPane/SplitPane";
 import WindowControls from "../components/WindowControls/WindowControls";
 import { useSearchParams } from "@solidjs/router";
-import { createSignal, onMount } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import { logger } from "../logger";
 import EditorComponent from "../components/Editor/EditorComponent";
-import EditorTabs from "../components/Editor/components/EditorTabs";
+import EditorTabs, {
+  getTabs,
+} from "../components/Editor/components/EditorTabs";
+import logo from "../assets/narvik-logo.svg";
 
 const Editor = () => {
   const [params] = useSearchParams();
@@ -58,11 +61,33 @@ const Editor = () => {
             <FileBrowser dir={dir()} />
           </div>
           <SplitPane vertical={true} grow={true} size={500}>
-            <EditorComponent lang="javascript" />
+            <Show
+              when={getTabs().length != 0}
+              fallback={
+                <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-20 bg-base-200">
+                  <img
+                    src={logo}
+                    alt="Narvik Logo"
+                    draggable="false"
+                    style={{ width: "15em", height: "auto" }}
+                  />
+                  <div class="flex flex-col space-y-1">
+                    <h1 class="text-3xl">Open a file to get started.</h1>
+                    <p class="text-normal text-center">
+                      Click on a file in the File Browser to open it.
+                    </p>
+                  </div>
+                </div>
+              }
+            >
+              <EditorComponent lang="javascript" />
+            </Show>
             <div class="h-full w-full bg-base-200"></div>
-            <div>
-              <EditorTabs />
-            </div>
+            <Show when={getTabs().length != 0}>
+              <div>
+                <EditorTabs />
+              </div>
+            </Show>
           </SplitPane>
         </SplitPane>
         <div>

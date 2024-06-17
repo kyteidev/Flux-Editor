@@ -14,6 +14,10 @@ export const addTab = (tab: string[]) => {
   openFile(tabs()[activeTab()][1]);
 };
 
+export const getTabs = () => {
+  return tabs();
+};
+
 const EditorTabs = () => {
   return (
     <div class="h-[40px] w-full overflow-auto bg-base-200 p-1">

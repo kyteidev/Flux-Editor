@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License along with Nar
 */
 
 import { useNavigate } from "@solidjs/router";
-import icon from "../assets/narvik-logo.svg";
+import logo from "../assets/narvik-logo.svg";
 import { LogicalSize, appWindow } from "@tauri-apps/api/window";
 import {
   IconClone,
@@ -135,8 +135,8 @@ const Welcome = () => {
       {/* logo and title */}
       <div class="relative top-[5vh] flex items-center justify-center space-x-10">
         <img
-          src={icon}
-          alt="icon"
+          src={logo}
+          alt="Narvik Logo"
           draggable="false"
           style={{ width: "200px", height: "auto" }}
         />
