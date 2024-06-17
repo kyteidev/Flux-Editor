@@ -24,14 +24,20 @@ const EditorTabs = () => {
       <div class="flex select-none space-x-1">
         <For each={tabs().map((t) => t[0])}>
           {(tabName, index) => {
+            const [isClosed, setIsClosed] = createSignal(false);
+
             const open = () => {
               openFile(tabs()[index()][1]);
             };
 
             const closeTab = () => {
+              setIsClosed(true);
               setTabs(tabs().filter((t) => t !== tabs()[index()]));
               if (tabs().length === 0) {
                 openFile("blank");
+              } else {
+                setActiveTab(index() - 1);
+                openFile(tabs()[index() - 1][1]);
               }
             };
 
@@ -39,8 +45,10 @@ const EditorTabs = () => {
               <div
                 class={`${activeTab() === index() ? "bg-base-100-hover" : "bg-base-100"} flex h-8 max-w-36 items-center rounded-xl p-1 pl-2 pr-2 text-center transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
                 onclick={() => {
-                  setActiveTab(index());
-                  open();
+                  if (!isClosed()) {
+                    setActiveTab(index());
+                    open();
+                  }
                 }}
               >
                 <div class="block max-h-8 max-w-32 overflow-hidden overflow-ellipsis whitespace-nowrap">
