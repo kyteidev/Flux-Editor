@@ -112,6 +112,10 @@ const fileIcons: { [key: string]: () => JSX.Element } = {
 
 const FileBrowser = (props: Props) => {
   const [dirContents, setDirContents] = createSignal<string[]>([]);
+  const files: string[] = [];
+  const dirs: string[] = [];
+
+  const [showIcon, setShowIcon] = createSignal(true);
 
   onMount(async () => {
     const contents = await getPathContents(
@@ -129,7 +133,9 @@ const FileBrowser = (props: Props) => {
           (content): content is string =>
             content !== undefined && content[0] != ".",
         );
-      return nonEmptyContents.sort();
+      return nonEmptyContents.sort((a, b) =>
+        a.localeCompare(b, undefined, { sensitivity: "base" }),
+      );
     } catch (error) {
       if (!(error as string).includes("Not a directory")) {
         console.error(`Error fetching directory contents: ${error}`);
@@ -154,19 +160,33 @@ const FileBrowser = (props: Props) => {
             string[]
           >([]);
 
+          const itemPath = path.join(parentDir, itemName);
+
+          if (dirs.includes(itemPath)) {
+            setIsDir(true);
+          } else if (files.includes(itemPath)) {
+            setIsDir(false);
+          }
+
           // TODO: This is rerun every time a folder is opened, so optimize this!
           if (itemName[0] != ".") {
-            getPathContents(path.join(parentDir, itemName))
+            getPathContents(itemPath)
               .then((contents) => {
                 setDirNestedContents(contents);
-                if (
-                  dirNestedContents()[0] !== undefined &&
-                  dirNestedContents()[0].includes("Not a directory")
-                ) {
-                  setIsDir(false); // if name includes "Not a directory", it's not a folder
-                } else {
-                  setIsDir(true);
+
+                if (!(files.includes(itemPath) || dirs.includes(itemPath))) {
+                  if (
+                    contents[0] !== undefined &&
+                    contents[0].includes("Not a directory")
+                  ) {
+                    setIsDir(false); // if name includes "Not a directory", it's not a folder
+                    files.push(itemPath);
+                  } else {
+                    setIsDir(true);
+                    dirs.push(itemPath);
+                  }
                 }
+                // TODO: sort folders to top
               })
               .catch((error: string) => {
                 setDirNestedContents([]);
@@ -193,7 +213,7 @@ const FileBrowser = (props: Props) => {
                   if (isDir()) {
                     setOpen(!open());
                   } else {
-                    addTab([itemName, path.join(parentDir, itemName)]);
+                    addTab([itemName, itemPath]);
                   }
                 }}
               >
@@ -209,14 +229,21 @@ const FileBrowser = (props: Props) => {
                     </div>
                     <div class="w-4" />
                   </Show>
-                  <div class="opacity-80">
-                    <Show when={isDir()} fallback={<FileIconComponent />}>
-                      <Show when={open()} fallback={<IconFolder />}>
-                        <IconFolderOpen />
+                  <Show when={showIcon()}>
+                    <div class="opacity-80">
+                      <Show when={isDir()} fallback={<FileIconComponent />}>
+                        <Show when={open()} fallback={<IconFolder />}>
+                          <IconFolderOpen />
+                        </Show>
                       </Show>
-                    </Show>
-                  </div>
-                  <span class="whitespace-nowrap">{itemName}</span>
+                    </div>
+                  </Show>
+                  <span
+                    class={`${!showIcon() && isDir() ? "underline" : ""} whitespace-nowrap`}
+                    style={{ "margin-left": `${!showIcon() ? "0.5rem" : "0"}` }}
+                  >
+                    {itemName}
+                  </span>
                 </div>
               </div>
               <div class="block">
@@ -224,7 +251,7 @@ const FileBrowser = (props: Props) => {
                   <div class="">
                     {renderItem(
                       dirNestedContents(),
-                      path.join(parentDir, itemName),
+                      itemPath,
                       false,
                       howNested + 1,
                     )}
