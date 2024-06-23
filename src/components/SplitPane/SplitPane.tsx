@@ -118,7 +118,7 @@ function SplitPane(props: Props) {
 
   return (
     <div
-      class={`flex ${props.grow && "flex-grow"} ${props.vertical && "flex-col"} relative max-h-full min-h-full`}
+      class={`flex ${props.grow && "flex-grow"} ${props.vertical && "flex-col"} relative max-h-full min-h-full max-w-full`}
       onmouseup={handleMouseUp} // these events are located in parent element to continue dragging when mouse leaves splitter
       onmouseleave={handleMouseUp}
       onmousemove={handleMouseMove}
@@ -138,13 +138,20 @@ function SplitPane(props: Props) {
       <Show when={secondChild()}>
         <div
           id="splitter"
-          class={`${props.vertical ? "h-[3px] min-h-[3px] w-full cursor-row-resize" : "w-[3px] min-w-[3px] cursor-col-resize"} ${isDragging() ? "bg-accent" : "bg-content"} z-50 transition duration-300 ease-in-out hover:bg-accent`}
+          class={`${props.vertical ? "h-[5px] min-h-[5px] w-full cursor-row-resize border-y-[2px]" : "w-[5px] min-w-[5px] cursor-col-resize border-x-[2px]"} ${isDragging() ? "border-accent bg-accent" : "border-base-200 bg-content"} z-50 border-base-200 transition duration-300 ease-in-out hover:border-accent hover:bg-accent`}
           style={{ height: `${props.vertical ?? `calc(100vh - 40px)`}` }}
           onmousedown={handleMouseDown}
           onclick={handleUnhide}
         />
       </Show>
-      {secondChild()} {/* second child takes up rest of space */}
+      <div
+        class="flex flex-grow"
+        style={{
+          "max-width": `${!props.vertical && `calc(100% - ${firstWidth()}px)`}`,
+        }}
+      >
+        {secondChild()} {/* second child takes up rest of space */}
+      </div>
     </div>
   );
 }

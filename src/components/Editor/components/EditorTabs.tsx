@@ -20,8 +20,8 @@ export const getTabs = () => {
 
 const EditorTabs = () => {
   return (
-    <div class="h-[40px] w-full overflow-auto bg-base-200 p-1">
-      <div class="flex select-none space-x-1">
+    <div class="h-[40px] w-full max-w-full overflow-auto bg-base-200 p-1">
+      <div class="flex w-full max-w-full select-none space-x-1">
         <For each={tabs().map((t) => t[0])}>
           {(tabName, index) => {
             const [isClosed, setIsClosed] = createSignal(false);

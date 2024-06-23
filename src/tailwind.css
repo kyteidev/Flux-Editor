@@ -1,5 +1,17 @@
 /*
-! tailwindcss v3.4.3 | MIT License | https://tailwindcss.com
+Copyright © 2024 Narvik Contributors.
+
+This file is part of Narvik Editor.
+
+Narvik Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+*/
+
+/*
+! tailwindcss v3.4.3 | MIT License | https://tailwindcss.com 
 */
 
 /*
@@ -638,12 +650,20 @@ video {
   margin: 0px;
 }
 
+.m-\[2px\] {
+  margin: 2px;
+}
+
 .ml-0 {
   margin-left: 0px;
 }
 
 .ml-2 {
   margin-left: 0.5rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
 }
 
 .block {
@@ -722,6 +742,22 @@ video {
   height: 100vh;
 }
 
+.h-\[30px\] {
+  height: 30px;
+}
+
+.h-\[5px\] {
+  height: 5px;
+}
+
+.h-\[11px\] {
+  height: 11px;
+}
+
+.h-\[7px\] {
+  height: 7px;
+}
+
 .max-h-8 {
   max-height: 2rem;
 }
@@ -748,6 +784,22 @@ video {
 
 .min-h-full {
   min-height: 100%;
+}
+
+.min-h-\[1px\] {
+  min-height: 1px;
+}
+
+.min-h-\[30px\] {
+  min-height: 30px;
+}
+
+.min-h-\[5px\] {
+  min-height: 5px;
+}
+
+.min-h-\[11px\] {
+  min-height: 11px;
 }
 
 .w-10 {
@@ -786,6 +838,14 @@ video {
   width: 100vw;
 }
 
+.w-\[1px\] {
+  width: 1px;
+}
+
+.w-\[5px\] {
+  width: 5px;
+}
+
 .min-w-4 {
   min-width: 1rem;
 }
@@ -807,6 +867,14 @@ video {
   min-width: 100%;
 }
 
+.min-w-\[1px\] {
+  min-width: 1px;
+}
+
+.min-w-\[5px\] {
+  min-width: 5px;
+}
+
 .max-w-32 {
   max-width: 8rem;
 }
@@ -817,6 +885,10 @@ video {
 
 .max-w-\[64px\] {
   max-width: 64px;
+}
+
+.max-w-full {
+  max-width: 100%;
 }
 
 .flex-shrink-0 {
@@ -965,12 +1037,54 @@ video {
   border-radius: 0.75rem;
 }
 
+.border-\[1px\] {
+  border-width: 1px;
+}
+
+.border-x-\[1px\] {
+  border-left-width: 1px;
+  border-right-width: 1px;
+}
+
+.border-y-\[1px\] {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.border-y-\[10px\] {
+  border-top-width: 10px;
+  border-bottom-width: 10px;
+}
+
+.border-y-\[2px\] {
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
+.border-y-\[5px\] {
+  border-top-width: 5px;
+  border-bottom-width: 5px;
+}
+
+.border-x-\[2px\] {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+
 .border-t-0 {
   border-top-width: 0px;
 }
 
 .border-none {
   border-style: none;
+}
+
+.border-base-200 {
+  border-color: var(--base-200);
+}
+
+.border-accent {
+  border-color: var(--accent);
 }
 
 .bg-\[\#28c840\] {
@@ -1044,6 +1158,10 @@ video {
   padding: 5px;
 }
 
+.p-\[1px\] {
+  padding: 1px;
+}
+
 .pb-1 {
   padding-bottom: 0.25rem;
 }
@@ -1108,10 +1226,6 @@ video {
   font-weight: 700;
 }
 
-.font-thin {
-  font-weight: 100;
-}
-
 .text-content {
   color: var(--content);
 }
@@ -1122,10 +1236,6 @@ video {
 
 .underline {
   text-decoration-line: underline;
-}
-
-.underline-offset-2 {
-  text-underline-offset: 2px;
 }
 
 .caret-content {
@@ -1176,6 +1286,83 @@ video {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root {
+  --primary: #325e8f;
+  --primary-hover: #6090c7;
+  --content: #f3f4f6;
+  --accent: #1e3a8a;
+  --neutral: #6b7280;
+  --base-100: #2e3742;
+  --base-100-hover: #3f4b5a;
+  --base-200: #1d232a;
+  --base-300: #13151a;
+  --info: #1e40af;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #b91c1c;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+*,
+*::before,
+*::after {
+  font-family: system-ui, sans-serif;
+  color: var(--content);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+body {
+  overflow: hidden;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  cursor: default;
+}
+
+input,
+textarea {
+  -moz-user-select: initial;
+       user-select: initial;
+  -webkit-user-select: initial;
+}
+
+dialog {
+  opacity: 0;
+}
+
+dialog[open] {
+  animation: fadein 0.2s ease-in-out forwards;
+}
+
+.hover\:border-accent:hover {
+  border-color: var(--accent);
 }
 
 .hover\:bg-\[\#424242\]:hover {

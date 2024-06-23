@@ -20,6 +20,7 @@ import "./themes/dark.css";
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 import "prismjs/plugins/autoloader/prism-autoloader.min.js";
 import { fs } from "@tauri-apps/api";
+import EditorTabs from "./components/EditorTabs";
 
 interface Props {
   lang: string;
