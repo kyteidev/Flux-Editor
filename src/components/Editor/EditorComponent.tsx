@@ -20,7 +20,6 @@ import "./themes/dark.css";
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 import "prismjs/plugins/autoloader/prism-autoloader.min.js";
 import { fs } from "@tauri-apps/api";
-import EditorTabs from "./components/EditorTabs";
 
 interface Props {
   lang: string;
@@ -340,7 +339,7 @@ const EditorComponent = (props: Props) => {
         <pre
           id="highlighting"
           aria-hidden="true"
-          class={`z-0 bg-base-300 text-content ${styles.highlighted}`}
+          class={`z-0 bg-base-200 text-content ${styles.highlighted}`}
         >
           {/* match-braces doesn't work */}
           <code
