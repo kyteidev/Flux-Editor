@@ -13,8 +13,16 @@ You should have received a copy of the GNU General Public License along with Nar
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+#[cfg(target_os = "macos")]
+#[macro_use]
+extern crate objc;
+
 use std::process::Command;
-use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu};
+
+use window_ext::WindowExt;
+
+mod window_ext;
 
 async fn is_git_installed() -> bool {
     let is_git_installed = Command::new("git")
@@ -122,6 +130,13 @@ fn menu() -> Menu {
 
 fn main() {
     tauri::Builder::default()
+        .setup(|app| {
+            let win = app.get_window("main").unwrap();
+            win.set_transparent_titlebar(true, false);
+            win.set_window_controls_pos(50., 20.);
+
+            Ok(())
+        })
         .menu(menu()) // TODO: maybe add custom menu only for Mac, make a menu component for Windows and Linux
         .invoke_handler(tauri::generate_handler![clone_repo])
         .run(tauri::generate_context!())

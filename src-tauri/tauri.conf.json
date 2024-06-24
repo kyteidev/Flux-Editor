@@ -49,11 +49,12 @@
     "windows": [
       {
         "title": "Narvik Editor",
-        "width": 900,
-        "height": 600,
+        "width": 1280,
+        "height": 800,
         "minWidth": 660,
         "minHeight": 450,
-        "decorations": false
+        "decorations": true,
+        "transparent": true
       }
     ],
     "security": {

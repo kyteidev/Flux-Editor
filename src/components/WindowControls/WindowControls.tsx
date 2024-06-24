@@ -10,28 +10,29 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
 */
 
-import MacControls from "./MacControls";
 import WinControls from "./WinControls";
 import GnomeControls from "./GnomeControls";
-import { platform } from "@tauri-apps/api/os";
-import { Show, createSignal, onMount } from "solid-js";
+import { Match, Switch, createSignal, onMount } from "solid-js";
+import { getOS } from "../../utils/os";
 function WindowControls() {
-  const [os, setOs] = createSignal("");
+  const [currentOS, setCurrentOS] = createSignal("");
 
-  let osName: string = "";
-  async function getOS() {
-    osName = await platform();
-    setOs(osName);
-  }
-
-  onMount(() => getOS());
+  onMount(async () => {
+    setCurrentOS(await getOS());
+  });
 
   return (
-    <Show when={os() != ""} fallback={<WinControls />}>
-      {os() === "darwin" && <MacControls />}
-      {os() === "linux" && <GnomeControls />}
-      {os() === "windows" && <WinControls />}
-    </Show>
+    <Switch>
+      <Match when={currentOS() === "windows"}>
+        <WinControls />
+      </Match>
+      <Match when={currentOS() === "linux"}>
+        <GnomeControls />
+      </Match>
+      <Match when={currentOS() != "darwin" && true}>
+        <WinControls />
+      </Match>
+    </Switch>
   );
 }
 
