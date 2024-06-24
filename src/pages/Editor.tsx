@@ -13,7 +13,6 @@ You should have received a copy of the GNU General Public License along with Nar
 import FileBrowser from "../components/FileBrowser/FileBrowser";
 import SplitPane from "../components/SplitPane/SplitPane";
 import WindowControls from "../components/WindowControls/WindowControls";
-import { useSearchParams } from "@solidjs/router";
 import { Show, createSignal, onMount } from "solid-js";
 import { logger } from "../logger";
 import EditorComponent from "../components/Editor/EditorComponent";
@@ -21,14 +20,24 @@ import EditorTabs, {
   getTabs,
 } from "../components/Editor/components/EditorTabs";
 import logo from "../assets/narvik-logo.svg";
+import Welcome from "./Welcome";
+
+const [dir, setDir] = createSignal<string>("");
+const [loaded, setLoaded] = createSignal(false);
+
+export const loadEditor = (
+  path: string,
+  type?: string,
+  projectName?: string,
+  workspaceName?: string,
+) => {
+  setDir(path);
+  logger(false, "Editor.tsx", "Editor loaded");
+  setLoaded(true);
+};
 
 const Editor = () => {
-  const [params] = useSearchParams();
-
-  const [dir, setDir] = createSignal<string>("");
-
   onMount(() => {
-    setDir(params.path ?? "");
     logger(false, "Editor.tsx", "Editor mounted");
   });
 
@@ -44,55 +53,57 @@ const Editor = () => {
           "min-height": `calc(100vh - 2.5em)`,
         }}
       >
-        <SplitPane
-          grow={true}
-          size={280}
-          firstMinSize={200}
-          secondMinSize={500}
-          canFirstHide={true}
-        >
-          <div
-            style={{
-              height: `calc(100vh - 2.5em)`,
-              "max-height": `calc(100vh - 2.5em)`,
-              "min-height": `calc(100vh - 2.5em)`,
-            }}
+        <Show when={loaded()} fallback={<Welcome />}>
+          <SplitPane
+            grow={true}
+            size={280}
+            firstMinSize={200}
+            secondMinSize={500}
+            canFirstHide={true}
           >
-            <FileBrowser dir={dir()} />
-          </div>
-          <SplitPane vertical={true} grow={true} size={500}>
-            <Show
-              when={getTabs().length != 0}
-              fallback={
-                <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-20 bg-base-200">
-                  <img
-                    src={logo}
-                    alt="Narvik Logo"
-                    draggable="false"
-                    style={{ width: "15em", height: "auto" }}
-                  />
-                  <div class="flex flex-col space-y-1">
-                    <h1 class="text-3xl">Open a file to get started.</h1>
-                    <p class="text-normal text-center">
-                      Click on a file in the File Browser to open it.
-                    </p>
-                  </div>
-                </div>
-              }
+            <div
+              style={{
+                height: `calc(100vh - 2.5em)`,
+                "max-height": `calc(100vh - 2.5em)`,
+                "min-height": `calc(100vh - 2.5em)`,
+              }}
             >
-              <EditorComponent lang="javascript" />
-            </Show>
-            <div class="h-full w-full bg-base-200"></div>
-            <Show when={getTabs().length != 0}>
-              <div>
-                <EditorTabs />
-              </div>
-            </Show>
+              <FileBrowser dir={dir()} />
+            </div>
+            <SplitPane vertical={true} grow={true} size={500}>
+              <Show
+                when={getTabs().length != 0}
+                fallback={
+                  <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-20 bg-base-200">
+                    <img
+                      src={logo}
+                      alt="Narvik Logo"
+                      draggable="false"
+                      style={{ width: "15em", height: "auto" }}
+                    />
+                    <div class="flex flex-col space-y-1">
+                      <h1 class="text-3xl">Open a file to get started.</h1>
+                      <p class="text-normal text-center">
+                        Click on a file in the File Browser to open it.
+                      </p>
+                    </div>
+                  </div>
+                }
+              >
+                <EditorComponent lang="javascript" />
+              </Show>
+              <div class="h-full w-full bg-base-200"></div>
+              <Show when={getTabs().length != 0}>
+                <div>
+                  <EditorTabs />
+                </div>
+              </Show>
+            </SplitPane>
           </SplitPane>
-        </SplitPane>
-        <div>
-          <WindowControls />
-        </div>
+          <div>
+            <WindowControls />
+          </div>
+        </Show>
       </div>
     </div>
   );

@@ -638,6 +638,38 @@ video {
   top: 14px;
 }
 
+.top-\[10vh\] {
+  top: 10vh;
+}
+
+.top-\[12vh\] {
+  top: 12vh;
+}
+
+.top-\[20vh\] {
+  top: 20vh;
+}
+
+.top-\[30vh\] {
+  top: 30vh;
+}
+
+.bottom-\[10vh\] {
+  bottom: 10vh;
+}
+
+.bottom-\[0vh\] {
+  bottom: 0vh;
+}
+
+.bottom-\[-10vh\] {
+  bottom: -10vh;
+}
+
+.bottom-\[-40vh\] {
+  bottom: -40vh;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -1068,6 +1100,10 @@ video {
 .bg-\[\#febc2e\] {
   --tw-bg-opacity: 1;
   background-color: rgb(254 188 46 / var(--tw-bg-opacity));
+}
+
+.bg-base-300 {
+  background-color: var(--base-300);
 }
 
 .fill-content {

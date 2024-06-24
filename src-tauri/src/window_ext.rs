@@ -53,6 +53,9 @@ impl<R: Runtime> WindowExt for Window<R> {
             });
         }
     }
+    // [end]
+
+    // [start] source: https://github.com/hoppscotch/hoppscotch/blob/286fcd2bb08a84f027b10308d1e18da368f95ebf/packages/hoppscotch-selfhost-desktop/src-tauri/src/mac/window.rs
 
     #[cfg(target_os = "macos")]
     fn set_window_controls_pos(&self, x: f64, y: f64) {

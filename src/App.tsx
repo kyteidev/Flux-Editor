@@ -10,8 +10,6 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
 */
 
-import { Router, Route } from "@solidjs/router";
-import Welcome from "./pages/Welcome";
 import Editor from "./pages/Editor";
 import { onMount } from "solid-js";
 import { initLogger, logger } from "./logger";
@@ -22,10 +20,5 @@ export default function App() {
     logger(false, "App.tsx", "Initialized application");
   });
 
-  return (
-    <Router>
-      <Route path="/" component={Welcome} />
-      <Route path="/editor" component={Editor} />
-    </Router>
-  );
+  return <Editor />;
 }

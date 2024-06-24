@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License along with Nar
 extern crate objc;
 
 use std::process::Command;
-use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu};
+use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowEvent};
 
 use window_ext::WindowExt;
 
@@ -133,9 +133,23 @@ fn main() {
         .setup(|app| {
             let win = app.get_window("main").unwrap();
             win.set_transparent_titlebar(true, false);
-            win.set_window_controls_pos(50., 20.);
+            win.set_window_controls_pos(16., 18.);
 
             Ok(())
+        })
+        .on_window_event(|e| {
+            // [start] source: https://github.com/tauri-apps/tauri/issues/4789#issuecomment-1387243148
+            let apply_offset = || {
+                let win = e.window();
+                win.set_window_controls_pos(16., 18.);
+            };
+
+            match e.event() {
+                WindowEvent::Resized(..) => apply_offset(), // TODO: maybe emit event for window controls, so they update when window resizes?
+                WindowEvent::ThemeChanged(..) => apply_offset(),
+                _ => {}
+            }
+            // [end]
         })
         .menu(menu()) // TODO: maybe add custom menu only for Mac, make a menu component for Windows and Linux
         .invoke_handler(tauri::generate_handler![clone_repo])

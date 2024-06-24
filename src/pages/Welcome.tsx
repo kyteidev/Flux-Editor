@@ -10,9 +10,8 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
 */
 
-import { useNavigate } from "@solidjs/router";
 import logo from "../assets/narvik-logo.svg";
-import { LogicalSize, appWindow } from "@tauri-apps/api/window";
+import { appWindow } from "@tauri-apps/api/window";
 import {
   IconClone,
   IconClose,
@@ -26,13 +25,14 @@ import Dropdown from "../ui/Dropdown";
 import Input from "../ui/Input";
 import ButtonBg from "../ui/ButtonBg";
 import { dialog } from "@tauri-apps/api";
-import { createSignal, onMount } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import { cloneRepo, getRepoPath } from "../utils/git.ts";
 import { checkDirValidity } from "../utils/dir.ts";
 import { logger } from "../logger.ts";
+import { getOS } from "../utils/os.ts";
+import { loadEditor } from "./Editor.tsx";
 
 const Welcome = () => {
-  const navigate = useNavigate();
   const [selectedType, setSelectedType] = createSignal<string>("File");
   // used as directory path for new open, and clone functions
   const [dirPath, setDirPath] = createSignal<string>("");
@@ -40,7 +40,12 @@ const Welcome = () => {
 
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
 
-  onMount(() => logger(false, "Welcome.tsx", "Mounted Welcome screen"));
+  const [currentOS, setCurrentOS] = createSignal();
+
+  onMount(async () => {
+    setCurrentOS(await getOS());
+    logger(false, "Welcome.tsx", "Mounted Welcome screen");
+  });
 
   const resetValues = () => {
     setSelectedType("File");
@@ -48,13 +53,15 @@ const Welcome = () => {
     setName("");
   };
 
-  const openDir = async () => {
+  const openDir = async (notNew?: boolean) => {
     dialog.open({ directory: true, multiple: false }).then((path) => {
       if (path) {
         setDirPath(path.toString() + "/");
       }
 
-      openEditor("open");
+      if (notNew) {
+        openEditor("open");
+      }
     });
   };
 
@@ -83,7 +90,6 @@ const Welcome = () => {
   };
 
   const openEditor = (action: string) => {
-    const editorPath = "/editor";
     if (action === "new") {
       if (name() === "") {
         dialog.message(
@@ -104,41 +110,28 @@ const Welcome = () => {
         });
         logger(true, "Welcome.tsx", "Invalid directory");
       } else {
-        appWindow.setSize(new LogicalSize(1280, 800));
-        navigate(
-          editorPath +
-            "?path=" +
-            dirPath() +
-            "&type=" +
-            selectedType() +
-            "&name=" +
-            name(),
-        );
+        loadEditor(dirPath(), selectedType(), name());
       }
     } else if (action === "open") {
       if (dirPath() != "") {
-        appWindow.setSize(new LogicalSize(1280, 800));
-        navigate(editorPath + "?path=" + dirPath());
+        loadEditor(dirPath());
       }
     } else if (action === "clone") {
       if (dirPath() != "") {
-        appWindow.setSize(new LogicalSize(1280, 800));
-        navigate(editorPath + "?path=" + getRepoPath());
+        loadEditor(getRepoPath());
       }
     }
   };
 
   return (
-    <div class="h-screen select-none bg-base-200">
-      {/* draggable region */}
-      <div data-tauri-drag-region class="h-12 w-full" />
+    <div class="h-full select-none bg-base-200">
       {/* logo and title */}
-      <div class="relative top-[5vh] flex items-center justify-center space-x-10">
+      <div class="relative top-[12vh] flex items-center justify-center space-x-10">
         <img
           src={logo}
           alt="Narvik Logo"
           draggable="false"
-          style={{ width: "200px", height: "auto" }}
+          style={{ width: "160px", height: "auto" }}
         />
         <h1 class="text-9xl text-content">narvik</h1>
       </div>
@@ -179,7 +172,7 @@ const Welcome = () => {
                 text="Browse"
                 width="calc(80px + 2em)"
                 height="40px"
-                action={openDir}
+                action={() => openDir(true)}
               />
             </div>
           </div>
@@ -209,7 +202,15 @@ const Welcome = () => {
               text="Create"
               width={80}
               height={40}
-              action={() => openEditor("new")}
+              action={() => {
+                const modal = document.getElementById(
+                  "modal-new",
+                ) as HTMLDialogElement;
+                if (modal) {
+                  modal.close();
+                }
+                openEditor("new");
+              }}
             />
           </div>
         </Modal>
@@ -262,7 +263,7 @@ const Welcome = () => {
         </Modal>
       </dialog>
       {/* buttons */}
-      <div class="h-100 relative top-[15vh] w-full">
+      <div class="relative top-[30vh] h-full w-full">
         <div class="flex justify-center space-x-20">
           {/* New button */}
           <div>
@@ -288,9 +289,7 @@ const Welcome = () => {
               size="100px"
               rounding={50}
               icon={IconOpen}
-              action={() => {
-                openDir();
-              }}
+              action={openDir}
             />
             <p class="relative top-2 text-center text-content">Open...</p>
           </div>
@@ -313,16 +312,18 @@ const Welcome = () => {
           </div>
         </div>
       </div>
-      <div class="absolute right-4 top-4 ml-0">
-        <button
-          class="transition ease-in-out hover:opacity-70"
-          onClick={() => appWindow.close()}
-        >
-          <div class="flex h-9 w-9 justify-center">
-            <IconClose />
-          </div>
-        </button>
-      </div>
+      <Show when={currentOS() != "darwin"}>
+        <div class="absolute right-4 top-4 ml-0">
+          <button
+            class="transition ease-in-out hover:opacity-70"
+            onClick={() => appWindow.close()}
+          >
+            <div class="flex h-9 w-9 justify-center">
+              <IconClose />
+            </div>
+          </button>
+        </div>
+      </Show>
     </div>
   );
 };
