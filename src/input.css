@@ -1,0 +1,83 @@
+/*
+Copyright © 2024 Narvik Contributors.
+
+This file is part of Narvik Editor.
+
+Narvik Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #325e8f;
+  --primary-hover: #6090c7;
+  --content: #f3f4f6;
+  --accent: #1e3a8a;
+  --neutral: #6b7280;
+
+  --base-100: #1d232a;
+  --base-100-hover: #2c3540;
+  --base-200: #13171c;
+  --base-300: #090a0d;
+
+  --info: #1e40af;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #b91c1c;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+*,
+*::before,
+*::after {
+  font-family: system-ui, sans-serif;
+  color: var(--content);
+  user-select: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+body {
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+}
+
+input,
+textarea {
+  user-select: initial;
+  -webkit-user-select: initial;
+}
+
+dialog {
+  opacity: 0;
+}
+
+dialog[open] {
+  animation: fadein 0.2s ease-in-out forwards;
+}
