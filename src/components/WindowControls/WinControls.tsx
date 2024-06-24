@@ -42,7 +42,7 @@ function WinControls() {
     <div class="absolute right-0 top-0 ml-0 flex">
       <div class="flex flex-row">
         <button
-          class="bg-transparent hover:bg-black/[.05] active:bg-white/[.04] h-10 w-10 cursor-default"
+          class="h-10 w-10 cursor-default bg-transparent hover:bg-[#000000]/[.05] active:bg-[#ffffff]/[.04]"
           onClick={minimizeWindow}
         >
           <div class="flex justify-center">
@@ -64,7 +64,7 @@ function WinControls() {
       </div>
       <div class="relative flex flex-row">
         <button
-          class="bg-transparent hover:bg-black/[.05] active:bg-white/[.04] h-10 w-10 cursor-default"
+          class="h-10 w-10 cursor-default bg-transparent hover:bg-[#000000]/[.05] active:bg-[#ffffff]/[.04]"
           onClick={maximizeWindow}
         >
           {isMaximized() ? (
@@ -104,7 +104,7 @@ function WinControls() {
       </div>
       <div class="relative flex flex-row">
         <button
-          class="bg-transparent h-10 w-10 cursor-default hover:bg-[#c42b1c]"
+          class="h-10 w-10 cursor-default bg-transparent hover:bg-[#c42b1c]"
           onClick={closeWindow}
         >
           <div class="flex justify-center">
