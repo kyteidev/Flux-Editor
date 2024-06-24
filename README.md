@@ -71,4 +71,4 @@ UNDER CONSTRUCTION
 Copyright © 2024 Narvik Contributors. Licensed under GNU General Public License v3.0.
 The Narvik Logos are licensed under CC-BY-NC-SA.
 
-See license details [here](https://github.com/kyteidev/narvik/blob/main/LICENSE).
+See license details [here](https://github.com/kyteidev/narvik/blob/dev/LICENSE).
