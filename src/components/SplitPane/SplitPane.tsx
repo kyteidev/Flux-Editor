@@ -10,7 +10,7 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
 */
 
-import { JSX, Show, children, createSignal } from "solid-js";
+import { JSX, Show, children, createSignal, onMount } from "solid-js";
 
 interface Props {
   children: JSX.Element;
@@ -23,7 +23,17 @@ interface Props {
   canSecondHide?: boolean;
 }
 
-function SplitPane(props: Props) {
+const [firstHeight, setFirstHeight] = createSignal(0);
+
+export const fixEditorHeight = (firstTab: boolean) => {
+  if (firstTab) {
+    setFirstHeight(firstHeight() - 40);
+  } else {
+    setFirstHeight(firstHeight() + 40);
+  }
+};
+
+const SplitPane = (props: Props) => {
   let windowWidth: number;
   let windowHeight: number;
 
@@ -35,7 +45,8 @@ function SplitPane(props: Props) {
 
   const [isDragging, setIsDragging] = createSignal(false);
   const [firstWidth, setFirstWidth] = createSignal(props.size);
-  const [firstHeight, setFirstHeight] = createSignal(props.size);
+
+  onMount(() => setFirstHeight(props.size));
 
   const handleMouseDown = () => {
     setIsDragging(true);
@@ -147,13 +158,16 @@ function SplitPane(props: Props) {
       <div
         class="flex flex-grow"
         style={{
-          "max-width": `${!props.vertical && `calc(100% - ${firstWidth()}px)`}`,
+          width: `calc(100vw - ${firstWidth()})`,
+          "max-width": `${!props.vertical && `calc(100vw - ${firstWidth()}px)`}`,
+          height: `calc(100vh - ${firstHeight()})`,
+          "max-height": `${props.vertical && `calc(100vh - ${firstHeight()}px)`}`,
         }}
       >
         {secondChild()} {/* second child takes up rest of space */}
       </div>
     </div>
   );
-}
+};
 
 export default SplitPane;

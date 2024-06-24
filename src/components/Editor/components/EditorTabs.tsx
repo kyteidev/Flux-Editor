@@ -1,11 +1,15 @@
 import { For, createSignal } from "solid-js";
 import { IconClose } from "../../Icons/Icons";
 import { openFile } from "../EditorComponent";
+import { fixEditorHeight } from "../../SplitPane/SplitPane";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
 
 export const addTab = (tab: string[]) => {
+  if (tabs().length === 0) {
+    fixEditorHeight(true);
+  }
   if (!tabs().flat().includes(tab[1])) {
     setTabs([...tabs(), tab]);
     openFile(tabs()[tabs().length - 1][1]);
@@ -34,7 +38,7 @@ const EditorTabs = () => {
               setIsClosed(true);
               setTabs(tabs().filter((t) => t !== tabs()[index()]));
               if (tabs().length === 0) {
-                openFile("blank");
+                fixEditorHeight(false);
               } else {
                 setActiveTab(index() - 1);
                 openFile(tabs()[index() - 1][1]);

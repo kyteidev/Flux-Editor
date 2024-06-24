@@ -70,7 +70,15 @@ const Editor = () => {
             >
               <FileBrowser dir={dir()} />
             </div>
-            <SplitPane vertical={true} grow={true} size={500}>
+            <SplitPane
+              vertical={true}
+              grow={true}
+              size={350}
+              firstMinSize={300}
+              canFirstHide={false}
+              secondMinSize={250}
+              canSecondHide={true}
+            >
               <Show
                 when={getTabs().length != 0}
                 fallback={

@@ -29,10 +29,8 @@ const [lines, setLines] = createSignal(["1"]);
 
 export const openFile = (path: string) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
-  if (path === "blank") {
-    textarea.value = "";
-    highlightContent();
-    updateLineNumbers();
+  if (path === "narvik:settings") {
+    // TODO: add settings
   } else {
     fs.readTextFile(path).then((data) => {
       textarea.value = data;
