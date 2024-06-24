@@ -18,11 +18,29 @@ You should have received a copy of the GNU General Public License along with Nar
 extern crate objc;
 
 use std::process::Command;
-use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowEvent};
+use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, Window, WindowEvent};
 
 use window_ext::WindowExt;
 
 mod window_ext;
+
+// [start] source: https://tauri.app/v1/guides/features/splashscreen/
+#[tauri::command]
+async fn close_splash(window: Window) {
+    // Close splashscreen
+    window
+        .get_window("splash")
+        .expect("no window labeled 'splashscreen' found")
+        .close()
+        .unwrap();
+    // Show main window
+    window
+        .get_window("main")
+        .expect("no window labeled 'main' found")
+        .show()
+        .unwrap();
+}
+// [end]
 
 async fn is_git_installed() -> bool {
     let is_git_installed = Command::new("git")
@@ -152,7 +170,7 @@ fn main() {
             // [end]
         })
         .menu(menu()) // TODO: maybe add custom menu only for Mac, make a menu component for Windows and Linux
-        .invoke_handler(tauri::generate_handler![clone_repo])
+        .invoke_handler(tauri::generate_handler![clone_repo, close_splash])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

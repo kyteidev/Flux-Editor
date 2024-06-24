@@ -54,7 +54,14 @@
         "minWidth": 660,
         "minHeight": 450,
         "decorations": false,
-        "transparent": true
+        "visible": false
+      },
+      {
+        "width": 400,
+        "height": 200,
+        "decorations": false,
+        "url": "splash.html",
+        "label": "splash"
       }
     ],
     "security": {
