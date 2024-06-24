@@ -13,6 +13,7 @@ You should have received a copy of the GNU General Public License along with Nar
 import { invoke } from "@tauri-apps/api";
 import { homeDir } from "@tauri-apps/api/path";
 import * as path from "path-browserify";
+import { logger } from "../logger";
 
 let repoPath: string;
 
@@ -41,12 +42,15 @@ export async function cloneRepo(url: string): Promise<void> {
   repoPath = path.join(homePath ? homePath.toString() : "", repoName);
 
   console.log(`Cloning repository ${url} to ${repoPath}`);
+  logger(false, "git.ts", `Cloning repository ${url} to ${repoPath}`);
 
   try {
     await invoke("clone_repo", { url: url, path: repoPath });
     console.log("Repository cloned successfully");
+    logger(false, "git.ts", "Repository cloned successfully");
   } catch (error) {
     console.error(`Error cloning repository: ${error}`);
+    logger(false, "git.ts", `Error cloning repository: ${error}`);
   }
 }
 
