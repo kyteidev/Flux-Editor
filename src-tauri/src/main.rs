@@ -20,6 +20,9 @@ extern crate objc;
 use std::process::Command;
 use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowEvent};
 
+#[cfg(any(windows))]
+use window_shadows::set_shadow;
+
 use window_ext::WindowExt;
 
 mod window_ext;
@@ -134,6 +137,9 @@ fn main() {
             let win = app.get_window("main").unwrap();
             win.set_transparent_titlebar(true, false);
             win.set_window_controls_pos(16., 18.);
+
+            #[cfg(any(windows))]
+            set_shadow(&win, true).unwrap();
 
             Ok(())
         })
