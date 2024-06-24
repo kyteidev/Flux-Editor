@@ -594,6 +594,10 @@ video {
   left: 0px;
 }
 
+.left-4 {
+  left: 1rem;
+}
+
 .right-0 {
   right: 0px;
 }
@@ -618,56 +622,20 @@ video {
   top: 1rem;
 }
 
-.top-\[15vh\] {
-  top: 15vh;
-}
-
-.top-\[5vh\] {
-  top: 5vh;
-}
-
-.top-full {
-  top: 100%;
-}
-
-.left-4 {
-  left: 1rem;
+.top-\[12vh\] {
+  top: 12vh;
 }
 
 .top-\[14px\] {
   top: 14px;
 }
 
-.top-\[10vh\] {
-  top: 10vh;
-}
-
-.top-\[12vh\] {
-  top: 12vh;
-}
-
-.top-\[20vh\] {
-  top: 20vh;
-}
-
 .top-\[30vh\] {
   top: 30vh;
 }
 
-.bottom-\[10vh\] {
-  bottom: 10vh;
-}
-
-.bottom-\[0vh\] {
-  bottom: 0vh;
-}
-
-.bottom-\[-10vh\] {
-  bottom: -10vh;
-}
-
-.bottom-\[-40vh\] {
-  bottom: -40vh;
+.top-full {
+  top: 100%;
 }
 
 .z-0 {
@@ -746,6 +714,10 @@ video {
   height: 1.5rem;
 }
 
+.h-\[12px\] {
+  height: 12px;
+}
+
 .h-\[1px\] {
   height: 1px;
 }
@@ -768,10 +740,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[12px\] {
-  height: 12px;
 }
 
 .max-h-8 {
@@ -818,6 +786,10 @@ video {
   width: 2.25rem;
 }
 
+.w-\[12px\] {
+  width: 12px;
+}
+
 .w-\[5px\] {
   width: 5px;
 }
@@ -832,10 +804,6 @@ video {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-\[12px\] {
-  width: 12px;
 }
 
 .min-w-4 {
@@ -957,6 +925,12 @@ video {
   margin-left: calc(2.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .space-x-20 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(5rem * var(--tw-space-x-reverse));
@@ -997,12 +971,6 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
-}
-
-.space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .overflow-auto {
@@ -1063,30 +1031,6 @@ video {
   border-color: var(--base-200);
 }
 
-.bg-accent {
-  background-color: var(--accent);
-}
-
-.bg-base-100 {
-  background-color: var(--base-100);
-}
-
-.bg-base-200 {
-  background-color: var(--base-200);
-}
-
-.bg-content {
-  background-color: var(--content);
-}
-
-.bg-primary {
-  background-color: var(--primary);
-}
-
-.bg-transparent {
-  background-color: transparent;
-}
-
 .bg-\[\#28c840\] {
   --tw-bg-opacity: 1;
   background-color: rgb(40 200 64 / var(--tw-bg-opacity));
@@ -1102,8 +1046,32 @@ video {
   background-color: rgb(254 188 46 / var(--tw-bg-opacity));
 }
 
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.bg-base-100 {
+  background-color: var(--base-100);
+}
+
+.bg-base-200 {
+  background-color: var(--base-200);
+}
+
 .bg-base-300 {
   background-color: var(--base-300);
+}
+
+.bg-content {
+  background-color: var(--content);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-transparent {
+  background-color: transparent;
 }
 
 .fill-content {
@@ -1329,6 +1297,10 @@ dialog[open] {
   animation: fadein 0.2s ease-in-out forwards;
 }
 
+.dialog-close {
+  animation: fadeout 0.2s ease-in-out forwards;
+}
+
 .hover\:border-accent:hover {
   border-color: var(--accent);
 }
@@ -1400,14 +1372,6 @@ dialog[open] {
   background-color: rgb(86 86 86 / var(--tw-bg-opacity));
 }
 
-.active\:bg-\[\#ffffff\]\/\[\.04\]:active {
-  background-color: rgb(255 255 255 / .04);
-}
-
-.active\:bg-base-100-hover:active {
-  background-color: var(--base-100-hover);
-}
-
 .active\:bg-\[\#64f77c\]:active {
   --tw-bg-opacity: 1;
   background-color: rgb(100 247 124 / var(--tw-bg-opacity));
@@ -1421,4 +1385,12 @@ dialog[open] {
 .active\:bg-\[\#ffec67\]:active {
   --tw-bg-opacity: 1;
   background-color: rgb(255 236 103 / var(--tw-bg-opacity));
+}
+
+.active\:bg-\[\#ffffff\]\/\[\.04\]:active {
+  background-color: rgb(255 255 255 / .04);
+}
+
+.active\:bg-base-100-hover:active {
+  background-color: var(--base-100-hover);
 }

@@ -15,7 +15,7 @@ import { JSX } from "solid-js";
 interface Props {
   width: number;
   height: number;
-  bgColor: string;
+  class: string;
   children: JSX.Element;
 }
 
@@ -36,7 +36,7 @@ const Modal = (props: Props) => {
       }}
     >
       <div
-        class={`${props.bgColor} rounded-xl`}
+        class={`${props.class} rounded-xl`}
         style={{
           width: `${props.width}%`,
           height: `${props.height}%`,

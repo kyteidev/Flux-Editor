@@ -39,6 +39,7 @@ const Welcome = () => {
   const [name, setName] = createSignal<string>("");
 
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
+  const [closeModal, setCloseModal] = createSignal(false);
 
   const [currentOS, setCurrentOS] = createSignal();
 
@@ -137,7 +138,11 @@ const Welcome = () => {
       </div>
       {/* new-modal */}
       <dialog id="modal-new">
-        <Modal width={60} height={60} bgColor="bg-base-200">
+        <Modal
+          width={60}
+          height={60}
+          class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
+        >
           <div class="flex-col space-y-4">
             <div class="flex items-center space-x-3">
               <p class="text-xl text-content">New </p>
@@ -193,9 +198,14 @@ const Welcome = () => {
                 const modal = document.getElementById(
                   "modal-new",
                 ) as HTMLDialogElement;
-                if (modal) {
-                  modal.close();
-                }
+
+                setCloseModal(true);
+                setTimeout(() => {
+                  if (modal) {
+                    modal.close();
+                  }
+                  setCloseModal(false);
+                }, 200);
               }}
             />
             <Button
@@ -209,7 +219,6 @@ const Welcome = () => {
                 if (modal) {
                   modal.close();
                 }
-                openEditor("new");
               }}
             />
           </div>
@@ -217,7 +226,11 @@ const Welcome = () => {
       </dialog>
       {/* clone-modal */}
       <dialog id="modal-clone">
-        <Modal width={60} height={35} bgColor="bg-base-200">
+        <Modal
+          width={60}
+          height={35}
+          class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
+        >
           <div class="flex-col space-y-3">
             <div class="flex items-center space-x-3">
               <p class="inline-block text-xl text-content">URL</p>
@@ -247,9 +260,13 @@ const Welcome = () => {
                 const modal = document.getElementById(
                   "modal-clone",
                 ) as HTMLDialogElement;
-                if (modal) {
-                  modal.close();
-                }
+                setCloseModal(true);
+                setTimeout(() => {
+                  if (modal) {
+                    modal.close();
+                  }
+                  setCloseModal(false);
+                }, 200);
               }}
             />
             <Button
