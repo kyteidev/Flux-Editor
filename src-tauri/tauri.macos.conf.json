@@ -7,15 +7,7 @@
         "height": 620,
         "minWidth": 660,
         "minHeight": 450,
-        "decorations": true,
-        "visible": false
-      },
-      {
-        "width": 500,
-        "height": 300,
-        "decorations": false,
-        "url": "splash.html",
-        "label": "splash"
+        "decorations": true
       }
     ],
     "bundle": {
