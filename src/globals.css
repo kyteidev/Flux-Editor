@@ -626,20 +626,12 @@ video {
   top: 12vh;
 }
 
-.top-\[14px\] {
-  top: 14px;
-}
-
 .top-\[30vh\] {
   top: 30vh;
 }
 
 .top-full {
   top: 100%;
-}
-
-.top-\[40px\] {
-  top: 40px;
 }
 
 .z-0 {
@@ -718,10 +710,6 @@ video {
   height: 1.5rem;
 }
 
-.h-\[12px\] {
-  height: 12px;
-}
-
 .h-\[1px\] {
   height: 1px;
 }
@@ -788,10 +776,6 @@ video {
 
 .w-9 {
   width: 2.25rem;
-}
-
-.w-\[12px\] {
-  width: 12px;
 }
 
 .w-\[5px\] {
@@ -989,6 +973,10 @@ video {
   overflow-y: hidden;
 }
 
+.overscroll-none {
+  overscroll-behavior: none;
+}
+
 .overflow-ellipsis {
   text-overflow: ellipsis;
 }
@@ -1033,21 +1021,6 @@ video {
 
 .border-base-200 {
   border-color: var(--base-200);
-}
-
-.bg-\[\#28c840\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(40 200 64 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#FF5F57\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 95 87 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#febc2e\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(254 188 46 / var(--tw-bg-opacity));
 }
 
 .bg-accent {
@@ -1374,21 +1347,6 @@ dialog[open] {
 .active\:bg-\[\#565656\]:active {
   --tw-bg-opacity: 1;
   background-color: rgb(86 86 86 / var(--tw-bg-opacity));
-}
-
-.active\:bg-\[\#64f77c\]:active {
-  --tw-bg-opacity: 1;
-  background-color: rgb(100 247 124 / var(--tw-bg-opacity));
-}
-
-.active\:bg-\[\#fd978e\]:active {
-  --tw-bg-opacity: 1;
-  background-color: rgb(253 151 142 / var(--tw-bg-opacity));
-}
-
-.active\:bg-\[\#ffec67\]:active {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 236 103 / var(--tw-bg-opacity));
 }
 
 .active\:bg-\[\#ffffff\]\/\[\.04\]:active {

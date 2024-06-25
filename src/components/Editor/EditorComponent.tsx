@@ -132,7 +132,7 @@ const EditorComponent = (props: Props) => {
 
   const calcHighlightLinePos = () => {
     if (highlightedLine && textareaRef) {
-      highlightedLine.style.top = `calc(${selectedLine() - 1} * 1.5rem - ${textareaRef?.scrollTop}px)`;
+      highlightedLine.style.top = `calc(${selectedLine() - 1} * 1.5rem - ${highlightedContentPre?.scrollTop}px)`;
       highlightedLine.style.height = "1.5em";
 
       const highlightedLinePos = highlightedLine.getBoundingClientRect();
@@ -332,6 +332,7 @@ const EditorComponent = (props: Props) => {
           spellcheck={false}
           onfocus={updateSelectedLine}
           onblur={handleBlur}
+          onselect={handleBlur}
           class={`z-10 bg-transparent text-transparent caret-content ${styles.textarea}`}
         ></textarea>
         <pre
