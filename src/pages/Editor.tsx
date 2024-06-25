@@ -70,6 +70,7 @@ const Editor = () => {
             >
               <FileBrowser dir={dir()} />
             </div>
+            {/* Due to a bug, the second pane in vertical split panes glitch when hidden, so temporarily set canSecondHide to false */}
             <SplitPane
               vertical={true}
               grow={true}
@@ -77,7 +78,7 @@ const Editor = () => {
               firstMinSize={300}
               canFirstHide={false}
               secondMinSize={250}
-              canSecondHide={true}
+              canSecondHide={false}
             >
               <Show
                 when={getTabs().length != 0}

@@ -66,6 +66,7 @@ const SplitPane = (props: Props) => {
     const newHeight = firstHeight() + movementY;
 
     // FIXME: Hidden children becomes visible when resizing window to reveal them.
+    // FIXME: Second child height glitches when hiding.
 
     if (props.vertical) {
       const cursorOffsetY: number = Math.abs(e.clientY - firstHeight()); // gets absolute value to avoid checking for negative numbers
