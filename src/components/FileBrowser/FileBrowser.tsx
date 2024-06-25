@@ -12,7 +12,7 @@ You should have received a copy of the GNU General Public License along with Nar
 
 import { readDir } from "@tauri-apps/api/fs";
 import path from "path-browserify";
-import { For, JSX, Show, createSignal, onMount } from "solid-js";
+import { For, JSX, Show, createMemo, createSignal, onMount } from "solid-js";
 import {
   IconFolder,
   IconFolderOpen,
@@ -151,8 +151,40 @@ const FileBrowser = (props: Props) => {
     firstRender: boolean,
     howNested: number, // how nested it is, e.g. root=0, nested=1, nested-in-nested=2, ...
   ) => {
+    const nestedFiles: string[] = [];
+    const nestedDirs: string[] = [];
+
+    const [nestedContent, setNestedContent] = createSignal<string[]>();
+
+    // TODO: utilize the nested content obtained here to avoid fetching again later on?
+    for (let i = 0; i < contents.length; i++) {
+      getPathContents(path.join(parentDir, contents[i])).then((content) => {
+        if (content[0] != undefined && content[0].includes("Not a directory")) {
+          nestedFiles.push(path.join(parentDir, contents[i]));
+        } else {
+          nestedDirs.push(path.join(parentDir, contents[i]));
+        }
+        if ([...nestedDirs, ...nestedFiles].length === contents.length) {
+          setNestedContent([
+            ...nestedDirs
+              .map((item) => {
+                const parts = item.split(path.sep);
+                return parts[parts.length - 1];
+              })
+              .sort(),
+            ...nestedFiles
+              .map((item) => {
+                const parts = item.split(path.sep);
+                return parts[parts.length - 1];
+              })
+              .sort(),
+          ]);
+        }
+      });
+    }
+
     return (
-      <For each={contents}>
+      <For each={nestedContent()}>
         {(itemName) => {
           const [open, setOpen] = createSignal(false);
           const [isDir, setIsDir] = createSignal();
@@ -169,6 +201,7 @@ const FileBrowser = (props: Props) => {
           }
 
           // TODO: This is rerun every time a folder is opened, so optimize this!
+          /*
           if (itemName[0] != ".") {
             getPathContents(itemPath)
               .then((contents) => {
@@ -186,13 +219,23 @@ const FileBrowser = (props: Props) => {
                     dirs.push(itemPath);
                   }
                 }
-                // TODO: sort folders to top
               })
               .catch((error: string) => {
                 setDirNestedContents([]);
                 console.error(`Error fetching directory contents: ${error}`);
                 logger(true, "FileBrowser.tsx", error as string);
               });
+          }
+          */
+
+          if (!(files.includes(itemPath) || dirs.includes(itemPath))) {
+            if (nestedDirs.includes(itemPath)) {
+              dirs.push(itemPath);
+              setIsDir(true);
+            } else {
+              files.push(itemPath);
+              setIsDir(false);
+            }
           }
 
           // if file name matches special file name, set special icon. Otherwise check file extension
@@ -212,6 +255,15 @@ const FileBrowser = (props: Props) => {
                 onclick={() => {
                   if (isDir()) {
                     setOpen(!open());
+                    getPathContents(itemPath)
+                      .then((contents) => setDirNestedContents(contents))
+                      .catch((error) => {
+                        setDirNestedContents([]);
+                        console.error(
+                          `Error fetching directory contents: ${error}`,
+                        );
+                        logger(true, "FileBrowser.tsx", error as string);
+                      });
                   } else {
                     addTab([itemName, itemPath]);
                   }
