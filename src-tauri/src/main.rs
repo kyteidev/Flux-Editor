@@ -128,7 +128,10 @@ fn menu() -> Menu {
         .add_submenu(Submenu::new("View", view_menu))
         .add_submenu(Submenu::new("Modules", modules_menu));
 
+    #[cfg(any(target_os = "macos"))]
     return menu;
+
+    return Menu::new();
 }
 
 fn main() {
@@ -157,7 +160,13 @@ fn main() {
             }
             // [end]
         })
-        .menu(menu()) // TODO: maybe add custom menu only for Mac, make a menu component for Windows and Linux
+        .on_menu_event(|event| match event.menu_item_id() {
+            "save" => {
+                event.window().emit("narvik:save", "").unwrap();
+            }
+            _ => {}
+        })
+        .menu(menu())
         .invoke_handler(tauri::generate_handler![clone_repo])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
