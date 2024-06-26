@@ -20,24 +20,72 @@ import "./themes/dark.css";
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 import "prismjs/plugins/autoloader/prism-autoloader.min.js";
 import { fs } from "@tauri-apps/api";
+import { setSavedTabs } from "./components/EditorTabs";
 
 interface Props {
   lang: string;
 }
 
+let filePath: string;
+const [fileSaved, setFileSaved] = createSignal<string[]>([]); // array of paths containing files that are saved. Local version of savedTabs() in EditorTabs.tsx
+const [fileSavedContent, setFileSavedContent] = createSignal<string[][]>([]); // the first item is the path, second is saved content, and third is changed content.
+// fileSavedContent is different from fileSaved, because the latter contains only saved files' paths, while fileSavedContent contains all active files' paths.
+// it's like the tracking array.
+
 const [lines, setLines] = createSignal(["1"]);
+
+export const getSavedFiles = () => {
+  return fileSaved();
+};
+
+export const saveFile = () => {
+  const textarea = document.getElementById("editing") as HTMLTextAreaElement;
+  if (
+    textarea.value &&
+    fileSavedContent()[
+      fileSavedContent().findIndex((i) => i.includes(filePath))
+    ][1] != textarea.value // checks if textarea.value exists, and if the saved content is equal to textarea.value
+  ) {
+    fs.writeFile(filePath, textarea.value);
+    setFileSaved([...fileSaved(), filePath]);
+    fileSavedContent()[
+      fileSavedContent().findIndex((i) => i.includes(filePath))
+    ][1] = textarea.value; // sets the saved content value to textarea value
+
+    setSavedTabs(fileSaved()); // updates savedTabs() signal in EditorTabs.tsx
+  }
+};
 
 export const openFile = (path: string) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
   if (path === "narvik:settings") {
     // TODO: add settings
   } else {
+    if (
+      !fileSaved().includes(path) &&
+      !fileSavedContent().flat().includes(path) // checks if open file already exists as tab
+    ) {
+      setFileSaved([...fileSaved(), path]); // adds path to saved files array
+    }
+
     fs.readTextFile(path).then((data) => {
-      textarea.value = data;
+      filePath = path;
+
+      if (!fileSavedContent().flat().includes(path)) {
+        // flattens fileSavedContent array and checks if open file's path exists there. So basically checks if open file is being tracked for changes
+        setFileSavedContent([...fileSavedContent(), [path, data, data]]); // if not tracked, add it to tracking array
+        textarea.value = data; // sets textarea value to value read from the open file
+      } else {
+        textarea.value =
+          fileSavedContent()[
+            fileSavedContent().findIndex((i) => i.includes(path))
+          ][2]; // if already tracked, set textarea value to be the changed value, because the open file may not be saved. If saved, its value would be same as saved value.
+      }
 
       highlightContent();
       updateLineNumbers();
     });
+    setSavedTabs(fileSaved()); // syncs savedTabs() signal in EditorTabs.tsx with fileSaved()
   }
 };
 
@@ -98,9 +146,6 @@ const EditorComponent = (props: Props) => {
   let highlightedLine: HTMLElement | null;
   let textareaRef: HTMLTextAreaElement | undefined;
 
-  let hasSaved = true;
-  let savedContent: string;
-
   onMount(() => {
     lineNumbersDiv = document.getElementById("line-numbers");
     highlightedContent = document.getElementById("highlighting-content");
@@ -157,16 +202,25 @@ const EditorComponent = (props: Props) => {
 
   const handleInput = () => {
     updateContent();
-    handleScroll();
+    handleScroll(); // FIXME: the character typed right after file is saved is not registered as change.
 
-    if (hasSaved) {
-      hasSaved = false;
-    } else {
-      setTimeout(() => {
-        if (savedContent === textareaRef?.value) {
-          hasSaved = true;
-        }
-      }, 1000);
+    if (textareaRef) {
+      fileSavedContent()[
+        fileSavedContent().findIndex((i) => i.includes(filePath))
+      ][2] = textareaRef.value; // sets updated value in tracking array to be same as textarea value
+
+      if (
+        fileSavedContent()[
+          fileSavedContent().findIndex((i) => i.includes(filePath))
+        ][1] === textareaRef.value // checks if saved value is same as textarea value
+      ) {
+        // sets signals to know this file is saved
+        setFileSaved([...fileSaved(), filePath]);
+        setSavedTabs(fileSaved());
+      } else {
+        fileSaved().splice(fileSaved().indexOf(filePath), 1); // removes this file from fileSaved array, since this file has changes.
+        setSavedTabs(fileSaved()); // syncs signals
+      }
     }
   };
   const handleBlur = () => {

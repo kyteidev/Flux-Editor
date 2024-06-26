@@ -169,3 +169,23 @@ export const IconFolderOpen = () => {
     </svg>
   );
 };
+
+export const IconCircle = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="auto"
+      viewBox="0 0 14 14"
+      fill="var(--content)"
+      stroke="var(--content)"
+      style={{
+        "padding-right": "5px",
+        "padding-bottom": "5px",
+      }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M7 3.34a10 10 0 1 1 -4.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 4.995 -8.336z" />
+    </svg>
+  );
+};

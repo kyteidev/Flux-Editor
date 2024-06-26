@@ -634,6 +634,14 @@ video {
   top: 100%;
 }
 
+.left-\[2\.5px\] {
+  left: 2.5px;
+}
+
+.left-\[2px\] {
+  left: 2px;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -734,6 +742,10 @@ video {
   height: 100vh;
 }
 
+.h-\[10px\] {
+  height: 10px;
+}
+
 .max-h-8 {
   max-height: 2rem;
 }
@@ -792,6 +804,10 @@ video {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-\[1px\] {
+  width: 1px;
 }
 
 .min-w-4 {
@@ -1049,6 +1065,10 @@ video {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.bg-success {
+  background-color: var(--success);
 }
 
 .fill-content {

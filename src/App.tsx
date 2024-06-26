@@ -13,11 +13,19 @@ You should have received a copy of the GNU General Public License along with Nar
 import Editor from "./pages/Editor";
 import { onMount } from "solid-js";
 import { initLogger, logger } from "./logger";
+import { appWindow } from "@tauri-apps/api/window";
+import { saveFile } from "./components/Editor/EditorComponent";
 
 export default function App() {
   onMount(() => {
     initLogger();
     logger(false, "App.tsx", "Initialized application");
+
+    appWindow.listen("narvik:save", () => {
+      saveFile();
+    });
+
+    logger(false, "App.tsx", "Initialized menu event listeners");
   });
 
   return <Editor />;

@@ -1,16 +1,20 @@
-import { For, createSignal } from "solid-js";
-import { IconClose } from "../../Icons/Icons";
+import { For, Show, createSignal, onCleanup } from "solid-js";
+import { IconCircle, IconClose } from "../../Icons/Icons";
 import { openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
+import { dialog } from "@tauri-apps/api";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
+
+export const [savedTabs, setSavedTabs] = createSignal<string[]>([]);
 
 export const addTab = (tab: string[]) => {
   if (tabs().length === 0) {
     fixEditorHeight(true);
   }
   if (!tabs().flat().includes(tab[1])) {
+    // checks if the tab is already open.
     setTabs([...tabs(), tab]);
     openFile(tabs()[tabs().length - 1][1]);
   }
@@ -24,7 +28,7 @@ export const getTabs = () => {
 
 const EditorTabs = () => {
   return (
-    <div class="h-[40px] w-full max-w-full overflow-auto bg-base-200 p-1">
+    <div class="flex h-[40px] w-full max-w-full flex-col overflow-auto bg-base-200 p-1">
       <div class="flex w-full max-w-full select-none space-x-1">
         <For each={tabs().map((t) => t[0])}>
           {(tabName, index) => {
@@ -34,16 +38,40 @@ const EditorTabs = () => {
               openFile(tabs()[index()][1]);
             };
 
-            const closeTab = () => {
+            const closeTab = async () => {
+              if (!savedTabs().includes(tabs()[index()][1])) {
+                // checks if there are unsaved changes.
+                if (
+                  (await dialog.ask("Your changes will not be saved.", {
+                    title: "Are you sure you want to close this file?",
+                    type: "warning",
+                  })) === false
+                ) {
+                  savedTabs().splice(
+                    savedTabs().indexOf(tabs()[index()][1]),
+                    1,
+                  ); // for some reason file gets saved when closing, no matter the result of this ask dialog. This removes the path from savedTabs() array
+                  return;
+                }
+              }
               setIsClosed(true);
               setTabs(tabs().filter((t) => t !== tabs()[index()]));
               if (tabs().length === 0) {
-                fixEditorHeight(false);
+                fixEditorHeight(false); // tabs add height to editor pane, this fixes it by adding height because tabs row is hidden when all tabs are closed
               } else {
                 setActiveTab(index() - 1);
-                openFile(tabs()[index() - 1][1]);
+                openFile(tabs()[index() - 1][1]); // opens the previous tab
               }
             };
+
+            const [hasSaved, setHasSaved] = createSignal(true);
+
+            // TODO: optimize this, the signals won't rerender the close button when updated for some reason. This is a temporary fix.
+            const checkHasSaved = setInterval(() => {
+              setHasSaved(savedTabs().includes(tabs()[index()][1]));
+            }, 250);
+
+            onCleanup(() => clearInterval(checkHasSaved)); // deletes the setInterval after tab is closed.
 
             return (
               <div
@@ -62,7 +90,16 @@ const EditorTabs = () => {
                   class="ml-2 h-4 min-h-4 w-4 min-w-4 hover:opacity-50"
                   onclick={closeTab}
                 >
-                  <IconClose />
+                  <Show
+                    when={hasSaved()}
+                    fallback={
+                      <div class="relative left-[2px]">
+                        <IconCircle />
+                      </div>
+                    }
+                  >
+                    <IconClose />
+                  </Show>
                 </button>
               </div>
             );
