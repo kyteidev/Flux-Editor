@@ -83,18 +83,17 @@ const Editor = () => {
               <Show
                 when={getTabs().length != 0}
                 fallback={
-                  <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-20 bg-base-200">
+                  <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-10 bg-base-200">
                     <img
                       src={logo}
                       alt="Narvik Logo"
                       draggable="false"
-                      style={{ width: "15em", height: "auto" }}
+                      style={{ width: "12rem", height: "auto" }}
                     />
                     <div class="flex flex-col space-y-1">
-                      <h1 class="text-3xl">Open a file to get started.</h1>
-                      <p class="text-normal text-center">
-                        Click on a file in the File Browser to open it.
-                      </p>
+                      <h1 class="text-center text-3xl">
+                        Open a file to get started.
+                      </h1>
                     </div>
                   </div>
                 }
