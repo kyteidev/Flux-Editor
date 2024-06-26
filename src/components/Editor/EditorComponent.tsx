@@ -157,14 +157,14 @@ const EditorComponent = (props: Props) => {
     }
   });
 
-  // highlight line
-
+  // highlights selected line
   const updateSelectedLine = () => {
     setTimeout(() => {
+      // renders on next frame because some values may not be updated yet.
       if (textareaRef) {
         const start = textareaRef.selectionStart;
         const value = textareaRef.value;
-        const lineNumber = value.substring(0, start).split("\n").length;
+        const lineNumber = value.substring(0, start).split("\n").length; // gets line number from index of new lines.
 
         setSelectedLine(lineNumber);
       }
@@ -202,7 +202,7 @@ const EditorComponent = (props: Props) => {
 
   const handleInput = () => {
     updateContent();
-    handleScroll(); // FIXME: the character typed right after file is saved is not registered as change.
+    handleScroll();
 
     if (textareaRef) {
       fileSavedContent()[
@@ -252,64 +252,106 @@ const EditorComponent = (props: Props) => {
     const openingBrackets = ["(", "[", "{"];
     const charsWithClosingChars = [...openingBrackets, '"', "'"];
 
-    if (e.key === "Tab") {
-      e.preventDefault();
+    let newStart = selectionStart; // this is used in arrow key cases
 
-      const updatedValue =
-        value.substring(0, selectionStart) +
-        "\t" +
-        value.substring(selectionEnd);
-
-      textarea.value = updatedValue;
-
-      textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
-
-      updateContent();
-    } else if (
-      e.key === "ArrowUp" ||
-      e.key === "ArrowDown" ||
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight"
-    ) {
-      let newStart = selectionStart; // ignore if showing "declared not never used", its being used below
-
-      if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
-        const prevLineStart = value.indexOf("\n", selectionEnd);
-        newStart = prevLineStart === -1 ? value.length - 1 : prevLineStart - 1;
-      } else if (e.key === "ArrowDown") {
-        const nextLineStart = value.indexOf("\n", selectionEnd);
-        newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
-      } else if (e.key === "ArrowRight" && value[selectionEnd] === "\n") {
-        const nextLineStart = value.indexOf("\n", selectionEnd);
-        newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
-      }
-
-      updateLineNumbers();
-      updateSelectedLine();
-    } else if (e.key === "Enter") {
-      if (
-        openingBrackets.includes(
-          textarea.value.charAt(textarea.selectionStart - 1),
-        )
-      ) {
+    switch (e.key) {
+      case "Tab":
         e.preventDefault();
 
         const updatedValue =
           value.substring(0, selectionStart) +
-          "\n\t\n" +
+          "\t" +
           value.substring(selectionEnd);
 
         textarea.value = updatedValue;
 
-        textarea.selectionStart = textarea.selectionEnd = selectionStart + 2;
+        textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
 
         updateContent();
-        setTimeout(() => calcHighlightLinePos(), 0);
-      }
 
-      updateLineNumbers();
-      updateSelectedLine();
-    } else if (charsWithClosingChars.includes(e.key)) {
+        break;
+
+      case "ArrowUp":
+      case "ArrowLeft":
+        const prevLineStart = value.indexOf("\n", selectionEnd);
+        newStart = prevLineStart === -1 ? value.length - 1 : prevLineStart - 1;
+
+        updateLineNumbers();
+        updateSelectedLine();
+
+        break;
+
+      case "ArrowDown":
+        const nextLineStart = value.indexOf("\n", selectionEnd);
+        newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
+
+        updateLineNumbers();
+        updateSelectedLine();
+
+        break;
+
+      case "ArrowRight":
+        if (value[selectionEnd] === "\n") {
+          const nextLineStart = value.indexOf("\n", selectionEnd);
+          newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
+        }
+
+        updateLineNumbers();
+        updateSelectedLine();
+
+        break;
+
+      case "Enter":
+        if (
+          openingBrackets.includes(
+            textarea.value.charAt(textarea.selectionStart - 1),
+          )
+        ) {
+          e.preventDefault();
+
+          const updatedValue =
+            value.substring(0, selectionStart) +
+            "\n\t\n" +
+            value.substring(selectionEnd);
+
+          textarea.value = updatedValue;
+
+          textarea.selectionStart = textarea.selectionEnd = selectionStart + 2;
+
+          updateContent();
+          setTimeout(() => calcHighlightLinePos(), 0);
+        }
+
+        updateLineNumbers();
+        updateSelectedLine();
+
+        break;
+
+      case "Backspace":
+        if (
+          charsWithClosingChars.includes(
+            textarea.value.charAt(selectionStart - 1),
+          ) &&
+          textarea.value.charAt(selectionStart) ===
+            getClosingChar(textarea.value.charAt(selectionStart - 1))
+        ) {
+          e.preventDefault();
+
+          const updatedValue =
+            textarea.value.substring(0, selectionStart - 1) +
+            textarea.value.substring(selectionStart + 1);
+
+          textarea.value = updatedValue;
+
+          textarea.selectionStart = textarea.selectionEnd = selectionStart - 1;
+
+          updateContent();
+        }
+
+        break;
+    }
+
+    if (charsWithClosingChars.includes(e.key)) {
       e.preventDefault();
       const newValue =
         value.substring(0, selectionStart) +
@@ -320,26 +362,6 @@ const EditorComponent = (props: Props) => {
       textarea.value = newValue;
       textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
       updateContent();
-    } else if (e.key === "Backspace") {
-      if (
-        charsWithClosingChars.includes(
-          textarea.value.charAt(selectionStart - 1),
-        ) &&
-        textarea.value.charAt(selectionStart) ===
-          getClosingChar(textarea.value.charAt(selectionStart - 1))
-      ) {
-        e.preventDefault();
-
-        const updatedValue =
-          textarea.value.substring(0, selectionStart - 1) +
-          textarea.value.substring(selectionStart + 1);
-
-        textarea.value = updatedValue;
-
-        textarea.selectionStart = textarea.selectionEnd = selectionStart - 1;
-
-        updateContent();
-      }
     }
 
     handleScroll();
