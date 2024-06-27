@@ -24,6 +24,9 @@ export default function App() {
     appWindow.listen("narvik:save", () => {
       saveFile();
     });
+    appWindow.listen("narvik:save_as", () => {
+      saveFile(true);
+    });
 
     logger(false, "App.tsx", "Initialized menu event listeners");
   });

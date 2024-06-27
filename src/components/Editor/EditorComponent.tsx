@@ -19,7 +19,7 @@ import "./themes/dark.css";
 // PrismJS plugins
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 import "prismjs/plugins/autoloader/prism-autoloader.min.js";
-import { fs } from "@tauri-apps/api";
+import { dialog, fs } from "@tauri-apps/api";
 import { setSavedTabs } from "./components/EditorTabs";
 
 interface Props {
@@ -38,20 +38,38 @@ export const getSavedFiles = () => {
   return fileSaved();
 };
 
-export const saveFile = () => {
+export const saveFile = async (saveAs?: boolean) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
+  let oldFilePath = filePath;
+
+  const updateArrays = (path: string) => {
+    setFileSaved([...fileSaved(), path]);
+    fileSavedContent()[
+      fileSavedContent().findIndex((i) => i.includes(path))
+    ][1] = textarea.value; // sets the saved content value to textarea value
+
+    setSavedTabs(fileSaved()); // updates savedTabs() signal in EditorTabs.tsx
+  };
+
+  if (saveAs) {
+    filePath = (await dialog.save()) || "";
+    if (filePath === "") return;
+
+    fs.writeFile(filePath, textarea.value);
+    filePath = oldFilePath;
+
+    updateArrays(filePath);
+
+    return;
+  }
   if (
     fileSavedContent()[
       fileSavedContent().findIndex((i) => i.includes(filePath))
     ][1] != textarea.value // checks if the saved content is equal to textarea.value
   ) {
     fs.writeFile(filePath, textarea.value);
-    setFileSaved([...fileSaved(), filePath]);
-    fileSavedContent()[
-      fileSavedContent().findIndex((i) => i.includes(filePath))
-    ][1] = textarea.value; // sets the saved content value to textarea value
 
-    setSavedTabs(fileSaved()); // updates savedTabs() signal in EditorTabs.tsx
+    updateArrays(filePath);
   }
 };
 
