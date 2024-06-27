@@ -20,7 +20,7 @@ import "./themes/dark.css";
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 import "prismjs/plugins/autoloader/prism-autoloader.min.js";
 import { dialog, fs } from "@tauri-apps/api";
-import { setSavedTabs } from "./components/EditorTabs";
+import { getTabs, setSavedTabs } from "./components/EditorTabs";
 
 interface Props {
   lang: string;
@@ -41,6 +41,8 @@ export const getSavedFiles = () => {
 export const saveFile = async (saveAs?: boolean) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
   let oldFilePath = filePath;
+
+  if (getTabs().length === 0) return;
 
   const updateArrays = (path: string) => {
     setFileSaved([...fileSaved(), path]);
@@ -158,14 +160,12 @@ const EditorComponent = (props: Props) => {
   const [selectedLine, setSelectedLine] = createSignal(-1);
 
   let lineNumbersDiv: HTMLElement | null;
-  let highlightedContent: HTMLElement | null;
   let highlightedContentPre: HTMLElement | null;
   let highlightedLine: HTMLElement | null;
   let textareaRef: HTMLTextAreaElement | undefined;
 
   onMount(() => {
     lineNumbersDiv = document.getElementById("line-numbers");
-    highlightedContent = document.getElementById("highlighting-content");
     highlightedContentPre = document.getElementById("highlighting");
     highlightedLine = document.getElementById("highlighted-line");
 
@@ -269,7 +269,7 @@ const EditorComponent = (props: Props) => {
     const openingBrackets = ["(", "[", "{"];
     const charsWithClosingChars = [...openingBrackets, '"', "'"];
 
-    let newStart = selectionStart; // this is used in arrow key cases
+    //let newStart = selectionStart; // this is used in arrow key cases
 
     switch (e.key) {
       case "Tab":
@@ -290,29 +290,8 @@ const EditorComponent = (props: Props) => {
 
       case "ArrowUp":
       case "ArrowLeft":
-        const prevLineStart = value.indexOf("\n", selectionEnd);
-        newStart = prevLineStart === -1 ? value.length - 1 : prevLineStart - 1;
-
-        updateLineNumbers();
-        updateSelectedLine();
-
-        break;
-
       case "ArrowDown":
-        const nextLineStart = value.indexOf("\n", selectionEnd);
-        newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
-
-        updateLineNumbers();
-        updateSelectedLine();
-
-        break;
-
       case "ArrowRight":
-        if (value[selectionEnd] === "\n") {
-          const nextLineStart = value.indexOf("\n", selectionEnd);
-          newStart = nextLineStart === -1 ? value.length : nextLineStart + 1;
-        }
-
         updateLineNumbers();
         updateSelectedLine();
 
