@@ -15,12 +15,16 @@ import { onMount } from "solid-js";
 import { initLogger, logger } from "./logger";
 import { appWindow } from "@tauri-apps/api/window";
 import { saveFile } from "./components/Editor/EditorComponent";
+import { dialog } from "@tauri-apps/api";
 
 export default function App() {
   onMount(() => {
     initLogger();
     logger(false, "App.tsx", "Initialized application");
 
+    appWindow.listen("narvik:settings", () => {
+      dialog.message("hello world");
+    });
     appWindow.listen("narvik:save", () => {
       saveFile();
     });
