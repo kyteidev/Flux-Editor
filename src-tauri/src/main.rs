@@ -65,7 +65,9 @@ fn menu() -> Menu {
     let app_menu = Menu::new()
         .add_item(CustomMenuItem::new("about".to_string(), "About"))
         .add_native_item(MenuItem::Separator)
-        .add_item(CustomMenuItem::new("settings".to_string(), "Settings"))
+        .add_item(
+            CustomMenuItem::new("settings".to_string(), "Settings").accelerator("CmdOrCtrl+,"),
+        )
         .add_item(CustomMenuItem::new("plugins".to_string(), "Plugins"))
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::Services)
@@ -160,11 +162,11 @@ fn main() {
             }
             // [end]
         })
-        .on_menu_event(|event| match event.menu_item_id() {
-            "save" => {
-                event.window().emit("narvik:save", "").unwrap();
-            }
-            _ => {}
+        .on_menu_event(|event| {
+            event
+                .window()
+                .emit(&("narvik:".to_owned() + event.menu_item_id()), "")
+                .unwrap();
         })
         .menu(menu())
         .invoke_handler(tauri::generate_handler![clone_repo])

@@ -41,10 +41,9 @@ export const getSavedFiles = () => {
 export const saveFile = () => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
   if (
-    textarea.value &&
     fileSavedContent()[
       fileSavedContent().findIndex((i) => i.includes(filePath))
-    ][1] != textarea.value // checks if textarea.value exists, and if the saved content is equal to textarea.value
+    ][1] != textarea.value // checks if the saved content is equal to textarea.value
   ) {
     fs.writeFile(filePath, textarea.value);
     setFileSaved([...fileSaved(), filePath]);
