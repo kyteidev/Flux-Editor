@@ -142,7 +142,11 @@ fn main() {
     tauri::Builder::default()
         .setup(|app| {
             let win = app.get_window("main").unwrap();
+
+            #[cfg(target_os = "macos")]
             win.set_transparent_titlebar(true, false);
+
+            #[cfg(target_os = "macos")]
             win.set_window_controls_pos(16., 18.);
 
             #[cfg(any(windows))]
