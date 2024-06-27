@@ -301,6 +301,7 @@ const EditorComponent = (props: Props) => {
       case "ArrowLeft":
       case "ArrowDown":
       case "ArrowRight":
+        handleScroll();
         updateSelectedLine();
 
         break;
