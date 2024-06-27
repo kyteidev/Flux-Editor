@@ -21,12 +21,20 @@ function WinControls() {
     setMaximized(maximized);
   };
 
+  appWindow.listen("tauri://resize", () => {
+    checkMaximized();
+  });
+
   const minimizeWindow = () => {
     appWindow.minimize();
   };
 
   const maximizeWindow = () => {
-    appWindow.maximize();
+    if (isMaximized()) {
+      appWindow.unmaximize();
+    } else {
+      appWindow.maximize();
+    }
     checkMaximized();
   };
 
@@ -67,7 +75,7 @@ function WinControls() {
           class="h-10 w-10 cursor-default bg-transparent hover:bg-[#000000]/[.05] active:bg-[#ffffff]/[.04]"
           onClick={maximizeWindow}
         >
-          {isMaximized() ? (
+          {!isMaximized() ? (
             <div class="flex justify-center">
               <svg
                 width="14"

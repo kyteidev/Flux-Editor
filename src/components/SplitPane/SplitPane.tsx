@@ -46,7 +46,21 @@ const SplitPane = (props: Props) => {
   const [isDragging, setIsDragging] = createSignal(false);
   const [firstWidth, setFirstWidth] = createSignal(props.size);
 
+  const [canUnhide, setCanUnhide] = createSignal(true);
+
   onMount(() => setFirstHeight(props.size));
+
+  // TODO: scale second child when window is resized.
+  /*
+  let secondHeight: number;
+
+  appWindow.listen("tauri://resize", () => {
+    setTimeout(() => {
+      setFirstHeight(window.innerHeight - 43 - secondHeight);
+      console.log("hi");
+    }, 10);
+  });
+  */
 
   const handleMouseDown = () => {
     setIsDragging(true);
@@ -54,7 +68,10 @@ const SplitPane = (props: Props) => {
     windowHeight = window.innerHeight;
   };
 
-  const handleMouseUp = () => setIsDragging(false);
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    setCanUnhide(true);
+  };
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging()) return;
@@ -66,44 +83,54 @@ const SplitPane = (props: Props) => {
     const newHeight = firstHeight() + movementY;
 
     // FIXME: Hidden children becomes visible when resizing window to reveal them.
-    // FIXME: Second child height glitches when hiding.
 
     if (props.vertical) {
       const cursorOffsetY: number = Math.abs(e.clientY - firstHeight()); // gets absolute value to avoid checking for negative numbers
 
       if (props.firstMinSize && newHeight <= props.firstMinSize) {
         // if first pane should be hidden
-        setFirstHeight(props.firstMinSize);
         if (cursorOffsetY >= 80 && props.canFirstHide) {
+          setCanUnhide(false);
           setFirstHeight(0); // hides first pane
+        } else if (canUnhide()) {
+          setFirstHeight(props.firstMinSize);
         }
       } else if (
         props.secondMinSize &&
         newHeight >= windowHeight - props.secondMinSize // if second pane should be hidden
       ) {
-        setFirstHeight(windowHeight - props.secondMinSize);
         if (cursorOffsetY >= 80 && props.canSecondHide) {
-          setFirstHeight(windowHeight - 3); // sets first height to window height, minus height of splitter
+          setCanUnhide(false);
+          setFirstHeight(windowHeight - 3 - 40); // sets first height to window height, minus height of splitter
+        } else if (canUnhide()) {
+          setFirstHeight(windowHeight - props.secondMinSize);
         }
       } else {
         setFirstHeight(newHeight);
       }
+
+      //secondHeight = window.innerHeight - firstHeight() - 43;
     } else {
       const cursorOffsetX: number = Math.abs(e.clientX - firstWidth()); // gets absolute value to avoid checking for negative numbers
 
       if (props.firstMinSize && newWidth <= props.firstMinSize) {
         // same as above, but for horizontal split panes
-        setFirstWidth(props.firstMinSize);
+
         if (cursorOffsetX >= 80 && props.canFirstHide) {
+          setCanUnhide(false);
           setFirstWidth(0);
+        } else if (canUnhide()) {
+          setFirstWidth(props.firstMinSize);
         }
       } else if (
         props.secondMinSize &&
         newWidth >= windowWidth - props.secondMinSize
       ) {
-        setFirstWidth(windowWidth - props.secondMinSize);
         if (cursorOffsetX >= 80 && props.canSecondHide) {
+          setCanUnhide(false);
           setFirstWidth(windowWidth - 3);
+        } else if (canUnhide()) {
+          setFirstWidth(windowWidth - props.secondMinSize);
         }
       } else {
         setFirstWidth(newWidth);
@@ -116,13 +143,13 @@ const SplitPane = (props: Props) => {
     if (props.vertical) {
       if (firstHeight() === 0 && props.firstMinSize) {
         setFirstHeight(props.firstMinSize);
-      } else if (firstHeight() === windowHeight && props.secondMinSize) {
+      } else if (firstHeight() === windowHeight - 43 && props.secondMinSize) {
         setFirstHeight(windowHeight - props.secondMinSize);
       }
     } else {
       if (firstWidth() === 0 && props.firstMinSize) {
         setFirstWidth(props.firstMinSize);
-      } else if (firstWidth() === windowWidth && props.secondMinSize) {
+      } else if (firstWidth() === windowWidth - 3 && props.secondMinSize) {
         setFirstWidth(windowWidth - props.secondMinSize);
       }
     }
@@ -150,7 +177,7 @@ const SplitPane = (props: Props) => {
       <Show when={secondChild()}>
         <div
           id="splitter"
-          class={`${props.vertical ? "h-[5px] min-h-[5px] w-full cursor-row-resize border-y-[2px]" : "w-[5px] min-w-[5px] cursor-col-resize border-x-[2px]"} ${isDragging() ? "border-accent bg-accent" : "border-base-200 bg-content"} z-50 border-base-200 transition duration-300 ease-in-out hover:border-accent hover:bg-accent`}
+          class={`${props.vertical ? "h-[5px] min-h-[5px] w-full cursor-row-resize border-y-[2px]" : "w-[5px] min-w-[5px] cursor-col-resize border-x-[2px]"} ${isDragging() ? "border-accent bg-accent" : "border-base-200 bg-content"} z-50 transition duration-300 ease-in-out hover:border-accent hover:bg-accent`}
           style={{ height: `${props.vertical ?? `calc(100vh - 40px)`}` }}
           onmousedown={handleMouseDown}
           onclick={handleUnhide}

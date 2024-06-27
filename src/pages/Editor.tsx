@@ -45,7 +45,7 @@ const Editor = () => {
     <div class="flex h-screen max-h-screen w-screen flex-col">
       <header
         data-tauri-drag-region
-        class="header min-h-10 w-full flex-shrink-0 bg-base-200"
+        class="header max-h-10 min-h-10 w-full flex-shrink-0 bg-base-200"
       />
       <div
         style={{
@@ -78,7 +78,7 @@ const Editor = () => {
               firstMinSize={300}
               canFirstHide={false}
               secondMinSize={250}
-              canSecondHide={false}
+              canSecondHide={true}
             >
               <Show
                 when={getTabs().length != 0}
@@ -88,13 +88,13 @@ const Editor = () => {
                       src={logo}
                       alt="Narvik Logo"
                       draggable="false"
-                      style={{ width: "12rem", height: "auto" }}
+                      style={{
+                        width: "12rem",
+                        height: "auto",
+                        opacity: 0.2,
+                        filter: "grayscale(100%)",
+                      }}
                     />
-                    <div class="flex flex-col space-y-1">
-                      <h1 class="text-center text-3xl">
-                        Open a file to get started.
-                      </h1>
-                    </div>
                   </div>
                 }
               >
