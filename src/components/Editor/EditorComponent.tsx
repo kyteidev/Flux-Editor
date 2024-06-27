@@ -403,7 +403,7 @@ const EditorComponent = (props: Props) => {
         </div>
       </div>
       <div
-        class="relative flex w-full flex-grow flex-col"
+        class="relative flex w-full flex-grow flex-col bg-base-200"
         id="editor-container"
       >
         <div

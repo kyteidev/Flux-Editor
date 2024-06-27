@@ -58,6 +58,53 @@ You should have received a copy of the GNU General Public License along with Nar
   user-select: none;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 6px;
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--accent);
+}
+
+::-webkit-scrollbar-button {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background-color: transparent !important;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+
+  pre {
+    scrollbar-color: transparent transparent;
+  }
+}
+
 *:focus {
   outline: none;
 }

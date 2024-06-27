@@ -3,6 +3,9 @@ import { IconCircle, IconClose } from "../../Icons/Icons";
 import { openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
 import { dialog } from "@tauri-apps/api";
+import { fileIcons, specialFileIcons } from "../../../utils/fileIcon";
+import path from "path-browserify";
+import { Default } from "../../Icons/FileIcons";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
@@ -64,6 +67,15 @@ const EditorTabs = () => {
               }
             };
 
+            let FileIconComponent =
+              specialFileIcons[tabName.toLowerCase()] || undefined;
+            if (FileIconComponent === undefined) {
+              // checks file extension
+              const fileExtension = path.extname(tabName);
+              FileIconComponent =
+                fileIcons[fileExtension.toLowerCase()] || Default;
+            }
+
             const [hasSaved, setHasSaved] = createSignal(true);
 
             // TODO: optimize this, the signals won't rerender the close button when updated for some reason. This is a temporary fix.
@@ -83,6 +95,9 @@ const EditorTabs = () => {
                   }
                 }}
               >
+                <div class="min-h-[24px] min-w-[24px]">
+                  <FileIconComponent />
+                </div>
                 <div class="block max-h-8 max-w-32 overflow-hidden overflow-ellipsis whitespace-nowrap">
                   {tabName}
                 </div>
