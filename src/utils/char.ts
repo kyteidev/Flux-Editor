@@ -17,6 +17,8 @@ export const getClosingChar = (openingChar: string): string => {
     "(": ")",
     '"': '"',
     "'": "'",
+    "`": "`",
+    "<": ">",
   };
 
   return closingChars[openingChar] || "";

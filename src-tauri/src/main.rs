@@ -23,8 +23,10 @@ use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowEvent};
 #[cfg(any(windows))]
 use window_shadows::set_shadow;
 
+#[cfg(target_os = "macos")]
 use window_ext::WindowExt;
 
+#[cfg(target_os = "macos")]
 mod window_ext;
 
 async fn is_git_installed() -> bool {
@@ -150,13 +152,16 @@ fn main() {
         })
         .on_window_event(|e| {
             // [start] source: https://github.com/tauri-apps/tauri/issues/4789#issuecomment-1387243148
+
+            #[cfg(target_os = "macos")]
             let apply_offset = || {
                 let win = e.window();
                 win.set_window_controls_pos(16., 18.);
             };
 
+            #[cfg(target_os = "macos")]
             match e.event() {
-                WindowEvent::Resized(..) => apply_offset(), // TODO: maybe emit event for window controls, so they update when window resizes?
+                WindowEvent::Resized(..) => apply_offset(),
                 WindowEvent::ThemeChanged(..) => apply_offset(),
                 _ => {}
             }

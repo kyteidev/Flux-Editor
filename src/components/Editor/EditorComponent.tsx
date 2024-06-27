@@ -217,10 +217,12 @@ const EditorComponent = (props: Props) => {
     updateSelectedLine();
   };
 
-  const handleInput = () => {
-    updateContent();
-    handleScroll();
+  const fileChanged = () => {
+    fileSaved().splice(fileSaved().indexOf(filePath), 1); // removes this file from fileSaved array, since this file has changes.
+    setSavedTabs(fileSaved()); // syncs signals
+  };
 
+  const checkFileHasChanges = () => {
     if (textareaRef) {
       fileSavedContent()[
         fileSavedContent().findIndex((i) => i.includes(filePath))
@@ -235,10 +237,16 @@ const EditorComponent = (props: Props) => {
         setFileSaved([...fileSaved(), filePath]);
         setSavedTabs(fileSaved());
       } else {
-        fileSaved().splice(fileSaved().indexOf(filePath), 1); // removes this file from fileSaved array, since this file has changes.
-        setSavedTabs(fileSaved()); // syncs signals
+        fileChanged();
       }
     }
+  };
+
+  const handleInput = () => {
+    updateContent();
+    handleScroll();
+
+    checkFileHasChanges();
   };
   const handleBlur = () => {
     setSelectedLine(-1);
@@ -266,8 +274,8 @@ const EditorComponent = (props: Props) => {
     const selectionEnd = textarea.selectionEnd;
     const value = textarea.value;
 
-    const openingBrackets = ["(", "[", "{"];
-    const charsWithClosingChars = [...openingBrackets, '"', "'"];
+    const openingBrackets = ["(", "[", "{", "<"];
+    const charsWithClosingChars = [...openingBrackets, '"', "'", "`"];
 
     //let newStart = selectionStart; // this is used in arrow key cases
 
@@ -285,6 +293,7 @@ const EditorComponent = (props: Props) => {
         textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
 
         updateContent();
+        fileChanged();
 
         break;
 
@@ -292,7 +301,6 @@ const EditorComponent = (props: Props) => {
       case "ArrowLeft":
       case "ArrowDown":
       case "ArrowRight":
-        updateLineNumbers();
         updateSelectedLine();
 
         break;
@@ -315,6 +323,8 @@ const EditorComponent = (props: Props) => {
           textarea.selectionStart = textarea.selectionEnd = selectionStart + 2;
 
           updateContent();
+          fileChanged();
+
           setTimeout(() => calcHighlightLinePos(), 0);
         }
 
@@ -342,22 +352,27 @@ const EditorComponent = (props: Props) => {
           textarea.selectionStart = textarea.selectionEnd = selectionStart - 1;
 
           updateContent();
+          checkFileHasChanges();
         }
 
         break;
-    }
 
-    if (charsWithClosingChars.includes(e.key)) {
-      e.preventDefault();
-      const newValue =
-        value.substring(0, selectionStart) +
-        e.key +
-        getClosingChar(e.key) +
-        value.substring(selectionEnd);
+      default:
+        if (charsWithClosingChars.includes(e.key)) {
+          e.preventDefault();
+          const newValue =
+            value.substring(0, selectionStart) +
+            e.key +
+            getClosingChar(e.key) +
+            value.substring(selectionEnd);
 
-      textarea.value = newValue;
-      textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
-      updateContent();
+          textarea.value = newValue;
+          textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
+
+          updateContent();
+          fileChanged();
+        }
+        break;
     }
 
     handleScroll();
