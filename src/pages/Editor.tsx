@@ -24,6 +24,7 @@ import logo from "../assets/narvik-logo.svg";
 import Welcome from "./Welcome";
 import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
+import { error } from "console";
 
 const [dir, setDir] = createSignal<string>("");
 const [loaded, setLoaded] = createSignal(false);
@@ -43,65 +44,96 @@ export const loadEditor = (
     addTab([fileName, dirPath]);
     return;
   }
-  fs.readTextFile(path.join(dirPath, ".narvik", "config.json"))
-    .then(async (data) => {
-      const parsedData = JSON.parse(data);
 
-      if (parsedData.type === "Workspace") {
-        setWorkspaceName(dirPath.substring(dirPath.lastIndexOf(path.sep) + 1));
-      } else if (parsedData.type === "Project") {
-        const lastSlashIndex = dirPath.lastIndexOf("/");
-        const secondLastSlashIndex = dirPath.lastIndexOf(
-          "/",
-          lastSlashIndex - 1,
-        );
-        const thirdLastSlashIndex = dirPath.lastIndexOf(
-          "/",
-          secondLastSlashIndex - 1,
-        );
+  const configPath = path.join(dirPath, ".narvik", "config.json");
 
-        const filteredDirPath = dirPath.endsWith("/")
-          ? dirPath.substring(0, dirPath.length - 1)
-          : dirPath;
+  const filteredDirPath = dirPath.endsWith(path.sep)
+    ? dirPath.substring(0, dirPath.length - 1)
+    : dirPath;
 
-        if (
-          await fs.exists(
-            path.join(
-              filteredDirPath.substring(0, secondLastSlashIndex),
-              ".narvik",
-              "config.json",
-            ),
-          )
-        ) {
-          fs.readTextFile(
-            path.join(
-              filteredDirPath.substring(0, secondLastSlashIndex),
-              ".narvik",
-              "config.json",
-            ),
-          ).then((data) => {
-            const parsedData = JSON.parse(data);
+  fs.exists(configPath).then(async (exists) => {
+    if (!exists) {
+      const type = { type: "Project" };
+      const typeJSON = JSON.stringify(type, null, 2);
 
-            if (parsedData.type === "Workspace") {
-              setWorkspaceName(
-                filteredDirPath.substring(
-                  thirdLastSlashIndex + 1,
-                  secondLastSlashIndex,
+      await fs.createDir(path.join(dirPath, ".narvik"));
+      fs.writeFile(path.join(dirPath, ".narvik", "config.json"), typeJSON);
+
+      setProjectName(
+        filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
+      );
+    } else {
+      fs.readTextFile(configPath)
+        .then(async (data) => {
+          const parsedData = JSON.parse(data);
+
+          if (parsedData.type === "Workspace") {
+            setWorkspaceName(
+              dirPath.substring(dirPath.lastIndexOf(path.sep) + 1),
+            );
+          } else if (parsedData.type === "Project") {
+            const lastSlashIndex = dirPath.lastIndexOf(path.sep);
+            const secondLastSlashIndex = dirPath.lastIndexOf(
+              path.sep,
+              lastSlashIndex - 1,
+            );
+            const thirdLastSlashIndex = dirPath.lastIndexOf(
+              path.sep,
+              secondLastSlashIndex - 1,
+            );
+
+            if (
+              await fs
+                .exists(
+                  path.join(
+                    filteredDirPath.substring(0, secondLastSlashIndex),
+                    ".narvik",
+                    "config.json",
+                  ),
+                )
+                .catch((error) => {
+                  console.error(error);
+                  logger(true, "Editor.tsx", error as string);
+                })
+            ) {
+              fs.readTextFile(
+                path.join(
+                  filteredDirPath.substring(0, secondLastSlashIndex),
+                  ".narvik",
+                  "config.json",
                 ),
-              );
-            }
-          });
-        }
+              )
+                .then((data) => {
+                  const parsedData = JSON.parse(data);
 
-        setProjectName(
-          filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
-        );
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      logger(true, "Editor.tsx", error as string);
-    });
+                  if (parsedData.type === "Workspace") {
+                    setWorkspaceName(
+                      filteredDirPath.substring(
+                        thirdLastSlashIndex + 1,
+                        secondLastSlashIndex,
+                      ),
+                    );
+                  }
+                })
+                .catch((error) => {
+                  console.error(error);
+                  logger(true, "Editor.tsx", error as string);
+                });
+            }
+
+            setProjectName(
+              filteredDirPath.substring(
+                filteredDirPath.lastIndexOf(path.sep) + 1,
+              ),
+            );
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          logger(true, "Editor.tsx", error as string);
+        });
+    }
+  });
 };
 const Editor = () => {
   onMount(() => {
