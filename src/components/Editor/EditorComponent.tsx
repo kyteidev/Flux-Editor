@@ -21,6 +21,8 @@ import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 import "prismjs/plugins/autoloader/prism-autoloader.min.js";
 import { dialog, fs } from "@tauri-apps/api";
 import { getTabs, setSavedTabs } from "./components/EditorTabs";
+import { logger } from "../../logger";
+import { setIsValidFile } from "../../pages/Editor";
 
 interface Props {
   lang: string;
@@ -87,23 +89,35 @@ export const openFile = (path: string) => {
       setFileSaved([...fileSaved(), path]); // adds path to saved files array
     }
 
-    fs.readTextFile(path).then((data) => {
-      filePath = path;
+    fs.readTextFile(path)
+      .then((data) => {
+        setIsValidFile(true);
 
-      if (!fileSavedContent().flat().includes(path)) {
-        // flattens fileSavedContent array and checks if open file's path exists there. So basically checks if open file is being tracked for changes
-        setFileSavedContent([...fileSavedContent(), [path, data, data]]); // if not tracked, add it to tracking array
-        textarea.value = data; // sets textarea value to value read from the open file
-      } else {
-        textarea.value =
-          fileSavedContent()[
-            fileSavedContent().findIndex((i) => i.includes(path))
-          ][2]; // if already tracked, set textarea value to be the changed value, because the open file may not be saved. If saved, its value would be same as saved value.
-      }
+        filePath = path;
 
-      highlightContent();
-      updateLineNumbers();
-    });
+        if (!fileSavedContent().flat().includes(path)) {
+          // flattens fileSavedContent array and checks if open file's path exists there. So basically checks if open file is being tracked for changes
+          setFileSavedContent([...fileSavedContent(), [path, data, data]]); // if not tracked, add it to tracking array
+          textarea.value = data; // sets textarea value to value read from the open file
+        } else {
+          textarea.value =
+            fileSavedContent()[
+              fileSavedContent().findIndex((i) => i.includes(path))
+            ][2]; // if already tracked, set textarea value to be the changed value, because the open file may not be saved. If saved, its value would be same as saved value.
+        }
+
+        highlightContent();
+        updateLineNumbers();
+      })
+      .catch((error: string) => {
+        if (error.includes("stream did not contain valid UTF-8")) {
+          setIsValidFile(false);
+          return;
+        }
+
+        console.error(error);
+        logger(true, "EditorComponent.tsx", error);
+      });
     setSavedTabs(fileSaved()); // syncs savedTabs() signal in EditorTabs.tsx with fileSaved()
   }
 };

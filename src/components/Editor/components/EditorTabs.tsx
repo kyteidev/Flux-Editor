@@ -6,6 +6,7 @@ import { dialog } from "@tauri-apps/api";
 import { fileIcons, specialFileIcons } from "../../../utils/fileIcon";
 import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
+import { setIsValidFile } from "../../../pages/Editor";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
@@ -42,6 +43,7 @@ const EditorTabs = () => {
             };
 
             const closeTab = async () => {
+              setIsValidFile(true);
               if (!savedTabs().includes(tabs()[index()][1])) {
                 // checks if there are unsaved changes.
                 if (

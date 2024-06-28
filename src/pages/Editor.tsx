@@ -24,7 +24,6 @@ import logo from "../assets/narvik-logo.svg";
 import Welcome from "./Welcome";
 import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
-import { error } from "console";
 
 const [dir, setDir] = createSignal<string>("");
 const [loaded, setLoaded] = createSignal(false);
@@ -32,14 +31,15 @@ const [loaded, setLoaded] = createSignal(false);
 const [workspaceName, setWorkspaceName] = createSignal<string>();
 const [projectName, setProjectName] = createSignal<string>();
 
+export const [isValidFile, setIsValidFile] = createSignal(true);
+
 export const loadEditor = (
   dirPath: string,
   openFile?: boolean,
   fileName?: string,
 ) => {
   setDir(dirPath);
-  logger(false, "Editor.tsx", "Editor loaded");
-  setLoaded(true);
+
   if (openFile && fileName) {
     addTab([fileName, dirPath]);
     return;
@@ -49,11 +49,12 @@ export const loadEditor = (
 
   const filteredDirPath = dirPath.endsWith(path.sep)
     ? dirPath.substring(0, dirPath.length - 1)
-    : dirPath;
+    : dirPath; // the user shouldn't be able to get a dirPath that doesn't end in a / or \ unless it's a file. This filters out the last / or \
 
   fs.exists(configPath).then(async (exists) => {
+    // checks if /.narvik/config.json exists
     if (!exists) {
-      const type = { type: "Project" };
+      const type = { type: "Project" }; // if doesn't exist, assume the opened directory is a project.
       const typeJSON = JSON.stringify(type, null, 2);
 
       await fs.createDir(path.join(dirPath, ".narvik"));
@@ -61,15 +62,15 @@ export const loadEditor = (
 
       setProjectName(
         filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
-      );
+      ); // sets project name to be directory name
     } else {
-      fs.readTextFile(configPath)
+      fs.readTextFile(configPath) // reads the config.json for directory type (Project or Workspace)
         .then(async (data) => {
           const parsedData = JSON.parse(data);
 
           if (parsedData.type === "Workspace") {
             setWorkspaceName(
-              dirPath.substring(dirPath.lastIndexOf(path.sep) + 1),
+              dirPath.substring(dirPath.lastIndexOf(path.sep) + 1), // sets workspace name to be parent directory
             );
           } else if (parsedData.type === "Project") {
             const lastSlashIndex = dirPath.lastIndexOf(path.sep);
@@ -90,13 +91,14 @@ export const loadEditor = (
                     ".narvik",
                     "config.json",
                   ),
-                )
+                ) // checks if parent directory has .narvik folder with config.json inside
                 .catch((error) => {
                   console.error(error);
                   logger(true, "Editor.tsx", error as string);
                 })
             ) {
               fs.readTextFile(
+                // if it has, then read contents of config.json
                 path.join(
                   filteredDirPath.substring(0, secondLastSlashIndex),
                   ".narvik",
@@ -125,7 +127,7 @@ export const loadEditor = (
               filteredDirPath.substring(
                 filteredDirPath.lastIndexOf(path.sep) + 1,
               ),
-            );
+            ); // sets project name to be directory name
           }
         })
         .catch((error) => {
@@ -133,6 +135,9 @@ export const loadEditor = (
           logger(true, "Editor.tsx", error as string);
         });
     }
+
+    logger(false, "Editor.tsx", "Editor loaded");
+    setLoaded(true);
   });
 };
 const Editor = () => {
@@ -201,7 +206,16 @@ const Editor = () => {
                   </div>
                 }
               >
-                <EditorComponent lang="javascript" />
+                <Show
+                  when={isValidFile()}
+                  fallback={
+                    <div class="flex min-h-full min-w-full select-none items-center justify-center bg-base-200">
+                      <h1>This file is currently not supported</h1>
+                    </div>
+                  }
+                >
+                  <EditorComponent lang="javascript" />
+                </Show>
               </Show>
               <div class="h-full w-full bg-base-200"></div>
               <Show when={getTabs().length != 0}>

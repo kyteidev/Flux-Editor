@@ -18,6 +18,7 @@ import { logger } from "../../logger";
 import * as FI from "../Icons/FileIcons";
 import { addTab } from "../Editor/components/EditorTabs";
 import { fileIcons, specialFileIcons } from "../../utils/fileIcon";
+import { setIsValidFile } from "../../pages/Editor";
 
 interface Props {
   dir: string;
@@ -86,13 +87,17 @@ const FileBrowser = (props: Props) => {
                 const parts = item.split(path.sep);
                 return parts[parts.length - 1];
               })
-              .sort(),
+              .sort((a, b) =>
+                a.localeCompare(b, undefined, { sensitivity: "base" }),
+              ),
             ...nestedFiles
               .map((item) => {
                 const parts = item.split(path.sep);
                 return parts[parts.length - 1];
               })
-              .sort(),
+              .sort((a, b) =>
+                a.localeCompare(b, undefined, { sensitivity: "base" }),
+              ),
           ]);
         }
       });
@@ -180,6 +185,7 @@ const FileBrowser = (props: Props) => {
                         logger(true, "FileBrowser.tsx", error as string);
                       });
                   } else {
+                    setIsValidFile(true);
                     addTab([itemName, itemPath]);
                   }
                 }}
