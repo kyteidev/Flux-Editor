@@ -27,7 +27,7 @@
         "readDir": true,
         "createDir": true,
         "exists": true,
-        "scope": { "allow": ["$HOME/**"] }
+        "scope": { "allow": ["$HOME/**"], "requireLiteralLeadingDot": false }
       },
       "os": {
         "all": true

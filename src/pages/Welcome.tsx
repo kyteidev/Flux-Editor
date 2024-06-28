@@ -24,13 +24,14 @@ import Button from "../ui/Button";
 import Dropdown from "../ui/Dropdown";
 import Input from "../ui/Input";
 import ButtonBg from "../ui/ButtonBg";
-import { dialog } from "@tauri-apps/api";
+import { dialog, fs } from "@tauri-apps/api";
 import { Show, createSignal, onMount } from "solid-js";
 import { cloneRepo, getRepoPath } from "../utils/git.ts";
 import { checkDirValidity } from "../utils/dir.ts";
 import { logger } from "../logger.ts";
 import { getOS } from "../utils/os.ts";
 import { loadEditor } from "./Editor.tsx";
+import path from "path-browserify";
 
 const Welcome = () => {
   const [selectedType, setSelectedType] = createSignal<string>("File");
@@ -90,7 +91,7 @@ const Welcome = () => {
     }
   };
 
-  const openEditor = (action: string) => {
+  const openEditor = async (action: string) => {
     if (action === "new") {
       if (name() === "") {
         dialog.message(
@@ -111,7 +112,80 @@ const Welcome = () => {
         });
         logger(true, "Welcome.tsx", "Invalid directory");
       } else {
-        loadEditor(dirPath(), selectedType(), name());
+        switch (selectedType()) {
+          case "File":
+            if (await fs.exists(path.join(dirPath() + name()))) {
+              dialog.message("File already exists.", {
+                title: "Error",
+                type: "error",
+              });
+              logger(
+                true,
+                "Welcome.tsx",
+                "File " + name() + " already exists in " + dirPath(),
+              );
+              return;
+            }
+            fs.writeFile(path.join(dirPath(), name()), "");
+            break;
+          case "Project":
+          case "Workspace":
+            await fs
+              .readDir(path.join(dirPath(), name()))
+              .then(() => {
+                dialog.message("Directory already exists.", {
+                  title: "Error",
+                  type: "error",
+                });
+                logger(
+                  true,
+                  "Welcome.tsx",
+                  "Directory " + name() + " already exists in " + dirPath(),
+                );
+                return;
+              })
+              .catch(async () => {
+                await fs.createDir(dirPath() + name()).catch((error) => {
+                  console.error(error);
+                  logger(true, "Welcome.tsx", error as string);
+                  dialog.message("Directory already exists.", {
+                    title: "Error",
+                    type: "error",
+                  });
+                });
+              });
+
+            break;
+        }
+
+        if (selectedType() === "File") {
+          loadEditor(dirPath(), true, name());
+          return;
+        }
+
+        const narvikConfig = {
+          type: selectedType(),
+        };
+
+        const json = JSON.stringify(narvikConfig, null, 2);
+
+        if (
+          (await fs.exists(path.join(dirPath(), name(), ".narvik"))) === false
+        ) {
+          fs.createDir(path.join(dirPath(), name(), ".narvik"));
+        }
+
+        fs.writeFile(
+          path.join(dirPath(), name(), ".narvik", "config.json"),
+          json,
+        )
+          .then(() => {
+            loadEditor(path.join(dirPath(), name()));
+          })
+          .catch((error) => {
+            console.error(error);
+            logger(true, "Welcome.tsx", error as string);
+          });
       }
     } else if (action === "open") {
       if (dirPath() != "") {
@@ -177,7 +251,7 @@ const Welcome = () => {
                 text="Browse"
                 width="calc(80px + 2em)"
                 height="40px"
-                action={() => openDir(true)}
+                action={() => openDir(false)}
               />
             </div>
           </div>
@@ -213,12 +287,7 @@ const Welcome = () => {
               width={80}
               height={40}
               action={() => {
-                const modal = document.getElementById(
-                  "modal-new",
-                ) as HTMLDialogElement;
-                if (modal) {
-                  modal.close();
-                }
+                openEditor("new");
               }}
             />
           </div>

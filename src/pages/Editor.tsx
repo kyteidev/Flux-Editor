@@ -17,25 +17,92 @@ import { Show, createSignal, onMount } from "solid-js";
 import { logger } from "../logger";
 import EditorComponent from "../components/Editor/EditorComponent";
 import EditorTabs, {
+  addTab,
   getTabs,
 } from "../components/Editor/components/EditorTabs";
 import logo from "../assets/narvik-logo.svg";
 import Welcome from "./Welcome";
+import path from "path-browserify";
+import { fs } from "@tauri-apps/api";
 
 const [dir, setDir] = createSignal<string>("");
 const [loaded, setLoaded] = createSignal(false);
 
+const [workspaceName, setWorkspaceName] = createSignal<string>();
+const [projectName, setProjectName] = createSignal<string>();
+
 export const loadEditor = (
-  path: string,
-  type?: string,
-  projectName?: string,
-  workspaceName?: string,
+  dirPath: string,
+  openFile?: boolean,
+  fileName?: string,
 ) => {
-  setDir(path);
+  setDir(dirPath);
   logger(false, "Editor.tsx", "Editor loaded");
   setLoaded(true);
-};
+  if (openFile && fileName) {
+    addTab([fileName, dirPath]);
+    return;
+  }
+  fs.readTextFile(path.join(dirPath, ".narvik", "config.json"))
+    .then(async (data) => {
+      const parsedData = JSON.parse(data);
 
+      if (parsedData.type === "Workspace") {
+        setWorkspaceName(dirPath.substring(dirPath.lastIndexOf(path.sep) + 1));
+      } else if (parsedData.type === "Project") {
+        const lastSlashIndex = dirPath.lastIndexOf("/");
+        const secondLastSlashIndex = dirPath.lastIndexOf(
+          "/",
+          lastSlashIndex - 1,
+        );
+        const thirdLastSlashIndex = dirPath.lastIndexOf(
+          "/",
+          secondLastSlashIndex - 1,
+        );
+
+        const filteredDirPath = dirPath.endsWith("/")
+          ? dirPath.substring(0, dirPath.length - 1)
+          : dirPath;
+
+        if (
+          await fs.exists(
+            path.join(
+              filteredDirPath.substring(0, secondLastSlashIndex),
+              ".narvik",
+              "config.json",
+            ),
+          )
+        ) {
+          fs.readTextFile(
+            path.join(
+              filteredDirPath.substring(0, secondLastSlashIndex),
+              ".narvik",
+              "config.json",
+            ),
+          ).then((data) => {
+            const parsedData = JSON.parse(data);
+
+            if (parsedData.type === "Workspace") {
+              setWorkspaceName(
+                filteredDirPath.substring(
+                  thirdLastSlashIndex + 1,
+                  secondLastSlashIndex,
+                ),
+              );
+            }
+          });
+        }
+
+        setProjectName(
+          filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
+        );
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      logger(true, "Editor.tsx", error as string);
+    });
+};
 const Editor = () => {
   onMount(() => {
     logger(false, "Editor.tsx", "Editor mounted");
@@ -68,7 +135,11 @@ const Editor = () => {
                 "min-height": `calc(100vh - 2.5em)`,
               }}
             >
-              <FileBrowser dir={dir()} />
+              <FileBrowser
+                dir={dir()}
+                workspaceName={workspaceName()}
+                projectName={projectName()}
+              />
             </div>
             {/* Due to a bug, the second pane in vertical split panes glitch when hidden, so temporarily set canSecondHide to false */}
             <SplitPane
