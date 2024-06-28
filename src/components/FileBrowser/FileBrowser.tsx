@@ -18,7 +18,7 @@ import { logger } from "../../logger";
 import * as FI from "../Icons/FileIcons";
 import { addTab } from "../Editor/components/EditorTabs";
 import { fileIcons, specialFileIcons } from "../../utils/fileIcon";
-import { setIsValidFile } from "../../pages/Editor";
+import { setIsValidFile } from "../Editor/EditorComponent";
 
 interface Props {
   dir: string;

@@ -10,7 +10,7 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
 */
 
-import { createSignal, onMount } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
 import Prism from "prismjs";
 import { getClosingChar } from "../../utils/char";
 import styles from "./EditorComponent.module.css";
@@ -22,11 +22,12 @@ import "prismjs/plugins/autoloader/prism-autoloader.min.js";
 import { dialog, fs } from "@tauri-apps/api";
 import { getTabs, setSavedTabs } from "./components/EditorTabs";
 import { logger } from "../../logger";
-import { setIsValidFile } from "../../pages/Editor";
 
 interface Props {
   lang: string;
 }
+
+export const [isValidFile, setIsValidFile] = createSignal(true);
 
 let filePath: string;
 const [fileSaved, setFileSaved] = createSignal<string[]>([]); // array of paths containing files that are saved. Local version of savedTabs() in EditorTabs.tsx
@@ -112,6 +113,10 @@ export const openFile = (path: string) => {
       .catch((error: string) => {
         if (error.includes("stream did not contain valid UTF-8")) {
           setIsValidFile(false);
+          if (!fileSavedContent().flat().includes(path)) {
+            setFileSavedContent([...fileSavedContent(), [path, "", ""]]);
+          }
+          textarea.value = "";
           return;
         }
 
@@ -398,18 +403,20 @@ const EditorComponent = (props: Props) => {
   return (
     <div class="flex h-full w-full select-none">
       <div class="relative">
-        <div
-          id="line-numbers"
-          class={`relative m-0 flex h-full w-[64px] min-w-[64px] max-w-[64px] select-none flex-col overflow-y-hidden bg-base-200 p-3 pt-0 text-right text-base text-content`}
-        >
-          {lines().map((line) => (
-            <div class="flex">
-              <div class={`w-full pl-[10px] text-right ${styles.lineNumber}`}>
-                {line}
+        <Show when={isValidFile()}>
+          <div
+            id="line-numbers"
+            class={`relative m-0 flex h-full w-[64px] min-w-[64px] max-w-[64px] select-none flex-col overflow-y-hidden bg-base-200 p-3 pt-0 text-right text-base text-content`}
+          >
+            {lines().map((line) => (
+              <div class="flex">
+                <div class={`w-full pl-[10px] text-right ${styles.lineNumber}`}>
+                  {line}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Show>
       </div>
       <div
         class="relative flex w-full flex-grow flex-col bg-base-200"
@@ -448,6 +455,11 @@ const EditorComponent = (props: Props) => {
             id="highlighting-content"
           ></code>
         </pre>
+        <Show when={!isValidFile()}>
+          <div class="absolute z-20 flex min-h-full min-w-full select-none items-center justify-center bg-base-200">
+            <h1>This file is currently not supported</h1>
+          </div>
+        </Show>
       </div>
     </div>
   );

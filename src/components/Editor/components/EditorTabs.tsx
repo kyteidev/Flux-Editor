@@ -6,7 +6,7 @@ import { dialog } from "@tauri-apps/api";
 import { fileIcons, specialFileIcons } from "../../../utils/fileIcon";
 import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
-import { setIsValidFile } from "../../../pages/Editor";
+import { setIsValidFile } from "../EditorComponent";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);

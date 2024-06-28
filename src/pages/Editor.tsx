@@ -31,8 +31,6 @@ const [loaded, setLoaded] = createSignal(false);
 const [workspaceName, setWorkspaceName] = createSignal<string>();
 const [projectName, setProjectName] = createSignal<string>();
 
-export const [isValidFile, setIsValidFile] = createSignal(true);
-
 export const loadEditor = (
   dirPath: string,
   openFile?: boolean,
@@ -206,16 +204,7 @@ const Editor = () => {
                   </div>
                 }
               >
-                <Show
-                  when={isValidFile()}
-                  fallback={
-                    <div class="flex min-h-full min-w-full select-none items-center justify-center bg-base-200">
-                      <h1>This file is currently not supported</h1>
-                    </div>
-                  }
-                >
-                  <EditorComponent lang="javascript" />
-                </Show>
+                <EditorComponent lang="javascript" />
               </Show>
               <div class="h-full w-full bg-base-200"></div>
               <Show when={getTabs().length != 0}>
