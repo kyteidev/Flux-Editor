@@ -7,6 +7,7 @@ import { fileIcons, specialFileIcons } from "../../../utils/file";
 import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
 import { setIsValidFile } from "../EditorComponent";
+import { logger } from "../../../logger";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
@@ -65,8 +66,18 @@ const EditorTabs = () => {
               if (tabs().length === 0) {
                 fixEditorHeight(false); // tabs add height to editor pane, this fixes it by adding height because tabs row is hidden when all tabs are closed
               } else {
-                setActiveTab(index() - 1);
-                openFile(tabs()[index() - 1][1]); // opens the previous tab
+                try {
+                  openFile(tabs()[index() - 1][1]); // opens the previous tab
+                  setActiveTab(index() - 1);
+                } catch {
+                  try {
+                    openFile(tabs()[index()][1]); // opens the next tab if no tabs are before closed tab
+                    setActiveTab(index());
+                  } catch (error) {
+                    console.error(error);
+                    logger(true, "EditorTabs.tsx", error as string);
+                  }
+                }
               }
             };
 
