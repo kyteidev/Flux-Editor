@@ -18,7 +18,14 @@ You should have received a copy of the GNU General Public License along with Nar
 extern crate objc;
 
 use std::process::Command;
-use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowEvent};
+use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, Window, WindowEvent};
+
+#[cfg(target_os = "macos")]
+use cocoa::appkit::NSWindow;
+#[cfg(target_os = "macos")]
+use cocoa::base::id;
+#[cfg(target_os = "macos")]
+use objc::runtime::{NO, YES};
 
 #[cfg(any(windows))]
 use window_shadows::set_shadow;
@@ -60,6 +67,16 @@ async fn clone_repo(url: String, path: String) -> Result<(), String> {
         }
     } else {
         Err("Git is not installed".to_string())
+    }
+}
+
+#[tauri::command]
+fn set_doc_edited(window: Window, edited: bool) {
+    #[cfg(target_os = "macos")]
+    {
+        let ns_window: id = window.ns_window().unwrap() as id;
+        unsafe { ns_window.setDocumentEdited_(if edited { YES } else { NO }) }
+        window.set_window_controls_pos(16., 18.)
     }
 }
 
@@ -178,7 +195,7 @@ fn main() {
                 .unwrap();
         })
         .menu(menu())
-        .invoke_handler(tauri::generate_handler![clone_repo])
+        .invoke_handler(tauri::generate_handler![clone_repo, set_doc_edited])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -7,11 +7,14 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { appWindow } from "@tauri-apps/api/window";
 import { createSignal, createEffect } from "solid-js";
+import { fileSaved } from "../Editor/EditorComponent";
+import { getTabs } from "../Editor/components/EditorTabs";
+import { dialog } from "@tauri-apps/api";
 
 function GnomeControls() {
   const [isMaximized, setMaximized] = createSignal(false);
@@ -30,8 +33,18 @@ function GnomeControls() {
     checkMaximized();
   };
 
-  const closeWindow = () => {
-    appWindow.close();
+  const closeWindow = async () => {
+    if (fileSaved().length === getTabs().length) {
+      appWindow.close();
+    } else {
+      const closeEditor = await dialog.ask("Your changes will not be saved.", {
+        title: "Are you sure you want to close Narvik Editor?",
+        type: "warning",
+      });
+      if (closeEditor) {
+        appWindow.close();
+      }
+    }
   };
 
   createEffect(async () => {

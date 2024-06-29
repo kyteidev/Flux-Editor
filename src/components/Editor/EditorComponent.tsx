@@ -88,7 +88,7 @@ import "prismjs/components/prism-visual-basic.min.js";
 import "prismjs/components/prism-wasm.min.js";
 import "prismjs/components/prism-yaml.min.js";
 
-import { dialog, fs } from "@tauri-apps/api";
+import { dialog, fs, invoke } from "@tauri-apps/api";
 import path from "path-browserify";
 import { logger } from "../../logger";
 import { specialCodeFileType } from "../../utils/file";
@@ -97,7 +97,7 @@ import { getTabs, setSavedTabs } from "./components/EditorTabs";
 export const [isValidFile, setIsValidFile] = createSignal(true);
 
 let filePath: string;
-const [fileSaved, setFileSaved] = createSignal<string[]>([]); // array of paths containing files that are saved. Local version of savedTabs() in EditorTabs.tsx
+export const [fileSaved, setFileSaved] = createSignal<string[]>([]); // array of paths containing files that are saved. Local version of savedTabs() in EditorTabs.tsx
 const [fileSavedContent, setFileSavedContent] = createSignal<string[][]>([]); // the first item is the path, second is saved content, and third is changed content.
 // fileSavedContent is different from fileSaved, because the latter contains only saved files' paths, while fileSavedContent contains all active files' paths.
 // it's like the tracking array.
@@ -337,8 +337,12 @@ const EditorComponent = () => {
         // sets signals to know this file is saved
         setFileSaved([...fileSaved(), filePath]);
         setSavedTabs(fileSaved());
+        if (fileSaved().length === getTabs().length) {
+          invoke("set_doc_edited", { edited: false });
+        }
       } else {
         fileChanged();
+        invoke("set_doc_edited", { edited: true });
       }
     }
   };

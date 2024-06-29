@@ -7,23 +7,42 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import Editor from "./pages/Editor";
 import { onMount } from "solid-js";
 import { initLogger, logger } from "./logger";
 import { appWindow } from "@tauri-apps/api/window";
-import { saveFile } from "./components/Editor/EditorComponent";
+import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
 import { dialog } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/tauri";
+import { getTabs } from "./components/Editor/components/EditorTabs";
 
 export default function App() {
   onMount(() => {
     initLogger();
     logger(false, "App.tsx", "Initialized application");
 
+    appWindow.listen("tauri://close-requested", async () => {
+      if (fileSaved().length === getTabs().length) {
+        appWindow.close();
+      } else {
+        const closeEditor = await dialog.ask(
+          "Your changes will not be saved.",
+          {
+            title: "Are you sure you want to close Narvik Editor?",
+            type: "warning",
+          },
+        );
+        if (closeEditor) {
+          appWindow.close();
+        }
+      }
+    });
+
     appWindow.listen("narvik:settings", () => {
-      dialog.message("hello world");
+      invoke("set_doc_edited", { edited: true });
     });
     appWindow.listen("narvik:save", () => {
       saveFile();
