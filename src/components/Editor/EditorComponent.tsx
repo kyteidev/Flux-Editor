@@ -17,8 +17,6 @@ import styles from "./EditorComponent.module.css";
 import "./themes/dark.css";
 
 // PrismJS plugins
-import "prismjs/plugins/autolinker/prism-autolinker.min.css";
-import "prismjs/plugins/autolinker/prism-autolinker.min.js";
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
 
 import "prismjs/components/prism-markup-templating.min.js"; // IMPORTANT: this should be at the top, since some lang grammars depend on this.
@@ -64,7 +62,6 @@ import "prismjs/components/prism-less.min.js";
 import "prismjs/components/prism-llvm.min.js";
 import "prismjs/components/prism-lua.min.js";
 import "prismjs/components/prism-makefile.min.js";
-import "prismjs/components/prism-markdown.min.js";
 import "prismjs/components/prism-matlab.min.js";
 import "prismjs/components/prism-mongodb.min.js";
 import "prismjs/components/prism-nginx.min.js";
