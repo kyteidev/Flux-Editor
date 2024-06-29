@@ -41,9 +41,6 @@ export default function App() {
       }
     });
 
-    appWindow.listen("narvik:settings", () => {
-      invoke("set_doc_edited", { edited: true });
-    });
     appWindow.listen("narvik:save", () => {
       saveFile();
     });

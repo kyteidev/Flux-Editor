@@ -149,10 +149,10 @@ fn menu() -> Menu {
         .add_submenu(Submenu::new("View", view_menu))
         .add_submenu(Submenu::new("Modules", modules_menu));
 
-    // #[cfg(any(target_os = "macos"))]
+    #[cfg(any(target_os = "macos"))]
     return menu;
 
-    // return Menu::new();
+    return Menu::new();
 }
 
 fn main() {
