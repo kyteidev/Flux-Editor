@@ -1,5 +1,5 @@
 import { For, Show, createSignal, onCleanup } from "solid-js";
-import { IconCircle, IconClose } from "../../Icons/Icons";
+import { IconCircle, IconClose, IconSettings } from "../../Icons/Icons";
 import { closeFile, openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
 import { dialog } from "@tauri-apps/api";
@@ -8,6 +8,7 @@ import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
 import { setIsValidFile } from "../EditorComponent";
 import { logger } from "../../../logger";
+import { getSettingsPath } from "../../../settingsManager";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
@@ -33,8 +34,8 @@ export const getTabs = () => {
 
 const EditorTabs = () => {
   return (
-    <div class="flex h-[40px] w-full max-w-full flex-col overflow-auto bg-base-200 p-1">
-      <div class="flex w-full max-w-full select-none space-x-1">
+    <div class="flex h-[40px] w-full max-w-full flex-col items-center justify-center overflow-hidden bg-base-200">
+      <div class="flex w-full max-w-full select-none overflow-x-auto overflow-y-hidden">
         <For each={tabs().map((t) => t[0])}>
           {(tabName, index) => {
             const [isClosed, setIsClosed] = createSignal(false);
@@ -84,10 +85,19 @@ const EditorTabs = () => {
             let FileIconComponent =
               specialFileIcons[tabName.toLowerCase()] || undefined;
             if (FileIconComponent === undefined) {
-              // checks file extension
-              const fileExtension = path.extname(tabName);
-              FileIconComponent =
-                fileIcons[fileExtension.toLowerCase()] || Default;
+              if (
+                tabs().flat().includes(getSettingsPath()) &&
+                tabs()[
+                  tabs().findIndex((i) => i.includes(getSettingsPath()))
+                ][0] === tabName
+              ) {
+                FileIconComponent = IconSettings;
+              } else {
+                // checks file extension
+                const fileExtension = path.extname(tabName);
+                FileIconComponent =
+                  fileIcons[fileExtension.toLowerCase()] || Default;
+              }
             }
 
             const [hasSaved, setHasSaved] = createSignal(true);
@@ -101,7 +111,7 @@ const EditorTabs = () => {
 
             return (
               <div
-                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} flex h-8 max-w-52 items-center rounded-xl p-1 pl-2 pr-2 text-center transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
+                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} mx-[2px] flex h-8 max-w-52 items-center rounded-xl p-1 pl-2 pr-2 text-center transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
                 onclick={() => {
                   if (!isClosed()) {
                     setActiveTab(index());

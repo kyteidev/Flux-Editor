@@ -90,6 +90,9 @@ import path from "path-browserify";
 import { logger } from "../../logger";
 import { specialCodeFileType } from "../../utils/file";
 import { getTabs, setSavedTabs } from "./components/EditorTabs";
+import { getSetting } from "../../settingsManager";
+
+const [selectedLine, setSelectedLine] = createSignal(-1);
 
 export const [isValidFile, setIsValidFile] = createSignal(true);
 
@@ -153,56 +156,65 @@ export const closeFile = () => {
 
 export const openFile = (pathLocal: string) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
-  if (pathLocal === "narvik:settings") {
-    // TODO: add settings
-  } else {
-    if (
-      !fileSaved().includes(pathLocal) &&
-      !fileSavedContent().flat().includes(pathLocal) // checks if open file already exists as tab
-    ) {
-      setFileSaved([...fileSaved(), pathLocal]); // adds path to saved files array
-    }
 
-    fs.readTextFile(pathLocal)
-      .then((data) => {
-        setIsValidFile(true);
+  switch (pathLocal) {
+    case "narvik:page:settingsGui":
+      break;
+    default:
+      if (
+        !fileSaved().includes(pathLocal) &&
+        !fileSavedContent().flat().includes(pathLocal) // checks if open file already exists as tab
+      ) {
+        setFileSaved([...fileSaved(), pathLocal]); // adds path to saved files array
+      }
 
-        const fileExt = path
-          .extname(pathLocal)
-          .substring(1, path.extname(pathLocal).length);
-        setLang(specialCodeFileType[fileExt] || fileExt);
+      fs.readTextFile(pathLocal)
+        .then((data) => {
+          setIsValidFile(true);
 
-        filePath = pathLocal;
+          const fileExt = path
+            .extname(pathLocal)
+            .substring(1, path.extname(pathLocal).length);
+          setLang(specialCodeFileType[fileExt] || fileExt);
 
-        if (!fileSavedContent().flat().includes(pathLocal)) {
-          // flattens fileSavedContent array and checks if open file's path exists there. So basically checks if open file is being tracked for changes
-          setFileSavedContent([...fileSavedContent(), [pathLocal, data, data]]); // if not tracked, add it to tracking array
-          textarea.value = data; // sets textarea value to value read from the open file
-        } else {
-          textarea.value =
-            fileSavedContent()[
-              fileSavedContent().findIndex((i) => i.includes(pathLocal))
-            ][2]; // if already tracked, set textarea value to be the changed value, because the open file may not be saved. If saved, its value would be same as saved value.
-        }
+          filePath = pathLocal;
 
-        highlightContent();
-        updateLineNumbers();
-      })
-      .catch((error: string) => {
-        console.error(error);
-        if (error.includes("stream did not contain valid UTF-8")) {
-          setIsValidFile(false);
           if (!fileSavedContent().flat().includes(pathLocal)) {
-            setFileSavedContent([...fileSavedContent(), [pathLocal, "", ""]]);
+            // flattens fileSavedContent array and checks if open file's path exists there. So basically checks if open file is being tracked for changes
+            setFileSavedContent([
+              ...fileSavedContent(),
+              [pathLocal, data, data],
+            ]); // if not tracked, add it to tracking array
+            textarea.value = data; // sets textarea value to value read from the open file
+          } else {
+            textarea.value =
+              fileSavedContent()[
+                fileSavedContent().findIndex((i) => i.includes(pathLocal))
+              ][2]; // if already tracked, set textarea value to be the changed value, because the open file may not be saved. If saved, its value would be same as saved value.
           }
-          textarea.value = "";
-          return;
-        }
 
-        console.error(error);
-        logger(true, "EditorComponent.tsx", error);
-      });
-    setSavedTabs(fileSaved()); // syncs savedTabs() signal in EditorTabs.tsx with fileSaved()
+          highlightContent();
+          updateLineNumbers();
+          // TODO: restore selected line and character
+          textarea.blur();
+        })
+        .catch((error: string) => {
+          console.error(error);
+          if (error.includes("stream did not contain valid UTF-8")) {
+            setIsValidFile(false);
+            if (!fileSavedContent().flat().includes(pathLocal)) {
+              setFileSavedContent([...fileSavedContent(), [pathLocal, "", ""]]);
+            }
+            textarea.value = "";
+            return;
+          }
+
+          console.error(error);
+          logger(true, "EditorComponent.tsx", error);
+        });
+      setSavedTabs(fileSaved()); // syncs savedTabs() signal in EditorTabs.tsx with fileSaved()
+
+      break;
   }
 };
 
@@ -254,59 +266,74 @@ const highlightContent = () => {
   // [end]
 };
 
-const EditorComponent = () => {
-  const [selectedLine, setSelectedLine] = createSignal(-1);
+const calcHighlightLinePos = () => {
+  const textarea = document.getElementById("editing") as HTMLTextAreaElement;
+  const highlightedContentPre = document.getElementById("highlighting");
+  const highlightedLine = document.getElementById("highlighted-line");
 
+  if (highlightedLine && textarea) {
+    highlightedLine.style.top = `calc(${selectedLine() - 1} * 1.5rem - ${highlightedContentPre?.scrollTop}px)`;
+    highlightedLine.style.height = "1.5em";
+
+    const highlightedLinePos = highlightedLine.getBoundingClientRect();
+    const textareaPos = textarea.getBoundingClientRect();
+    if (highlightedLinePos.top < textareaPos.top) {
+      highlightedLine.style.height = `calc(1.5em - (${textareaPos.top}px - ${highlightedLinePos.top}px))`;
+      highlightedLine.style.top = "0";
+    } else if (highlightedLinePos.bottom > textareaPos.bottom) {
+      highlightedLine.style.height = `calc(${textareaPos.bottom}px - ${highlightedLinePos.top}px)`;
+    } else {
+      highlightedLine.style.height = "1.5em";
+    }
+  }
+};
+
+// highlights selected line
+const updateSelectedLine = () => {
+  const textarea = document.getElementById("editing") as HTMLTextAreaElement;
+  const highlightedLine = document.getElementById("highlighted-line");
+
+  setTimeout(() => {
+    // renders on next frame because some values may not be updated yet.
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const value = textarea.value;
+      const lineNumber = value.substring(0, start).split("\n").length; // gets line number from index of new lines.
+
+      setSelectedLine(lineNumber);
+    }
+  }, 0);
+
+  if (highlightedLine) {
+    highlightedLine.style.height = "1.5em";
+  }
+};
+
+const EditorComponent = () => {
   let lineNumbersDiv: HTMLElement | null;
+  let highlightedContent: HTMLElement | null;
   let highlightedContentPre: HTMLElement | null;
   let highlightedLine: HTMLElement | null;
   let textareaRef: HTMLTextAreaElement | undefined;
 
   onMount(() => {
     lineNumbersDiv = document.getElementById("line-numbers");
+    highlightedContent = document.getElementById("highlighting-content");
     highlightedContentPre = document.getElementById("highlighting");
     highlightedLine = document.getElementById("highlighted-line");
+
+    // load settings
+    if (textareaRef && highlightedContent && highlightedContentPre) {
+      textareaRef.style.tabSize =
+        highlightedContent.style.tabSize =
+        highlightedContentPre.style.tabSize =
+          getSetting("tabSize");
+    }
 
     if (highlightedLine) {
       highlightedLine.style.height = "0";
     }
   });
-
-  // highlights selected line
-  const updateSelectedLine = () => {
-    setTimeout(() => {
-      // renders on next frame because some values may not be updated yet.
-      if (textareaRef) {
-        const start = textareaRef.selectionStart;
-        const value = textareaRef.value;
-        const lineNumber = value.substring(0, start).split("\n").length; // gets line number from index of new lines.
-
-        setSelectedLine(lineNumber);
-      }
-    }, 0);
-
-    if (highlightedLine) {
-      highlightedLine.style.height = "1.5em";
-    }
-  };
-
-  const calcHighlightLinePos = () => {
-    if (highlightedLine && textareaRef) {
-      highlightedLine.style.top = `calc(${selectedLine() - 1} * 1.5rem - ${highlightedContentPre?.scrollTop}px)`;
-      highlightedLine.style.height = "1.5em";
-
-      const highlightedLinePos = highlightedLine.getBoundingClientRect();
-      const textareaPos = textareaRef.getBoundingClientRect();
-      if (highlightedLinePos.top < textareaPos.top) {
-        highlightedLine.style.height = `calc(1.5em - (${textareaPos.top}px - ${highlightedLinePos.top}px))`;
-        highlightedLine.style.top = "0";
-      } else if (highlightedLinePos.bottom > textareaPos.bottom) {
-        highlightedLine.style.height = `calc(${textareaPos.bottom}px - ${highlightedLinePos.top}px)`;
-      } else {
-        highlightedLine.style.height = "1.5em";
-      }
-    }
-  };
 
   // updates <code> content for syntax highlighting
   const updateContent = () => {

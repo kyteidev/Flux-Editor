@@ -26,7 +26,8 @@ import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
 
 const [dir, setDir] = createSignal<string>("");
-const [loaded, setLoaded] = createSignal(false);
+
+export const [loaded, setLoaded] = createSignal(false);
 
 const [workspaceName, setWorkspaceName] = createSignal<string>();
 const [projectName, setProjectName] = createSignal<string>();
@@ -208,7 +209,7 @@ const Editor = () => {
               </Show>
               <div class="h-full w-full bg-base-200"></div>
               <Show when={getTabs().length != 0}>
-                <div>
+                <div class="max-w-full">
                   <EditorTabs />
                 </div>
               </Show>

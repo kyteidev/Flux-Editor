@@ -10,18 +10,23 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import Editor from "./pages/Editor";
+import Editor, { loaded } from "./pages/Editor";
 import { onMount } from "solid-js";
 import { initLogger, logger } from "./logger";
 import { appWindow } from "@tauri-apps/api/window";
-import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
+import {
+  fileSaved,
+  saveFile,
+  setIsValidFile,
+} from "./components/Editor/EditorComponent";
 import { dialog } from "@tauri-apps/api";
-import { invoke } from "@tauri-apps/api/tauri";
-import { getTabs } from "./components/Editor/components/EditorTabs";
+import { addTab, getTabs } from "./components/Editor/components/EditorTabs";
+import { getSettingsPath, initSettings } from "./settingsManager";
 
 export default function App() {
   onMount(() => {
     initLogger();
+    initSettings();
     logger(false, "App.tsx", "Initialized application");
 
     appWindow.listen("tauri://close-requested", async () => {
@@ -38,6 +43,13 @@ export default function App() {
         if (closeEditor) {
           appWindow.close();
         }
+      }
+    });
+
+    appWindow.listen("narvik:settings", () => {
+      if (loaded()) {
+        setIsValidFile(true);
+        addTab(["Settings", getSettingsPath()]);
       }
     });
 
