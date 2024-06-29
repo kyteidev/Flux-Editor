@@ -7,12 +7,12 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
-import { appLogDir } from "@tauri-apps/api/path";
+import { appDataDir } from "@tauri-apps/api/path";
 
 const currentTime = new Date();
 let logFileName: string;
@@ -22,7 +22,11 @@ export const initLogger = () => {
 };
 
 export const logger = async (error: boolean, file: string, message: string) => {
-  const appLogDirPath = await appLogDir();
+  const appLogDirPath = path.join(await appDataDir(), "logs");
+
+  if (!(await fs.exists(await appDataDir()))) {
+    await fs.createDir(await appDataDir());
+  }
 
   const logPath = path.join(appLogDirPath, `${logFileName}`);
 
