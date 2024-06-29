@@ -1,9 +1,9 @@
 import { For, Show, createSignal, onCleanup } from "solid-js";
 import { IconCircle, IconClose } from "../../Icons/Icons";
-import { openFile } from "../EditorComponent";
+import { closeFile, openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
 import { dialog } from "@tauri-apps/api";
-import { fileIcons, specialFileIcons } from "../../../utils/fileIcon";
+import { fileIcons, specialFileIcons } from "../../../utils/file";
 import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
 import { setIsValidFile } from "../EditorComponent";
@@ -61,6 +61,7 @@ const EditorTabs = () => {
               }
               setIsClosed(true);
               setTabs(tabs().filter((t) => t !== tabs()[index()]));
+              closeFile();
               if (tabs().length === 0) {
                 fixEditorHeight(false); // tabs add height to editor pane, this fixes it by adding height because tabs row is hidden when all tabs are closed
               } else {

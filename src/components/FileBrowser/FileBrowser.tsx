@@ -17,7 +17,7 @@ import { IconFolder, IconFolderOpen, IconLineVertical } from "../Icons/Icons";
 import { logger } from "../../logger";
 import * as FI from "../Icons/FileIcons";
 import { addTab } from "../Editor/components/EditorTabs";
-import { fileIcons, specialFileIcons } from "../../utils/fileIcon";
+import { fileIcons, specialFileIcons } from "../../utils/file";
 import { setIsValidFile } from "../Editor/EditorComponent";
 
 interface Props {

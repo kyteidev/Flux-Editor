@@ -2,6 +2,16 @@ import { JSX } from "solid-js";
 import * as FI from "../components/Icons/FileIcons";
 import { IconGit } from "../components/Icons/Icons";
 
+export const specialCodeFileType: { [key: string]: string } = {
+  // code langs
+  ".rs": "rust",
+  ".svelte": "html",
+  ".bat": "batch",
+  ".vue": "html",
+  ".h": "cpp",
+  ".bf": "brainfuck",
+};
+
 export const specialFileIcons: { [key: string]: () => JSX.Element } = {
   "tailwind.config.js": FI.Tailwind,
   "vite.config.js": FI.Vite,

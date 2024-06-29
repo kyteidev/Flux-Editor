@@ -7,25 +7,92 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Show, createSignal, onMount } from "solid-js";
 import Prism from "prismjs";
+import { Show, createSignal, onMount } from "solid-js";
 import { getClosingChar } from "../../utils/char";
 import styles from "./EditorComponent.module.css";
 import "./themes/dark.css";
 
 // PrismJS plugins
+import "prismjs/plugins/autolinker/prism-autolinker.min.css";
+import "prismjs/plugins/autolinker/prism-autolinker.min.js";
 import "prismjs/plugins/match-braces/prism-match-braces.min.js";
-import "prismjs/plugins/autoloader/prism-autoloader.min.js";
-import { dialog, fs } from "@tauri-apps/api";
-import { getTabs, setSavedTabs } from "./components/EditorTabs";
-import { logger } from "../../logger";
 
-interface Props {
-  lang: string;
-}
+import "prismjs/components/prism-markup-templating.min.js"; // IMPORTANT: this should be at the top, since some lang grammars depend on this.
+// PrismJS lang grammars
+import "prismjs/components/prism-applescript.min.js";
+import "prismjs/components/prism-armasm.min.js";
+import "prismjs/components/prism-asm6502.min.js";
+import "prismjs/components/prism-autohotkey.min.js";
+import "prismjs/components/prism-bash.min.js";
+import "prismjs/components/prism-basic.min.js";
+import "prismjs/components/prism-batch.min.js";
+import "prismjs/components/prism-brainfuck.min.js";
+import "prismjs/components/prism-c.min.js";
+import "prismjs/components/prism-cmake.min.js";
+import "prismjs/components/prism-coffeescript.min.js";
+import "prismjs/components/prism-cpp.min.js";
+import "prismjs/components/prism-csharp.min.js";
+import "prismjs/components/prism-css.min.js";
+import "prismjs/components/prism-dart.min.js";
+import "prismjs/components/prism-django.min.js";
+import "prismjs/components/prism-docker.min.js";
+import "prismjs/components/prism-editorconfig.min.js";
+import "prismjs/components/prism-ejs.min.js";
+import "prismjs/components/prism-elixir.min.js";
+import "prismjs/components/prism-fsharp.min.js";
+import "prismjs/components/prism-gdscript.min.js";
+import "prismjs/components/prism-go.min.js";
+import "prismjs/components/prism-gradle.min.js";
+import "prismjs/components/prism-graphql.min.js";
+import "prismjs/components/prism-haskell.min.js";
+import "prismjs/components/prism-haxe.min.js";
+import "prismjs/components/prism-http.min.js";
+import "prismjs/components/prism-ignore.min.js";
+import "prismjs/components/prism-java.min.js";
+import "prismjs/components/prism-javascript.min.js";
+import "prismjs/components/prism-json.min.js";
+import "prismjs/components/prism-json5.min.js";
+import "prismjs/components/prism-jsx.min.js";
+import "prismjs/components/prism-julia.min.js";
+import "prismjs/components/prism-kotlin.min.js";
+import "prismjs/components/prism-latex.min.js";
+import "prismjs/components/prism-less.min.js";
+import "prismjs/components/prism-llvm.min.js";
+import "prismjs/components/prism-lua.min.js";
+import "prismjs/components/prism-makefile.min.js";
+import "prismjs/components/prism-markdown.min.js";
+import "prismjs/components/prism-matlab.min.js";
+import "prismjs/components/prism-mongodb.min.js";
+import "prismjs/components/prism-nginx.min.js";
+import "prismjs/components/prism-objectivec.min.js";
+import "prismjs/components/prism-pascal.min.js";
+import "prismjs/components/prism-perl.min.js";
+import "prismjs/components/prism-php.min.js";
+import "prismjs/components/prism-python.min.js";
+import "prismjs/components/prism-ruby.min.js";
+import "prismjs/components/prism-rust.min.js";
+import "prismjs/components/prism-sass.min.js";
+import "prismjs/components/prism-scala.min.js";
+import "prismjs/components/prism-scss.min.js";
+import "prismjs/components/prism-sql.min.js";
+import "prismjs/components/prism-swift.min.js";
+import "prismjs/components/prism-tsx.min.js";
+import "prismjs/components/prism-typescript.min.js";
+import "prismjs/components/prism-v.min.js";
+import "prismjs/components/prism-vim.min.js";
+import "prismjs/components/prism-visual-basic.min.js";
+import "prismjs/components/prism-wasm.min.js";
+import "prismjs/components/prism-yaml.min.js";
+
+import { dialog, fs } from "@tauri-apps/api";
+import path from "path-browserify";
+import { logger } from "../../logger";
+import { specialCodeFileType } from "../../utils/file";
+import { getTabs, setSavedTabs } from "./components/EditorTabs";
 
 export const [isValidFile, setIsValidFile] = createSignal(true);
 
@@ -36,6 +103,8 @@ const [fileSavedContent, setFileSavedContent] = createSignal<string[][]>([]); //
 // it's like the tracking array.
 
 const [lines, setLines] = createSignal(["1"]);
+
+const [lang, setLang] = createSignal("");
 
 export const getSavedFiles = () => {
   return fileSaved();
@@ -78,32 +147,44 @@ export const saveFile = async (saveAs?: boolean) => {
   }
 };
 
-export const openFile = (path: string) => {
+export const closeFile = () => {
+  fileSavedContent().splice(
+    fileSavedContent().findIndex((i) => i.includes(filePath)),
+    1,
+  );
+};
+
+export const openFile = (pathLocal: string) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
-  if (path === "narvik:settings") {
+  if (pathLocal === "narvik:settings") {
     // TODO: add settings
   } else {
     if (
-      !fileSaved().includes(path) &&
-      !fileSavedContent().flat().includes(path) // checks if open file already exists as tab
+      !fileSaved().includes(pathLocal) &&
+      !fileSavedContent().flat().includes(pathLocal) // checks if open file already exists as tab
     ) {
-      setFileSaved([...fileSaved(), path]); // adds path to saved files array
+      setFileSaved([...fileSaved(), pathLocal]); // adds path to saved files array
     }
 
-    fs.readTextFile(path)
+    fs.readTextFile(pathLocal)
       .then((data) => {
         setIsValidFile(true);
 
-        filePath = path;
+        const fileExt = path
+          .extname(pathLocal)
+          .substring(1, path.extname(pathLocal).length);
+        setLang(specialCodeFileType[fileExt] || fileExt);
 
-        if (!fileSavedContent().flat().includes(path)) {
+        filePath = pathLocal;
+
+        if (!fileSavedContent().flat().includes(pathLocal)) {
           // flattens fileSavedContent array and checks if open file's path exists there. So basically checks if open file is being tracked for changes
-          setFileSavedContent([...fileSavedContent(), [path, data, data]]); // if not tracked, add it to tracking array
+          setFileSavedContent([...fileSavedContent(), [pathLocal, data, data]]); // if not tracked, add it to tracking array
           textarea.value = data; // sets textarea value to value read from the open file
         } else {
           textarea.value =
             fileSavedContent()[
-              fileSavedContent().findIndex((i) => i.includes(path))
+              fileSavedContent().findIndex((i) => i.includes(pathLocal))
             ][2]; // if already tracked, set textarea value to be the changed value, because the open file may not be saved. If saved, its value would be same as saved value.
         }
 
@@ -111,10 +192,11 @@ export const openFile = (path: string) => {
         updateLineNumbers();
       })
       .catch((error: string) => {
+        console.error(error);
         if (error.includes("stream did not contain valid UTF-8")) {
           setIsValidFile(false);
-          if (!fileSavedContent().flat().includes(path)) {
-            setFileSavedContent([...fileSavedContent(), [path, "", ""]]);
+          if (!fileSavedContent().flat().includes(pathLocal)) {
+            setFileSavedContent([...fileSavedContent(), [pathLocal, "", ""]]);
           }
           textarea.value = "";
           return;
@@ -175,7 +257,7 @@ const highlightContent = () => {
   // [end]
 };
 
-const EditorComponent = (props: Props) => {
+const EditorComponent = () => {
   const [selectedLine, setSelectedLine] = createSignal(-1);
 
   let lineNumbersDiv: HTMLElement | null;
@@ -451,7 +533,7 @@ const EditorComponent = (props: Props) => {
         >
           {/* match-braces doesn't work */}
           <code
-            class={`language-${props.lang} match-braces rainbow-braces select-none`}
+            class={`language-${lang()} match-braces rainbow-braces select-none`}
             id="highlighting-content"
           ></code>
         </pre>

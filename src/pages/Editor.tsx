@@ -204,7 +204,7 @@ const Editor = () => {
                   </div>
                 }
               >
-                <EditorComponent lang="javascript" />
+                <EditorComponent />
               </Show>
               <div class="h-full w-full bg-base-200"></div>
               <Show when={getTabs().length != 0}>
