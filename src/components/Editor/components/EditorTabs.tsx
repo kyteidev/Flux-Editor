@@ -34,8 +34,8 @@ export const getTabs = () => {
 
 const EditorTabs = () => {
   return (
-    <div class="flex h-[40px] w-full max-w-full flex-col items-center justify-center overflow-hidden bg-base-200">
-      <div class="flex w-full max-w-full select-none overflow-x-auto overflow-y-hidden">
+    <div class="flex h-[40px] max-h-[40px] min-h-[40px] w-full max-w-full flex-col items-center justify-center overflow-hidden bg-base-200">
+      <div class="flex max-h-full min-h-full w-full max-w-full select-none space-x-1 overflow-x-auto overflow-y-hidden">
         <For each={tabs().map((t) => t[0])}>
           {(tabName, index) => {
             const [isClosed, setIsClosed] = createSignal(false);
@@ -111,7 +111,7 @@ const EditorTabs = () => {
 
             return (
               <div
-                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} mx-[2px] flex h-8 max-w-52 items-center rounded-xl p-1 pl-2 pr-2 text-center transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
+                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} mr-1 flex h-8 max-w-52 items-center rounded-xl px-2 py-1 text-center transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
                 onclick={() => {
                   if (!isClosed()) {
                     setActiveTab(index());

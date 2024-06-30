@@ -7,7 +7,7 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { JSX, Show, children, createSignal, onMount } from "solid-js";
@@ -187,9 +187,9 @@ const SplitPane = (props: Props) => {
         class="flex flex-grow"
         style={{
           width: `calc(100vw - ${firstWidth()})`,
-          "max-width": `${!props.vertical && `calc(100vw - ${firstWidth()}px)`}`,
+          "max-width": `${!props.vertical && `calc(100vw - ${firstWidth()}px - 5px)`}`,
           height: `calc(100vh - ${firstHeight()})`,
-          "max-height": `${props.vertical && `calc(100vh - ${firstHeight()}px)`}`,
+          "max-height": `${props.vertical && `calc(100vh - ${firstHeight()}px - 5px)`}`,
         }}
       >
         {secondChild()} {/* second child takes up rest of space */}
