@@ -22,3 +22,10 @@ objc = "0.2.7"
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = 3
+strip = true
