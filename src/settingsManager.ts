@@ -4,9 +4,10 @@ import path from "path-browserify";
 import { loadFBSettings } from "./components/FileBrowser/FileBrowser";
 import { loadEditorSettings } from "./components/Editor/EditorComponent";
 import { loadEditorTabsSettings } from "./components/Editor/components/EditorTabs";
+import { logger } from "./logger";
 
-const settingsDir = path.join(await appDataDir(), "settings");
-const settingsFile = path.join(settingsDir, "settings.json");
+let settingsDir: string;
+let settingsFile: string;
 
 export const settings: { [key: string]: any } = {
   "editor:fontSize": 16,
@@ -15,6 +16,9 @@ export const settings: { [key: string]: any } = {
 };
 
 export const initSettings = async () => {
+  settingsDir = path.join(await appDataDir(), "settings");
+  settingsFile = path.join(settingsDir, "settings.json");
+
   if (!(await fs.exists(await appDataDir()))) {
     await fs.createDir(await appDataDir());
   }
@@ -38,6 +42,16 @@ export const initSettings = async () => {
           const settingType = typeof settings[setting];
           if (typeof parsedData[setting] !== settingType) {
             parsedData[setting] = settings[setting];
+            logger(
+              true,
+              "settingsManager.ts",
+              "Invalid setting: parsed setting " +
+                parsedData[setting] +
+                " has type " +
+                typeof parsedData +
+                " instead of type " +
+                settingType,
+            );
           } else {
             settings[setting] = parsedData[setting];
           }
