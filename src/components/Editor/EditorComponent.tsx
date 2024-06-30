@@ -90,7 +90,11 @@ import path from "path-browserify";
 import { logger } from "../../logger";
 import { specialCodeFileType } from "../../utils/file";
 import { getTabs, setSavedTabs } from "./components/EditorTabs";
-import { getSetting } from "../../settingsManager";
+import {
+  getSetting,
+  getSettingsPath,
+  loadSettings,
+} from "../../settingsManager";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
@@ -105,6 +109,34 @@ const [fileSavedContent, setFileSavedContent] = createSignal<string[][]>([]); //
 const [lines, setLines] = createSignal(["1"]);
 
 const [lang, setLang] = createSignal("");
+
+const [lineHeight, setLineHeight] = createSignal("1.5rem");
+
+export const loadEditorSettings = () => {
+  const editorWrapper = document.getElementById("editor-wrapper");
+  const textarea = document.getElementById("editing") as HTMLTextAreaElement;
+  const highlightedContent = document.getElementById("highlighting-content");
+  const highlightedContentPre = document.getElementById("highlighting");
+
+  if (
+    editorWrapper &&
+    textarea &&
+    highlightedContent &&
+    highlightedContentPre
+  ) {
+    textarea.style.tabSize =
+      highlightedContent.style.tabSize =
+      highlightedContentPre.style.tabSize =
+        getSetting("tabSize");
+
+    setLineHeight(`${getSetting("editor:fontSize") / 16 + 0.5}rem`);
+    editorWrapper.style.setProperty(
+      "--editor-fontSize",
+      `${getSetting("editor:fontSize") / 16}rem`,
+    );
+    editorWrapper.style.setProperty("--editor-lineHeight", lineHeight());
+  }
+};
 
 export const getSavedFiles = () => {
   return fileSaved();
@@ -142,6 +174,12 @@ export const saveFile = async (saveAs?: boolean) => {
     ][1] != textarea.value // checks if the saved content is equal to textarea.value
   ) {
     fs.writeFile(filePath, textarea.value);
+
+    if ((filePath = getSettingsPath())) {
+      loadSettings();
+    }
+
+    console.log(fileSavedContent());
 
     updateArrays(filePath);
   }
@@ -272,18 +310,18 @@ const calcHighlightLinePos = () => {
   const highlightedLine = document.getElementById("highlighted-line");
 
   if (highlightedLine && textarea) {
-    highlightedLine.style.top = `calc(${selectedLine() - 1} * 1.5rem - ${highlightedContentPre?.scrollTop}px)`;
-    highlightedLine.style.height = "1.5em";
+    highlightedLine.style.top = `calc(${selectedLine() - 1} * ${lineHeight()} - ${highlightedContentPre?.scrollTop}px)`;
+    highlightedLine.style.height = lineHeight();
 
     const highlightedLinePos = highlightedLine.getBoundingClientRect();
     const textareaPos = textarea.getBoundingClientRect();
     if (highlightedLinePos.top < textareaPos.top) {
-      highlightedLine.style.height = `calc(1.5em - (${textareaPos.top}px - ${highlightedLinePos.top}px))`;
+      highlightedLine.style.height = `calc(${lineHeight()} - (${textareaPos.top}px - ${highlightedLinePos.top}px))`;
       highlightedLine.style.top = "0";
     } else if (highlightedLinePos.bottom > textareaPos.bottom) {
       highlightedLine.style.height = `calc(${textareaPos.bottom}px - ${highlightedLinePos.top}px)`;
     } else {
-      highlightedLine.style.height = "1.5em";
+      highlightedLine.style.height = lineHeight();
     }
   }
 };
@@ -305,30 +343,23 @@ const updateSelectedLine = () => {
   }, 0);
 
   if (highlightedLine) {
-    highlightedLine.style.height = "1.5em";
+    highlightedLine.style.height = lineHeight();
   }
 };
 
 const EditorComponent = () => {
   let lineNumbersDiv: HTMLElement | null;
-  let highlightedContent: HTMLElement | null;
   let highlightedContentPre: HTMLElement | null;
   let highlightedLine: HTMLElement | null;
   let textareaRef: HTMLTextAreaElement | undefined;
 
   onMount(() => {
     lineNumbersDiv = document.getElementById("line-numbers");
-    highlightedContent = document.getElementById("highlighting-content");
     highlightedContentPre = document.getElementById("highlighting");
     highlightedLine = document.getElementById("highlighted-line");
 
     // load settings
-    if (textareaRef && highlightedContent && highlightedContentPre) {
-      textareaRef.style.tabSize =
-        highlightedContent.style.tabSize =
-        highlightedContentPre.style.tabSize =
-          getSetting("tabSize");
-    }
+    loadEditorSettings();
 
     if (highlightedLine) {
       highlightedLine.style.height = "0";
@@ -343,8 +374,11 @@ const EditorComponent = () => {
   };
 
   const fileChanged = () => {
+    if (!fileSaved().includes(filePath)) return; // if file doesn't exist in fileSaved, don't remove items from fileSaved.
+
     fileSaved().splice(fileSaved().indexOf(filePath), 1); // removes this file from fileSaved array, since this file has changes.
     setSavedTabs(fileSaved()); // syncs signals
+    console.log(1, fileSaved());
   };
 
   const checkFileHasChanges = () => {
@@ -361,11 +395,13 @@ const EditorComponent = () => {
         // sets signals to know this file is saved
         setFileSaved([...fileSaved(), filePath]);
         setSavedTabs(fileSaved());
+        console.log(fileSaved());
         if (fileSaved().length === getTabs().length) {
           invoke("set_doc_edited", { edited: false });
         }
       } else {
         fileChanged();
+        console.log(fileSaved());
         invoke("set_doc_edited", { edited: true });
       }
     }
@@ -376,7 +412,10 @@ const EditorComponent = () => {
     handleScroll();
 
     checkFileHasChanges();
+
+    console.log(fileSavedContent());
   };
+
   const handleBlur = () => {
     setSelectedLine(-1);
 
@@ -511,12 +550,12 @@ const EditorComponent = () => {
   // FIXME: make this more efficient, and fix positioning issues, so this doesn't rely on parent element's position styles
 
   return (
-    <div class="flex h-full w-full select-none">
+    <div class="flex h-full w-full select-none" id="editor-wrapper">
       <div class="relative">
         <Show when={isValidFile()}>
           <div
             id="line-numbers"
-            class={`relative m-0 flex h-full w-[64px] min-w-[64px] max-w-[64px] select-none flex-col overflow-y-hidden bg-base-200 p-3 pt-0 text-right text-base text-content`}
+            class={`relative m-0 flex h-full w-[64px] min-w-[64px] max-w-[64px] select-none flex-col overflow-y-hidden bg-base-200 p-3 pt-0 text-right text-content`}
           >
             {lines().map((line) => (
               <div class="flex">
@@ -534,9 +573,10 @@ const EditorComponent = () => {
       >
         <div
           id="highlighted-line"
-          class="pointer-events-none absolute z-50 h-[1.5rem] w-full bg-content opacity-10"
+          class="pointer-events-none absolute z-50 w-full bg-content opacity-10"
           style={{
-            top: `calc(${selectedLine() - 1} * 1.5rem - ${textareaRef?.scrollTop}px)`,
+            height: lineHeight(),
+            top: `calc(${selectedLine() - 1} * ${lineHeight()} - ${textareaRef?.scrollTop}px)`,
           }}
         ></div>
         <textarea

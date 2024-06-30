@@ -10,6 +10,11 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
+:root {
+  --editor-fontSize: 1rem;
+  --editor-lineHeight: 1.5rem;
+}
+
 @font-face {
   font-family: "notosans";
   src: url("../../assets/fonts/NotoSansMono.woff2") format("woff2");
@@ -18,13 +23,14 @@ You should have received a copy of the GNU General Public License along with Nar
 .lineNumber {
   direction: rtl;
   font-family: "notosans", monospace !important;
+  font-size: var(--editor-fontSize);
+  line-height: var(--editor-lineHeight);
 }
 
 .textarea,
 .highlighted {
   white-space: pre;
   display: flex;
-  font-size: medium;
   flex-grow: 1;
   position: absolute;
   top: 0;
@@ -38,6 +44,8 @@ You should have received a copy of the GNU General Public License along with Nar
 .highlighted,
 .highlighted * {
   font-family: "notosans", monospace !important;
+  font-size: var(--editor-fontSize);
+  line-height: var(--editor-lineHeight);
   border: none !important;
   border-radius: 0% !important;
   outline: none !important;
@@ -45,6 +53,5 @@ You should have received a copy of the GNU General Public License along with Nar
   margin: 0 !important;
   padding: 0 !important;
   tab-size: 2;
-  line-height: 1.5rem !important;
   max-width: none;
 }

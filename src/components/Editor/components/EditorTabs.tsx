@@ -1,4 +1,4 @@
-import { For, Show, createSignal, onCleanup } from "solid-js";
+import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 import { IconCircle, IconClose, IconSettings } from "../../Icons/Icons";
 import { closeFile, openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
@@ -8,12 +8,25 @@ import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
 import { setIsValidFile } from "../EditorComponent";
 import { logger } from "../../../logger";
-import { getSettingsPath } from "../../../settingsManager";
+import { getSetting, getSettingsPath } from "../../../settingsManager";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
 
+const [showFileIcons, setShowFileIcons] = createSignal(true);
+
 export const [savedTabs, setSavedTabs] = createSignal<string[]>([]);
+
+export const loadEditorTabsSettings = () => {
+  if (
+    getSetting("showFileIcons") === "both" ||
+    getSetting("showFileIcons") === "EditorTabs"
+  ) {
+    setShowFileIcons(true);
+  } else {
+    setShowFileIcons(false);
+  }
+};
 
 export const addTab = (tab: string[]) => {
   if (tabs().length === 0) {
@@ -33,6 +46,10 @@ export const getTabs = () => {
 };
 
 const EditorTabs = () => {
+  onMount(() => {
+    loadEditorTabsSettings();
+  });
+
   return (
     <div class="flex h-[40px] max-h-[40px] min-h-[40px] w-full max-w-full flex-col items-center justify-center overflow-hidden bg-base-200">
       <div class="flex max-h-full min-h-full w-full max-w-full select-none space-x-1 overflow-x-auto overflow-y-hidden">
@@ -119,9 +136,11 @@ const EditorTabs = () => {
                   }
                 }}
               >
-                <div class="min-h-[24px] min-w-[24px]">
-                  <FileIconComponent />
-                </div>
+                <Show when={showFileIcons()}>
+                  <div class="min-h-[24px] min-w-[24px]">
+                    <FileIconComponent />
+                  </div>
+                </Show>
                 <div class="block max-h-8 max-w-52 overflow-hidden overflow-ellipsis whitespace-nowrap">
                   {tabName}
                 </div>

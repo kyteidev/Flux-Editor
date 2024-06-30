@@ -7,7 +7,7 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { readDir } from "@tauri-apps/api/fs";
@@ -19,6 +19,7 @@ import * as FI from "../Icons/FileIcons";
 import { addTab } from "../Editor/components/EditorTabs";
 import { fileIcons, specialFileIcons } from "../../utils/file";
 import { setIsValidFile } from "../Editor/EditorComponent";
+import { getSetting } from "../../settingsManager";
 
 interface Props {
   dir: string;
@@ -26,14 +27,28 @@ interface Props {
   projectName?: string;
 }
 
+const [showIcon, setShowIcon] = createSignal(true);
+
+export const loadFBSettings = () => {
+  if (
+    getSetting("showFileIcons") === "both" ||
+    getSetting("showFileIcons") === "FileBrowser"
+  ) {
+    setShowIcon(true);
+  } else {
+    setShowIcon(false);
+  }
+};
+
 const FileBrowser = (props: Props) => {
   const [dirContents, setDirContents] = createSignal<string[]>([]);
   const files: string[] = [];
   const dirs: string[] = [];
 
-  const [showIcon, setShowIcon] = createSignal(true);
-
   onMount(async () => {
+    // load settings
+    loadFBSettings();
+
     const contents = await getPathContents(
       path.join(props.dir, props.workspaceName ?? "", props.projectName ?? ""),
     );
