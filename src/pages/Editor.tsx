@@ -14,7 +14,6 @@ import FileBrowser from "../components/FileBrowser/FileBrowser";
 import SplitPane from "../components/SplitPane/SplitPane";
 import WindowControls from "../components/WindowControls/WindowControls";
 import { Show, createSignal, onMount } from "solid-js";
-import { logger } from "../logger";
 import EditorComponent from "../components/Editor/EditorComponent";
 import EditorTabs, {
   addTab,
@@ -24,6 +23,7 @@ import logo from "../assets/narvik-logo.svg";
 import Welcome from "./Welcome";
 import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
+import { error, info } from "tauri-plugin-log-api";
 
 const [dir, setDir] = createSignal<string>("");
 
@@ -91,9 +91,8 @@ export const loadEditor = (
                     "config.json",
                   ),
                 ) // checks if parent directory has .narvik folder with config.json inside
-                .catch((error) => {
-                  console.error(error);
-                  logger(true, "Editor.tsx", error as string);
+                .catch((e) => {
+                  error(e as string);
                 })
             ) {
               fs.readTextFile(
@@ -116,9 +115,8 @@ export const loadEditor = (
                     );
                   }
                 })
-                .catch((error) => {
-                  console.error(error);
-                  logger(true, "Editor.tsx", error as string);
+                .catch((e) => {
+                  error(e as string);
                 });
             }
 
@@ -129,19 +127,18 @@ export const loadEditor = (
             ); // sets project name to be directory name
           }
         })
-        .catch((error) => {
-          console.error(error);
-          logger(true, "Editor.tsx", error as string);
+        .catch((e) => {
+          error(e as string);
         });
     }
 
-    logger(false, "Editor.tsx", "Editor loaded");
+    info("Editor loaded");
     setLoaded(true);
   });
 };
 const Editor = () => {
   onMount(() => {
-    logger(false, "Editor.tsx", "Editor mounted");
+    info("Editor mounted");
   });
 
   return (

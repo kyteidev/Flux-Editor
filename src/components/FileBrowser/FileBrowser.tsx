@@ -14,12 +14,12 @@ import { readDir } from "@tauri-apps/api/fs";
 import path from "path-browserify";
 import { For, Show, createSignal, onMount } from "solid-js";
 import { IconFolder, IconFolderOpen, IconLineVertical } from "../Icons/Icons";
-import { logger } from "../../logger";
 import * as FI from "../Icons/FileIcons";
 import { addTab } from "../Editor/components/EditorTabs";
 import { fileIcons, specialFileIcons } from "../../utils/file";
 import { setIsValidFile } from "../Editor/EditorComponent";
 import { getSetting } from "../../settingsManager";
+import { error } from "tauri-plugin-log-api";
 
 interface Props {
   dir: string;
@@ -67,12 +67,12 @@ const FileBrowser = (props: Props) => {
       return nonEmptyContents.sort((a, b) =>
         a.localeCompare(b, undefined, { sensitivity: "base" }),
       );
-    } catch (error) {
-      if (!(error as string).includes("Not a directory")) {
-        console.error(`Error fetching directory contents: ${error}`);
-        logger(true, "FileBrowser.tsx", error as string);
+    } catch (e) {
+      if (!(e as string).includes("Not a directory")) {
+        console.error(`Error fetching directory contents: ${e}`);
+        error(`Error fetching directory contents: ${e}`);
       }
-      return [error as string]; // return error as string, so the error is like a nested file in a folder
+      return [e as string]; // return error as string, so the error is like a nested file in a folder
     }
   };
 

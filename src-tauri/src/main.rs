@@ -20,6 +20,7 @@ extern crate objc;
 use lsp_client::{init_server, install_server, send_request};
 use serde_json::{json, Value};
 use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, Window, WindowEvent};
+use tauri_plugin_log::LogTarget;
 
 #[cfg(target_os = "macos")]
 use cocoa::appkit::NSWindow;
@@ -39,7 +40,7 @@ mod window_ext;
 mod commands;
 use commands::git::clone_repo;
 mod utils;
-use utils::dir::get_ls_dir;
+use utils::dir::{get_app_log_dir, get_ls_dir};
 
 mod lsp_client;
 
@@ -65,6 +66,8 @@ async fn ls_send_request(id: &str, method: &str, params: Value) -> Result<String
     });
 
     let response = send_request(serde_json::to_string(&request).unwrap().as_str()).unwrap();
+
+    #[cfg(debug_assertions)]
     println!("Received response: {:?}", response);
 
     Ok(response)
@@ -150,7 +153,23 @@ fn menu() -> Menu {
 }
 
 fn main() {
+    #[cfg(debug_assertions)]
+    let log_targets: [LogTarget; 3] = [
+        LogTarget::Stdout,
+        LogTarget::Webview,
+        LogTarget::Folder(get_app_log_dir()),
+    ];
+
+    #[cfg(not(debug_assertions))]
+    let log_targets: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::Folder(get_app_log_dir())];
+
     tauri::Builder::default()
+        .plugin(
+            tauri_plugin_log::Builder::default()
+                .targets(log_targets)
+                .log_name("main")
+                .build(),
+        )
         .setup(|app| {
             install_server(get_ls_dir(), "typescript"); // temporary for testing purposes
 

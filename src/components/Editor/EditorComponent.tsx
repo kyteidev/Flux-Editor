@@ -87,7 +87,6 @@ import "prismjs/components/prism-yaml.min.js";
 
 import { dialog, fs, invoke } from "@tauri-apps/api";
 import path from "path-browserify";
-import { logger } from "../../logger";
 import { specialCodeFileType } from "../../utils/file";
 import { getTabs, setSavedTabs } from "./components/EditorTabs";
 import {
@@ -95,6 +94,7 @@ import {
   getSettingsPath,
   loadSettings,
 } from "../../settingsManager";
+import { error } from "tauri-plugin-log-api";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
@@ -179,8 +179,6 @@ export const saveFile = async (saveAs?: boolean) => {
       loadSettings();
     }
 
-    console.log(fileSavedContent());
-
     updateArrays(filePath);
   }
 };
@@ -236,9 +234,8 @@ export const openFile = (pathLocal: string) => {
           // TODO: restore selected line and character
           textarea.blur();
         })
-        .catch((error: string) => {
-          console.error(error);
-          if (error.includes("stream did not contain valid UTF-8")) {
+        .catch((e: string) => {
+          if (e.includes("stream did not contain valid UTF-8")) {
             setIsValidFile(false);
             if (!fileSavedContent().flat().includes(pathLocal)) {
               setFileSavedContent([...fileSavedContent(), [pathLocal, "", ""]]);
@@ -247,8 +244,7 @@ export const openFile = (pathLocal: string) => {
             return;
           }
 
-          console.error(error);
-          logger(true, "EditorComponent.tsx", error);
+          error(e);
         });
       setSavedTabs(fileSaved()); // syncs savedTabs() signal in EditorTabs.tsx with fileSaved()
 
@@ -378,7 +374,6 @@ const EditorComponent = () => {
 
     fileSaved().splice(fileSaved().indexOf(filePath), 1); // removes this file from fileSaved array, since this file has changes.
     setSavedTabs(fileSaved()); // syncs signals
-    console.log(1, fileSaved());
   };
 
   const checkFileHasChanges = () => {
@@ -395,13 +390,11 @@ const EditorComponent = () => {
         // sets signals to know this file is saved
         setFileSaved([...fileSaved(), filePath]);
         setSavedTabs(fileSaved());
-        console.log(fileSaved());
         if (fileSaved().length === getTabs().length) {
           invoke("set_doc_edited", { edited: false });
         }
       } else {
         fileChanged();
-        console.log(fileSaved());
         invoke("set_doc_edited", { edited: true });
       }
     }
@@ -412,8 +405,6 @@ const EditorComponent = () => {
     handleScroll();
 
     checkFileHasChanges();
-
-    console.log(fileSavedContent());
   };
 
   const handleBlur = () => {

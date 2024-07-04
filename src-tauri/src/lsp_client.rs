@@ -7,20 +7,22 @@ use std::{
     thread,
 };
 
+use log::{error, info};
+
 lazy_static::lazy_static! {
     static ref LANG_SERVER: Arc<Mutex<Option<Child>>> = Arc::new(Mutex::new(None));
 }
 
 pub fn install_server(dir: PathBuf, lang: &str) {
     // TODO: detect if user is connected to internet. if not, abort. (could also implement this using ts)
-    println!("Installing language server to dir {:?}", dir);
+    info!("Installing language server to dir {:?}", dir);
     match lang {
         "typescript" => {
             let ts_dir = dir.join("typescript");
             let node_dir = ts_dir.join("node_modules");
             if !node_dir.exists() {
                 fs::create_dir_all(node_dir)
-                    .map_err(|e| eprintln!("Error creating directory: {}", e))
+                    .map_err(|e| error!("Error creating directory: {}", e))
                     .ok();
             }
             Command::new("npm")
@@ -32,7 +34,10 @@ pub fn install_server(dir: PathBuf, lang: &str) {
                 ])
                 .current_dir(ts_dir)
                 .output()
-                .map_err(|e| format!("Failed to execute command: {}", e))
+                .map_err(|e| {
+                    error!("Failed to execute command: {}", e);
+                    format!("Failed to execute command: {}", e)
+                })
                 .unwrap();
         }
         _ => {}
@@ -41,7 +46,7 @@ pub fn install_server(dir: PathBuf, lang: &str) {
 
 #[tauri::command]
 pub fn start_server(dir: PathBuf, lang: &str) -> Result<Child, String> {
-    println!("Starting server in {:?}", dir.clone());
+    info!("Starting language server in {:?}", dir.clone());
 
     let command;
     let mut args: Vec<String> = Vec::new();
@@ -73,9 +78,12 @@ pub fn start_server(dir: PathBuf, lang: &str) -> Result<Child, String> {
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
-        .map_err(|e| format!("Failed to start language server: {}", e))?;
+        .map_err(|e| {
+            error!("Failed to start language server: {}", e);
+            format!("Failed to start language server: {}", e)
+        })?;
 
-    println!("PID: {}", child.id());
+    info!("Started language server with PID: {}", child.id());
 
     Ok(child)
 }
@@ -96,10 +104,10 @@ pub fn init_server(path: PathBuf, lang: &str) {
 
     */
 
-    let child = start_server(path, lang).expect("Failed to start language server from function");
+    let child = start_server(path, lang)
+        .map_err(|e| error!("start_server() failed: {}", e))
+        .expect("start_server() failed");
     *lang_server = Some(child); // restarts server everytime a request is sent.
-
-    println!("Server started!");
 }
 
 pub fn send_request(request: &str) -> Result<String, String> {
@@ -107,18 +115,34 @@ pub fn send_request(request: &str) -> Result<String, String> {
     let mut lang_server = ls_clone.lock().unwrap();
 
     let response = if let Some(ref mut child) = *lang_server {
-        let mut stdin = child.stdin.take().expect("Failed to open stdin");
-        let mut stdout = child.stdout.take().expect("Failed to open stdout");
+        let mut stdin = match child.stdin.take() {
+            Some(stdin) => stdin,
+            None => {
+                error!("Failed to open stdin");
+                return Err("FAIL: Stdin failed to open".to_string());
+            }
+        };
+        let mut stdout = match child.stdout.take() {
+            Some(stdout) => stdout,
+            None => {
+                error!("Failed to open stdout");
+                return Err("FAIL: Stdout failed to open".to_string());
+            }
+        };
 
         let content_length = request.len();
         let message = format!("Content-Length: {}\r\n\r\n{}", content_length, request);
 
+        stdin.write_all(message.as_bytes()).map_err(|e| {
+            error!("Failed to write to stdin: {}", e);
+            format!("Failed to write to stdin: {}", e)
+        })?;
         stdin
-            .write_all(message.as_bytes())
-            .map_err(|e| format!("Failed to write to stdin: {}", e))?;
-        stdin.flush().unwrap();
+            .flush()
+            .map_err(|e| error!("Failed to flush stdin: {}", e))
+            .unwrap();
 
-        println!("Request sent");
+        info!("Request sent to language server");
 
         let (tx, rx) = mpsc::channel();
 
@@ -153,10 +177,8 @@ pub fn send_request(request: &str) -> Result<String, String> {
                                                 response_length += n;
                                             }
                                             Err(e) => {
-                                                let _ = tx.send(format!(
-                                                    "Error reading from stdout: {}",
-                                                    e
-                                                ));
+                                                error!("Error reading from stdout: {}", e);
+                                                let _ = tx.send("".to_string());
                                                 return;
                                             }
                                         }
@@ -166,28 +188,38 @@ pub fn send_request(request: &str) -> Result<String, String> {
                                 }
                             }
                         }
-                        let _ = tx.send("Failed to parse length from response.".to_string());
+                        error!("Failed to parse length from response");
+                        let _ = tx.send("".to_string());
                     }
                 }
                 Err(e) => {
-                    let _ = tx.send(format!("Error reading from stdout: {}", e));
+                    error!("Error reading from stdout: {}", e);
+                    let _ = tx.send("".to_string());
                 }
             }
         });
 
-        let _ = handle.join().expect("Failed to join reader thread");
+        let _ = handle
+            .join()
+            .map_err(|e| error!("Failed to join reader thread: {:?}", e));
 
-        let raw_response = rx
-            .iter()
-            .next()
-            .unwrap_or_else(|| "Failed to receive a complete response.".to_string());
+        let raw_response = rx.iter().next().unwrap_or_else(|| {
+            error!("Failed to receive complete response");
+            "Failed to receive a complete response.".to_string()
+        });
 
         let parsed_response: Result<String, String> = Ok(raw_response);
 
         parsed_response
     } else {
-        Ok("".to_string())
+        error!(
+            "Error in static ref LANG_SERVER. Its value is: {:?}",
+            lang_server
+        );
+        Err("FAIL: Error in static ref LANG_SERVER".to_string())
     };
+
+    info!("Received response from language server");
 
     response
 }

@@ -11,6 +11,7 @@ You should have received a copy of the GNU General Public License along with Nar
 */
 
 import { JSX, Show, children, createSignal, onMount } from "solid-js";
+import { info } from "tauri-plugin-log-api";
 
 interface Props {
   children: JSX.Element;
@@ -92,8 +93,10 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetY >= 80 && props.canFirstHide) {
           setCanUnhide(false);
           setFirstHeight(0); // hides first pane
+          info("First pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(props.firstMinSize);
+          info("First pane unhidden");
         }
       } else if (
         props.secondMinSize &&
@@ -102,8 +105,10 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetY >= 80 && props.canSecondHide) {
           setCanUnhide(false);
           setFirstHeight(windowHeight - 3 - 40); // sets first height to window height, minus height of splitter
+          info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(windowHeight - props.secondMinSize);
+          info("Second pane unhidden");
         }
       } else {
         setFirstHeight(newHeight);
@@ -119,8 +124,10 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetX >= 80 && props.canFirstHide) {
           setCanUnhide(false);
           setFirstWidth(0);
+          info("First pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(props.firstMinSize);
+          info("First pane unhidden");
         }
       } else if (
         props.secondMinSize &&
@@ -129,8 +136,10 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetX >= 80 && props.canSecondHide) {
           setCanUnhide(false);
           setFirstWidth(windowWidth - 3);
+          info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(windowWidth - props.secondMinSize);
+          info("Second pane unhidden");
         }
       } else {
         setFirstWidth(newWidth);
@@ -143,14 +152,18 @@ const SplitPane = (props: Props) => {
     if (props.vertical) {
       if (firstHeight() === 0 && props.firstMinSize) {
         setFirstHeight(props.firstMinSize);
+        info("First pane unhidden");
       } else if (firstHeight() === windowHeight - 43 && props.secondMinSize) {
         setFirstHeight(windowHeight - props.secondMinSize);
+        info("Second pane unhidden");
       }
     } else {
       if (firstWidth() === 0 && props.firstMinSize) {
         setFirstWidth(props.firstMinSize);
+        info("First pane unhidden");
       } else if (firstWidth() === windowWidth - 3 && props.secondMinSize) {
         setFirstWidth(windowWidth - props.secondMinSize);
+        info("Second pane unhidden");
       }
     }
   };

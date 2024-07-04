@@ -7,13 +7,13 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { invoke } from "@tauri-apps/api";
 import { homeDir } from "@tauri-apps/api/path";
 import * as path from "path-browserify";
-import { logger } from "../logger";
+import { error, info } from "tauri-plugin-log-api";
 
 let repoPath: string;
 
@@ -26,7 +26,7 @@ return isInstalled;
 console.error(`Error checking git installation: ${error}`);
 return false;
 }
-}; 
+};
 */
 
 export const getRepoName = (url: string): string => {
@@ -42,15 +42,15 @@ export async function cloneRepo(url: string): Promise<void> {
   repoPath = path.join(homePath ? homePath.toString() : "", repoName);
 
   console.log(`Cloning repository ${url} to ${repoPath}`);
-  logger(false, "git.ts", `Cloning repository ${url} to ${repoPath}`);
+  info(`Cloning repository ${url} to ${repoPath}`);
 
   try {
     await invoke("clone_repo", { url: url, path: repoPath });
     console.log("Repository cloned successfully");
-    logger(false, "git.ts", "Repository cloned successfully");
-  } catch (error) {
-    console.error(`Error cloning repository: ${error}`);
-    logger(false, "git.ts", `Error cloning repository: ${error}`);
+    info("Repository cloned successfully");
+  } catch (e) {
+    console.error(`Error cloning repository: ${e}`);
+    error(`Error cloning repository: ${e}`);
   }
 }
 

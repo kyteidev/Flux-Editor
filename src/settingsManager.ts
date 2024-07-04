@@ -4,7 +4,7 @@ import path from "path-browserify";
 import { loadFBSettings } from "./components/FileBrowser/FileBrowser";
 import { loadEditorSettings } from "./components/Editor/EditorComponent";
 import { loadEditorTabsSettings } from "./components/Editor/components/EditorTabs";
-import { logger } from "./logger";
+import { warn } from "tauri-plugin-log-api";
 
 let settingsDir: string;
 let settingsFile: string;
@@ -42,9 +42,7 @@ export const initSettings = async () => {
           const settingType = typeof settings[setting];
           if (typeof parsedData[setting] !== settingType) {
             parsedData[setting] = settings[setting];
-            logger(
-              true,
-              "settingsManager.ts",
+            warn(
               "Invalid setting: parsed setting " +
                 parsedData[setting] +
                 " has type " +

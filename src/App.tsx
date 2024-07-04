@@ -12,7 +12,6 @@ You should have received a copy of the GNU General Public License along with Nar
 
 import Editor, { loaded } from "./pages/Editor";
 import { onMount } from "solid-js";
-import { initLogger, logger } from "./logger";
 import { appWindow } from "@tauri-apps/api/window";
 import {
   fileSaved,
@@ -23,12 +22,13 @@ import { dialog } from "@tauri-apps/api";
 import { addTab, getTabs } from "./components/Editor/components/EditorTabs";
 import { getSettingsPath, initSettings } from "./settingsManager";
 import { send_request } from "./utils/lsp/lsp";
+import { error, info } from "tauri-plugin-log-api";
 
 export default function App() {
   onMount(() => {
-    initLogger();
     initSettings();
-    logger(false, "App.tsx", "Initialized application");
+    info("Initialized application");
+    error("test");
 
     appWindow.listen("tauri://close-requested", async () => {
       if (fileSaved().length === getTabs().length) {
@@ -65,7 +65,7 @@ export default function App() {
       saveFile(true);
     });
 
-    logger(false, "App.tsx", "Initialized menu event listeners");
+    info("Initialized menu event listeners");
   });
 
   return <Editor />;

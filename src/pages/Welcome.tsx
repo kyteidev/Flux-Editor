@@ -7,7 +7,7 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import logo from "../assets/narvik-logo.svg";
@@ -28,10 +28,10 @@ import { dialog, fs } from "@tauri-apps/api";
 import { Show, createSignal, onMount } from "solid-js";
 import { cloneRepo, getRepoPath } from "../utils/git.ts";
 import { checkDirValidity } from "../utils/dir.ts";
-import { logger } from "../logger.ts";
 import { getOS } from "../utils/os.ts";
 import { loadEditor } from "./Editor.tsx";
 import path from "path-browserify";
+import { error, info, warn } from "tauri-plugin-log-api";
 
 const Welcome = () => {
   const [selectedType, setSelectedType] = createSignal<string>("File");
@@ -46,7 +46,7 @@ const Welcome = () => {
 
   onMount(async () => {
     setCurrentOS(await getOS());
-    logger(false, "Welcome.tsx", "Mounted Welcome screen");
+    info("Mounted welcome screen");
   });
 
   const resetValues = () => {
@@ -74,20 +74,19 @@ const Welcome = () => {
         await cloneRepo(dirPath());
         setIsCloning(false);
         openEditor("clone");
-      } catch (error) {
-        dialog.message(`${error}`, {
+      } catch (e) {
+        dialog.message(`${e}`, {
           title: "Failed to clone repository",
           type: "error",
         });
-        console.error(`Error cloning repository: ${error}`);
-        logger(true, "Welcome.tsx", error as string);
+        error(`Error cloning repository: ${e}`);
       }
     } else {
       dialog.message("Please enter a valid URL.", {
         title: "Failed to clone repository",
         type: "error",
       });
-      logger(true, "Welcome.tsx", "Invalid clone URL");
+      warn("Invalid URL");
     }
   };
 
@@ -100,17 +99,13 @@ const Welcome = () => {
             " name.",
           { title: "Error", type: "error" },
         );
-        logger(
-          true,
-          "Welcome.tsx",
-          "Invalid " + selectedType().toLocaleLowerCase() + " name",
-        );
+        warn("Invalid " + selectedType().toLocaleLowerCase() + " name");
       } else if (dirPath() === "" || checkDirValidity(dirPath()) === false) {
         dialog.message("Please select a valid directory.", {
           title: "Error",
           type: "error",
         });
-        logger(true, "Welcome.tsx", "Invalid directory");
+        warn("Invalid directory");
       } else {
         switch (selectedType()) {
           case "File":
@@ -119,11 +114,7 @@ const Welcome = () => {
                 title: "Error",
                 type: "error",
               });
-              logger(
-                true,
-                "Welcome.tsx",
-                "File " + name() + " already exists in " + dirPath(),
-              );
+              warn("File " + name() + " already exists in " + dirPath());
               return;
             }
             fs.writeFile(path.join(dirPath(), name()), "");
@@ -137,17 +128,12 @@ const Welcome = () => {
                   title: "Error",
                   type: "error",
                 });
-                logger(
-                  true,
-                  "Welcome.tsx",
-                  "Directory " + name() + " already exists in " + dirPath(),
-                );
+                warn("Directory " + name() + " already exists in " + dirPath());
                 return;
               })
               .catch(async () => {
-                await fs.createDir(dirPath() + name()).catch((error) => {
-                  console.error(error);
-                  logger(true, "Welcome.tsx", error as string);
+                await fs.createDir(dirPath() + name()).catch((e) => {
+                  error(e as string);
                   dialog.message("Directory already exists.", {
                     title: "Error",
                     type: "error",
@@ -182,9 +168,8 @@ const Welcome = () => {
           .then(() => {
             loadEditor(path.join(dirPath(), name()));
           })
-          .catch((error) => {
-            console.error(error);
-            logger(true, "Welcome.tsx", error as string);
+          .catch((e) => {
+            error(e as string);
           });
       }
     } else if (action === "open") {

@@ -7,8 +7,8 @@ import { fileIcons, specialFileIcons } from "../../../utils/file";
 import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
 import { setIsValidFile } from "../EditorComponent";
-import { logger } from "../../../logger";
 import { getSetting, getSettingsPath } from "../../../settingsManager";
+import { error } from "tauri-plugin-log-api";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
@@ -91,9 +91,8 @@ const EditorTabs = () => {
                   try {
                     openFile(tabs()[index()][1]); // opens the next tab if no tabs are before closed tab
                     setActiveTab(index());
-                  } catch (error) {
-                    console.error(error);
-                    logger(true, "EditorTabs.tsx", error as string);
+                  } catch (e) {
+                    error(e as string);
                   }
                 }
               }
