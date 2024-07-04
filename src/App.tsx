@@ -22,6 +22,7 @@ import {
 import { dialog } from "@tauri-apps/api";
 import { addTab, getTabs } from "./components/Editor/components/EditorTabs";
 import { getSettingsPath, initSettings } from "./settingsManager";
+import { send_request } from "./utils/lsp/lsp";
 
 export default function App() {
   onMount(() => {
@@ -44,6 +45,10 @@ export default function App() {
           appWindow.close();
         }
       }
+    });
+
+    appWindow.listen("narvik:ls-test", async () => {
+      send_request();
     });
 
     appWindow.listen("narvik:settings", () => {

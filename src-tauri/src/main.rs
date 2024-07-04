@@ -17,6 +17,8 @@ You should have received a copy of the GNU General Public License along with Nar
 #[macro_use]
 extern crate objc;
 
+use lsp_client::{init_server, install_server, send_request};
+use serde_json::{json, Value};
 use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, Window, WindowEvent};
 
 #[cfg(target_os = "macos")]
@@ -25,7 +27,6 @@ use cocoa::appkit::NSWindow;
 use cocoa::base::id;
 #[cfg(target_os = "macos")]
 use objc::runtime::{NO, YES};
-
 #[cfg(any(windows))]
 use window_shadows::set_shadow;
 
@@ -37,6 +38,10 @@ mod window_ext;
 
 mod commands;
 use commands::git::clone_repo;
+mod utils;
+use utils::dir::get_ls_dir;
+
+mod lsp_client;
 
 #[tauri::command]
 fn set_doc_edited(window: Window, edited: bool) {
@@ -46,6 +51,23 @@ fn set_doc_edited(window: Window, edited: bool) {
         unsafe { ns_window.setDocumentEdited_(if edited { YES } else { NO }) }
         window.set_window_controls_pos(16., 18.)
     }
+}
+
+#[tauri::command]
+async fn ls_send_request(id: &str, method: &str, params: Value) -> Result<String, String> {
+    init_server(get_ls_dir(), "typescript");
+
+    let request = json!({
+        "jsonrpc": "2.0",
+        "id": id,
+        "method": method,
+        "params": params,
+    });
+
+    let response = send_request(serde_json::to_string(&request).unwrap().as_str()).unwrap();
+    println!("Received response: {:?}", response);
+
+    Ok(response)
 }
 
 fn menu() -> Menu {
@@ -59,7 +81,11 @@ fn menu() -> Menu {
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::Services)
         .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Quit);
+        .add_native_item(MenuItem::Quit)
+        .add_native_item(MenuItem::Separator)
+        .add_item(
+            CustomMenuItem::new("ls-test".to_string(), "LS-TEST").accelerator("CmdOrCtrl+Shift+,"),
+        );
 
     let file_menu = Menu::new()
         .add_item(
@@ -126,6 +152,8 @@ fn menu() -> Menu {
 fn main() {
     tauri::Builder::default()
         .setup(|app| {
+            install_server(get_ls_dir(), "typescript"); // temporary for testing purposes
+
             let win = app.get_window("main").unwrap();
 
             #[cfg(target_os = "macos")]
@@ -163,7 +191,11 @@ fn main() {
                 .unwrap();
         })
         .menu(menu())
-        .invoke_handler(tauri::generate_handler![clone_repo, set_doc_edited,])
+        .invoke_handler(tauri::generate_handler![
+            clone_repo,
+            set_doc_edited,
+            ls_send_request
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

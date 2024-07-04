@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License along with Nar
 */
 
 /*
-! tailwindcss v3.4.3 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -658,9 +658,8 @@ video {
   margin: 0px;
 }
 
-.mx-\[2px\] {
-  margin-left: 2px;
-  margin-right: 2px;
+.mb-1 {
+  margin-bottom: 0.25rem;
 }
 
 .ml-0 {
@@ -671,16 +670,8 @@ video {
   margin-left: 0.5rem;
 }
 
-.ml-\[2px\] {
-  margin-left: 2px;
-}
-
 .mr-1 {
   margin-right: 0.25rem;
-}
-
-.mb-1 {
-  margin-bottom: 0.25rem;
 }
 
 .block {
@@ -731,10 +722,6 @@ video {
   height: 2.25rem;
 }
 
-.h-\[1\.5rem\] {
-  height: 1.5rem;
-}
-
 .h-\[1px\] {
   height: 1px;
 }
@@ -767,16 +754,16 @@ video {
   max-height: 2rem;
 }
 
+.max-h-\[40px\] {
+  max-height: 40px;
+}
+
 .max-h-full {
   max-height: 100%;
 }
 
 .max-h-screen {
   max-height: 100vh;
-}
-
-.max-h-\[40px\] {
-  max-height: 40px;
 }
 
 .min-h-10 {
@@ -791,16 +778,16 @@ video {
   min-height: 24px;
 }
 
+.min-h-\[40px\] {
+  min-height: 40px;
+}
+
 .min-h-\[5px\] {
   min-height: 5px;
 }
 
 .min-h-full {
   min-height: 100%;
-}
-
-.min-h-\[40px\] {
-  min-height: 40px;
 }
 
 .w-10 {
@@ -1195,24 +1182,16 @@ video {
   padding-left: 10px;
 }
 
+.pr-1 {
+  padding-right: 0.25rem;
+}
+
 .pr-2 {
   padding-right: 0.5rem;
 }
 
 .pt-0 {
   padding-top: 0px;
-}
-
-.pr-1 {
-  padding-right: 0.25rem;
-}
-
-.pr-\[1px\] {
-  padding-right: 1px;
-}
-
-.pr-\[2px\] {
-  padding-right: 2px;
 }
 
 .text-center {
