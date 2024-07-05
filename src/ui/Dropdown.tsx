@@ -13,7 +13,6 @@ You should have received a copy of the GNU General Public License along with Nar
 import { For, Show } from "solid-js";
 import { createSignal } from "solid-js";
 
-import styles from "./css/Dropdown.module.css";
 import { IconExpand, IconUnexpand } from "../components/Icons/Icons";
 
 interface Props {
@@ -59,14 +58,11 @@ const Dropdown = (props: Props) => {
           class="absolute w-full rounded-b-xl shadow-xl"
         >
           <div class="h-[1px] w-full bg-content opacity-50" />
-          <ul
-            id="dropdown-menu"
-            class={`${styles.dropdownItem} w-full text-content`}
-          >
+          <ul id="dropdown-menu" class="w-full text-content last:rounded-b-xl">
             <For each={props.items}>
               {(item) => (
                 <li
-                  class={`${styles.dropdownItem} dropdown-item flex w-full justify-start bg-base-100 p-2 pl-4 transition duration-300 ease-in-out hover:bg-base-100-hover`}
+                  class="dropdown-item flex w-full justify-start bg-base-100 p-2 pl-4 transition duration-300 ease-in-out last:rounded-b-xl hover:bg-base-100-hover"
                   onClick={() => handleItemClick(item)}
                 >
                   {item}

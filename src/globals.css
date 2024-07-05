@@ -1452,6 +1452,11 @@ dialog[open] {
   animation: fadeout 0.2s ease-in-out forwards;
 }
 
+.last\:rounded-b-xl:last-child {
+  border-bottom-right-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
+}
+
 .hover\:border-accent:hover {
   border-color: var(--accent);
 }

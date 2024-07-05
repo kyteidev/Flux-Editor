@@ -11,7 +11,6 @@ You should have received a copy of the GNU General Public License along with Nar
 */
 
 import { createSignal, createEffect, For, Show, Match, Switch } from "solid-js";
-import styles from "./Search.module.css";
 
 import cmds from "./results/commands.json";
 import test from "./results/test.json";
@@ -92,7 +91,7 @@ function SearchBar() {
             <Switch>
               {/* Displays loading while loading results */}
               <Match when={query() && isLoading()}>
-                <li class="flex cursor-default items-center p-[5px]">
+                <li class="flex cursor-default items-center p-[5px] last:rounded-b-xl">
                   Loading...
                 </li>
               </Match>
@@ -108,9 +107,7 @@ function SearchBar() {
                       </li>
                       <For each={filteredSuggestions()[category]}>
                         {(suggestion) => (
-                          <li
-                            class={`flex h-[26px] cursor-pointer items-center pb-1 pl-5 hover:bg-primary-hover`}
-                          >
+                          <li class="flex h-[26px] cursor-pointer items-center pb-1 pl-5 last:rounded-b-xl hover:bg-primary-hover">
                             {suggestion.name}
                           </li>
                         )}
@@ -126,7 +123,7 @@ function SearchBar() {
                   Object.keys(filteredSuggestions()).length === 0
                 }
               >
-                <li class="flex cursor-default items-center p-[5px]">
+                <li class="flex cursor-default items-center p-[5px] last:rounded-b-xl">
                   No results found
                 </li>
               </Match>
