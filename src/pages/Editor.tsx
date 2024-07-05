@@ -23,13 +23,12 @@ import logo from "../assets/narvik-logo.svg";
 import Welcome from "./Welcome";
 import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
-import { error, info } from "tauri-plugin-log-api";
+import { info } from "tauri-plugin-log-api";
 
 const [dir, setDir] = createSignal<string>("");
 
 export const [loaded, setLoaded] = createSignal(false);
 
-const [workspaceName, setWorkspaceName] = createSignal<string>();
 const [projectName, setProjectName] = createSignal<string>();
 
 export const loadEditor = (
@@ -40,7 +39,9 @@ export const loadEditor = (
   setDir(dirPath);
 
   if (openFile && fileName) {
-    addTab([fileName, path.join(dirPath, fileName)]);
+    setLoaded(true);
+    addTab([fileName, dirPath]);
+    info("Editor loaded");
     return;
   }
 
@@ -63,73 +64,21 @@ export const loadEditor = (
         filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
       ); // sets project name to be directory name
     } else {
-      fs.readTextFile(configPath) // reads the config.json for directory type (Project or Workspace)
-        .then(async (data) => {
-          const parsedData = JSON.parse(data);
+      const data = await fs.readTextFile(
+        path.join(dirPath, ".narvik", "config.json"),
+      );
+      const parsedData = JSON.parse(data);
 
-          if (parsedData.type === "Workspace") {
-            setWorkspaceName(
-              dirPath.substring(dirPath.lastIndexOf(path.sep) + 1), // sets workspace name to be parent directory
-            );
-          } else if (parsedData.type === "Project") {
-            const lastSlashIndex = dirPath.lastIndexOf(path.sep);
-            const secondLastSlashIndex = dirPath.lastIndexOf(
-              path.sep,
-              lastSlashIndex - 1,
-            );
-            const thirdLastSlashIndex = dirPath.lastIndexOf(
-              path.sep,
-              secondLastSlashIndex - 1,
-            );
+      if (parsedData["type"] && parsedData["type"] === "Project") {
+        setProjectName(
+          filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
+        );
+      } else {
+        const type = { type: "Project" };
+        const typeJSON = JSON.stringify(type, null, 2);
 
-            if (
-              await fs
-                .exists(
-                  path.join(
-                    filteredDirPath.substring(0, secondLastSlashIndex),
-                    ".narvik",
-                    "config.json",
-                  ),
-                ) // checks if parent directory has .narvik folder with config.json inside
-                .catch((e) => {
-                  error("Error checking parent directory: " + e);
-                })
-            ) {
-              fs.readTextFile(
-                // if it has, then read contents of config.json
-                path.join(
-                  filteredDirPath.substring(0, secondLastSlashIndex),
-                  ".narvik",
-                  "config.json",
-                ),
-              )
-                .then((data) => {
-                  const parsedData = JSON.parse(data);
-
-                  if (parsedData.type === "Workspace") {
-                    setWorkspaceName(
-                      filteredDirPath.substring(
-                        thirdLastSlashIndex + 1,
-                        secondLastSlashIndex,
-                      ),
-                    );
-                  }
-                })
-                .catch((e) => {
-                  error("Error reading parent config file: " + e);
-                });
-            }
-
-            setProjectName(
-              filteredDirPath.substring(
-                filteredDirPath.lastIndexOf(path.sep) + 1,
-              ),
-            ); // sets project name to be directory name
-          }
-        })
-        .catch((e) => {
-          error("Error reading config file: " + e);
-        });
+        fs.writeFile(path.join(dirPath, ".narvik", "config.json"), typeJSON);
+      }
     }
 
     info("Editor loaded");
@@ -168,11 +117,7 @@ const Editor = () => {
                 "min-height": `calc(100vh - 2.5em)`,
               }}
             >
-              <FileBrowser
-                dir={dir()}
-                workspaceName={workspaceName()}
-                projectName={projectName()}
-              />
+              <FileBrowser dir={dir()} projectName={projectName()} />
             </div>
             {/* Due to a bug, the second pane in vertical split panes glitch when hidden, so temporarily set canSecondHide to false */}
             <SplitPane

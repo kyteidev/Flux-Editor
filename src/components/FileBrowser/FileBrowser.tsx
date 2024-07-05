@@ -23,7 +23,6 @@ import { error } from "tauri-plugin-log-api";
 
 interface Props {
   dir: string;
-  workspaceName?: string;
   projectName?: string;
 }
 
@@ -250,9 +249,7 @@ const FileBrowser = (props: Props) => {
   return (
     <div class="h-full min-h-full w-full min-w-full overflow-auto bg-base-200">
       <div class="absolute z-10 block w-full cursor-pointer select-none items-center overflow-hidden overflow-ellipsis bg-base-200 pl-6 font-bold text-content hover:bg-base-100 active:bg-base-100-hover">
-        {props.projectName
-          ? `${props.workspaceName ? props.workspaceName + "/" : ""}${props.projectName}`
-          : "No Project"}{" "}
+        {props.projectName ? `${props.projectName}` : "No Project"}{" "}
         {/* if no project name, display "No Project" */}
       </div>
       <div class="h-6" />

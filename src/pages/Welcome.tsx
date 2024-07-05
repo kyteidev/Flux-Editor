@@ -117,37 +117,28 @@ const Welcome = () => {
               warn("File " + name() + " already exists in " + dirPath());
               return;
             }
-            fs.writeFile(path.join(dirPath(), name()), "");
+            fs.writeFile(path.join(dirPath(), name()), "").catch((e) => {
+              error("Failed to create file " + name() + ": " + e);
+            });
             break;
           case "Project":
-          case "Workspace":
-            await fs
-              .readDir(path.join(dirPath(), name()))
-              .then(() => {
-                dialog.message("Directory already exists.", {
-                  title: "Error",
-                  type: "error",
-                });
-                warn("Directory " + name() + " already exists in " + dirPath());
-                return;
-              })
-              .catch(async () => {
-                await fs.createDir(dirPath() + name()).catch((e) => {
-                  error("Directory already exists: " + e);
-                  dialog.message("Directory already exists.", {
-                    title: "Error",
-                    type: "error",
-                  });
-                });
+            if (await fs.exists(path.join(dirPath(), name()))) {
+              dialog.message("Directory already exists.", {
+                title: "Error",
+                type: "error",
               });
-
-            break;
+              warn("Directory " + name() + " already exists in " + dirPath());
+            } else {
+              fs.createDir(path.join(dirPath() + name()));
+            }
         }
 
         if (selectedType() === "File") {
-          loadEditor(dirPath(), true, name());
+          loadEditor(path.join(dirPath(), name()), true, name());
           return;
         }
+
+        const projectPath = path.join(dirPath(), name());
 
         const narvikConfig = {
           type: selectedType(),
@@ -155,18 +146,13 @@ const Welcome = () => {
 
         const json = JSON.stringify(narvikConfig, null, 2);
 
-        if (
-          (await fs.exists(path.join(dirPath(), name(), ".narvik"))) === false
-        ) {
-          fs.createDir(path.join(dirPath(), name(), ".narvik"));
+        if (!(await fs.exists(path.join(projectPath, ".narvik")))) {
+          fs.createDir(path.join(projectPath, ".narvik"));
         }
 
-        fs.writeFile(
-          path.join(dirPath(), name(), ".narvik", "config.json"),
-          json,
-        )
+        fs.writeFile(path.join(projectPath, ".narvik", "config.json"), json)
           .then(() => {
-            loadEditor(path.join(dirPath(), name()));
+            loadEditor(projectPath);
           })
           .catch((e) => {
             error("Error creating config.json: " + e);
@@ -206,9 +192,9 @@ const Welcome = () => {
             <div class="flex items-center space-x-3">
               <p class="text-xl text-content">New </p>
               <Dropdown
-                items={["File", "Project", "Workspace"]}
+                items={["File", "Project"]}
                 placeholder="File"
-                width="135px"
+                width="110px"
                 height="40px"
                 selectedItem={setSelectedType}
               ></Dropdown>

@@ -235,6 +235,7 @@ export const openFile = (pathLocal: string) => {
           textarea.blur();
         })
         .catch((e: string) => {
+          console.error(e);
           if (e.includes("stream did not contain valid UTF-8")) {
             setIsValidFile(false);
             if (!fileSavedContent().flat().includes(pathLocal)) {
