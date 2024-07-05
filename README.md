@@ -58,6 +58,6 @@ UNDER CONSTRUCTION
 
 ## License <a name="license"></a>
 
-Copyright © 2024 Narvik Contributors. Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/narvik/blob/dev/LICENSE).
+Copyright © 2024 The Narvik Editor Contributors. Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/narvik/blob/dev/LICENSE).
 
 The Narvik Logos are available under the [Creative Commons Attribution-NonCommercial-ShareAlike License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
