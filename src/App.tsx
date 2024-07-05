@@ -28,7 +28,6 @@ export default function App() {
   onMount(() => {
     initSettings();
     info("Initialized application");
-    error("test");
 
     appWindow.listen("tauri://close-requested", async () => {
       if (fileSaved().length === getTabs().length) {
