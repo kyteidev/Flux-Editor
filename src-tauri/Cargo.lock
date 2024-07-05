@@ -1707,7 +1707,7 @@ dependencies = [
 name = "narvik"
 version = "0.0.1"
 dependencies = [
- "cocoa 0.24.1",
+ "cocoa 0.25.0",
  "lazy_static",
  "log",
  "objc",
