@@ -40,7 +40,7 @@ export const loadEditor = (
   setDir(dirPath);
 
   if (openFile && fileName) {
-    addTab([fileName, dirPath]);
+    addTab([fileName, path.join(dirPath, fileName)]);
     return;
   }
 
@@ -92,7 +92,7 @@ export const loadEditor = (
                   ),
                 ) // checks if parent directory has .narvik folder with config.json inside
                 .catch((e) => {
-                  error(e as string);
+                  error("Error checking parent directory: " + e);
                 })
             ) {
               fs.readTextFile(
@@ -116,7 +116,7 @@ export const loadEditor = (
                   }
                 })
                 .catch((e) => {
-                  error(e as string);
+                  error("Error reading parent config file: " + e);
                 });
             }
 
@@ -128,7 +128,7 @@ export const loadEditor = (
           }
         })
         .catch((e) => {
-          error(e as string);
+          error("Error reading config file: " + e);
         });
     }
 

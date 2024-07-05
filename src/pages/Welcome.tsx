@@ -133,7 +133,7 @@ const Welcome = () => {
               })
               .catch(async () => {
                 await fs.createDir(dirPath() + name()).catch((e) => {
-                  error(e as string);
+                  error("Directory already exists: " + e);
                   dialog.message("Directory already exists.", {
                     title: "Error",
                     type: "error",
@@ -169,7 +169,7 @@ const Welcome = () => {
             loadEditor(path.join(dirPath(), name()));
           })
           .catch((e) => {
-            error(e as string);
+            error("Error creating config.json: " + e);
           });
       }
     } else if (action === "open") {

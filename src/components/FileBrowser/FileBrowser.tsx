@@ -49,9 +49,7 @@ const FileBrowser = (props: Props) => {
     // load settings
     loadFBSettings();
 
-    const contents = await getPathContents(
-      path.join(props.dir, props.workspaceName ?? "", props.projectName ?? ""),
-    );
+    const contents = await getPathContents(props.dir);
     setDirContents(contents);
   });
 
@@ -69,7 +67,6 @@ const FileBrowser = (props: Props) => {
       );
     } catch (e) {
       if (!(e as string).includes("Not a directory")) {
-        console.error(`Error fetching directory contents: ${e}`);
         error(`Error fetching directory contents: ${e}`);
       }
       return [e as string]; // return error as string, so the error is like a nested file in a folder
@@ -192,12 +189,9 @@ const FileBrowser = (props: Props) => {
                     setOpen(!open());
                     getPathContents(itemPath)
                       .then((contents) => setDirNestedContents(contents))
-                      .catch((error) => {
+                      .catch((e) => {
                         setDirNestedContents([]);
-                        console.error(
-                          `Error fetching directory contents: ${error}`,
-                        );
-                        logger(true, "FileBrowser.tsx", error as string);
+                        error("Error fetching nested contents contents: " + e);
                       });
                   } else {
                     setIsValidFile(true);
