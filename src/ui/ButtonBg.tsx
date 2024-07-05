@@ -7,7 +7,7 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
 const ButtonBg = (props: Props) => {
   return (
     <button
-      class={`rounded-xl bg-base-100 p-2 transition duration-300 ease-in-out hover:bg-content hover:bg-opacity-20 active:scale-95`}
+      class={`rounded-xl bg-base-100 p-2 transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
       style={{ width: `${props.width}`, height: `${props.height}` }}
       onClick={props.action}
     >

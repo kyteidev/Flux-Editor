@@ -7,7 +7,7 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { createSignal, createEffect, For, Show } from "solid-js";
@@ -97,14 +97,7 @@ function SearchBar() {
         />
         {/* Displays loading while loading results */}
         {query() && isLoading() && (
-          <div
-            class={`absolute left-0 top-full w-full border-t-0 bg-primary text-content`}
-            style={{
-              "border-bottom-left-radius": "0.75rem",
-              "border-bottom-right-radius": "0.75rem",
-              "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
-            }}
-          >
+          <div class="absolute left-0 top-full w-full rounded-b-xl border-t-0 bg-primary text-content shadow-xl">
             <ul class={styles.suggestionsList}>
               <li class="flex cursor-default items-center p-[5px]">
                 Loading...
@@ -114,14 +107,7 @@ function SearchBar() {
         )}
         {/* Displays results if query is not empty and there are results */}
         {query() && Object.keys(filteredSuggestions()).length > 0 && (
-          <div
-            class={`absolute left-0 top-full w-full border-t-0 bg-primary text-content`}
-            style={{
-              "border-bottom-left-radius": "0.75rem",
-              "border-bottom-right-radius": "0.75rem",
-              "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
-            }}
-          >
+          <div class="absolute left-0 top-full w-full rounded-b-xl border-t-0 bg-primary text-content shadow-xl">
             <ul class={styles.suggestionsList}>
               <For each={Object.keys(filteredSuggestions())}>
                 {(category) => (
@@ -148,14 +134,7 @@ function SearchBar() {
         {!isLoading() &&
           Object.keys(filteredSuggestions()).length === 0 &&
           query() && (
-            <div
-              class={`absolute left-0 top-full w-full border-t-0 bg-primary text-content`}
-              style={{
-                "border-bottom-left-radius": "0.75rem",
-                "border-bottom-right-radius": "0.75rem",
-                "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
-              }}
-            >
+            <div class="absolute left-0 top-full w-full rounded-b-xl border-t-0 bg-primary text-content shadow-xl">
               <ul class={styles.suggestionsList}>
                 <li class="flex cursor-default items-center p-[5px]">
                   No results found

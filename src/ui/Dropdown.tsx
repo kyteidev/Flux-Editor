@@ -7,7 +7,7 @@ Narvik Editor is free software: you can redistribute it and/or modify it under t
 
 Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>. 
+You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
 import { For, Show } from "solid-js";
@@ -39,13 +39,11 @@ const Dropdown = (props: Props) => {
   return (
     <div class="relative inline-block">
       <button
-        class="flex cursor-pointer items-center rounded-xl border-none bg-base-100 p-2 pl-4 text-content transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-100"
+        class={`${isOpen() ? "" : "rounded-b-xl"} flex cursor-pointer items-center rounded-t-xl border-none bg-base-100 p-2 pl-4 text-content transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-100`}
         onClick={toggle}
         style={{
           width: props.width,
           height: props.height,
-          "border-bottom-left-radius": isOpen() ? "0" : "0.75rem",
-          "border-bottom-right-radius": isOpen() ? "0" : "0.75rem",
         }}
       >
         <div class="justify-start">{selected()}</div>
@@ -57,12 +55,13 @@ const Dropdown = (props: Props) => {
       </button>
       {isOpen() && (
         <div
-          class="absolute w-full"
-          style={{ "box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)" }}
+          id="dropdown-container"
+          class="absolute w-full rounded-b-xl shadow-xl"
         >
           <div class="h-[1px] w-full bg-content opacity-50" />
           <ul
-            class={`${styles.dropdownItem} dropdown-menu w-full text-content`}
+            id="dropdown-menu"
+            class={`${styles.dropdownItem} w-full text-content`}
           >
             <For each={props.items}>
               {(item) => (
