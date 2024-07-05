@@ -9,6 +9,8 @@ use std::{
 
 use log::{error, info};
 
+use crate::utils::path::get_cmd_path;
+
 lazy_static::lazy_static! {
     static ref LANG_SERVER: Arc<Mutex<Option<Child>>> = Arc::new(Mutex::new(None));
 }
@@ -25,7 +27,13 @@ pub fn install_server(dir: PathBuf, lang: &str) {
                     .map_err(|e| error!("Error creating directory: {}", e))
                     .ok();
             }
-            Command::new("npm")
+
+            let npm_path = match get_cmd_path("npm") {
+                Ok(path) => path,
+                Err(_) => return,
+            };
+
+            Command::new(npm_path)
                 .args([
                     "install",
                     "--prefix",
@@ -53,7 +61,12 @@ pub fn start_server(dir: PathBuf, lang: &str) -> Result<Child, String> {
 
     match lang {
         "typescript" => {
-            command = "node";
+            let node_path = match get_cmd_path("node") {
+                Ok(path) => path,
+                Err(_) => return Err("ERROR".to_string()),
+            };
+
+            command = node_path;
             args.push(
                 dir.join("typescript")
                     .join("node_modules")
@@ -104,9 +117,10 @@ pub fn init_server(path: PathBuf, lang: &str) {
 
     */
 
-    let child = start_server(path, lang)
-        .map_err(|e| error!("start_server() failed: {}", e))
-        .expect("start_server() failed");
+    let child = match start_server(path, lang) {
+        Ok(child) => child,
+        Err(_) => return,
+    };
     *lang_server = Some(child); // restarts server everytime a request is sent.
 }
 
