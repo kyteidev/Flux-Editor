@@ -937,6 +937,10 @@ video {
   resize: both;
 }
 
+.list-none {
+  list-style-type: none;
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -1151,6 +1155,10 @@ video {
 
 .p-\[5px\] {
   padding: 5px;
+}
+
+.p-0 {
+  padding: 0px;
 }
 
 .px-1 {

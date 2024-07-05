@@ -10,7 +10,7 @@ Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY
 You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { createSignal, createEffect, For, Show } from "solid-js";
+import { createSignal, createEffect, For, Show, Match, Switch } from "solid-js";
 import styles from "./Search.module.css";
 
 import cmds from "./results/commands.json";
@@ -71,7 +71,7 @@ function SearchBar() {
     <div class="relative">
       {/* Search Input */}
       <input
-        class={`h-[26px] w-full bg-primary p-[10px] text-content outline-none hover:bg-primary-hover`}
+        class={`${query().length === 0 || !isFocused() ? "rounded-b-xl" : ""} h-[26px] w-full rounded-t-xl bg-primary p-[10px] text-content outline-none hover:bg-primary-hover`}
         type="text"
         value={query()}
         onInput={handleInputChange}
@@ -80,14 +80,6 @@ function SearchBar() {
         placeholder="Search"
         autocomplete="off"
         autocorrect="off"
-        style={{
-          "border-top-left-radius": "0.75rem",
-          "border-top-right-radius": "0.75rem",
-          "border-bottom-left-radius":
-            query().length === 0 || !isFocused() ? "0.75rem" : "0",
-          "border-bottom-right-radius":
-            query().length === 0 || !isFocused() ? "0.75rem" : "0",
-        }}
       />
       <Show when={isFocused()}>
         {/* Displays line when query is not empty and is focused */}
@@ -95,53 +87,52 @@ function SearchBar() {
           class="w-full bg-content opacity-50"
           style={{ height: query().length === 0 || !isFocused() ? "0" : "1px" }}
         />
-        {/* Displays loading while loading results */}
-        {query() && isLoading() && (
-          <div class="absolute left-0 top-full w-full rounded-b-xl border-t-0 bg-primary text-content shadow-xl">
-            <ul class={styles.suggestionsList}>
-              <li class="flex cursor-default items-center p-[5px]">
-                Loading...
-              </li>
-            </ul>
-          </div>
-        )}
-        {/* Displays results if query is not empty and there are results */}
-        {query() && Object.keys(filteredSuggestions()).length > 0 && (
-          <div class="absolute left-0 top-full w-full rounded-b-xl border-t-0 bg-primary text-content shadow-xl">
-            <ul class={styles.suggestionsList}>
-              <For each={Object.keys(filteredSuggestions())}>
-                {(category) => (
-                  <>
-                    <li class="pl-2">
-                      <strong>{category}</strong>
-                    </li>
-                    <For each={filteredSuggestions()[category]}>
-                      {(suggestion) => (
-                        <li
-                          class={`flex h-[26px] cursor-pointer items-center pb-1 pl-5 hover:bg-primary-hover`}
-                        >
-                          {suggestion.name}
-                        </li>
-                      )}
-                    </For>
-                  </>
-                )}
-              </For>
-            </ul>
-          </div>
-        )}
-        {/* Displays no results if query is not empty and there are no results */}
-        {!isLoading() &&
-          Object.keys(filteredSuggestions()).length === 0 &&
-          query() && (
-            <div class="absolute left-0 top-full w-full rounded-b-xl border-t-0 bg-primary text-content shadow-xl">
-              <ul class={styles.suggestionsList}>
+        <div class="absolute left-0 top-full w-full rounded-b-xl border-t-0 bg-primary text-content shadow-xl">
+          <ul class="m-0 list-none p-0">
+            <Switch>
+              {/* Displays loading while loading results */}
+              <Match when={query() && isLoading()}>
+                <li class="flex cursor-default items-center p-[5px]">
+                  Loading...
+                </li>
+              </Match>
+              {/* Displays results if query is not empty and there are results */}
+              <Match
+                when={query() && Object.keys(filteredSuggestions()).length > 0}
+              >
+                <For each={Object.keys(filteredSuggestions())}>
+                  {(category) => (
+                    <>
+                      <li class="pl-2">
+                        <strong>{category}</strong>
+                      </li>
+                      <For each={filteredSuggestions()[category]}>
+                        {(suggestion) => (
+                          <li
+                            class={`flex h-[26px] cursor-pointer items-center pb-1 pl-5 hover:bg-primary-hover`}
+                          >
+                            {suggestion.name}
+                          </li>
+                        )}
+                      </For>
+                    </>
+                  )}
+                </For>
+              </Match>
+              {/* Displays no results if query is not empty and there are no results */}
+              <Match
+                when={
+                  !isLoading() &&
+                  Object.keys(filteredSuggestions()).length === 0
+                }
+              >
                 <li class="flex cursor-default items-center p-[5px]">
                   No results found
                 </li>
-              </ul>
-            </div>
-          )}
+              </Match>
+            </Switch>
+          </ul>
+        </div>
       </Show>
     </div>
   );
