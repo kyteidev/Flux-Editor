@@ -36,7 +36,7 @@ import { getOS } from "../utils/os.ts";
 import { loadEditor } from "./Editor.tsx";
 import path from "path-browserify";
 import { error, info, warn } from "tauri-plugin-log-api";
-import { IconFlux } from "../components/Icons/FluxIcon.tsx";
+import { FluxLogo } from "../components/Icons/FluxLogo.tsx";
 
 const Welcome = () => {
   const [selectedType, setSelectedType] = createSignal<string>("File");
@@ -179,7 +179,7 @@ const Welcome = () => {
       {/* logo and title */}
       <div class="relative top-[12vh] flex items-center justify-center space-x-10">
         <div class="fill-primary" style={{ width: "140px", height: "auto" }}>
-          <IconFlux />
+          <FluxLogo color="content" />
         </div>
         <h1 class="text-8xl text-content">Flux Editor</h1>
       </div>

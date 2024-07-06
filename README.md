@@ -60,4 +60,4 @@ UNDER CONSTRUCTION
 
 Copyright © 2024 The Flux Editor Contributors. Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
 
-The Flux Editor Logos are available under the [Creative Commons Attribution-NonCommercial-ShareAlike License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+The Flux Editor Logo and its color variants are available under the [Creative Commons Attribution-NonCommercial-ShareAlike License](https://creativecommons.org/licenses/by-nc-sa/4.0/).

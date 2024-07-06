@@ -15,7 +15,8 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-export const IconFlux = () => {
+// The following logo is licensed under Creative Commons Attribution-NonCommercial-ShareAlike License.
+export const FluxLogo = (props: { color: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,38 +29,7 @@ export const IconFlux = () => {
       <g transform="translate(-199.47786,-139.05159)">
         <g
           data-paper-data='{"isPaintingLayer":true}'
-          fill="var(--content)"
-          fill-rule="nonzero"
-          stroke="none"
-          stroke-width="0"
-          stroke-linecap="butt"
-          stroke-linejoin="miter"
-          stroke-miterlimit="10"
-          stroke-dasharray=""
-          stroke-dashoffset="0"
-          style="mix-blend-mode: normal"
-        >
-          <path d="M255.75988,182.09764c-21.44534,28.38539 0.94471,48.40686 -30.33886,34.12328c-25.36188,-16.20974 -34.26406,-53.68054 -17.05605,-68.18525c15.91386,-13.41386 45.15976,-12.0033 64.18526,5.55604c19.18804,17.70936 -0.20238,10.80695 -16.79035,28.50593z" />
-        </g>
-      </g>
-    </svg>
-  );
-};
-
-export const IconFluxBg = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      version="1.1"
-      width="100%"
-      height="100%"
-      viewBox="0,0,81.04428,81.89681"
-    >
-      <g transform="translate(-199.47786,-139.05159)">
-        <g
-          data-paper-data='{"isPaintingLayer":true}'
-          fill="var(--base-100)"
+          fill={`var(--${props.color})`}
           fill-rule="nonzero"
           stroke="none"
           stroke-width="0"
