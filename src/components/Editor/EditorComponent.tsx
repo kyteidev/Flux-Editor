@@ -589,12 +589,12 @@ const EditorComponent = () => {
           onfocus={updateSelectedLine}
           onblur={handleBlur}
           onselect={handleBlur}
-          class={`z-10 bg-transparent text-transparent caret-content ${styles.textarea}`}
+          class={`absolute left-0 top-0 z-10 flex h-full w-full flex-grow overflow-auto whitespace-pre bg-transparent text-transparent caret-content ${styles.textarea}`}
         ></textarea>
         <pre
           id="highlighting"
           aria-hidden="true"
-          class={`z-0 bg-base-200 text-content ${styles.highlighted}`}
+          class={`absolute left-0 top-0 z-0 flex h-full w-full flex-grow overflow-auto whitespace-pre bg-base-200 text-content ${styles.highlighted}`}
         >
           {/* match-braces doesn't work */}
           <code
