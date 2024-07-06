@@ -178,10 +178,10 @@ const Welcome = () => {
     <div class="h-full select-none bg-base-200">
       {/* logo and title */}
       <div class="relative top-[12vh] flex items-center justify-center space-x-10">
-        <div class="fill-primary" style={{ width: "128px", height: "auto" }}>
+        <div class="fill-primary" style={{ width: "140px", height: "auto" }}>
           <IconFlux />
         </div>
-        <h1 class="text-9xl text-content">flux</h1>
+        <h1 class="text-8xl text-content">Flux Editor</h1>
       </div>
       {/* new-modal */}
       <dialog id="modal-new">

@@ -44,6 +44,7 @@ mod window_ext;
 
 mod commands;
 use commands::git::clone_repo;
+
 mod utils;
 use utils::dir::{get_app_log_dir, get_ls_dir};
 
@@ -212,7 +213,7 @@ fn main() {
         .on_menu_event(|event| {
             event
                 .window()
-                .emit(&("narvik:".to_owned() + event.menu_item_id()), "")
+                .emit(&("flux:".to_owned() + event.menu_item_id()), "")
                 .unwrap();
         })
         .menu(menu())

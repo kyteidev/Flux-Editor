@@ -27,7 +27,7 @@ import { dialog } from "@tauri-apps/api";
 import { addTab, getTabs } from "./components/Editor/components/EditorTabs";
 import { getSettingsPath, initSettings } from "./settingsManager";
 import { send_request } from "./utils/lsp/lsp";
-import { error, info } from "tauri-plugin-log-api";
+import { info } from "tauri-plugin-log-api";
 
 export default function App() {
   onMount(() => {
@@ -41,7 +41,7 @@ export default function App() {
         const closeEditor = await dialog.ask(
           "Your changes will not be saved.",
           {
-            title: "Are you sure you want to close Narvik Editor?",
+            title: "Are you sure you want to close Flux Editor?",
             type: "warning",
           },
         );
@@ -51,21 +51,21 @@ export default function App() {
       }
     });
 
-    appWindow.listen("narvik:ls-test", async () => {
+    appWindow.listen("flux:ls-test", async () => {
       send_request();
     });
 
-    appWindow.listen("narvik:settings", () => {
+    appWindow.listen("flux:settings", () => {
       if (loaded()) {
         setIsValidFile(true);
         addTab(["Settings", getSettingsPath()]);
       }
     });
 
-    appWindow.listen("narvik:save", () => {
+    appWindow.listen("flux:save", () => {
       saveFile();
     });
-    appWindow.listen("narvik:save_as", () => {
+    appWindow.listen("flux:save_as", () => {
       saveFile(true);
     });
 

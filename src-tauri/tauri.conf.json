@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "Narvik Editor",
+    "productName": "Flux Editor",
     "version": "0.0.1"
   },
   "tauri": {
@@ -48,7 +48,7 @@
     },
     "windows": [
       {
-        "title": "Narvik Editor",
+        "title": "Flux Editor",
         "width": 960,
         "height": 620,
         "minWidth": 660,
@@ -62,7 +62,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "dev.narvik.editor",
+      "identifier": "dev.fluxcode.editor",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
