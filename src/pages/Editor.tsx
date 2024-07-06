@@ -1,13 +1,18 @@
 /*
-Copyright © 2024 Narvik Contributors.
+Copyright © 2024 The Flux Editor Contributors.
 
-This file is part of Narvik Editor.
+This file is part of Flux Editor.
 
-Narvik Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
 
-Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+<https://www.gnu.org/licenses/>.
 */
 
 import FileBrowser from "../components/FileBrowser/FileBrowser";
@@ -19,11 +24,11 @@ import EditorTabs, {
   addTab,
   getTabs,
 } from "../components/Editor/components/EditorTabs";
-import logo from "../assets/narvik-logo.svg";
 import Welcome from "./Welcome";
 import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
 import { info } from "tauri-plugin-log-api";
+import { IconFluxBg } from "../components/Icons/FluxIcon";
 
 const [dir, setDir] = createSignal<string>("");
 
@@ -45,27 +50,27 @@ export const loadEditor = (
     return;
   }
 
-  const configPath = path.join(dirPath, ".narvik", "config.json");
+  const configPath = path.join(dirPath, ".fluxeditor", "config.json");
 
   const filteredDirPath = dirPath.endsWith(path.sep)
     ? dirPath.substring(0, dirPath.length - 1)
     : dirPath; // the user shouldn't be able to get a dirPath that doesn't end in a / or \ unless it's a file. This filters out the last / or \
 
   fs.exists(configPath).then(async (exists) => {
-    // checks if /.narvik/config.json exists
+    // checks if /.fluxeditor/config.json exists
     if (!exists) {
       const type = { type: "Project" }; // if doesn't exist, assume the opened directory is a project.
       const typeJSON = JSON.stringify(type, null, 2);
 
-      await fs.createDir(path.join(dirPath, ".narvik"));
-      fs.writeFile(path.join(dirPath, ".narvik", "config.json"), typeJSON);
+      await fs.createDir(path.join(dirPath, ".fluxeditor"));
+      fs.writeFile(path.join(dirPath, ".fluxeditor", "config.json"), typeJSON);
 
       setProjectName(
         filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
       ); // sets project name to be directory name
     } else {
       const data = await fs.readTextFile(
-        path.join(dirPath, ".narvik", "config.json"),
+        path.join(dirPath, ".fluxeditor", "config.json"),
       );
       const parsedData = JSON.parse(data);
 
@@ -77,7 +82,10 @@ export const loadEditor = (
         const type = { type: "Project" };
         const typeJSON = JSON.stringify(type, null, 2);
 
-        fs.writeFile(path.join(dirPath, ".narvik", "config.json"), typeJSON);
+        fs.writeFile(
+          path.join(dirPath, ".fluxeditor", "config.json"),
+          typeJSON,
+        );
       }
     }
 
@@ -133,17 +141,11 @@ const Editor = () => {
                 when={getTabs().length != 0}
                 fallback={
                   <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-10 bg-base-200">
-                    <img
-                      src={logo}
-                      alt="Narvik Logo"
-                      draggable="false"
-                      style={{
-                        width: "12rem",
-                        height: "auto",
-                        opacity: 0.2,
-                        filter: "grayscale(100%)",
-                      }}
-                    />
+                    <div
+                      style={{ width: "12rem", height: "auto", opacity: "0.6" }}
+                    >
+                      <IconFluxBg />
+                    </div>
                   </div>
                 }
               >

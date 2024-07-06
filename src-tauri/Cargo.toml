@@ -1,8 +1,8 @@
 [package]
-name = "narvik"
+name = "FluxEditor"
 version = "0.0.1"
-description = "a lightweight and fast code editor"
-authors = ["Narvik Contributors"]
+description = "A minimalist and lightweight code editor"
+authors = ["The Flux Editor Contributors"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

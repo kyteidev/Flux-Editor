@@ -1,16 +1,20 @@
 /*
-Copyright © 2024 Narvik Contributors.
+Copyright © 2024 The Flux Editor Contributors.
 
-This file is part of Narvik Editor.
+This file is part of Flux Editor.
 
-Narvik Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
 
-Narvik Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Narvik Editor. If not, see <https://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+<https://www.gnu.org/licenses/>.
 */
 
-import logo from "../assets/narvik-logo.svg";
 import { appWindow } from "@tauri-apps/api/window";
 import {
   IconClone,
@@ -32,6 +36,7 @@ import { getOS } from "../utils/os.ts";
 import { loadEditor } from "./Editor.tsx";
 import path from "path-browserify";
 import { error, info, warn } from "tauri-plugin-log-api";
+import { IconFlux } from "../components/Icons/FluxIcon.tsx";
 
 const Welcome = () => {
   const [selectedType, setSelectedType] = createSignal<string>("File");
@@ -140,17 +145,17 @@ const Welcome = () => {
 
         const projectPath = path.join(dirPath(), name());
 
-        const narvikConfig = {
+        const fluxConfig = {
           type: selectedType(),
         };
 
-        const json = JSON.stringify(narvikConfig, null, 2);
+        const json = JSON.stringify(fluxConfig, null, 2);
 
-        if (!(await fs.exists(path.join(projectPath, ".narvik")))) {
-          fs.createDir(path.join(projectPath, ".narvik"));
+        if (!(await fs.exists(path.join(projectPath, ".fluxeditor")))) {
+          fs.createDir(path.join(projectPath, ".fluxeditor"));
         }
 
-        fs.writeFile(path.join(projectPath, ".narvik", "config.json"), json)
+        fs.writeFile(path.join(projectPath, ".fluxeditor", "config.json"), json)
           .then(() => {
             loadEditor(projectPath);
           })
@@ -173,13 +178,10 @@ const Welcome = () => {
     <div class="h-full select-none bg-base-200">
       {/* logo and title */}
       <div class="relative top-[12vh] flex items-center justify-center space-x-10">
-        <img
-          src={logo}
-          alt="Narvik Logo"
-          draggable="false"
-          style={{ width: "160px", height: "auto" }}
-        />
-        <h1 class="text-9xl text-content">narvik</h1>
+        <div class="fill-primary" style={{ width: "128px", height: "auto" }}>
+          <IconFlux />
+        </div>
+        <h1 class="text-9xl text-content">flux</h1>
       </div>
       {/* new-modal */}
       <dialog id="modal-new">
@@ -277,7 +279,7 @@ const Welcome = () => {
               <Input
                 width="100%"
                 height="40px"
-                placeholder="e.g. https://github.com/narvikdev/narvik.git"
+                placeholder="e.g. https://github.com/kyteidev/fluxeditor.git"
                 value=""
                 onChange={setDirPath}
               />
