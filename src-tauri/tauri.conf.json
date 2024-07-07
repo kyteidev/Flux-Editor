@@ -27,7 +27,10 @@
         "readDir": true,
         "createDir": true,
         "exists": true,
-        "scope": { "allow": ["$HOME/**"], "requireLiteralLeadingDot": false }
+        "scope": {
+          "allow": ["$HOME/**", "$RESOURCE/*"],
+          "requireLiteralLeadingDot": false
+        }
       },
       "os": {
         "all": true
@@ -63,6 +66,7 @@
       "active": true,
       "targets": "all",
       "identifier": "dev.fluxcode.editor",
+      "resources": ["../resources/Third-Party-Licenses.txt"],
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
