@@ -183,7 +183,9 @@ fn main() {
                 .build(),
         )
         .setup(|app| {
+            /*
             install_server(get_ls_dir(), "typescript"); // temporary for testing purposes
+            */
 
             let win = app.get_window("main").unwrap();
 
