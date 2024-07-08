@@ -13,12 +13,12 @@
 ![issues](https://img.shields.io/github/issues/kyteidev/FluxEditor)
 ![downloads](https://img.shields.io/github/downloads/kyteidev/FluxEditor/total)
 
+(NOTE! This project is still WIP. Expect bugs and unfinished features)
+
 # Table of Contents
 
 - [Features](#features)
-- [Why choose Flux Editor?](#why-choose)
-- [Getting Started](#getting-started)
-  - [Cloning the repo](#cloning)
+- [Installation](#installation)
 - [Known Issues](#known-issues)
 - [Contributors](#contributors)
 - [Contributing](#contributing)
@@ -31,18 +31,11 @@ Flux Editor boasts a ton of features, some of which are unique. Below are some o
 - Incredibly lightweight
 - Cross-platform
 - Simple UI
-- Easy project management
 - and many more!
 
-## Why choose Flux Editor? <a name="why-choose"></a>
+## Installation <a name="installation"></a>
 
-UNDER CONSTRUCTION
-
-## Getting started <a name="getting-started"></a>
-
-### Cloning the repo <a name="cloning"></a>
-
-UNDER CONSTRUCTION
+You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page. (NOTE: since I don't have a code-signing certificate yet, you may encounter a "unidentified developer" or "Windows protected your PC" popup. Currently you can verify the install by checking the SHA-256 checksum, found below "Release Notes" in the "Releases" section)
 
 ## Known Issues <a name="known-issues"></a>
 
