@@ -20,10 +20,13 @@ import { IconCircle, IconClose, IconSettings } from "../../Icons/Icons";
 import { closeFile, openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
 import { dialog } from "@tauri-apps/api";
-import { fileIcons, specialFileIcons } from "../../../utils/file";
+import {
+  fileIcons,
+  specialFileIcons,
+  specialPageIcons,
+} from "../../../utils/file";
 import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
-import { setIsValidFile } from "../EditorComponent";
 import { getSetting, getSettingsPath } from "../../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 
@@ -45,17 +48,15 @@ export const loadEditorTabsSettings = () => {
   }
 };
 
-export const addTab = (tab: string[]) => {
+export const addTab = async (tab: string[]) => {
   if (tabs().length === 0) {
     fixEditorHeight(true);
   }
   if (!tabs().flat().includes(tab[1])) {
     // checks if the tab is already open.
     setTabs([...tabs(), tab]);
-    openFile(tabs()[tabs().length - 1][1]);
   }
   setActiveTab(tabs().findIndex((t) => t[1] === tab[1]));
-  openFile(tabs()[activeTab()][1]);
 };
 
 export const getTabs = () => {
@@ -79,7 +80,6 @@ const EditorTabs = () => {
             };
 
             const closeTab = async () => {
-              setIsValidFile(true);
               if (!savedTabs().includes(tabs()[index()][1])) {
                 // checks if there are unsaved changes.
                 if (
@@ -120,16 +120,17 @@ const EditorTabs = () => {
             if (FileIconComponent === undefined) {
               if (
                 tabs().flat().includes(getSettingsPath()) &&
-                tabs()[
-                  tabs().findIndex((i) => i.includes(getSettingsPath()))
-                ][0] === tabName
+                tabName === "Settings"
               ) {
                 FileIconComponent = IconSettings;
               } else {
-                // checks file extension
-                const fileExtension = path.extname(tabName);
-                FileIconComponent =
-                  fileIcons[fileExtension.toLowerCase()] || Default;
+                FileIconComponent = specialPageIcons[tabs()[index()][1]];
+                if (FileIconComponent === undefined) {
+                  // checks file extension
+                  const fileExtension = path.extname(tabName);
+                  FileIconComponent =
+                    fileIcons[fileExtension.toLowerCase()] || Default;
+                }
               }
             }
 

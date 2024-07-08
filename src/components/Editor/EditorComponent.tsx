@@ -103,7 +103,7 @@ import { error } from "tauri-plugin-log-api";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
-export const [isValidFile, setIsValidFile] = createSignal(true);
+const [isValidFile, setIsValidFile] = createSignal(true);
 
 let filePath: string;
 export const [fileSaved, setFileSaved] = createSignal<string[]>([]); // array of paths containing files that are saved. Local version of savedTabs() in EditorTabs.tsx
@@ -112,10 +112,9 @@ const [fileSavedContent, setFileSavedContent] = createSignal<string[][]>([]); //
 // it's like the tracking array.
 
 const [lines, setLines] = createSignal(["1"]);
+const [lineHeight, setLineHeight] = createSignal("1.5rem");
 
 const [lang, setLang] = createSignal("");
-
-const [lineHeight, setLineHeight] = createSignal("1.5rem");
 
 export const loadEditorSettings = () => {
   const editorWrapper = document.getElementById("editor-wrapper");
@@ -198,17 +197,17 @@ export const closeFile = () => {
 export const openFile = (pathLocal: string) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
 
+  if (
+    !fileSaved().includes(pathLocal) &&
+    !fileSavedContent().flat().includes(pathLocal) // checks if open file already exists as tab
+  ) {
+    setFileSaved([...fileSaved(), pathLocal]); // adds path to saved files array
+  }
+
   switch (pathLocal) {
-    case "narvik:page:settingsGui":
+    case "flux:page:settingsGui":
       break;
     default:
-      if (
-        !fileSaved().includes(pathLocal) &&
-        !fileSavedContent().flat().includes(pathLocal) // checks if open file already exists as tab
-      ) {
-        setFileSaved([...fileSaved(), pathLocal]); // adds path to saved files array
-      }
-
       fs.readTextFile(pathLocal)
         .then((data) => {
           setIsValidFile(true);
@@ -240,22 +239,27 @@ export const openFile = (pathLocal: string) => {
           textarea.blur();
         })
         .catch((e: string) => {
-          console.error(e);
-          if (e.includes("stream did not contain valid UTF-8")) {
-            setIsValidFile(false);
-            if (!fileSavedContent().flat().includes(pathLocal)) {
-              setFileSavedContent([...fileSavedContent(), [pathLocal, "", ""]]);
-            }
+          if (e.toString().includes("stream did not contain valid UTF-8")) {
+            const highlightedContent = document.getElementById(
+              "highlighting-content",
+            );
+
             textarea.value = "";
-            return;
+            if (highlightedContent) {
+              highlightedContent.innerHTML = "";
+            }
+
+            dialog.message("This file is currently not supported.", {
+              type: "error",
+              title: "Failed to open file",
+            });
           }
 
-          error(e);
+          error(e.toString());
         });
-      setSavedTabs(fileSaved()); // syncs savedTabs() signal in EditorTabs.tsx with fileSaved()
-
       break;
   }
+  setSavedTabs(fileSaved()); // syncs savedTabs() signal in EditorTabs.tsx with fileSaved()
 };
 
 // update line numbers
@@ -275,6 +279,7 @@ const highlightContent = () => {
   const highlightedContent = document.getElementById("highlighting-content");
 
   // [start] source (with modifications): https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
+  // Licensed under MIT.
 
   if (textareaRef) {
     let fixLastLine = false;
@@ -423,6 +428,7 @@ const EditorComponent = () => {
 
   const handleScroll = () => {
     if (lineNumbersDiv && highlightedContentPre && textareaRef) {
+      console.log(textareaRef.scrollTop);
       highlightedContentPre.scrollTop = textareaRef.scrollTop;
       highlightedContentPre.scrollLeft = textareaRef.scrollLeft;
 
@@ -580,15 +586,15 @@ const EditorComponent = () => {
           ref={textareaRef}
           id="editing"
           onInput={handleInput}
-          onkeydown={handleKeyDown}
-          onmousedown={updateSelectedLine}
-          onscroll={handleScroll}
+          onKeyDown={handleKeyDown}
+          onMouseDown={updateSelectedLine}
+          onScroll={handleScroll}
           autocomplete="off"
-          autocapitalize="off"
+          autoCapitalize="off"
           spellcheck={false}
-          onfocus={updateSelectedLine}
-          onblur={handleBlur}
-          onselect={handleBlur}
+          onFocus={updateSelectedLine}
+          onBlur={handleBlur}
+          onSelect={handleBlur}
           class={`absolute left-0 top-0 z-10 flex h-full w-full flex-grow overflow-auto whitespace-pre bg-transparent text-transparent caret-content ${styles.textarea}`}
         ></textarea>
         <pre
@@ -602,11 +608,6 @@ const EditorComponent = () => {
             id="highlighting-content"
           ></code>
         </pre>
-        <Show when={!isValidFile()}>
-          <div class="absolute z-20 flex min-h-full min-w-full select-none items-center justify-center bg-base-200">
-            <h1>This file is currently not supported</h1>
-          </div>
-        </Show>
       </div>
     </div>
   );

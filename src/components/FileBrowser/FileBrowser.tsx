@@ -20,11 +20,11 @@ import path from "path-browserify";
 import { For, Show, createSignal, onMount } from "solid-js";
 import { IconFolder, IconFolderOpen, IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
-import { addTab } from "../Editor/components/EditorTabs";
 import { fileIcons, specialFileIcons } from "../../utils/file";
-import { setIsValidFile } from "../Editor/EditorComponent";
 import { getSetting } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
+import { openFile } from "../Editor/EditorComponent";
+import { addTab } from "../Editor/components/EditorTabs";
 
 interface Props {
   dir: string;
@@ -198,8 +198,8 @@ const FileBrowser = (props: Props) => {
                         error("Error fetching nested contents contents: " + e);
                       });
                   } else {
-                    setIsValidFile(true);
                     addTab([itemName, itemPath]);
+                    openFile(itemPath);
                   }
                 }}
               >

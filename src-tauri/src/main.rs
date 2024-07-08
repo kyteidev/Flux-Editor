@@ -82,6 +82,15 @@ async fn ls_send_request(id: &str, method: &str, params: Value) -> Result<String
 fn menu() -> Menu {
     let app_menu = Menu::new()
         .add_item(CustomMenuItem::new("about".to_string(), "About"))
+        .add_submenu(Submenu::new(
+            "Legal Notices",
+            Menu::new()
+                .add_item(CustomMenuItem::new("license".to_string(), "License"))
+                .add_item(CustomMenuItem::new(
+                    "licenses-third-party".to_string(),
+                    "Third Party Licenses",
+                )),
+        ))
         .add_native_item(MenuItem::Separator)
         .add_item(
             CustomMenuItem::new("settings".to_string(), "Settings").accelerator("CmdOrCtrl+,"),

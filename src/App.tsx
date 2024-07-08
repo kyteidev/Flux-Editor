@@ -18,16 +18,14 @@ You should have received a copy of the GNU General Public License along with Flu
 import Editor, { loaded } from "./pages/Editor";
 import { onMount } from "solid-js";
 import { appWindow } from "@tauri-apps/api/window";
-import {
-  fileSaved,
-  saveFile,
-  setIsValidFile,
-} from "./components/Editor/EditorComponent";
-import { dialog } from "@tauri-apps/api";
+import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
+import { dialog, shell } from "@tauri-apps/api";
 import { addTab, getTabs } from "./components/Editor/components/EditorTabs";
 import { getSettingsPath, initSettings } from "./settingsManager";
-import { send_request } from "./utils/lsp/lsp";
 import { info } from "tauri-plugin-log-api";
+import { getVersion } from "@tauri-apps/api/app";
+import { getOS } from "./utils/os";
+import { resolveResource } from "@tauri-apps/api/path";
 
 export default function App() {
   onMount(() => {
@@ -51,13 +49,44 @@ export default function App() {
       }
     });
 
+    /*
     appWindow.listen("flux:ls-test", async () => {
       send_request();
+    });
+    */
+
+    appWindow.listen("flux:about", async () => {
+      const appVersion = getVersion();
+
+      let licensesLocation: string;
+      if ((await getOS()) === "darwin") {
+        licensesLocation = "Flux Editor > Legal Notices";
+      } else {
+        licensesLocation = "File > Legal Notices";
+      }
+
+      dialog.message(
+        "Copyright © 2024 The Flux Editor Contributors.\nLicensed under the GNU General Public License v3.0.\nSee " +
+          licensesLocation +
+          " for license notices.",
+        { title: "Flux Editor " + (await appVersion) },
+      );
+    });
+
+    appWindow.listen("flux:license", async () => {
+      const resourcePath = await resolveResource("../resources/LICENSE.txt");
+      shell.open(resourcePath);
+    });
+
+    appWindow.listen("flux:licenses-third-party", async () => {
+      const resourcePath = await resolveResource(
+        "../resources/THIRD-PARTY-LICENSES.txt",
+      );
+      shell.open(resourcePath);
     });
 
     appWindow.listen("flux:settings", () => {
       if (loaded()) {
-        setIsValidFile(true);
         addTab(["Settings", getSettingsPath()]);
       }
     });

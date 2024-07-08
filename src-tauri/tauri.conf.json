@@ -12,6 +12,11 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "app": {
+        "all": true,
+        "show": false,
+        "hide": false
+      },
       "dialog": {
         "all": false,
         "ask": true,
@@ -37,6 +42,10 @@
       },
       "path": {
         "all": true
+      },
+      "shell": {
+        "all": false,
+        "open": "^/"
       },
       "window": {
         "all": false,
@@ -66,7 +75,10 @@
       "active": true,
       "targets": "all",
       "identifier": "dev.fluxcode.editor",
-      "resources": ["../resources/Third-Party-Licenses.txt"],
+      "resources": [
+        "../resources/THIRD-PARTY-LICENSES.txt",
+        "../resources/LICENSE.txt"
+      ],
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 import { JSX } from "solid-js";
 import * as FI from "../components/Icons/FileIcons";
-import { IconGit } from "../components/Icons/Icons";
+import { IconAbout, IconGit } from "../components/Icons/Icons";
 
 export const specialCodeFileType: { [key: string]: string } = {
   // code langs
@@ -27,6 +27,10 @@ export const specialCodeFileType: { [key: string]: string } = {
   ".vue": "html",
   ".h": "cpp",
   ".bf": "brainfuck",
+};
+
+export const specialPageIcons: { [key: string]: () => JSX.Element } = {
+  "flux:page:about": IconAbout,
 };
 
 export const specialFileIcons: { [key: string]: () => JSX.Element } = {

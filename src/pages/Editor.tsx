@@ -28,7 +28,7 @@ import Welcome from "./Welcome";
 import path from "path-browserify";
 import { fs } from "@tauri-apps/api";
 import { info } from "tauri-plugin-log-api";
-import { FluxLogo } from "../components/Icons/FluxLogo";
+import EditorFallback from "./EditorFallback";
 
 const [dir, setDir] = createSignal<string>("");
 
@@ -137,18 +137,7 @@ const Editor = () => {
               secondMinSize={250}
               canSecondHide={true}
             >
-              <Show
-                when={getTabs().length != 0}
-                fallback={
-                  <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-10 bg-base-200">
-                    <div
-                      style={{ width: "12rem", height: "auto", opacity: "0.8" }}
-                    >
-                      <FluxLogo color="base-100" />
-                    </div>
-                  </div>
-                }
-              >
+              <Show when={getTabs().length != 0} fallback={<EditorFallback />}>
                 <EditorComponent />
               </Show>
               <div class="h-full w-full bg-base-200"></div>
