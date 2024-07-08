@@ -55,6 +55,7 @@ export default function App() {
     });
     */
 
+    // TODO: Add separate page for displaying this info, instead of dialog?
     appWindow.listen("flux:about", async () => {
       const appVersion = getVersion();
 

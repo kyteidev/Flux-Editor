@@ -99,11 +99,7 @@ fn menu() -> Menu {
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::Services)
         .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Quit)
-        .add_native_item(MenuItem::Separator)
-        .add_item(
-            CustomMenuItem::new("ls-test".to_string(), "LS-TEST").accelerator("CmdOrCtrl+Shift+,"),
-        );
+        .add_native_item(MenuItem::Quit);
 
     let file_menu = Menu::new()
         .add_item(

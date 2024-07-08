@@ -279,7 +279,7 @@ const highlightContent = () => {
   const highlightedContent = document.getElementById("highlighting-content");
 
   // [start] source (with modifications): https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
-  // Licensed under MIT.
+  // Licensed under MIT. License and copyright notice found in FluxEditor/resources/THIRD-PARTY-LICENSES.txt
 
   if (textareaRef) {
     let fixLastLine = false;
