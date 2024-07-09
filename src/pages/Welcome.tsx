@@ -31,7 +31,7 @@ import ButtonBg from "../ui/ButtonBg";
 import { dialog, fs } from "@tauri-apps/api";
 import { Show, createSignal, onMount } from "solid-js";
 import { cloneRepo, getRepoPath } from "../utils/git.ts";
-import { checkDirValidity } from "../utils/dir.ts";
+import { checkDirPathValidity } from "../utils/path.ts";
 import { getOS } from "../utils/os.ts";
 import { loadEditor } from "./Editor.tsx";
 import path from "path-browserify";
@@ -105,7 +105,10 @@ const Welcome = () => {
           { title: "Error", type: "error" },
         );
         warn("Invalid " + selectedType().toLocaleLowerCase() + " name");
-      } else if (dirPath() === "" || checkDirValidity(dirPath()) === false) {
+      } else if (
+        dirPath() === "" ||
+        checkDirPathValidity(dirPath()) === false
+      ) {
         dialog.message("Please select a valid directory.", {
           title: "Error",
           type: "error",

@@ -15,10 +15,10 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-export const checkDirValidity = (dir: string) => {
-  const directoryPathRegex = /^\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/$/;
+export const checkDirPathValidity = (dirPath: string) => {
+  const regex = /^(\/|([a-zA-Z]:\\))([^\\\/:*?"<>|\r\n]+\\?\/?)*$/;
 
-  if (directoryPathRegex.test(dir)) {
+  if (regex.test(dirPath)) {
     return true;
   } else {
     return false;
