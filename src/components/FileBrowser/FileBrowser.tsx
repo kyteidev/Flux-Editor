@@ -28,7 +28,7 @@ import { addTab } from "../Editor/components/EditorTabs";
 
 interface Props {
   dir: string;
-  projectName?: string;
+  rootDirName?: string;
 }
 
 const [showIcon, setShowIcon] = createSignal(true);
@@ -252,13 +252,14 @@ const FileBrowser = (props: Props) => {
   };
 
   return (
-    <div class="h-full min-h-full w-full min-w-full overflow-auto bg-base-200">
-      <div class="absolute z-10 block w-full cursor-pointer select-none items-center overflow-hidden overflow-ellipsis bg-base-200 pl-6 font-bold text-content hover:bg-base-100 active:bg-base-100-hover">
-        {props.projectName ? `${props.projectName}` : "No Project"}{" "}
-        {/* if no project name, display "No Project" */}
+    <div class="h-full min-h-full w-full min-w-full bg-base-200">
+      <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 pl-6 font-bold text-content">
+        {`${props.rootDirName}`}
       </div>
-      <div class="h-6" />
-      <div class="min-w-fit">
+      <div
+        class="min-w-fit overflow-auto"
+        style={{ "max-height": `calc(100% - 1.5rem)` }}
+      >
         {renderItem(dirContents(), props.dir, true, 0)}
       </div>
     </div>

@@ -25,7 +25,7 @@ import EditorTabs, {
   getTabs,
 } from "../components/Editor/components/EditorTabs";
 import Welcome from "./Welcome";
-import path from "path-browserify";
+import path, { basename } from "path-browserify";
 import { fs } from "@tauri-apps/api";
 import { info } from "tauri-plugin-log-api";
 import EditorFallback from "./EditorFallback";
@@ -52,10 +52,6 @@ export const loadEditor = (
 
   const configPath = path.join(dirPath, ".fluxeditor", "config.json");
 
-  const filteredDirPath = dirPath.endsWith(path.sep)
-    ? dirPath.substring(0, dirPath.length - 1)
-    : dirPath; // the user shouldn't be able to get a dirPath that doesn't end in a / or \ unless it's a file. This filters out the last / or \
-
   fs.exists(configPath).then(async (exists) => {
     // checks if /.fluxeditor/config.json exists
     if (!exists) {
@@ -65,9 +61,7 @@ export const loadEditor = (
       await fs.createDir(path.join(dirPath, ".fluxeditor"));
       fs.writeFile(path.join(dirPath, ".fluxeditor", "config.json"), typeJSON);
 
-      setProjectName(
-        filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
-      ); // sets project name to be directory name
+      setProjectName(basename(dirPath)); // sets project name to be directory name
     } else {
       const data = await fs.readTextFile(
         path.join(dirPath, ".fluxeditor", "config.json"),
@@ -75,9 +69,7 @@ export const loadEditor = (
       const parsedData = JSON.parse(data);
 
       if (parsedData["type"] && parsedData["type"] === "Project") {
-        setProjectName(
-          filteredDirPath.substring(filteredDirPath.lastIndexOf(path.sep) + 1),
-        );
+        setProjectName(basename(dirPath));
       } else {
         const type = { type: "Project" };
         const typeJSON = JSON.stringify(type, null, 2);
@@ -125,7 +117,7 @@ const Editor = () => {
                 "min-height": `calc(100vh - 2.5em)`,
               }}
             >
-              <FileBrowser dir={dir()} projectName={projectName()} />
+              <FileBrowser dir={dir()} rootDirName={projectName()} />
             </div>
             {/* Due to a bug, the second pane in vertical split panes glitch when hidden, so temporarily set canSecondHide to false */}
             <SplitPane
