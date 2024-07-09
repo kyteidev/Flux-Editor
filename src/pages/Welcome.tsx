@@ -96,84 +96,67 @@ const Welcome = () => {
   };
 
   const openEditor = async (action: string) => {
-    if (action === "new") {
-      if (name() === "") {
-        dialog.message(
-          "Please enter a valid " +
-            selectedType().toLocaleLowerCase() +
-            " name.",
-          { title: "Error", type: "error" },
-        );
-        warn("Invalid " + selectedType().toLocaleLowerCase() + " name");
-      } else if (
-        dirPath() === "" ||
-        checkDirPathValidity(dirPath()) === false
-      ) {
-        dialog.message("Please select a valid directory.", {
-          title: "Error",
-          type: "error",
-        });
-        warn("Invalid directory");
-      } else {
-        switch (selectedType()) {
-          case "File":
-            if (await fs.exists(path.join(dirPath() + name()))) {
-              dialog.message("File already exists.", {
-                title: "Error",
-                type: "error",
-              });
-              warn("File " + name() + " already exists in " + dirPath());
-              return;
-            }
-            fs.writeFile(path.join(dirPath(), name()), "").catch((e) => {
-              error("Failed to create file " + name() + ": " + e);
-            });
-            break;
-          case "Project":
-            if (await fs.exists(path.join(dirPath(), name()))) {
-              dialog.message("Directory already exists.", {
-                title: "Error",
-                type: "error",
-              });
-              warn("Directory " + name() + " already exists in " + dirPath());
-            } else {
-              fs.createDir(path.join(dirPath() + name()));
-            }
-        }
-
-        if (selectedType() === "File") {
-          loadEditor(path.join(dirPath(), name()), true, name());
-          return;
-        }
-
-        const projectPath = path.join(dirPath(), name());
-
-        const fluxConfig = {
-          type: selectedType(),
-        };
-
-        const json = JSON.stringify(fluxConfig, null, 2);
-
-        if (!(await fs.exists(path.join(projectPath, ".fluxeditor")))) {
-          fs.createDir(path.join(projectPath, ".fluxeditor"));
-        }
-
-        fs.writeFile(path.join(projectPath, ".fluxeditor", "config.json"), json)
-          .then(() => {
-            loadEditor(projectPath);
-          })
-          .catch((e) => {
-            error("Error creating config.json: " + e);
+    switch (action) {
+      case "new":
+        if (name() === "") {
+          dialog.message(
+            "Please enter a valid " +
+              selectedType().toLocaleLowerCase() +
+              " name.",
+            { title: "Error", type: "error" },
+          );
+          warn("Invalid " + selectedType().toLocaleLowerCase() + " name");
+        } else if (
+          dirPath() === "" ||
+          checkDirPathValidity(dirPath()) === false
+        ) {
+          dialog.message("Please select a valid directory.", {
+            title: "Error",
+            type: "error",
           });
-      }
-    } else if (action === "open") {
-      if (dirPath() != "") {
-        loadEditor(dirPath());
-      }
-    } else if (action === "clone") {
-      if (dirPath() != "") {
-        loadEditor(getRepoPath());
-      }
+          warn("Invalid directory");
+        } else {
+          switch (selectedType()) {
+            case "File":
+              if (await fs.exists(path.join(dirPath() + name()))) {
+                dialog.message("File already exists.", {
+                  title: "Error",
+                  type: "error",
+                });
+                warn("File " + name() + " already exists in " + dirPath());
+                return;
+              }
+              fs.writeFile(path.join(dirPath(), name()), "").catch((e) => {
+                error("Failed to create file " + name() + ": " + e);
+              });
+              loadEditor(path.join(dirPath(), name()), true, name());
+              break;
+            case "Project":
+              if (await fs.exists(path.join(dirPath(), name()))) {
+                dialog.message("Directory already exists.", {
+                  title: "Error",
+                  type: "error",
+                });
+                warn("Directory " + name() + " already exists in " + dirPath());
+              } else {
+                const projectPath = path.join(dirPath(), name());
+
+                await fs.createDir(projectPath);
+                loadEditor(projectPath);
+              }
+          }
+        }
+        break;
+      case "open":
+        if (dirPath() != "") {
+          loadEditor(dirPath());
+        }
+        break;
+      case "clone":
+        if (dirPath() != "") {
+          loadEditor(getRepoPath());
+        }
+        break;
     }
   };
 

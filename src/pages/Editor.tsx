@@ -50,40 +50,10 @@ export const loadEditor = (
     return;
   }
 
-  const configPath = path.join(dirPath, ".fluxeditor", "config.json");
+  setProjectName(basename(dirPath)); // sets project name to be directory name
 
-  fs.exists(configPath).then(async (exists) => {
-    // checks if /.fluxeditor/config.json exists
-    if (!exists) {
-      const type = { type: "Project" }; // if doesn't exist, assume the opened directory is a project.
-      const typeJSON = JSON.stringify(type, null, 2);
-
-      await fs.createDir(path.join(dirPath, ".fluxeditor"));
-      fs.writeFile(path.join(dirPath, ".fluxeditor", "config.json"), typeJSON);
-
-      setProjectName(basename(dirPath)); // sets project name to be directory name
-    } else {
-      const data = await fs.readTextFile(
-        path.join(dirPath, ".fluxeditor", "config.json"),
-      );
-      const parsedData = JSON.parse(data);
-
-      if (parsedData["type"] && parsedData["type"] === "Project") {
-        setProjectName(basename(dirPath));
-      } else {
-        const type = { type: "Project" };
-        const typeJSON = JSON.stringify(type, null, 2);
-
-        fs.writeFile(
-          path.join(dirPath, ".fluxeditor", "config.json"),
-          typeJSON,
-        );
-      }
-    }
-
-    info("Editor loaded");
-    setLoaded(true);
-  });
+  info("Editor loaded");
+  setLoaded(true);
 };
 const Editor = () => {
   onMount(() => {
