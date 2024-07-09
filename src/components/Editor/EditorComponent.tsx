@@ -428,7 +428,6 @@ const EditorComponent = () => {
 
   const handleScroll = () => {
     if (lineNumbersDiv && highlightedContentPre && textareaRef) {
-      console.log(textareaRef.scrollTop);
       highlightedContentPre.scrollTop = textareaRef.scrollTop;
       highlightedContentPre.scrollLeft = textareaRef.scrollLeft;
 

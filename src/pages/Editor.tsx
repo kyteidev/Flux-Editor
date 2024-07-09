@@ -25,8 +25,7 @@ import EditorTabs, {
   getTabs,
 } from "../components/Editor/components/EditorTabs";
 import Welcome from "./Welcome";
-import path, { basename } from "path-browserify";
-import { fs } from "@tauri-apps/api";
+import { basename } from "path-browserify";
 import { info } from "tauri-plugin-log-api";
 import EditorFallback from "./EditorFallback";
 
