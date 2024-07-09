@@ -17,7 +17,8 @@ You should have received a copy of the GNU General Public License along with Flu
 
 import { platform } from "@tauri-apps/api/os";
 
-export async function getOS(): Promise<string> {
-  const osName = (await platform()).toString();
+const osName = (await platform()).toString();
+
+export function getOS(): string {
   return osName;
 }
