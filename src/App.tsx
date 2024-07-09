@@ -15,17 +15,22 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import Editor, { loaded } from "./pages/Editor";
+import Editor, { loaded, loadEditor } from "./pages/Editor";
 import { onMount } from "solid-js";
 import { appWindow } from "@tauri-apps/api/window";
-import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
-import { dialog, shell } from "@tauri-apps/api";
+import {
+  fileSaved,
+  openFile,
+  saveFile,
+} from "./components/Editor/EditorComponent";
+import { dialog } from "@tauri-apps/api";
 import { addTab, getTabs } from "./components/Editor/components/EditorTabs";
 import { getSettingsPath, initSettings } from "./settingsManager";
 import { info } from "tauri-plugin-log-api";
 import { getVersion } from "@tauri-apps/api/app";
 import { getOS } from "./utils/os";
 import { resolveResource } from "@tauri-apps/api/path";
+import path from "path-browserify";
 
 export default function App() {
   onMount(() => {
@@ -76,19 +81,28 @@ export default function App() {
 
     appWindow.listen("flux:license", async () => {
       const resourcePath = await resolveResource("../resources/LICENSE.txt");
-      shell.open(resourcePath);
+      if (!loaded()) {
+        loadEditor(path.dirname(resourcePath));
+      }
+      addTab(["LICENSE", resourcePath]);
+      openFile(resourcePath);
     });
 
     appWindow.listen("flux:licenses-third-party", async () => {
       const resourcePath = await resolveResource(
         "../resources/THIRD-PARTY-LICENSES.txt",
       );
-      shell.open(resourcePath);
+      if (!loaded()) {
+        loadEditor(path.dirname(resourcePath));
+      }
+      addTab(["THIRD PARTY LICENSES", resourcePath]);
+      openFile(resourcePath);
     });
 
     appWindow.listen("flux:settings", () => {
       if (loaded()) {
         addTab(["Settings", getSettingsPath()]);
+        openFile(getSettingsPath());
       }
     });
 

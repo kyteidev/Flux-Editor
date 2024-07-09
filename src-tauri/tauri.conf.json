@@ -43,10 +43,6 @@
       "path": {
         "all": true
       },
-      "shell": {
-        "all": false,
-        "open": "^/"
-      },
       "window": {
         "all": false,
         "startDragging": true,
