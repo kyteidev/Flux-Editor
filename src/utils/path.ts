@@ -16,11 +16,8 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 export const checkDirPathValidity = (dirPath: string) => {
-  const regex = /^(\/|([a-zA-Z]:\\))([^\\\/:*?"<>|\r\n]+\\?\/?)*$/;
+  const unixPathRegex = /^\/([^\\:*?"<>|\r\n]+\/?)*$/;
+  const windowsPathRegex = /^[a-zA-Z]:\\([^\\:*?"<>|\r\n]+\\?)*$/;
 
-  if (regex.test(dirPath)) {
-    return true;
-  } else {
-    return false;
-  }
+  return unixPathRegex.test(dirPath) || windowsPathRegex.test(dirPath);
 };
