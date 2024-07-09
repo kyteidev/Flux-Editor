@@ -180,7 +180,7 @@ const Welcome = () => {
   return (
     <div class="h-full select-none bg-base-200">
       {/* logo and title */}
-      <div class="relative top-[12vh] flex items-center justify-center space-x-10">
+      <div class="relative top-[12vh] flex items-center justify-center space-x-5">
         <div class="fill-primary" style={{ width: "140px", height: "auto" }}>
           <FluxLogo color="content" />
         </div>

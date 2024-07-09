@@ -1,4 +1,4 @@
-<p align="center"><img src="./images/FluxEditor.png"
+<p align="center"><img src="./images/FluxEditorLogo.png"
      alt="Flux Editor logo"
      width="160px"
      height="160px" />
