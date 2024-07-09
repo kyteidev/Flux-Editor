@@ -11,10 +11,7 @@
     <img src="https://img.shields.io/badge/build-passing-green" alt="build">
   </a>
   <a>
-    <img src="https://img.shields.io/badge/version-0.0.1_alpha-blue" alt="version">
-  </a>
-  <a>
-    <img src="https://img.shields.io/badge/stage-alpha-blue" alt="stage">
+    <img src="https://img.shields.io/badge/version-0.1.0-blue" alt="version">
   </a>
   <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
     <img src="https://img.shields.io/badge/license-GPL--3.0-orange" alt="license">
@@ -39,11 +36,17 @@
 
 ## Features <a name="features"></a>
 
-Flux Editor boasts a ton of features, some of which are unique. Below are some of the key features of Flux Editor:
+Flux Editor boasts a ton of features, some of which are unique. Below are some of the features of Flux Editor:
 
 - Incredibly lightweight
-- Cross-platform
-- Simple UI
+- Minimalist UI
+- Tiny binary
+- No bloat
+- Built-in file browser
+- Syntax highlighting
+- Code suggestions (soon)
+- Built-in terminal (soon)
+- Git integration (partially complete)
 - and many more!
 
 ## Installation <a name="installation"></a>
@@ -54,16 +57,12 @@ You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEd
 
 - Caret height is not corrent on the first line (probably webview issue)
 
-## Contributors <a name="contributors"></a>
-
-- [kytei](https://github.com/kyteidev)
-
 ## Contributing <a name="contributing"></a>
 
 UNDER CONSTRUCTION
 
 ## License <a name="license"></a>
 
-Copyright © 2024 The Flux Editor Contributors. Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
+Copyright © 2024 [The Flux Editor Contributors](https://github.com/kyteidev/FluxEditor/graphs/contributors). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
 
 The Flux Editor Logo and its color variants are available under the [Creative Commons Attribution-NonCommercial-ShareAlike License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
