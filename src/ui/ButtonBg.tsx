@@ -25,7 +25,7 @@ interface Props {
 const ButtonBg = (props: Props) => {
   return (
     <button
-      class={`rounded-xl bg-base-100 p-2 transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
+      class={`flex items-center justify-center rounded-xl bg-base-100 p-2 transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-95`}
       style={{ width: `${props.width}`, height: `${props.height}` }}
       onClick={props.action}
     >
