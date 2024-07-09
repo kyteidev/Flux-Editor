@@ -1,4 +1,4 @@
-<p align="center"><img src="./src/assets/FluxEditor-logo.svg"
+<p align="center"><img src="./images/FluxEditor.png"
      alt="Flux Editor logo"
      width="160px"
      height="160px" />
@@ -6,14 +6,27 @@
 
 <h1 align="center">Flux Editor</h1>
 
-![build](https://img.shields.io/badge/build-passing-green)
-![version](https://img.shields.io/badge/version-0.0.1_alpha-blue)
-![stage](https://img.shields.io/badge/stage-alpha-blue)
-![license](https://img.shields.io/badge/license-GPL--3.0-orange)
-![issues](https://img.shields.io/github/issues/kyteidev/FluxEditor)
-![downloads](https://img.shields.io/github/downloads/kyteidev/FluxEditor/total)
+<div align="center">
+  <a>
+    <img src="https://img.shields.io/badge/build-passing-green" alt="build">
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/version-0.0.1_alpha-blue" alt="version">
+  </a>
+  <a>
+    <img src="https://img.shields.io/badge/stage-alpha-blue" alt="stage">
+  </a>
+  <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
+    <img src="https://img.shields.io/badge/license-GPL--3.0-orange" alt="license">
+  </a>
+  <a href="https://github.com/kyteidev/FluxEditor/issues">
+    <img src="https://img.shields.io/github/issues/kyteidev/FluxEditor" alt="issues">
+  </a>
+</div>
 
+<center>
 (NOTE! This project is still WIP. Expect bugs and unfinished features)
+</center>
 
 # Table of Contents
 
