@@ -51,7 +51,7 @@ Flux Editor boasts a ton of features, some of which are unique. Below are some o
 
 ## Installation <a name="installation"></a>
 
-You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page. (NOTE: since I don't have a code-signing certificate yet, you may encounter a "unidentified developer" or "Windows protected your PC" popup. If you don't trust the builds, you can always build Flux Editor from source)
+You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page. (NOTE: since I don't have a code-signing certificate yet, you may encounter a "unidentified developer" or "Windows protected your PC" popup. If you don't trust the builds, you can always build Flux Editor from source. See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md) for instructions)
 
 ## Known Issues <a name="known-issues"></a>
 
@@ -59,7 +59,7 @@ You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEd
 
 ## Contributing <a name="contributing"></a>
 
-UNDER CONSTRUCTION
+See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md).
 
 ## Copyright and Licenses <a name="license"></a>
 
