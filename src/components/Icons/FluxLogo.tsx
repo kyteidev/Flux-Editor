@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 // The following logo is licensed under Creative Commons Attribution-NonCommercial-ShareAlike License.
+// Designed by kyteidev.
 export const FluxLogo = (props: { color: string }) => {
   return (
     <svg
