@@ -104,6 +104,7 @@ import { error } from "tauri-plugin-log-api";
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
 const [isValidFile, setIsValidFile] = createSignal(true);
+const [readonly, setReadonly] = createSignal(false);
 
 let filePath: string;
 export const [fileSaved, setFileSaved] = createSignal<string[]>([]); // array of paths containing files that are saved. Local version of savedTabs() in EditorTabs.tsx
@@ -194,8 +195,9 @@ export const closeFile = () => {
   );
 };
 
-export const openFile = (pathLocal: string) => {
+export const openFile = (pathLocal: string, readonly?: boolean) => {
   const textarea = document.getElementById("editing") as HTMLTextAreaElement;
+  setReadonly(readonly || false);
 
   if (
     !fileSaved().includes(pathLocal) &&
@@ -575,7 +577,7 @@ const EditorComponent = () => {
       >
         <div
           id="highlighted-line"
-          class="pointer-events-none absolute z-50 w-full bg-content opacity-10"
+          class={`${readonly() ? "scale-0" : "scale-100"} pointer-events-none absolute z-50 w-full bg-content opacity-10`}
           style={{
             height: lineHeight(),
             top: `calc(${selectedLine() - 1} * ${lineHeight()} - ${textareaRef?.scrollTop}px)`,
@@ -584,6 +586,7 @@ const EditorComponent = () => {
         <textarea
           ref={textareaRef}
           id="editing"
+          readOnly={readonly()}
           onInput={handleInput}
           onKeyDown={handleKeyDown}
           onMouseDown={updateSelectedLine}

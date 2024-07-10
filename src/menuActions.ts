@@ -33,7 +33,7 @@ export const license = async () => {
     loadEditor(path.dirname(resourcePath));
   }
   addTab(["LICENSE", resourcePath]);
-  openFile(resourcePath);
+  openFile(resourcePath, true);
 };
 
 export const licenseThirdParty = async () => {
@@ -44,7 +44,7 @@ export const licenseThirdParty = async () => {
     loadEditor(path.dirname(resourcePath));
   }
   addTab(["THIRD PARTY LICENSES", resourcePath]);
-  openFile(resourcePath);
+  openFile(resourcePath, true);
 };
 
 export const settings = () => {
