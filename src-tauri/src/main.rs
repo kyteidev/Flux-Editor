@@ -109,10 +109,6 @@ fn menu() -> Menu {
             CustomMenuItem::new("new_project".to_string(), "New Project")
                 .accelerator("CmdOrCtrl+Shift+N"),
         )
-        .add_item(
-            CustomMenuItem::new("new_workspace".to_string(), "New Workspace")
-                .accelerator("CmdOrCtrl+Shift+Alt+N"),
-        )
         .add_native_item(MenuItem::Separator)
         .add_item(CustomMenuItem::new("open".to_string(), "Open...").accelerator("CmdOrCtrl+O"))
         .add_item(CustomMenuItem::new("save".to_string(), "Save").accelerator("CmdOrCtrl+S"))
