@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/badge/build-passing-green" alt="build">
   </a>
   <a>
-    <img src="https://img.shields.io/badge/version-0.1.0-blue" alt="version">
+    <img src="https://img.shields.io/badge/version-0.2.0-blue" alt="version">
   </a>
   <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
     <img src="https://img.shields.io/badge/license-GPL--3.0-orange" alt="license">
@@ -32,7 +32,7 @@
 - [Known Issues](#known-issues)
 - [Contributors](#contributors)
 - [Contributing](#contributing)
-- [License](#license)
+- [Copyright and Licenses](#license)
 
 ## Features <a name="features"></a>
 
@@ -61,8 +61,10 @@ You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEd
 
 UNDER CONSTRUCTION
 
-## License <a name="license"></a>
+## Copyright and Licenses <a name="license"></a>
 
 Copyright © 2024 [The Flux Editor Contributors](https://github.com/kyteidev/FluxEditor/graphs/contributors). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
+
+The original designer of the Flux Editor Logo is [kyteidev](https://github.com/kyteidev/).
 
 The Flux Editor Logo and its color variants are available under the [Creative Commons Attribution-NonCommercial-ShareAlike License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
