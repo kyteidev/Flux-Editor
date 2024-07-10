@@ -6,7 +6,8 @@ The last three minor updates prior to the latest version are supported with secu
 
 | Version | Supported          |
 | ------- | ------------------ |
-| < 1.0   | :white_check_mark: |
+| 0.2.x   | :white_check_mark: |
+| 0.1.x   | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
