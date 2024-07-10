@@ -61,7 +61,7 @@ jobs:
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "Flux Editor v__VERSION__"
-          releaseBody: '## Release Notes\n ## SHA-256 Checksum'
+          releaseBody: ""
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
