@@ -51,7 +51,7 @@ Flux Editor boasts a ton of features, some of which are unique. Below are some o
 
 ## Installation <a name="installation"></a>
 
-You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page. (NOTE: since I don't have a code-signing certificate yet, you may encounter a "unidentified developer" or "Windows protected your PC" popup. Currently you can verify the install by checking the SHA-256 checksum, found below "Release Notes" in the "Releases" section)
+You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page. (NOTE: since I don't have a code-signing certificate yet, you may encounter a "unidentified developer" or "Windows protected your PC" popup. If you don't trust the builds, you can always build Flux Editor from source)
 
 ## Known Issues <a name="known-issues"></a>
 
