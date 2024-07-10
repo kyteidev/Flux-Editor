@@ -14,23 +14,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
 <https://www.gnu.org/licenses/>.
 */
-
-import Editor, { loaded, loadEditor } from "./pages/Editor";
 import { onMount } from "solid-js";
 import { appWindow } from "@tauri-apps/api/window";
-import {
-  fileSaved,
-  openFile,
-  saveFile,
-} from "./components/Editor/EditorComponent";
+import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
 import { dialog } from "@tauri-apps/api";
-import { addTab, getTabs } from "./components/Editor/components/EditorTabs";
-import { getSettingsPath, initSettings } from "./settingsManager";
+import { getTabs } from "./components/Editor/components/EditorTabs";
+import { initSettings } from "./settingsManager";
 import { info } from "tauri-plugin-log-api";
-import { getVersion } from "@tauri-apps/api/app";
-import { getOS } from "./utils/os";
-import { resolveResource } from "@tauri-apps/api/path";
-import path from "path-browserify";
+import { about, license, licenseThirdParty, settings } from "./menuActions";
+import Editor from "./pages/Editor";
 
 export default function App() {
   onMount(() => {
@@ -61,49 +53,20 @@ export default function App() {
     */
 
     // TODO: Add separate page for displaying this info, instead of dialog?
-    appWindow.listen("flux:about", async () => {
-      const appVersion = getVersion();
-
-      let licensesLocation: string;
-      if ((await getOS()) === "darwin") {
-        licensesLocation = "Flux Editor > Legal Notices";
-      } else {
-        licensesLocation = "File > Legal Notices";
-      }
-
-      dialog.message(
-        "Copyright © 2024 The Flux Editor Contributors.\nLicensed under the GNU General Public License v3.0.\nSee " +
-          licensesLocation +
-          " for license notices.",
-        { title: "Flux Editor " + (await appVersion) },
-      );
+    appWindow.listen("flux:about", () => {
+      about();
     });
 
     appWindow.listen("flux:license", async () => {
-      const resourcePath = await resolveResource("../resources/LICENSE.txt");
-      if (!loaded()) {
-        loadEditor(path.dirname(resourcePath));
-      }
-      addTab(["LICENSE", resourcePath]);
-      openFile(resourcePath);
+      license();
     });
 
     appWindow.listen("flux:licenses-third-party", async () => {
-      const resourcePath = await resolveResource(
-        "../resources/THIRD-PARTY-LICENSES.txt",
-      );
-      if (!loaded()) {
-        loadEditor(path.dirname(resourcePath));
-      }
-      addTab(["THIRD PARTY LICENSES", resourcePath]);
-      openFile(resourcePath);
+      licenseThirdParty();
     });
 
     appWindow.listen("flux:settings", () => {
-      if (loaded()) {
-        addTab(["Settings", getSettingsPath()]);
-        openFile(getSettingsPath());
-      }
+      settings();
     });
 
     appWindow.listen("flux:save", () => {

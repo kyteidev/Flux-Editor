@@ -1,4 +1,4 @@
-// SOURCE: Google Material Symbols (fonts.google.com/icons). SVG icons licensed under Apache 2.0.
+// SOURCE: Google Material Symbols (fonts.google.com/icons) unless otherwise stated. SVG icons licensed under Apache 2.0.
 
 export const IconClose = () => {
   return (
@@ -59,11 +59,11 @@ export const IconClone = () => {
 export const IconExpand = () => {
   return (
     <svg
+      class="fill-content"
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 -960 960 960"
       width="24px"
-      fill="#e8eaed"
     >
       <path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z" />
     </svg>
@@ -73,17 +73,18 @@ export const IconExpand = () => {
 export const IconUnexpand = () => {
   return (
     <svg
+      class="fill-content"
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 -960 960 960"
       width="24px"
-      fill="#e8eaed"
     >
       <path d="m296-345-56-56 240-240 240 240-56 56-184-184-184 184Z" />
     </svg>
   );
 };
 
+// Designed by kyteidev. SVG licensed under CC-BY-SA.
 export const IconLineVertical = () => {
   return (
     <svg
@@ -104,6 +105,7 @@ export const IconLineVertical = () => {
   );
 };
 
+// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconGit = () => {
   return (
     <svg
@@ -130,6 +132,7 @@ export const IconGit = () => {
   );
 };
 
+// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconFolder = () => {
   return (
     <svg
@@ -150,6 +153,7 @@ export const IconFolder = () => {
   );
 };
 
+// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconFolderOpen = () => {
   return (
     <svg
@@ -170,6 +174,7 @@ export const IconFolderOpen = () => {
   );
 };
 
+// Designed by kyteidev. Licensed under CC-BY-SA.
 export const IconCircle = () => {
   return (
     <svg
@@ -190,6 +195,7 @@ export const IconCircle = () => {
   );
 };
 
+// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconSettings = () => {
   return (
     <svg
@@ -211,6 +217,7 @@ export const IconSettings = () => {
   );
 };
 
+// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconAbout = () => {
   return (
     <svg
@@ -229,6 +236,20 @@ export const IconAbout = () => {
       <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
       <path d="M12 9h.01" />
       <path d="M11 12h1v4h1" />
+    </svg>
+  );
+};
+
+export const IconExpandRight = () => {
+  return (
+    <svg
+      class="fill-content"
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+    >
+      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
     </svg>
   );
 };

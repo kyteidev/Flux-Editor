@@ -28,10 +28,12 @@ import Welcome from "./Welcome";
 import { basename } from "path-browserify";
 import { info } from "tauri-plugin-log-api";
 import EditorFallback from "./EditorFallback";
+import Menu from "../components/Menu/Menu";
+import { getOS } from "../utils/os";
 
 const [dir, setDir] = createSignal<string>("");
 
-export const [loaded, setLoaded] = createSignal(false);
+export const [loaded, setLoaded] = createSignal(true);
 
 const [projectName, setProjectName] = createSignal<string>();
 
@@ -55,16 +57,25 @@ export const loadEditor = (
   setLoaded(true);
 };
 const Editor = () => {
-  onMount(() => {
+  const [OS, setOS] = createSignal();
+  onMount(async () => {
     info("Editor mounted");
+    setOS(await getOS());
   });
 
   return (
     <div class="flex h-screen max-h-screen w-screen flex-col">
       <header
         data-tauri-drag-region
-        class="header max-h-10 min-h-10 w-full flex-shrink-0 bg-base-200"
-      />
+        class="header flex max-h-10 min-h-10 w-full flex-shrink-0 bg-base-200 p-[5px]"
+      >
+        <Show when={loaded()}>
+          <div class="w-[79px]" />
+          <Show when={OS() === "darwin"} fallback={<div class="w-[79px]" />}>
+            <Menu />
+          </Show>
+        </Show>
+      </header>
       <div
         style={{
           "max-height": `calc(100vh - 2.5em)`,

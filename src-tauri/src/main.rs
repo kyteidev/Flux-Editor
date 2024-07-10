@@ -138,7 +138,7 @@ fn menu() -> Menu {
     let modules_menu = Menu::new()
         .add_item(CustomMenuItem::new("search".to_string(), "Search").accelerator("Alt+Space"))
         .add_item(
-            CustomMenuItem::new("file_explorer".to_string(), "File Explorer")
+            CustomMenuItem::new("file_browser".to_string(), "File Browser")
                 .accelerator("CmdOrCtrl+Shift+F"),
         )
         .add_item(
