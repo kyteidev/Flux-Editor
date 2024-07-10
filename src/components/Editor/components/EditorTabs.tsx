@@ -20,11 +20,7 @@ import { IconCircle, IconClose, IconSettings } from "../../Icons/Icons";
 import { closeFile, openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
 import { dialog } from "@tauri-apps/api";
-import {
-  fileIcons,
-  specialFileIcons,
-  specialPageIcons,
-} from "../../../utils/file";
+import { fileIcons, specialFileIcons } from "../../../utils/file";
 import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
 import { getSetting, getSettingsPath } from "../../../settingsManager";

@@ -33,7 +33,7 @@ import { getOS } from "../utils/os";
 
 const [dir, setDir] = createSignal<string>("");
 
-export const [loaded, setLoaded] = createSignal(true);
+export const [loaded, setLoaded] = createSignal(false);
 
 const [projectName, setProjectName] = createSignal<string>();
 
@@ -70,8 +70,8 @@ const Editor = () => {
         class="header flex max-h-10 min-h-10 w-full flex-shrink-0 bg-base-200 p-[5px]"
       >
         <Show when={loaded()}>
-          <div class="w-[79px]" />
-          <Show when={OS() === "darwin"} fallback={<div class="w-[79px]" />}>
+          {/* <div class="w-[79px]" /> */}
+          <Show when={OS() != "darwin"} fallback={<div class="w-[79px]" />}>
             <Menu />
           </Show>
         </Show>
