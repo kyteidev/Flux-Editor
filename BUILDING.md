@@ -12,4 +12,4 @@ git push origin dev:release
 ```
 
 ## After Build
-Update the Release to include the release notes and SHA-256 checksum.
+Update the Release to include the release notes.
