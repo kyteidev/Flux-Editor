@@ -124,13 +124,10 @@ const EditorTabs = () => {
               ) {
                 FileIconComponent = IconSettings;
               } else {
-                FileIconComponent = specialPageIcons[tabs()[index()][1]];
-                if (FileIconComponent === undefined) {
-                  // checks file extension
-                  const fileExtension = path.extname(tabName);
-                  FileIconComponent =
-                    fileIcons[fileExtension.toLowerCase()] || Default;
-                }
+                // checks file extension
+                const fileExtension = path.extname(tabName);
+                FileIconComponent =
+                  fileIcons[fileExtension.toLowerCase()] || Default;
               }
             }
 
