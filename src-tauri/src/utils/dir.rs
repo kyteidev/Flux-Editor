@@ -21,7 +21,9 @@ use log::error;
 use tauri::api::path::data_dir;
 
 pub fn get_app_data_dir() -> PathBuf {
-    let app_data_dir = data_dir().map(|dir| dir.join("dev.narvik.editor")).unwrap();
+    let app_data_dir = data_dir()
+        .map(|dir| dir.join("dev.fluxdev.editor"))
+        .unwrap();
 
     app_data_dir
 }
