@@ -5,8 +5,8 @@ import { loaded, loadEditor } from "./pages/Editor";
 import { resolveResource } from "@tauri-apps/api/path";
 import { addTab } from "./components/Editor/components/EditorTabs";
 import { openFile } from "./components/Editor/EditorComponent";
-import path from "path-browserify";
 import { getSettingsPath } from "./settingsManager";
+import { dirname } from "./utils/path";
 
 export const about = async () => {
   const appVersion = getVersion();
@@ -30,7 +30,7 @@ export const about = async () => {
 export const license = async () => {
   const resourcePath = await resolveResource("../resources/LICENSE.txt");
   if (!loaded()) {
-    loadEditor(path.dirname(resourcePath));
+    loadEditor(dirname(resourcePath));
   }
   addTab(["LICENSE", resourcePath]);
   openFile(resourcePath, true);
@@ -41,7 +41,7 @@ export const licenseThirdParty = async () => {
     "../resources/THIRD-PARTY-LICENSES.txt",
   );
   if (!loaded()) {
-    loadEditor(path.dirname(resourcePath));
+    loadEditor(dirname(resourcePath));
   }
   addTab(["THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);

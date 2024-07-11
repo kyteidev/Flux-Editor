@@ -21,10 +21,10 @@ import { closeFile, openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
 import { dialog } from "@tauri-apps/api";
 import { fileIcons, specialFileIcons } from "../../../utils/file";
-import path from "path-browserify";
 import { Default } from "../../Icons/FileIcons";
 import { getSetting, getSettingsPath } from "../../../settingsManager";
 import { error } from "tauri-plugin-log-api";
+import { extname } from "../../../utils/path";
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
@@ -121,7 +121,7 @@ const EditorTabs = () => {
                 FileIconComponent = IconSettings;
               } else {
                 // checks file extension
-                const fileExtension = path.extname(tabName);
+                const fileExtension = extname(tabName);
                 FileIconComponent =
                   fileIcons[fileExtension.toLowerCase()] || Default;
               }

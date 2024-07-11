@@ -15,15 +15,13 @@
   "license": "MIT",
   "dependencies": {
     "@tauri-apps/api": "^1",
-    "@types/prismjs": "^1.26.4",
-    "path-browserify": "^1.0.1",
     "prismjs": "^1.29.0",
     "solid-js": "^1.7.8",
     "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1",
-    "@types/path-browserify": "^1.0.2",
+    "@types/prismjs": "^1.26.4",
     "license-compliance": "^3.0.1",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.1",

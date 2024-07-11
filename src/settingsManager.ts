@@ -17,11 +17,11 @@ You should have received a copy of the GNU General Public License along with Flu
 
 import { fs } from "@tauri-apps/api";
 import { appDataDir } from "@tauri-apps/api/path";
-import path from "path-browserify";
 import { loadFBSettings } from "./components/FileBrowser/FileBrowser";
 import { loadEditorSettings } from "./components/Editor/EditorComponent";
 import { loadEditorTabsSettings } from "./components/Editor/components/EditorTabs";
 import { warn } from "tauri-plugin-log-api";
+import { joinPath } from "./utils/path";
 
 let settingsDir: string;
 let settingsFile: string;
@@ -33,8 +33,8 @@ export const settings: { [key: string]: any } = {
 };
 
 export const initSettings = async () => {
-  settingsDir = path.join(await appDataDir(), "settings");
-  settingsFile = path.join(settingsDir, "settings.json");
+  settingsDir = joinPath(await appDataDir(), "settings");
+  settingsFile = joinPath(settingsDir, "settings.json");
 
   if (!(await fs.exists(await appDataDir()))) {
     await fs.createDir(await appDataDir());
@@ -44,7 +44,7 @@ export const initSettings = async () => {
   }
   if (!(await fs.exists(settingsFile))) {
     fs.writeFile(
-      path.join(settingsDir, "settings.json"),
+      joinPath(settingsDir, "settings.json"),
       JSON.stringify(settings, null, 2),
     );
   } else {

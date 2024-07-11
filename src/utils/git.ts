@@ -17,8 +17,8 @@ You should have received a copy of the GNU General Public License along with Flu
 
 import { invoke } from "@tauri-apps/api";
 import { homeDir } from "@tauri-apps/api/path";
-import path from "path-browserify";
 import { error, info } from "tauri-plugin-log-api";
+import { joinPath } from "./path";
 
 let repoPath: string;
 
@@ -44,7 +44,7 @@ export async function cloneRepo(url: string): Promise<void> {
   const repoName = getRepoName(url);
   let homePath = await homeDir();
 
-  repoPath = path.join(homePath ? homePath.toString() : "", repoName);
+  repoPath = joinPath(homePath ? homePath.toString() : "", repoName);
 
   info(`Cloning repository ${url} to ${repoPath}`);
 

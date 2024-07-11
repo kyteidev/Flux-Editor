@@ -91,7 +91,6 @@ import "prismjs/components/prism-wasm.min.js";
 import "prismjs/components/prism-yaml.min.js";
 
 import { dialog, fs, invoke } from "@tauri-apps/api";
-import path from "path-browserify";
 import { specialCodeFileType } from "../../utils/file";
 import { getTabs, setSavedTabs } from "./components/EditorTabs";
 import {
@@ -100,6 +99,7 @@ import {
   loadSettings,
 } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
+import { extname } from "../../utils/path";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
@@ -214,9 +214,10 @@ export const openFile = (pathLocal: string, readonly?: boolean) => {
         .then((data) => {
           setIsValidFile(true);
 
-          const fileExt = path
-            .extname(pathLocal)
-            .substring(1, path.extname(pathLocal).length);
+          const fileExt = extname(pathLocal).substring(
+            1,
+            extname(pathLocal).length,
+          );
           setLang(specialCodeFileType[fileExt] || fileExt);
 
           filePath = pathLocal;

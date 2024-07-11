@@ -23,8 +23,10 @@ import { initSettings } from "./settingsManager";
 import { info } from "tauri-plugin-log-api";
 import { about, license, licenseThirdParty, settings } from "./menuActions";
 import Editor from "./pages/Editor";
+import { initPathOS } from "./utils/path";
 
 export default function App() {
+  initPathOS();
   onMount(() => {
     initSettings();
     info("Initialized application");

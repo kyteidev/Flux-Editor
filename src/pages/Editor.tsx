@@ -25,11 +25,11 @@ import EditorTabs, {
   getTabs,
 } from "../components/Editor/components/EditorTabs";
 import Welcome from "./Welcome";
-import { basename } from "path-browserify";
 import { info } from "tauri-plugin-log-api";
 import EditorFallback from "./EditorFallback";
 import Menu from "../components/Menu/Menu";
 import { getOS } from "../utils/os";
+import { basename } from "../utils/path";
 
 const [dir, setDir] = createSignal<string>("");
 
@@ -52,6 +52,7 @@ export const loadEditor = (
   }
 
   setProjectName(basename(dirPath)); // sets project name to be directory name
+  console.log(projectName(), dirPath);
 
   info("Editor loaded");
   setLoaded(true);

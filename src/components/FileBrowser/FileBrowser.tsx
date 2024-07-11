@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { readDir } from "@tauri-apps/api/fs";
-import path from "path-browserify";
 import { For, Show, createSignal, onMount } from "solid-js";
 import { IconFolder, IconFolderOpen, IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
@@ -25,6 +24,7 @@ import { getSetting } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { openFile } from "../Editor/EditorComponent";
 import { addTab } from "../Editor/components/EditorTabs";
+import { extname, joinPath, pathSep } from "../../utils/path";
 
 interface Props {
   dir: string;
@@ -90,17 +90,17 @@ const FileBrowser = (props: Props) => {
 
     // TODO: utilize the nested content obtained here to avoid fetching again later on?
     for (let i = 0; i < contents.length; i++) {
-      getPathContents(path.join(parentDir, contents[i])).then((content) => {
+      getPathContents(joinPath(parentDir, contents[i])).then((content) => {
         if (content[0] != undefined && content[0].includes("Not a directory")) {
-          nestedFiles.push(path.join(parentDir, contents[i]));
+          nestedFiles.push(joinPath(parentDir, contents[i]));
         } else {
-          nestedDirs.push(path.join(parentDir, contents[i]));
+          nestedDirs.push(joinPath(parentDir, contents[i]));
         }
         if ([...nestedDirs, ...nestedFiles].length === contents.length) {
           setNestedContent([
             ...nestedDirs
               .map((item) => {
-                const parts = item.split(path.sep);
+                const parts = item.split(pathSep());
                 return parts[parts.length - 1];
               })
               .sort((a, b) =>
@@ -108,7 +108,7 @@ const FileBrowser = (props: Props) => {
               ),
             ...nestedFiles
               .map((item) => {
-                const parts = item.split(path.sep);
+                const parts = item.split(pathSep());
                 return parts[parts.length - 1];
               })
               .sort((a, b) =>
@@ -128,7 +128,7 @@ const FileBrowser = (props: Props) => {
             string[]
           >([]);
 
-          const itemPath = path.join(parentDir, itemName);
+          const itemPath = joinPath(parentDir, itemName);
 
           if (dirs.includes(itemPath)) {
             setIsDir(true);
@@ -179,7 +179,7 @@ const FileBrowser = (props: Props) => {
             specialFileIcons[itemName.toLowerCase()] || undefined;
           if (FileIconComponent === undefined) {
             // checks file extension
-            const fileExtension = isDir() ? "" : path.extname(itemName);
+            const fileExtension = isDir() ? "" : extname(itemName);
             FileIconComponent =
               fileIcons[fileExtension.toLowerCase()] || FI.Default;
           }

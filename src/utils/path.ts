@@ -15,9 +15,50 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+import { getOS } from "./os";
+
+let os: string;
+export const initPathOS = async () => {
+  os = await getOS();
+};
+
 export const checkDirPathValidity = (dirPath: string) => {
   const unixPathRegex = /^\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/$/;
   const windowsPathRegex = /^[a-zA-Z]:\\[a-zA-Z0-9_-]+(\\[a-zA-Z0-9_-]+)*\\$/;
 
   return unixPathRegex.test(dirPath) || windowsPathRegex.test(dirPath);
+};
+
+// IMPORTANT: do not call this in App.tsx, os variable may not have finished initializing, so this will think os is undefined.
+export const pathSep = (): string => {
+  if (os === "windows") {
+    return "\\";
+  } else {
+    return "/";
+  }
+};
+
+export const joinPath = (...args: string[]): string => {
+  return args.join(pathSep());
+};
+
+export const extname = (path: string): string => {
+  return path.slice(path.lastIndexOf(".") + 1, path.length);
+};
+
+export const basename = (pathProp: string): string => {
+  let path = pathProp;
+  console.log(path[path.length - 1]);
+  if (path[path.length - 1] === pathSep()) {
+    path = path.slice(0, -1);
+  }
+  return path.slice(path.lastIndexOf(pathSep()) + 1, path.length);
+};
+
+export const dirname = (pathProp: string) => {
+  let path = pathProp;
+  if (path[path.length - 1] === pathSep()) {
+    path = path.slice(0, -1);
+  }
+  return path.slice(0, path.lastIndexOf(pathSep()) + 1);
 };

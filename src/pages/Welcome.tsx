@@ -31,10 +31,9 @@ import ButtonBg from "../ui/ButtonBg";
 import { dialog, fs } from "@tauri-apps/api";
 import { Show, createSignal, onMount } from "solid-js";
 import { cloneRepo, getRepoPath } from "../utils/git.ts";
-import { checkDirPathValidity } from "../utils/path.ts";
+import { checkDirPathValidity, joinPath } from "../utils/path.ts";
 import { getOS } from "../utils/os.ts";
 import { loadEditor } from "./Editor.tsx";
-import path from "path-browserify";
 import { error, info, warn } from "tauri-plugin-log-api";
 import { FluxLogo } from "../components/Icons/FluxLogo.tsx";
 
@@ -118,7 +117,7 @@ const Welcome = () => {
         } else {
           switch (selectedType()) {
             case "File":
-              if (await fs.exists(path.join(dirPath() + name()))) {
+              if (await fs.exists(joinPath(dirPath() + name()))) {
                 dialog.message("File already exists.", {
                   title: "Error",
                   type: "error",
@@ -126,20 +125,20 @@ const Welcome = () => {
                 warn("File " + name() + " already exists in " + dirPath());
                 return;
               }
-              fs.writeFile(path.join(dirPath(), name()), "").catch((e) => {
+              fs.writeFile(joinPath(dirPath(), name()), "").catch((e) => {
                 error("Failed to create file " + name() + ": " + e);
               });
-              loadEditor(path.join(dirPath(), name()), true, name());
+              loadEditor(joinPath(dirPath(), name()), true, name());
               break;
             case "Project":
-              if (await fs.exists(path.join(dirPath(), name()))) {
+              if (await fs.exists(joinPath(dirPath(), name()))) {
                 dialog.message("Directory already exists.", {
                   title: "Error",
                   type: "error",
                 });
                 warn("Directory " + name() + " already exists in " + dirPath());
               } else {
-                const projectPath = path.join(dirPath(), name());
+                const projectPath = joinPath(dirPath(), name());
 
                 await fs.createDir(projectPath);
                 loadEditor(projectPath);
