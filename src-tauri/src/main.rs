@@ -43,7 +43,10 @@ use window_ext::WindowExt;
 mod window_ext;
 
 mod commands;
-use commands::git::clone_repo;
+use commands::{
+    git::clone_repo,
+    path::{app_data_dir, resolve_resource, user_home_dir},
+};
 
 mod utils;
 use utils::dir::{get_app_log_dir, get_ls_dir};
@@ -223,7 +226,10 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             clone_repo,
             set_doc_edited,
-            ls_send_request
+            ls_send_request,
+            app_data_dir,
+            user_home_dir,
+            resolve_resource,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

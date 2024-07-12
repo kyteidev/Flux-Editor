@@ -15,5 +15,33 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-pub mod git;
-pub mod path;
+use std::path::PathBuf;
+
+use log::error;
+use tauri::api::path::home_dir;
+
+use crate::utils::dir::get_app_data_dir;
+
+#[tauri::command]
+pub fn app_data_dir() -> PathBuf {
+    let dir = get_app_data_dir();
+    dir
+}
+
+#[tauri::command]
+pub fn user_home_dir() -> PathBuf {
+    let dir = home_dir().unwrap();
+    dir
+}
+
+#[tauri::command]
+pub fn resolve_resource(app: tauri::AppHandle, resource: &str) -> PathBuf {
+    let path = match app.path_resolver().resolve_resource(resource) {
+        Some(resource) => resource,
+        None => {
+            error!("Failed to resolve resource");
+            return PathBuf::new();
+        }
+    };
+    path
+}

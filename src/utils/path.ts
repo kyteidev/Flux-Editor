@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+import { invoke } from "@tauri-apps/api/tauri";
 import { getOS } from "./os";
 
 let os: string;
@@ -61,4 +62,19 @@ export const dirname = (pathProp: string) => {
     path = path.slice(0, -1);
   }
   return path.slice(0, path.lastIndexOf(pathSep()) + 1);
+};
+
+export const appDataDir = async (): Promise<string> => {
+  const dir = await invoke<string>("app_data_dir");
+  return dir;
+};
+
+export const homeDir = async (): Promise<string> => {
+  const dir = await invoke<string>("user_home_dir");
+  return dir;
+};
+
+export const resolveResource = async (resource: string): Promise<string> => {
+  const path = await invoke<string>("resolve_resource", { resource: resource });
+  return path;
 };

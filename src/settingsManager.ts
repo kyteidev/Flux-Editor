@@ -16,12 +16,11 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { fs } from "@tauri-apps/api";
-import { appDataDir } from "@tauri-apps/api/path";
 import { loadFBSettings } from "./components/FileBrowser/FileBrowser";
 import { loadEditorSettings } from "./components/Editor/EditorComponent";
 import { loadEditorTabsSettings } from "./components/Editor/components/EditorTabs";
 import { warn } from "tauri-plugin-log-api";
-import { joinPath } from "./utils/path";
+import { appDataDir, joinPath } from "./utils/path";
 
 let settingsDir: string;
 let settingsFile: string;

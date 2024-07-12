@@ -40,9 +40,6 @@
       "os": {
         "all": true
       },
-      "path": {
-        "all": true
-      },
       "window": {
         "all": false,
         "startDragging": true,

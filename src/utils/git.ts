@@ -16,9 +16,8 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { invoke } from "@tauri-apps/api";
-import { homeDir } from "@tauri-apps/api/path";
 import { error, info } from "tauri-plugin-log-api";
-import { joinPath } from "./path";
+import { homeDir, joinPath } from "./path";
 
 let repoPath: string;
 

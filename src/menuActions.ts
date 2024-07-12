@@ -19,11 +19,10 @@ import { dialog } from "@tauri-apps/api";
 import { getOS } from "./utils/os";
 import { getVersion } from "@tauri-apps/api/app";
 import { loaded, loadEditor } from "./pages/Editor";
-import { resolveResource } from "@tauri-apps/api/path";
 import { addTab } from "./components/Editor/components/EditorTabs";
 import { openFile } from "./components/Editor/EditorComponent";
 import { getSettingsPath } from "./settingsManager";
-import { dirname } from "./utils/path";
+import { dirname, resolveResource } from "./utils/path";
 
 export const about = async () => {
   const appVersion = getVersion();
