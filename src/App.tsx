@@ -14,72 +14,128 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
 <https://www.gnu.org/licenses/>.
 */
-import { onMount } from "solid-js";
-import { appWindow } from "@tauri-apps/api/window";
-import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
-import { dialog } from "@tauri-apps/api";
-import { getTabs } from "./components/Editor/components/EditorTabs";
+import { createSignal, onMount, Show } from "solid-js";
+import EditorComponent from "./components/Editor/EditorComponent";
+import EditorTabs, {
+  addTab,
+  getTabs,
+} from "./components/Editor/components/EditorTabs";
 import { initSettings } from "./settingsManager";
 import { info } from "tauri-plugin-log-api";
-import { about, license, licenseThirdParty, settings } from "./menuActions";
-import Editor from "./pages/Editor";
-import { initPathOS } from "./utils/path";
+import { basename, initPathOS } from "./utils/path";
+import { platform } from "@tauri-apps/api/os";
+import { addListeners } from "./menuListeners";
+import SplitPane from "./components/SplitPane/SplitPane";
+import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
+import EditorFallback from "./pages/EditorFallback";
+import WindowControls from "./components/WindowControls/WindowControls";
+import Menu from "./components/Menu/Menu";
+
+export const [dir, setDir] = createSignal<string>("");
+
+export const [loaded, setLoaded] = createSignal(false);
+
+const [projectName, setProjectName] = createSignal<string>();
+
+export const loadEditor = (
+  dirPath: string,
+  openFile?: boolean,
+  fileName?: string,
+) => {
+  setDir(dirPath);
+  loadDir(dirPath);
+
+  if (openFile && fileName) {
+    setLoaded(true);
+    addTab([fileName, dirPath]);
+    info("Editor loaded");
+    return;
+  }
+
+  setProjectName(basename(dirPath)); // sets project name to be directory name
+  console.log(projectName(), dirPath);
+
+  info("Editor loaded");
+  setLoaded(true);
+};
 
 export default function App() {
   initPathOS();
-  onMount(() => {
+  const [OS, setOS] = createSignal();
+  onMount(async () => {
     initSettings();
+    setOS((await platform()).toString());
     info("Initialized application");
 
-    appWindow.listen("tauri://close-requested", async () => {
-      if (fileSaved().length === getTabs().length) {
-        appWindow.close();
-      } else {
-        const closeEditor = await dialog.ask(
-          "Your changes will not be saved.",
-          {
-            title: "Are you sure you want to close Flux Editor?",
-            type: "warning",
-          },
-        );
-        if (closeEditor) {
-          appWindow.close();
-        }
-      }
-    });
-
-    /*
-    appWindow.listen("flux:ls-test", async () => {
-      send_request();
-    });
-    */
-
-    // TODO: Add separate page for displaying this info, instead of dialog?
-    appWindow.listen("flux:about", () => {
-      about();
-    });
-
-    appWindow.listen("flux:license", async () => {
-      license();
-    });
-
-    appWindow.listen("flux:licenses-third-party", async () => {
-      licenseThirdParty();
-    });
-
-    appWindow.listen("flux:settings", () => {
-      settings();
-    });
-
-    appWindow.listen("flux:save", () => {
-      saveFile();
-    });
-    appWindow.listen("flux:save_as", () => {
-      saveFile(true);
-    });
-
-    info("Initialized menu event listeners");
+    addListeners();
   });
 
-  return <Editor />;
+  return (
+    <div class="flex h-screen max-h-screen w-screen flex-col">
+      <header
+        data-tauri-drag-region
+        class="header flex w-full flex-shrink-0 border-b-2 border-content bg-base-200 p-[5px]"
+        style={{
+          "min-height": `calc(1.75rem + 2px)`,
+          "max-height": `calc(1.75rem + 2px)`,
+        }}
+      >
+        {/* <div class="w-[79px]" /> */}
+        <Show when={OS() != "darwin"} fallback={<div class="w-[68px]" />}>
+          <Menu />
+        </Show>
+      </header>
+      <div
+        style={{
+          "max-height": `calc(100vh - 1.75em)`,
+          "min-height": `calc(100vh - 1.75em)`,
+        }}
+      >
+        <SplitPane
+          grow={true}
+          size={280}
+          firstMinSize={200}
+          secondMinSize={500}
+          canFirstHide={true}
+        >
+          <div
+            style={{
+              height: `calc(100vh - 1.75em)`,
+              "max-height": `calc(100vh - 1.75em)`,
+              "min-height": `calc(100vh - 1.75em)`,
+            }}
+          >
+            <FileBrowser
+              dir={dir()}
+              rootDirName={projectName()}
+              loaded={loaded()}
+            />
+          </div>
+          {/* Due to a bug, the second pane in vertical split panes glitch when hidden, so temporarily set canSecondHide to false */}
+          <SplitPane
+            vertical={true}
+            grow={true}
+            size={350}
+            firstMinSize={300}
+            canFirstHide={false}
+            secondMinSize={250}
+            canSecondHide={true}
+          >
+            <Show when={getTabs().length != 0} fallback={<EditorFallback />}>
+              <EditorComponent />
+            </Show>
+            <div class="h-full w-full bg-base-200"></div>
+            <Show when={getTabs().length != 0}>
+              <div class="max-w-full">
+                <EditorTabs />
+              </div>
+            </Show>
+          </SplitPane>
+        </SplitPane>
+        <div>
+          <WindowControls />
+        </div>
+      </div>
+    </div>
+  );
 }

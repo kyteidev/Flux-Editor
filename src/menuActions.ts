@@ -18,11 +18,11 @@ You should have received a copy of the GNU General Public License along with Flu
 import { dialog } from "@tauri-apps/api";
 import { getOS } from "./utils/os";
 import { getVersion } from "@tauri-apps/api/app";
-import { loaded, loadEditor } from "./pages/Editor";
 import { addTab } from "./components/Editor/components/EditorTabs";
 import { openFile } from "./components/Editor/EditorComponent";
 import { getSettingsPath } from "./settingsManager";
 import { dirname, resolveResource } from "./utils/path";
+import { loaded, loadEditor } from "./App";
 
 export const about = async () => {
   const appVersion = getVersion();

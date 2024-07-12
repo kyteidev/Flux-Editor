@@ -1,57 +1,22 @@
-/*
-Copyright © 2024 The Flux Editor Contributors.
-
-This file is part of Flux Editor.
-
-Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
-Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.
-
-Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
-the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
-<https://www.gnu.org/licenses/>.
-*/
-
-import { appWindow } from "@tauri-apps/api/window";
-import {
-  IconClone,
-  IconClose,
-  IconNew,
-  IconOpen,
-} from "../components/Icons/Icons.tsx";
-import ButtonIcon from "../ui/ButtonIcon";
-import Modal from "../ui/Modal";
-import Button from "../ui/Button";
-import Dropdown from "../ui/Dropdown";
-import Input from "../ui/Input";
-import ButtonBg from "../ui/ButtonBg";
+import { createSignal } from "solid-js";
+import Button from "../../ui/Button";
+import ButtonBg from "../../ui/ButtonBg";
+import Dropdown from "../../ui/Dropdown";
+import Input from "../../ui/Input";
+import Modal from "../../ui/Modal";
 import { dialog, fs } from "@tauri-apps/api";
-import { Show, createSignal, onMount } from "solid-js";
-import { cloneRepo, getRepoPath } from "../utils/git.ts";
-import { checkDirPathValidity, joinPath } from "../utils/path.ts";
-import { getOS } from "../utils/os.ts";
-import { loadEditor } from "./Editor.tsx";
-import { error, info, warn } from "tauri-plugin-log-api";
-import { FluxLogo } from "../components/Icons/FluxLogo.tsx";
+import { cloneRepo, getRepoPath } from "../../utils/git";
+import { error, warn } from "tauri-plugin-log-api";
+import { loadEditor } from "../../App";
+import { checkDirPathValidity, joinPath } from "../../utils/path";
 
-const Welcome = () => {
+const Startup = () => {
+  const [isCloning, setIsCloning] = createSignal<boolean>(false);
+  const [closeModal, setCloseModal] = createSignal(false);
   const [selectedType, setSelectedType] = createSignal<string>("File");
   // used as directory path for new open, and clone functions
   const [dirPath, setDirPath] = createSignal<string>("");
   const [name, setName] = createSignal<string>("");
-
-  const [isCloning, setIsCloning] = createSignal<boolean>(false);
-  const [closeModal, setCloseModal] = createSignal(false);
-
-  const [currentOS, setCurrentOS] = createSignal();
-
-  onMount(async () => {
-    setCurrentOS(await getOS());
-    info("Mounted welcome screen");
-  });
 
   const resetValues = () => {
     setSelectedType("File");
@@ -66,7 +31,7 @@ const Welcome = () => {
       }
 
       if (notNew) {
-        openEditor("open");
+        beforeLoad("open");
       }
     });
   };
@@ -77,7 +42,7 @@ const Welcome = () => {
         setIsCloning(true);
         await cloneRepo(dirPath());
         setIsCloning(false);
-        openEditor("clone");
+        beforeLoad("clone");
       } catch (e) {
         dialog.message(`${e}`, {
           title: "Failed to clone repository",
@@ -90,11 +55,11 @@ const Welcome = () => {
         title: "Failed to clone repository",
         type: "error",
       });
-      warn("Invalid URL");
+      warn("Invalid URL provided for cloning");
     }
   };
 
-  const openEditor = async (action: string) => {
+  const beforeLoad = async (action: string) => {
     switch (action) {
       case "new":
         if (name() === "") {
@@ -160,15 +125,7 @@ const Welcome = () => {
   };
 
   return (
-    <div class="h-full select-none bg-base-200">
-      {/* logo and title */}
-      <div class="relative top-[12vh] flex items-center justify-center space-x-5">
-        <div class="fill-primary" style={{ width: "140px", height: "auto" }}>
-          <FluxLogo color="content" />
-        </div>
-        <h1 class="text-8xl text-content">Flux Editor</h1>
-      </div>
-      {/* new-modal */}
+    <div class="flex flex-col space-y-2 px-2 py-1">
       <dialog id="modal-new">
         <Modal
           width={60}
@@ -209,7 +166,9 @@ const Welcome = () => {
                 text="Browse"
                 width="calc(80px + 2em)"
                 height="40px"
-                action={() => openDir(false)}
+                action={() => {
+                  openDir(false);
+                }}
               />
             </div>
           </div>
@@ -245,13 +204,12 @@ const Welcome = () => {
               width={80}
               height={40}
               action={() => {
-                openEditor("new");
+                beforeLoad("new");
               }}
             />
           </div>
         </Modal>
       </dialog>
-      {/* clone-modal */}
       <dialog id="modal-clone">
         <Modal
           width={60}
@@ -306,70 +264,35 @@ const Welcome = () => {
           </div>
         </Modal>
       </dialog>
-      {/* buttons */}
-      <div class="relative top-[30vh] h-full w-full">
-        <div class="flex justify-center space-x-20">
-          {/* New button */}
-          <div>
-            <ButtonIcon
-              size="100px"
-              rounding={50}
-              icon={IconNew}
-              action={() => {
-                resetValues();
-                const modal = document.getElementById(
-                  "modal-new",
-                ) as HTMLDialogElement;
-                if (modal) {
-                  modal.showModal();
-                }
-              }}
-            />
-            <p class="relative top-2 text-center text-content">New...</p>
-          </div>
-          {/* Open button */}
-          <div>
-            <ButtonIcon
-              size="100px"
-              rounding={50}
-              icon={IconOpen}
-              action={openDir}
-            />
-            <p class="relative top-2 text-center text-content">Open...</p>
-          </div>
-          {/* Clone button */}
-          <div>
-            <ButtonIcon
-              size="100px"
-              rounding={50}
-              icon={IconClone}
-              action={() => {
-                const modal = document.getElementById(
-                  "modal-clone",
-                ) as HTMLDialogElement;
-                if (modal) {
-                  modal.showModal();
-                }
-              }}
-            />
-            <p class="relative top-2 text-center text-content">Clone...</p>
-          </div>
-        </div>
-      </div>
-      <Show when={currentOS() != "darwin"}>
-        <div class="absolute right-4 top-4 ml-0">
-          <button
-            class="transition ease-in-out hover:opacity-70"
-            onClick={() => appWindow.close()}
-          >
-            <div class="flex h-9 w-9 justify-center">
-              <IconClose />
-            </div>
-          </button>
-        </div>
-      </Show>
+      <Button
+        width={100}
+        height={25}
+        text="New"
+        action={() => {
+          const modal = document.getElementById(
+            "modal-new",
+          ) as HTMLDialogElement;
+          if (modal) {
+            modal.showModal();
+          }
+        }}
+      />
+      <Button width={100} height={25} text="Open" action={openDir} />
+      <Button
+        width={100}
+        height={25}
+        text="Clone"
+        action={() => {
+          const modal = document.getElementById(
+            "modal-clone",
+          ) as HTMLDialogElement;
+          if (modal) {
+            modal.showModal();
+          }
+        }}
+      />
     </div>
   );
 };
 
-export default Welcome;
+export default Startup;

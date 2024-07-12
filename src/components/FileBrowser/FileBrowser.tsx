@@ -25,13 +25,16 @@ import { error } from "tauri-plugin-log-api";
 import { openFile } from "../Editor/EditorComponent";
 import { addTab } from "../Editor/components/EditorTabs";
 import { extname, joinPath, pathSep } from "../../utils/path";
+import Startup from "./Startup";
 
 interface Props {
   dir: string;
   rootDirName?: string;
+  loaded: boolean;
 }
 
 const [showIcon, setShowIcon] = createSignal(true);
+const [dirContents, setDirContents] = createSignal<string[]>([]);
 
 export const loadFBSettings = () => {
   if (
@@ -44,38 +47,39 @@ export const loadFBSettings = () => {
   }
 };
 
+export const loadDir = async (dir: string) => {
+  const contents = await getPathContents(dir);
+  setDirContents(contents);
+};
+
+const getPathContents = async (dirPath: string): Promise<string[]> => {
+  try {
+    const contents = await readDir(dirPath);
+    const nonEmptyContents = contents
+      .map((content) => content.name)
+      .filter(
+        (content): content is string =>
+          content !== undefined && content[0] != ".",
+      );
+    return nonEmptyContents.sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: "base" }),
+    );
+  } catch (e) {
+    if (!(e as string).includes("Not a directory")) {
+      error(`Error fetching directory contents: ${e}`);
+    }
+    return [e as string]; // return error as string, so the error is like a nested file in a folder
+  }
+};
+
 const FileBrowser = (props: Props) => {
-  const [dirContents, setDirContents] = createSignal<string[]>([]);
   const files: string[] = [];
   const dirs: string[] = [];
 
   onMount(async () => {
     // load settings
     loadFBSettings();
-
-    const contents = await getPathContents(props.dir);
-    setDirContents(contents);
   });
-
-  const getPathContents = async (dirPath: string): Promise<string[]> => {
-    try {
-      const contents = await readDir(dirPath);
-      const nonEmptyContents = contents
-        .map((content) => content.name)
-        .filter(
-          (content): content is string =>
-            content !== undefined && content[0] != ".",
-        );
-      return nonEmptyContents.sort((a, b) =>
-        a.localeCompare(b, undefined, { sensitivity: "base" }),
-      );
-    } catch (e) {
-      if (!(e as string).includes("Not a directory")) {
-        error(`Error fetching directory contents: ${e}`);
-      }
-      return [e as string]; // return error as string, so the error is like a nested file in a folder
-    }
-  };
 
   const renderItem = (
     contents: string[],
@@ -253,15 +257,17 @@ const FileBrowser = (props: Props) => {
 
   return (
     <div class="h-full min-h-full w-full min-w-full bg-base-200">
-      <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 pl-6 font-bold text-content">
-        {`${props.rootDirName}`}
-      </div>
-      <div
-        class="min-w-fit overflow-auto"
-        style={{ "max-height": `calc(100% - 1.5rem)` }}
-      >
-        {renderItem(dirContents(), props.dir, true, 0)}
-      </div>
+      <Show when={props.loaded} fallback={<Startup />}>
+        <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 pl-6 font-bold text-content">
+          {`${props.rootDirName}`}
+        </div>
+        <div
+          class="min-w-fit overflow-auto"
+          style={{ "max-height": `calc(100% - 1.5rem)` }}
+        >
+          {renderItem(dirContents(), props.dir, true, 0)}
+        </div>
+      </Show>
     </div>
   );
 };

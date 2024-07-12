@@ -1818,6 +1818,10 @@ dialog[open] {
   animation: fadeout 0.2s ease-in-out forwards;
 }
 
+.first\:mt-0:first-child {
+  margin-top: 0px;
+}
+
 .first\:rounded-t-xl:first-child {
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
