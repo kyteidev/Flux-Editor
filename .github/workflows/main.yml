@@ -70,6 +70,6 @@ jobs:
             - fixed invalid path separator on Windows
             - fixed environment variable issue on UNIX platforms.
             - removed unused apis
-          releaseDraft: true
-          prerelease: false
+          releaseDraft: false
+          prerelease: true
           args: ${{ matrix.args }}
