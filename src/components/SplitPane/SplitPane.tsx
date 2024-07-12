@@ -33,9 +33,9 @@ const [firstHeight, setFirstHeight] = createSignal(0);
 
 export const fixEditorHeight = (firstTab: boolean) => {
   if (firstTab) {
-    setFirstHeight(firstHeight() - 40);
+    setFirstHeight(firstHeight() - 28);
   } else {
-    setFirstHeight(firstHeight() + 40);
+    setFirstHeight(firstHeight() + 28);
   }
 };
 
@@ -109,7 +109,7 @@ const SplitPane = (props: Props) => {
       ) {
         if (cursorOffsetY >= 80 && props.canSecondHide) {
           setCanUnhide(false);
-          setFirstHeight(windowHeight - 3 - 40); // sets first height to window height, minus height of splitter
+          setFirstHeight(windowHeight - 5 - 28); // sets first height to window height, minus height of splitter
           info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(windowHeight - props.secondMinSize);
@@ -140,7 +140,7 @@ const SplitPane = (props: Props) => {
       ) {
         if (cursorOffsetX >= 80 && props.canSecondHide) {
           setCanUnhide(false);
-          setFirstWidth(windowWidth - 3);
+          setFirstWidth(windowWidth - 5);
           info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(windowWidth - props.secondMinSize);
@@ -158,7 +158,7 @@ const SplitPane = (props: Props) => {
       if (firstHeight() === 0 && props.firstMinSize) {
         setFirstHeight(props.firstMinSize);
         info("First pane unhidden");
-      } else if (firstHeight() === windowHeight - 43 && props.secondMinSize) {
+      } else if (firstHeight() === windowHeight - 33 && props.secondMinSize) {
         setFirstHeight(windowHeight - props.secondMinSize);
         info("Second pane unhidden");
       }
@@ -196,7 +196,7 @@ const SplitPane = (props: Props) => {
         <div
           id="splitter"
           class={`${props.vertical ? "h-[5px] min-h-[5px] w-full cursor-row-resize border-y-[2px]" : "w-[5px] min-w-[5px] cursor-col-resize border-x-[2px]"} ${isDragging() ? "border-accent bg-accent" : "border-base-200 bg-content"} z-50 transition duration-300 ease-in-out hover:border-accent hover:bg-accent`}
-          style={{ height: `${props.vertical ?? `calc(100vh - 40px)`}` }}
+          style={{ height: `${props.vertical ?? `calc(100vh - 28px)`}` }}
           onmousedown={handleMouseDown}
           onclick={handleUnhide}
         />

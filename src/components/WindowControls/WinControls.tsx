@@ -68,12 +68,12 @@ function WinControls() {
     <div class="absolute right-0 top-0 ml-0 flex">
       <div class="flex flex-row">
         <button
-          class="h-10 w-10 cursor-default bg-transparent hover:bg-[#000000]/[.05] active:bg-[#ffffff]/[.04]"
+          class="h-7 w-7 cursor-default bg-transparent hover:bg-[#000000]/[.05] active:bg-[#ffffff]/[.04]"
           onClick={minimizeWindow}
         >
           <div class="flex justify-center">
             <svg
-              width="14"
+              width="10"
               height="2"
               viewBox="0 0 10 1"
               fill="none"
@@ -90,14 +90,14 @@ function WinControls() {
       </div>
       <div class="relative flex flex-row">
         <button
-          class="h-10 w-10 cursor-default bg-transparent hover:bg-[#000000]/[.05] active:bg-[#ffffff]/[.04]"
+          class="h-7 w-7 cursor-default bg-transparent hover:bg-[#000000]/[.05] active:bg-[#ffffff]/[.04]"
           onClick={maximizeWindow}
         >
           {!isMaximized() ? (
             <div class="flex justify-center">
               <svg
-                width="14"
-                height="14"
+                width="10"
+                height="10"
                 viewBox="0 0 10 10"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -112,8 +112,8 @@ function WinControls() {
           ) : (
             <div class="flex justify-center">
               <svg
-                width="14"
-                height="15"
+                width="10"
+                height="11"
                 viewBox="0 0 10 11"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -130,13 +130,13 @@ function WinControls() {
       </div>
       <div class="relative flex flex-row">
         <button
-          class="h-10 w-10 cursor-default bg-transparent hover:bg-[#c42b1c]"
+          class="h-7 w-7 cursor-default bg-transparent hover:bg-[#c42b1c]"
           onClick={closeWindow}
         >
           <div class="flex justify-center">
             <svg
-              width="14"
-              height="14"
+              width="10"
+              height="10"
               viewBox="0 0 10 10"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

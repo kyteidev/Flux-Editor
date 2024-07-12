@@ -59,7 +59,7 @@ fn set_doc_edited(window: Window, edited: bool) {
     {
         let ns_window: id = window.ns_window().unwrap() as id;
         unsafe { ns_window.setDocumentEdited_(if edited { YES } else { NO }) }
-        window.set_window_controls_pos(16., 18.)
+        window.set_window_controls_pos(10., 12.5)
     }
 }
 
@@ -195,7 +195,7 @@ fn main() {
             win.set_transparent_titlebar(true, false);
 
             #[cfg(target_os = "macos")]
-            win.set_window_controls_pos(16., 18.);
+            win.set_window_controls_pos(10., 12.5);
 
             #[cfg(any(windows))]
             set_shadow(&win, true).unwrap();
@@ -208,7 +208,7 @@ fn main() {
             #[cfg(target_os = "macos")]
             let apply_offset = || {
                 let win = e.window();
-                win.set_window_controls_pos(16., 18.);
+                win.set_window_controls_pos(10., 12.);
             };
 
             #[cfg(target_os = "macos")]

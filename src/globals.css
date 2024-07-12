@@ -731,6 +731,14 @@ video {
   right: 0.25rem;
 }
 
+.top-1 {
+  top: 0.25rem;
+}
+
+.top-\[6px\] {
+  top: 6px;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -879,6 +887,10 @@ video {
   height: 0.75rem;
 }
 
+.h-7 {
+  height: 1.75rem;
+}
+
 .max-h-10 {
   max-height: 2.5rem;
 }
@@ -897,6 +909,10 @@ video {
 
 .max-h-screen {
   max-height: 100vh;
+}
+
+.max-h-7 {
+  max-height: 1.75rem;
 }
 
 .min-h-10 {
@@ -921,6 +937,14 @@ video {
 
 .min-h-full {
   min-height: 100%;
+}
+
+.min-h-7 {
+  min-height: 1.75rem;
+}
+
+.min-h-8 {
+  min-height: 2rem;
 }
 
 .w-10 {
@@ -1005,6 +1029,34 @@ video {
 
 .w-40 {
   width: 10rem;
+}
+
+.w-7 {
+  width: 1.75rem;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.w-\[69px\] {
+  width: 69px;
+}
+
+.w-\[59px\] {
+  width: 59px;
+}
+
+.w-\[60px\] {
+  width: 60px;
+}
+
+.w-\[65px\] {
+  width: 65px;
+}
+
+.w-\[68px\] {
+  width: 68px;
 }
 
 .min-w-4 {
@@ -1394,6 +1446,10 @@ video {
 
 .fill-primary {
   fill: var(--primary);
+}
+
+.fill-base-100 {
+  fill: var(--base-100);
 }
 
 .p-0 {
@@ -1806,12 +1862,24 @@ dialog[open] {
   background-color: var(--primary-hover);
 }
 
+.hover\:bg-base-200:hover {
+  background-color: var(--base-200);
+}
+
 .hover\:opacity-50:hover {
   opacity: 0.5;
 }
 
 .hover\:opacity-70:hover {
   opacity: 0.7;
+}
+
+.hover\:opacity-80:hover {
+  opacity: 0.8;
+}
+
+.hover\:opacity-90:hover {
+  opacity: 0.9;
 }
 
 .focus\:bg-base-100-hover:focus {
@@ -1841,6 +1909,10 @@ dialog[open] {
 
 .active\:bg-base-100-hover:active {
   background-color: var(--base-100-hover);
+}
+
+.active\:bg-base-300:active {
+  background-color: var(--base-300);
 }
 
 .group:hover .group-hover\:visible {

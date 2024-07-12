@@ -68,19 +68,23 @@ const Editor = () => {
     <div class="flex h-screen max-h-screen w-screen flex-col">
       <header
         data-tauri-drag-region
-        class="header flex max-h-10 min-h-10 w-full flex-shrink-0 bg-base-200 p-[5px]"
+        class={`${loaded() ? "border-content" : "border-base-200"} header flex w-full flex-shrink-0 border-b-2 bg-base-200 p-[5px]`}
+        style={{
+          "min-height": `calc(1.75rem + 2px)`,
+          "max-height": `calc(1.75rem + 2px)`,
+        }}
       >
         <Show when={loaded()}>
           {/* <div class="w-[79px]" /> */}
-          <Show when={OS() != "darwin"} fallback={<div class="w-[79px]" />}>
+          <Show when={OS() != "darwin"} fallback={<div class="w-[68px]" />}>
             <Menu />
           </Show>
         </Show>
       </header>
       <div
         style={{
-          "max-height": `calc(100vh - 2.5em)`,
-          "min-height": `calc(100vh - 2.5em)`,
+          "max-height": `calc(100vh - 1.75em)`,
+          "min-height": `calc(100vh - 1.75em)`,
         }}
       >
         <Show when={loaded()} fallback={<Welcome />}>
@@ -93,9 +97,9 @@ const Editor = () => {
           >
             <div
               style={{
-                height: `calc(100vh - 2.5em)`,
-                "max-height": `calc(100vh - 2.5em)`,
-                "min-height": `calc(100vh - 2.5em)`,
+                height: `calc(100vh - 1.75em)`,
+                "max-height": `calc(100vh - 1.75em)`,
+                "min-height": `calc(100vh - 1.75em)`,
               }}
             >
               <FileBrowser dir={dir()} rootDirName={projectName()} />
