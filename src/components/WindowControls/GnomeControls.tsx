@@ -51,7 +51,7 @@ function GnomeControls() {
       appWindow.close();
     } else {
       const closeEditor = await dialog.ask("Your changes will not be saved.", {
-        title: "Are you sure you want to close Narvik Editor?",
+        title: "Are you sure you want to close Flux Editor?",
         type: "warning",
       });
       if (closeEditor) {
