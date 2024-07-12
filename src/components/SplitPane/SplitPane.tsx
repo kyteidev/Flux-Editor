@@ -109,7 +109,7 @@ const SplitPane = (props: Props) => {
       ) {
         if (cursorOffsetY >= 80 && props.canSecondHide) {
           setCanUnhide(false);
-          setFirstHeight(windowHeight - 5 - 28); // sets first height to window height, minus height of splitter
+          setFirstHeight(windowHeight - 2 - 28); // sets first height to window height, minus height of splitter
           info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(windowHeight - props.secondMinSize);
@@ -140,7 +140,7 @@ const SplitPane = (props: Props) => {
       ) {
         if (cursorOffsetX >= 80 && props.canSecondHide) {
           setCanUnhide(false);
-          setFirstWidth(windowWidth - 5);
+          setFirstWidth(windowWidth - 2);
           info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(windowWidth - props.secondMinSize);
@@ -195,7 +195,7 @@ const SplitPane = (props: Props) => {
       <Show when={secondChild()}>
         <div
           id="splitter"
-          class={`${props.vertical ? "h-[5px] min-h-[5px] w-full cursor-row-resize border-y-[2px]" : "w-[5px] min-w-[5px] cursor-col-resize border-x-[2px]"} ${isDragging() ? "border-accent bg-accent" : "border-base-200 bg-content"} z-50 transition duration-300 ease-in-out hover:border-accent hover:bg-accent`}
+          class={`${props.vertical ? "h-[2px] min-h-[2px] w-full cursor-row-resize" : "w-[2px] min-w-[2px] cursor-col-resize"} ${isDragging() ? "bg-accent" : "bg-base-100"} z-50 transition duration-300 ease-in-out hover:border-accent hover:bg-accent`}
           style={{ height: `${props.vertical ?? `calc(100vh - 28px)`}` }}
           onmousedown={handleMouseDown}
           onclick={handleUnhide}
@@ -205,9 +205,9 @@ const SplitPane = (props: Props) => {
         class="flex flex-grow"
         style={{
           width: `calc(100vw - ${firstWidth()})`,
-          "max-width": `${!props.vertical && `calc(100vw - ${firstWidth()}px - 5px)`}`,
+          "max-width": `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`,
           height: `calc(100vh - ${firstHeight()})`,
-          "max-height": `${props.vertical && `calc(100vh - ${firstHeight()}px - 5px)`}`,
+          "max-height": `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`,
         }}
       >
         {secondChild()} {/* second child takes up rest of space */}

@@ -74,7 +74,7 @@ export default function App() {
     <div class="flex h-screen max-h-screen w-screen flex-col">
       <header
         data-tauri-drag-region
-        class="header flex w-full flex-shrink-0 border-b-2 border-content bg-base-200 p-[5px]"
+        class="header flex w-full flex-shrink-0 border-b-2 border-base-100 bg-base-200 p-[5px]"
         style={{
           "min-height": `calc(1.75rem + 2px)`,
           "max-height": `calc(1.75rem + 2px)`,
