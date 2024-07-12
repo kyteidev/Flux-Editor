@@ -17,12 +17,13 @@ serde_json = "1"
 lazy_static = "1.5.0"
 log = "0.4.22"
 tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
-which = "6.0.1"
 [target.'cfg(not(target_os = "macos"))'.dependencies]
 window-shadows = "0.2.2"
 [target.'cfg(target_os = "macos")'.dependencies]
 cocoa = "0.25"
 objc = "0.2.7"
+[target.'cfg(not(any(windows)))'.dependencies]
+fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

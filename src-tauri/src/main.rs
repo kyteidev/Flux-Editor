@@ -164,6 +164,9 @@ fn menu() -> Menu {
 }
 
 fn main() {
+    #[cfg(not(any(windows)))]
+    fix_path_env::fix().unwrap();
+
     #[cfg(debug_assertions)]
     let log_targets: [LogTarget; 3] = [
         LogTarget::Stdout,
