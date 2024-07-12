@@ -2,8 +2,8 @@ name: "publish"
 
 on:
   push:
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+
+    branches:
+      - release
 
 jobs:
   publish-tauri:
@@ -51,22 +51,6 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
-      - name: Get previous tag
-        id: previousTag
-        run: |
-          name=$(git --no-pager tag --sort=creatordate --merged ${{ github.ref_name }} | tail -2 | head -1)
-          echo "previousTag: $name"
-          echo "previousTag=$name" >> $GITHUB_ENV
-
-      - name: Update Changelog
-        id: changelog
-        uses: requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          fromTag: ${{ github.ref_name }}
-          toTag: ${{ env.previousTag }}
-          writeToFile: false
-
       - name: install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: npm install # change this to npm or pnpm depending on which one you use.
@@ -77,8 +61,15 @@ jobs:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "Flux Editor v__VERSION__"
-          releaseBody: ${{ steps.changelog.outputs.changes }}
+          releaseBody: |
+            ## Release notes
+
+            - added auto updater
+            - fixed invalid path separator on Windows
+            - fixed environment variable issue on UNIX platforms.
+            - removed unused apis
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
