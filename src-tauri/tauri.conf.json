@@ -56,7 +56,7 @@
       "endpoints": [
         "https://raw.githubusercontent.com/kyteidev/FluxEditor/dev/updater.json"
       ],
-      "dialog": true, // TODO: add custom notification for this.
+      "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDExQjVDQkQ0NkRBNzE4MjUKUldRbEdLZHQxTXUxRWZkV1FCbnJ0NjR4NmRvY2VsRWlOWnYvVFMyeEJreFRvWDhYN2ttQ1NFWjEK"
     },
     "windows": [
