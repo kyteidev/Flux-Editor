@@ -29,12 +29,20 @@ function GnomeControls() {
     setMaximized(maximized);
   };
 
+  appWindow.listen("tauri://resize", () => {
+    checkMaximized();
+  });
+
   const minimizeWindow = () => {
     appWindow.minimize();
   };
 
   const maximizeWindow = () => {
-    appWindow.maximize();
+    if (isMaximized()) {
+      appWindow.unmaximize();
+    } else {
+      appWindow.maximize();
+    }
     checkMaximized();
   };
 
@@ -85,7 +93,7 @@ function GnomeControls() {
           class="h-4 w-4 cursor-default rounded-full bg-base-200 invert hover:bg-base-100 hover:opacity-90 active:bg-base-300"
           onClick={maximizeWindow}
         >
-          {isMaximized() ? (
+          {!isMaximized() ? (
             <div class="flex justify-center">
               <svg
                 width="7"
