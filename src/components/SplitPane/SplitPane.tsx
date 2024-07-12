@@ -109,7 +109,7 @@ const SplitPane = (props: Props) => {
       ) {
         if (cursorOffsetY >= 80 && props.canSecondHide) {
           setCanUnhide(false);
-          setFirstHeight(windowHeight - 2 - 28); // sets first height to window height, minus height of splitter
+          setFirstHeight(windowHeight - 2 - 30); // sets first height to window height, minus height of splitter and title bar
           info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(windowHeight - props.secondMinSize);
@@ -158,7 +158,7 @@ const SplitPane = (props: Props) => {
       if (firstHeight() === 0 && props.firstMinSize) {
         setFirstHeight(props.firstMinSize);
         info("First pane unhidden");
-      } else if (firstHeight() === windowHeight - 33 && props.secondMinSize) {
+      } else if (firstHeight() === windowHeight - 32 && props.secondMinSize) {
         setFirstHeight(windowHeight - props.secondMinSize);
         info("Second pane unhidden");
       }
@@ -166,7 +166,7 @@ const SplitPane = (props: Props) => {
       if (firstWidth() === 0 && props.firstMinSize) {
         setFirstWidth(props.firstMinSize);
         info("First pane unhidden");
-      } else if (firstWidth() === windowWidth - 3 && props.secondMinSize) {
+      } else if (firstWidth() === windowWidth - 2 && props.secondMinSize) {
         setFirstWidth(windowWidth - props.secondMinSize);
         info("Second pane unhidden");
       }
