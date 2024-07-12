@@ -215,7 +215,7 @@ export const openFile = (pathLocal: string, readonly?: boolean) => {
           setIsValidFile(true);
 
           const fileExt = extname(pathLocal).substring(
-            1,
+            0,
             extname(pathLocal).length,
           );
           setLang(specialCodeFileType[fileExt] || fileExt);
