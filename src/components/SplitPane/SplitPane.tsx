@@ -175,7 +175,7 @@ const SplitPane = (props: Props) => {
 
   return (
     <div
-      class={`flex ${props.grow && "flex-grow"} ${props.vertical && "flex-col"} relative max-h-full min-h-full max-w-full`}
+      class={`${isDragging() ? `${props.vertical ? "cursor-row-resize" : "cursor-col-resize"}` : ""} ${props.grow && "flex-grow"} ${props.vertical && "flex-col"} relative flex max-h-full min-h-full max-w-full`}
       onmouseup={handleMouseUp} // these events are located in parent element to continue dragging when mouse leaves splitter
       onmouseleave={handleMouseUp}
       onmousemove={handleMouseMove}
