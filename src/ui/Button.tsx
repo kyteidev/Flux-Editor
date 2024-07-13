@@ -29,7 +29,7 @@ interface Props {
 const Button = (props: Props) => {
   return (
     <button
-      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : "bg-accent hover:bg-primary-hover"} ${!props.width && "w-fit px-2"} align-center inline-flex items-center justify-center rounded-xl py-1 text-center transition duration-300 ease-in-out active:scale-95`}
+      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : "hover:bg-accent-hover bg-accent"} ${!props.width && "w-fit px-2"} align-center inline-flex items-center justify-center rounded-xl py-1 text-center transition duration-300 ease-in-out active:scale-95`}
       style={{
         width: `${props.width && props.width}`,
         height: `${props.height && props.height}`,

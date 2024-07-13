@@ -20,11 +20,9 @@ You should have received a copy of the GNU General Public License along with Flu
 @tailwind utilities;
 
 :root {
-  --primary: #325e8f;
-  --primary-hover: #6090c7;
   --content: #f3f4f6;
-  --accent: #1e3a8a;
-  --neutral: #6b7280;
+  --accent: #2f4da1;
+  --accent-hover: #3d65d4;
 
   --base-100: #1d232a;
   --base-100-hover: #2c3540;
