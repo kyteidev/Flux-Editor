@@ -260,7 +260,7 @@ const Startup = () => {
               text="Clone"
               width="80px"
               height="40px"
-              loading={isCloning()}
+              disabled={isCloning()}
               action={clone}
             />
           </div>
