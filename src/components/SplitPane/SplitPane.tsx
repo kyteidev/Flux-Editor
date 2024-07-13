@@ -30,13 +30,13 @@ interface Props {
   swapPriority?: boolean;
 }
 
-const [firstHeight, setFirstHeight] = createSignal(0);
+const [fixHeight, setFixHeight] = createSignal(0);
 
 export const fixEditorHeight = (firstTab: boolean) => {
   if (firstTab) {
-    setFirstHeight(firstHeight() - 28);
+    setFixHeight(40);
   } else {
-    setFirstHeight(firstHeight() + 28);
+    setFixHeight(0);
   }
 };
 
@@ -52,6 +52,7 @@ const SplitPane = (props: Props) => {
 
   const [isDragging, setIsDragging] = createSignal(false);
   const [firstWidth, setFirstWidth] = createSignal(props.size);
+  const [firstHeight, setFirstHeight] = createSignal(0);
 
   const [canUnhide, setCanUnhide] = createSignal(true);
 
@@ -199,10 +200,10 @@ const SplitPane = (props: Props) => {
         style={{
           width: `${props.swapPriority ? `calc(100vw - ${firstWidth()})` : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
           "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
-          height: `${props.swapPriority ? `calc(100vh - ${firstHeight()})` : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
+          height: `${props.swapPriority ? `calc(100vh - 30px - ${firstHeight()}px - ${fixHeight()}px)` : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
           "min-height": `${props.swapPriority ? "" : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
           "max-width": `${!props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
-          "max-height": `${!props.swapPriority ? "" : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
+          "max-height": `${!props.swapPriority ? `${props.vertical && `calc(100vh - 30px - ${firstHeight()}px - ${fixHeight()}px)`}` : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
         }}
       >
         {firstChild()}
