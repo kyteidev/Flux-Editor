@@ -819,6 +819,10 @@ video {
   display: flex;
 }
 
+.inline-flex {
+  display: inline-flex;
+}
+
 .table {
   display: table;
 }
@@ -1081,6 +1085,11 @@ video {
 
 .w-\[2px\] {
   width: 2px;
+}
+
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .min-w-4 {

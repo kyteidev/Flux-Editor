@@ -1,6 +1,5 @@
 import { createSignal } from "solid-js";
 import Button from "../../ui/Button";
-import ButtonBg from "../../ui/ButtonBg";
 import Dropdown from "../../ui/Dropdown";
 import Input from "../../ui/Input";
 import Modal from "../../ui/Modal";
@@ -162,7 +161,8 @@ const Startup = () => {
                 value={dirPath()}
                 onChange={setDirPath}
               />
-              <ButtonBg
+              <Button
+                colorBg={true}
                 text="Browse"
                 width="calc(80px + 2em)"
                 height="40px"
@@ -180,7 +180,8 @@ const Startup = () => {
               right: `calc(20% + 1.5em)`,
             }}
           >
-            <ButtonBg
+            <Button
+              colorBg={true}
               text="Cancel"
               width="80px"
               height="40px"
@@ -201,8 +202,8 @@ const Startup = () => {
             />
             <Button
               text="Create"
-              width={80}
-              height={40}
+              width="80px"
+              height="40px"
               action={() => {
                 beforeLoad("new");
               }}
@@ -236,7 +237,8 @@ const Startup = () => {
               right: `calc(20% + 1.5em)`,
             }}
           >
-            <ButtonBg
+            <Button
+              colorBg={true}
               text="Cancel"
               width="80px"
               height="40px"
@@ -256,8 +258,8 @@ const Startup = () => {
             />
             <Button
               text="Clone"
-              width={80}
-              height={40}
+              width="80px"
+              height="40px"
               loading={isCloning()}
               action={clone}
             />
@@ -265,8 +267,7 @@ const Startup = () => {
         </Modal>
       </dialog>
       <Button
-        width={100}
-        height={25}
+        width="100%"
         text="New"
         action={() => {
           const modal = document.getElementById(
@@ -277,10 +278,9 @@ const Startup = () => {
           }
         }}
       />
-      <Button width={100} height={25} text="Open" action={openDir} />
+      <Button width="100%" text="Open" action={openDir} />
       <Button
-        width={100}
-        height={25}
+        width="100%"
         text="Clone"
         action={() => {
           const modal = document.getElementById(

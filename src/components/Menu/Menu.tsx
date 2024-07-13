@@ -18,11 +18,11 @@ You should have received a copy of the GNU General Public License along with Flu
 // TODO: Optimize this, add keyboard shortcuts support
 
 import { createSignal, JSX, Show } from "solid-js";
-import ButtonBg from "../../ui/ButtonBg";
 import Submenu from "./Submenu";
 import { about, license, licenseThirdParty, settings } from "../../menuActions";
 import { saveFile } from "../Editor/EditorComponent";
 import { appWindow } from "@tauri-apps/api/window";
+import Button from "../../ui/Button";
 
 const [showMenu, setShowMenu] = createSignal(false);
 
@@ -58,7 +58,8 @@ const MenuItem = (props: {
 const Menu = () => {
   return (
     <div>
-      <ButtonBg
+      <Button
+        colorBg={true}
         width="56px"
         height="18px"
         text="Menu"
