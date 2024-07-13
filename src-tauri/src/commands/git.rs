@@ -51,9 +51,19 @@ pub async fn clone_repo(url: String, path: String) -> Result<(), String> {
         if output.status.success() {
             Ok(())
         } else {
-            let error_message = String::from_utf8_lossy(&output.stderr);
-            error!("Failed to clone repository: {}", error_message);
-            Err(format!("Failed to clone repository: {}", error_message))
+            let stderr = String::from_utf8_lossy(&output.stderr);
+
+            let filtered_error_message: String = if stderr
+                .lines()
+                .next()
+                .map_or(false, |line| line.starts_with("Cloning into"))
+            {
+                stderr.lines().skip(1).collect::<Vec<&str>>().join("\n")
+            } else {
+                stderr.to_string()
+            };
+
+            Err(format!("{}", filtered_error_message))
         }
     } else {
         Err("Git is not installed".to_string())

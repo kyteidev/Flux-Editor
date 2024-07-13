@@ -39,7 +39,7 @@ export const getRepoName = (url: string): string => {
   return repoWithGit.replace(".git", "");
 };
 
-export async function cloneRepo(url: string): Promise<void> {
+export async function cloneRepo(url: string): Promise<string> {
   const repoName = getRepoName(url);
   let homePath = await homeDir();
 
@@ -50,8 +50,10 @@ export async function cloneRepo(url: string): Promise<void> {
   try {
     await invoke("clone_repo", { url: url, path: repoPath });
     info("Repository cloned successfully");
+    return "";
   } catch (e) {
-    error(`Error cloning repository: ${e}`);
+    error(`Failed to clone repository: ${e}`);
+    return e as string;
   }
 }
 

@@ -37,17 +37,17 @@ const Startup = () => {
 
   const clone = async () => {
     if (dirPath() != "") {
-      try {
-        setIsCloning(true);
-        await cloneRepo(dirPath());
-        setIsCloning(false);
+      setIsCloning(true);
+      const result = await cloneRepo(dirPath());
+      setIsCloning(false);
+      if (result === "") {
         beforeLoad("clone");
-      } catch (e) {
-        dialog.message(`${e}`, {
+      } else {
+        dialog.message(result, {
           title: "Failed to clone repository",
           type: "error",
         });
-        error(`Error cloning repository: ${e}`);
+        resetValues();
       }
     } else {
       dialog.message("Please enter a valid URL.", {
