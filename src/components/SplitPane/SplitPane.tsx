@@ -27,6 +27,7 @@ interface Props {
   secondMinSize?: number;
   canFirstHide?: boolean;
   canSecondHide?: boolean;
+  swapPriority?: boolean;
 }
 
 const [firstHeight, setFirstHeight] = createSignal(0);
@@ -82,8 +83,14 @@ const SplitPane = (props: Props) => {
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging()) return;
 
-    const movementX = e.movementX;
-    const movementY = e.movementY;
+    let movementX = e.movementX;
+    let movementY = e.movementY;
+
+    // Invert the movement direction if `secondMain` is true
+    if (props.swapPriority) {
+      movementX = -movementX;
+      movementY = -movementY;
+    }
 
     const newWidth = firstWidth() + movementX;
     const newHeight = firstHeight() + movementY;
@@ -91,17 +98,23 @@ const SplitPane = (props: Props) => {
     // FIXME: Hidden children becomes visible when resizing window to reveal them.
 
     if (props.vertical) {
-      const cursorOffsetY: number = Math.abs(e.clientY - firstHeight()); // gets absolute value to avoid checking for negative numbers
+      const cursorOffsetY: number = props.swapPriority
+        ? Math.abs(e.clientY - (windowHeight - firstHeight()))
+        : Math.abs(e.clientY - firstHeight()); // gets absolute value to avoid checking for negative numbers
 
       if (props.firstMinSize && newHeight <= props.firstMinSize) {
         // if first pane should be hidden
         if (cursorOffsetY >= 80 && props.canFirstHide) {
           setCanUnhide(false);
-          setFirstHeight(0); // hides first pane
-          info("First pane hidden");
+          if (!props.swapPriority) {
+            setFirstHeight(0); // hides first pane
+          } else {
+            setFirstHeight(2); // for some reason first pane height will be 100% when swapped panes
+          }
+          // info("First pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(props.firstMinSize);
-          info("First pane unhidden");
+          // info("First pane unhidden");
         }
       } else if (
         props.secondMinSize &&
@@ -110,10 +123,10 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetY >= 80 && props.canSecondHide) {
           setCanUnhide(false);
           setFirstHeight(windowHeight - 2 - 30); // sets first height to window height, minus height of splitter and title bar
-          info("Second pane hidden");
+          // info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(windowHeight - props.secondMinSize);
-          info("Second pane unhidden");
+          // info("Second pane unhidden");
         }
       } else {
         setFirstHeight(newHeight);
@@ -129,10 +142,10 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetX >= 80 && props.canFirstHide) {
           setCanUnhide(false);
           setFirstWidth(0);
-          info("First pane hidden");
+          // info("First pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(props.firstMinSize);
-          info("First pane unhidden");
+          // info("First pane unhidden");
         }
       } else if (
         props.secondMinSize &&
@@ -141,10 +154,10 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetX >= 80 && props.canSecondHide) {
           setCanUnhide(false);
           setFirstWidth(windowWidth - 2);
-          info("Second pane hidden");
+          // info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(windowWidth - props.secondMinSize);
-          info("Second pane unhidden");
+          // info("Second pane unhidden");
         }
       } else {
         setFirstWidth(newWidth);
@@ -155,7 +168,7 @@ const SplitPane = (props: Props) => {
   const handleUnhide = () => {
     // unhides split pane when splitter is clicked
     if (props.vertical) {
-      if (firstHeight() === 0 && props.firstMinSize) {
+      if ((firstHeight() === 0 || firstHeight() === 2) && props.firstMinSize) {
         setFirstHeight(props.firstMinSize);
         info("First pane unhidden");
       } else if (firstHeight() === windowHeight - 32 && props.secondMinSize) {
@@ -182,12 +195,14 @@ const SplitPane = (props: Props) => {
     >
       {optionalChild()}
       <div
-        class="relative"
+        class={`${props.swapPriority ? "flex flex-grow" : ""} relative`}
         style={{
-          width: `${props.vertical ? "100%" : `${firstWidth()}px`}`,
-          "min-width": `${props.vertical ? "100%" : `${firstWidth()}px`}`,
-          height: `${props.vertical ? `${firstHeight()}px` : "100%"}`,
-          "min-height": `${props.vertical ? `${firstHeight()}px` : "100%"}`,
+          width: `${props.swapPriority ? `calc(100vw - ${firstWidth()})` : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
+          "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
+          height: `${props.swapPriority ? `calc(100vh - ${firstHeight()})` : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
+          "min-height": `${props.swapPriority ? "" : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
+          "max-width": `${!props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
+          "max-height": `${!props.swapPriority ? "" : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
         }}
       >
         {firstChild()}
@@ -202,12 +217,14 @@ const SplitPane = (props: Props) => {
         />
       </Show>
       <div
-        class="flex flex-grow"
+        class={`${props.swapPriority ? "" : "flex flex-grow"} relative`}
         style={{
-          width: `calc(100vw - ${firstWidth()})`,
-          "max-width": `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`,
-          height: `calc(100vh - ${firstHeight()})`,
-          "max-height": `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`,
+          width: `${props.swapPriority ? `${props.vertical ? "100%" : `${firstWidth()}px`}` : `calc(100vw - ${firstWidth()})`}`,
+          "max-width": `${props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
+          height: `${props.swapPriority ? `${props.vertical ? `${firstHeight()}px` : "100%"}` : `calc(100vh - ${firstHeight()})`}`,
+          "max-height": `${props.swapPriority ? "" : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
+          "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
+          "min-height": `${!props.swapPriority ? "" : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
         }}
       >
         {secondChild()} {/* second child takes up rest of space */}

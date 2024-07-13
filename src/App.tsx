@@ -115,11 +115,12 @@ export default function App() {
           <SplitPane
             vertical={true}
             grow={true}
-            size={350}
-            firstMinSize={300}
-            canFirstHide={false}
-            secondMinSize={250}
-            canSecondHide={true}
+            size={250}
+            firstMinSize={250}
+            canFirstHide={true}
+            secondMinSize={300}
+            canSecondHide={false}
+            swapPriority={true}
           >
             <Show when={getTabs().length != 0} fallback={<EditorFallback />}>
               <EditorComponent />
