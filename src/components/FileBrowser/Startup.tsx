@@ -47,7 +47,6 @@ const Startup = () => {
           title: "Failed to clone repository",
           type: "error",
         });
-        resetValues();
       }
     } else {
       dialog.message("Please enter a valid URL.", {
