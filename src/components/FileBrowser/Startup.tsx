@@ -124,7 +124,7 @@ const Startup = () => {
   };
 
   return (
-    <div class="flex flex-col space-y-2 px-2 py-1">
+    <div class="flex flex-col space-y-2 px-2 pb-1">
       <dialog id="modal-new">
         <Modal
           width={60}
