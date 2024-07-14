@@ -53,7 +53,6 @@ export const loadEditor = (
   }
 
   setProjectName(basename(dirPath)); // sets project name to be directory name
-  console.log(projectName(), dirPath);
 
   info("Editor loaded");
   setLoaded(true);

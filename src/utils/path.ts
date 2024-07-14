@@ -49,7 +49,6 @@ export const extname = (path: string): string => {
 
 export const basename = (pathProp: string): string => {
   let path = pathProp;
-  console.log(path[path.length - 1]);
   if (path[path.length - 1] === pathSep()) {
     path = path.slice(0, -1);
   }
