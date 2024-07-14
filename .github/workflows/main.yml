@@ -64,28 +64,9 @@ jobs:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "Flux Editor v__VERSION__"
           releaseBody: |
-            This update features a small UI redesign!
-
             ## Release notes
 
-            - added ability to create new windows on non-Mac systems
-            - fixed maximize icon in Gnome window controls
-            - fixed incorrect naming
-            - fixed cursor change when resizing split panes
-            - fixed split pane min size larger than window min size
-            - fixed padding in editor tabs
-            - fixed custom menu having incorrect spacing
-            - fixed incorrect settings path in UNIX systems
-            - fixed incorrect title on Mac
-            - made title bar smaller
-            - made split pane splitter thinner, and changed its color
-            - made UI components have less rounding and padding
-            - made dialog show for all errors when opening a file
-            - changed default showFileIcons setting to "FileBrowser"
-            - changed app data path to "Flux Editor"
-            - removed scale effect when clicking on buttons
-            - removed primary color
-            - removed top padding from file browser startup page
+            - fixed windows build error
           releaseDraft: false
           prerelease: true
           args: ${{ matrix.args }}
