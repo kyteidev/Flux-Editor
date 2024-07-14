@@ -1,23 +1,23 @@
 {
-  "version": "0.3.0",
-  "notes": "## Release notes\n\n- added auto updater\n- fixed invalid path separator on Windows\n- fixed environment variable issue on UNIX platforms.\n- removed unused apis",
-  "pub_date": "2024-07-12T05:36:07.853Z",
+  "version": "0.4.1",
+  "notes": "## Release notes\n\n- fixed windows build error",
+  "pub_date": "2024-07-14T14:13:10.347Z",
   "platforms": {
     "darwin-aarch64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRWFVZVA0cFR3QjFIbHpkcUQyYzdzckV6SERUMmk4bjg2SWhPOXZtamJLaFJWQTBhSDRDVDcvczRmeGJZM0ltd2YwT0NqTGtlVFA3UG10NlREcTRIWXdrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwNzYyMzQ3CWZpbGU6Rmx1eCBFZGl0b3IuYXBwLnRhci5negpvczNyVnVDblZ2UUE5L0ZyVkczdDVScVI1cVcrNVR1Ny9JdlVaVndFRFNhN2ZURC9rMmlyYThzd1NmN0V6SU14VmVwVlBCTmhlL0lpM2VyazVLM2pEUT09Cg==",
-      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.3.0/Flux.Editor_aarch64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVJWdHIyb29iVm9JV0VJVW1Jb2RIb3FwZTVxT3NrNEFMZ1NzbVZsNlJFS2VsVU94QzVvb0gwUkdKbHNTT0g2eDNmZkVISmhGN0hESnpIa0hFN3hNMVE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2MDcwCWZpbGU6Rmx1eCBFZGl0b3IuYXBwLnRhci5negoxdkZLVWJ1eU1aR3BRTE5JMTRjWkVqM0tFQjFmMkRET0QyTFMvOHlYUk9qemdvWWxTd0lCQis3SHYxUFZEcndaZG5USEE5Um9oMWhmTkk0YklnNlZBQT09Cg==",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/Flux.Editor_aarch64.app.tar.gz"
     },
     "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVFQNWpzakFDdDBEd3QwWkZLUlFQUk9CYmpsdE5PNW53akZHejk2M3VkckNsTk5rL2pBU3RETnZMWE5aVXQwOXpZQU9Scmk5NVJSa2RIdXdOMmNBNWdvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwNzYyMzgwCWZpbGU6Rmx1eCBFZGl0b3IuYXBwLnRhci5negpTTGNiVFpXd3Y3OWJiTW4rY3p1T2UzdGVleFluVFEzYXNwaHR0cXJGUzBoSXQyN2Y4eDBDbjQ2WFlia3JQRjdJa1k5TWlvYzJJY2tjeHhzWmQyeG9BQT09Cg==",
-      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.3.0/Flux.Editor_x64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVpOTjB1ZEdsbEM1aUNZU2ZkNnpKSnVhczFmNnJTUmlsZ29hZ240Z1o4Q0MrZDcrVFU0M1hZWWZOUHQ5SEl6MXFzVDBoR3hvWDRQK3A5WDJ1cXk1T0FRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2MDg5CWZpbGU6Rmx1eCBFZGl0b3IuYXBwLnRhci5negpod2lBK1BmTUk1Ym9MR2VUUjR4ZDVMRXFKcFF3b1ArWkxaTXdIZ2kzVVBzemNsYjNyK0wwRTdXNDZVNUx6b0txc0d2N2JjejFCVE45VDVWOG1MQTdDZz09Cg==",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/Flux.Editor_x64.app.tar.gz"
     },
     "linux-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRWJrUEU5U210Z0UxSzU2OHpxVHNtRkV4S3pTOC91Ujk0VzFlRzNpZnBzZWp0NWViUlhtMWNwTWV5cVc2cm1yMXN0Z0dycTBwNUIvZ0dGeEF6ZUZOK2dvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwNzYyNDg1CWZpbGU6Zmx1eC1lZGl0b3JfMC4zLjBfYW1kNjQuQXBwSW1hZ2UudGFyLmd6CkdxUUV6WWtiS2Q5Vjl5SVg2MWdwQlRoc3g1U01QemdtalQzZDFwMlNxVzJTV0ZFdDIxZUM3L1dhQTNrUGtmRkJ3OGtQYW1Lb1pIV0theitjTW14UkJBPT0K",
-      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.3.0/flux-editor_0.3.0_amd64.AppImage.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVl3SUFpcE0vVkpIeUVacndpcnVCKzZuc0QzekhzTllWdUpySkpWOWRuVDJValhIa24xV21PUHVEeStKQm5ORjl4NUhnOVNuNk9pbm1qWExsWHdldGdNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2MjAzCWZpbGU6Zmx1eC1lZGl0b3JfMC40LjFfYW1kNjQuQXBwSW1hZ2UudGFyLmd6Cis1QnpqcEpJSkw3Vi9IZ2pxYkN6TVN2aytFd1JraGtRWHg4UE9WcWZsc1FVU1FMT0xSOXh3ZW54MG11ZWsvS1hweHVIaWJWNUV1ZmxROUtpT0FxWUF3PT0K",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/flux-editor_0.4.1_amd64.AppImage.tar.gz"
     },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVZYRURKYk1hdXRrN1cvblJpTnh1c1V6cFRZdWZQblp2ZUNUaEN0cVRhb1Z5S0tMamVCWWFHRzFFb2ordG5GSlNmSDhkZmJIOThocVRSTUYwVnI0VHd3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwNzYyNTYzCWZpbGU6Rmx1eCBFZGl0b3JfMC4zLjBfeDY0X2VuLVVTLm1zaS56aXAKanBqWFZGOUFLd2Uwc0x3MXVLZDBSeXZseGtIUWxIeGh6QzNrUVloSFh6SVlVNEFVdTdxeGNyM3EzVGhYeFVPOXJSeCt2bEpycDhoMjVUTldWUEhoQ1E9PQo=",
-      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.3.0/Flux.Editor_0.3.0_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVY3RHJ3YUhweE85cTJSVzhEV0VyV01TNXdVN3JnS3A5dWdnK1FlVXFkSDM5S3lOKzRHYXJZZkxjWHZRcEo0amRXS0pJOUR0Z3dYTDlHaXdUZW9zcUFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2Mzg3CWZpbGU6Rmx1eCBFZGl0b3JfMC40LjFfeDY0X2VuLVVTLm1zaS56aXAKR1pMM3JIV0RRWnJ5OUZOMkgzWnhjUXpUa3pVT3R0ZEtON1JoM3N2MStEN1NVQndwamV5cDRYNVhHN3JzdzZXRC9telhzS21JTCtMWm9zNGc1UEVCQ0E9PQo=",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/Flux.Editor_0.4.1_x64_en-US.msi.zip"
     }
   }
 }
