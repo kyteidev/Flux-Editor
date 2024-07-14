@@ -25,7 +25,7 @@ use window_shadows::set_shadow;
 #[tauri::command]
 pub async fn new_window(app: tauri::AppHandle) {
     let id = time_ms();
-    WindowBuilder::new(
+    let _win = WindowBuilder::new(
         &app,
         id.to_string(),
         tauri::WindowUrl::App("index.html".into()),
@@ -38,7 +38,7 @@ pub async fn new_window(app: tauri::AppHandle) {
     .unwrap();
 
     #[cfg(any(windows))]
-    set_shadow(&win, true).unwrap();
+    set_shadow(&_win, true).unwrap();
 
     /*
     #[cfg(target_os = "macos")]

@@ -579,10 +579,6 @@ video {
   visibility: visible;
 }
 
-.collapse {
-  visibility: collapse;
-}
-
 .fixed {
   position: fixed;
 }
@@ -621,10 +617,6 @@ video {
 
 .top-\[6px\] {
   top: 6px;
-}
-
-.top-full {
-  top: 100%;
 }
 
 .z-0 {
@@ -679,10 +671,6 @@ video {
   display: inline-flex;
 }
 
-.table {
-  display: table;
-}
-
 .contents {
   display: contents;
 }
@@ -709,10 +697,6 @@ video {
 
 .h-\[1px\] {
   height: 1px;
-}
-
-.h-\[26px\] {
-  height: 26px;
 }
 
 .h-\[2px\] {
@@ -853,20 +837,12 @@ video {
   flex-shrink: 0;
 }
 
-.flex-shrink {
-  flex-shrink: 1;
-}
-
 .flex-grow {
   flex-grow: 1;
 }
 
 .grow {
   flex-grow: 1;
-}
-
-.border-collapse {
-  border-collapse: collapse;
 }
 
 .scale-0 {
@@ -913,10 +889,6 @@ video {
 
 .resize {
   resize: both;
-}
-
-.list-none {
-  list-style-type: none;
 }
 
 .flex-row {
@@ -1028,23 +1000,9 @@ video {
   border-bottom-left-radius: 0.25rem;
 }
 
-.rounded-b-xl {
-  border-bottom-right-radius: 0.75rem;
-  border-bottom-left-radius: 0.75rem;
-}
-
 .rounded-t {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
-}
-
-.rounded-t-xl {
-  border-top-left-radius: 0.75rem;
-  border-top-right-radius: 0.75rem;
-}
-
-.border {
-  border-width: 1px;
 }
 
 .border-b-2 {
@@ -1053,10 +1011,6 @@ video {
 
 .border-b-\[1px\] {
   border-bottom-width: 1px;
-}
-
-.border-t-0 {
-  border-top-width: 0px;
 }
 
 .border-t-\[1px\] {
@@ -1099,10 +1053,6 @@ video {
   fill: var(--content);
 }
 
-.p-0 {
-  padding: 0px;
-}
-
 .p-1 {
   padding: 0.25rem;
 }
@@ -1113,10 +1063,6 @@ video {
 
 .p-3 {
   padding: 0.75rem;
-}
-
-.p-\[10px\] {
-  padding: 10px;
 }
 
 .p-\[5px\] {
@@ -1137,20 +1083,12 @@ video {
   padding-bottom: 0.25rem;
 }
 
-.pl-2 {
-  padding-left: 0.5rem;
-}
-
 .pl-3 {
   padding-left: 0.75rem;
 }
 
 .pl-4 {
   padding-left: 1rem;
-}
-
-.pl-5 {
-  padding-left: 1.25rem;
 }
 
 .pl-6 {
@@ -1223,17 +1161,6 @@ video {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow-xl {
-  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.outline-none {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
 }
 
 .outline {
@@ -1404,11 +1331,6 @@ dialog[open] {
 .last\:rounded-b:last-child {
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
-}
-
-.last\:rounded-b-xl:last-child {
-  border-bottom-right-radius: 0.75rem;
-  border-bottom-left-radius: 0.75rem;
 }
 
 .hover\:border-accent:hover {
