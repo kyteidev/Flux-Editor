@@ -27,7 +27,7 @@ let settingsFile: string;
 
 export const settings: { [key: string]: any } = {
   "editor:fontSize": 16,
-  showFileIcons: "both",
+  showFileIcons: "FileBrowser",
   tabSize: 4,
 };
 
