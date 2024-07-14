@@ -64,7 +64,7 @@ const Dropdown = (props: Props) => {
             <For each={props.items}>
               {(item) => (
                 <li
-                  class="dropdown-item flex w-full justify-start bg-base-100 p-2 pl-4 transition duration-300 ease-in-out last:rounded-b hover:bg-base-100-hover"
+                  class="dropdown-item flex w-full justify-start bg-base-100 p-2 pl-4 transition duration-100 ease-in-out last:rounded-b hover:bg-base-100-hover"
                   onClick={() => handleItemClick(item)}
                 >
                   {item}
