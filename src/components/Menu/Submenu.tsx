@@ -36,7 +36,7 @@ const Submenu = (props: {
   return (
     <>
       <div
-        class={`${props.first ? "rounded-t-xl" : ""} ${props.last ? "rounded-b-xl" : ""} ${props.separator ? "border-t-[1px] border-content" : ""} absolute z-[51] flex h-6 w-32 items-center bg-base-100 pl-3 align-middle text-sm hover:bg-base-100-hover`}
+        class={`${props.first ? "rounded-t" : ""} ${props.last ? "rounded-b" : ""} ${props.separator ? "border-t-[1px] border-content" : ""} absolute z-[51] flex h-6 w-32 items-center bg-base-100 pl-3 align-middle text-sm hover:bg-base-100-hover`}
         style={{ top: `calc(${props.item} * 1.5rem + 0.5rem)` }}
         onMouseOver={() => {
           setShow(true);
