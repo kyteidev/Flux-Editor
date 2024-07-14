@@ -22,7 +22,7 @@ window-shadows = "0.2.2"
 [target.'cfg(target_os = "macos")'.dependencies]
 cocoa = "0.25"
 objc = "0.2.7"
-[target.'cfg(not(any(windows)))'.dependencies]
+[target.'cfg(not(target_os = "windows"))'.dependencies]
 fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 
 [features]
