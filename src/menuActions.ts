@@ -48,7 +48,7 @@ export const license = async () => {
   if (!loaded()) {
     loadEditor(dirname(resourcePath));
   }
-  addTab(["LICENSE", resourcePath]);
+  addTab([":LICENSE", resourcePath, "true"]); // third option is for special files, e.g. editor files.
   openFile(resourcePath, true);
 };
 
@@ -59,7 +59,7 @@ export const licenseThirdParty = async () => {
   if (!loaded()) {
     loadEditor(dirname(resourcePath));
   }
-  addTab(["THIRD PARTY LICENSES", resourcePath]);
+  addTab([":THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
 
