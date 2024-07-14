@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 use tauri::WindowBuilder;
 
-use crate::{utils::time::time_ms, window_ext::WindowExt};
+use crate::utils::time::time_ms;
 
 #[cfg(any(windows))]
 use window_shadows::set_shadow;
