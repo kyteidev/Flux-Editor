@@ -45,10 +45,7 @@ export const about = async () => {
 // TODO: maybe merge these two functions?
 export const license = async () => {
   const resourcePath = await resolveResource("../resources/LICENSE.txt");
-  if (!loaded()) {
-    loadEditor(dirname(resourcePath));
-  }
-  addTab([":LICENSE", resourcePath, "true"]); // third option is for special files, e.g. editor files.
+  addTab([":LICENSE", resourcePath]);
   openFile(resourcePath, true);
 };
 
@@ -56,9 +53,6 @@ export const licenseThirdParty = async () => {
   const resourcePath = await resolveResource(
     "../resources/THIRD-PARTY-LICENSES.txt",
   );
-  if (!loaded()) {
-    loadEditor(dirname(resourcePath));
-  }
   addTab([":THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
