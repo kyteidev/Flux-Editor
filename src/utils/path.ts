@@ -40,7 +40,15 @@ export const pathSep = (): string => {
 };
 
 export const joinPath = (...args: string[]): string => {
-  return args.join(pathSep());
+  return args
+    .map((arg, index) => {
+      // checks if last character is a path separator
+      if (index < args.length - 1 && arg.endsWith(pathSep())) {
+        return arg.slice(0, -1);
+      }
+      return arg;
+    })
+    .join(pathSep());
 };
 
 export const extname = (path: string): string => {
