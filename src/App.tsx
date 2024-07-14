@@ -58,9 +58,10 @@ export const loadEditor = (
 };
 
 export default function App() {
-  initPathOS();
   onMount(async () => {
-    initSettings();
+    initPathOS().then(() => {
+      initSettings();
+    });
     info("Initialized application");
 
     addListeners();
