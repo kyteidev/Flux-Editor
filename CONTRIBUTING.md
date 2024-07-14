@@ -15,7 +15,7 @@
 When you submit an issue, please use the provided templates. **DO NOT** delete the template, only delete the ones you don't need. Also please submit your issue to the dev branch only. Otherwise your issue will not be reviewed and it will be closed.
 
 ## Submitting PRs <a name="pr"></a>
-Please create a new PR for the dev branch if you want to contribute code or something else. **DO NOT** submit a PR to the release branch. PRs there will be automatically rejected.
+Please create a new PR for the dev branch if you want to contribute code or something else. **DO NOT** submit a PR to the release branch. PRs there will be automatically rejected. You need to sign your commits before submitting a PR.
 
 If you made or plan to make a breaking change, please open an issue for it first. Otherwise your PR will be rejected.
 
