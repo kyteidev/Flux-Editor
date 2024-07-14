@@ -43,7 +43,7 @@ const Dropdown = (props: Props) => {
   return (
     <div class="relative inline-block">
       <button
-        class={`${isOpen() ? "" : "rounded-b"} flex cursor-pointer items-center rounded-t border-none bg-base-100 p-2 pl-4 text-content transition duration-300 ease-in-out hover:bg-base-100-hover active:scale-100`}
+        class={`${isOpen() ? "" : "rounded-b"} flex cursor-pointer items-center rounded-t border-none bg-base-100 p-2 pl-4 text-content transition duration-100 ease-in-out hover:bg-base-100-hover`}
         onClick={toggle}
         style={{
           width: props.width,
