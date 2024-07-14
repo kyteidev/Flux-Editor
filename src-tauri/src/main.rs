@@ -22,9 +22,12 @@ You should have received a copy of the GNU General Public License along with Flu
 #[macro_use]
 extern crate objc;
 
+mod menu;
+use menu::menu;
+
 use lsp_client::{init_server, install_server, send_request};
 use serde_json::{json, Value};
-use tauri::{CustomMenuItem, Manager, Menu, MenuItem, Submenu, Window, WindowEvent};
+use tauri::{Manager, Window, WindowEvent};
 use tauri_plugin_log::LogTarget;
 
 #[cfg(target_os = "macos")]
@@ -81,87 +84,6 @@ async fn ls_send_request(id: &str, method: &str, params: Value) -> Result<String
     println!("Received response: {:?}", response);
 
     Ok(response)
-}
-
-fn menu() -> Menu {
-    let app_menu = Menu::new()
-        .add_item(CustomMenuItem::new("about".to_string(), "About"))
-        .add_submenu(Submenu::new(
-            "Legal Notices",
-            Menu::new()
-                .add_item(CustomMenuItem::new("license".to_string(), "License"))
-                .add_item(CustomMenuItem::new(
-                    "licenses-third-party".to_string(),
-                    "Third Party Licenses",
-                )),
-        ))
-        .add_native_item(MenuItem::Separator)
-        .add_item(
-            CustomMenuItem::new("settings".to_string(), "Settings").accelerator("CmdOrCtrl+,"),
-        )
-        .add_item(CustomMenuItem::new("plugins".to_string(), "Plugins"))
-        .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Services)
-        .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Quit);
-
-    let file_menu = Menu::new()
-        .add_item(
-            CustomMenuItem::new("new_file".to_string(), "New File").accelerator("CmdOrCtrl+N"),
-        )
-        .add_item(
-            CustomMenuItem::new("new_project".to_string(), "New Project")
-                .accelerator("CmdOrCtrl+Shift+N"),
-        )
-        .add_native_item(MenuItem::Separator)
-        .add_item(CustomMenuItem::new("open".to_string(), "Open...").accelerator("CmdOrCtrl+O"))
-        .add_item(CustomMenuItem::new("save".to_string(), "Save").accelerator("CmdOrCtrl+S"))
-        .add_item(
-            CustomMenuItem::new("save_as".to_string(), "Save As...")
-                .accelerator("CmdOrCtrl+Shift+S"),
-        );
-
-    let edit_menu = Menu::new()
-        .add_native_item(MenuItem::Undo)
-        .add_native_item(MenuItem::Redo)
-        .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Cut)
-        .add_native_item(MenuItem::Copy)
-        .add_native_item(MenuItem::Paste)
-        .add_native_item(MenuItem::SelectAll)
-        .add_native_item(MenuItem::Separator)
-        .add_item(CustomMenuItem::new("find".to_string(), "Find").accelerator("CmdOrCtrl+F"))
-        .add_item(
-            CustomMenuItem::new("replace".to_string(), "Replace").accelerator("CmdOrCtrl+Alt+F"),
-        );
-
-    let view_menu = Menu::new()
-        .add_item(CustomMenuItem::new("themes".to_string(), "Themes"))
-        .add_item(CustomMenuItem::new("focus_mode".to_string(), "Focus Mode"));
-
-    let modules_menu = Menu::new()
-        .add_item(CustomMenuItem::new("search".to_string(), "Search").accelerator("Alt+Space"))
-        .add_item(
-            CustomMenuItem::new("file_browser".to_string(), "File Browser")
-                .accelerator("CmdOrCtrl+Shift+F"),
-        )
-        .add_item(
-            CustomMenuItem::new("terminal".to_string(), "Terminal")
-                .accelerator("CmdOrCtrl+Shift+T"),
-        );
-
-    let menu = Menu::new()
-        .add_submenu(Submenu::new("App", app_menu))
-        .add_submenu(Submenu::new("File", file_menu))
-        .add_submenu(Submenu::new("Edit", edit_menu))
-        .add_submenu(Submenu::new("View", view_menu))
-        .add_submenu(Submenu::new("Modules", modules_menu));
-
-    if cfg!(target_os = "macos") {
-        return menu;
-    } else {
-        return Menu::new();
-    }
 }
 
 fn main() {
