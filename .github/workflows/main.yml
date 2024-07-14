@@ -76,6 +76,7 @@ jobs:
             - fixed padding in editor tabs
             - fixed custom menu having incorrect spacing
             - fixed incorrect settings path in UNIX systems
+            - fixed incorrect title on Mac
             - made title bar smaller
             - made split pane splitter thinner, and changed its color
             - made UI components have less rounding and padding
