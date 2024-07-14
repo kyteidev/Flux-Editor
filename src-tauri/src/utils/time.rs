@@ -15,6 +15,17 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-pub mod git;
-pub mod path;
-pub mod window;
+use std::time::{SystemTime, UNIX_EPOCH};
+
+use log::error;
+
+pub fn time_ms() -> u128 {
+    let now = SystemTime::now();
+    match now.duration_since(UNIX_EPOCH) {
+        Ok(duration) => duration.as_millis(),
+        Err(e) => {
+            error!("Error computing the current time: {:?}", e);
+            0
+        }
+    }
+}

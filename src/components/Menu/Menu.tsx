@@ -19,7 +19,13 @@ You should have received a copy of the GNU General Public License along with Flu
 
 import { createSignal, JSX, Show } from "solid-js";
 import Submenu from "./Submenu";
-import { about, license, licenseThirdParty, settings } from "../../menuActions";
+import {
+  about,
+  license,
+  licenseThirdParty,
+  newWindow,
+  settings,
+} from "../../menuActions";
 import { saveFile } from "../Editor/EditorComponent";
 import { appWindow } from "@tauri-apps/api/window";
 import Button from "../../ui/Button";
@@ -69,19 +75,25 @@ const Menu = () => {
         <MenuContainer>
           <Submenu text="File" item={1} main={true} first={true}>
             <MenuItem first={true} item={1} text="New File" />
-            <MenuItem item={2} text="New Project" separator={true} />
-            <MenuItem item={3} text="Open..." />
-            <MenuItem item={4} text="Save" action={() => saveFile()} />
+            <MenuItem item={2} text="New Project" />
             <MenuItem
-              item={5}
+              item={3}
+              text="New Window"
+              separator={true}
+              action={() => newWindow()}
+            />
+            <MenuItem item={4} text="Open..." />
+            <MenuItem item={5} text="Save" action={() => saveFile()} />
+            <MenuItem
+              item={6}
               text="Save As..."
               separator={true}
               action={() => saveFile(true)}
             />
-            <MenuItem item={6} text="Settings" action={() => settings()} />
+            <MenuItem item={7} text="Settings" action={() => settings()} />
             <MenuItem
               last={true}
-              item={7}
+              item={8}
               text="Quit"
               action={() => appWindow.close()}
             />

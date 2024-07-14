@@ -33,7 +33,7 @@ use cocoa::appkit::NSWindow;
 use cocoa::base::id;
 #[cfg(target_os = "macos")]
 use objc::runtime::{NO, YES};
-#[cfg(any(windows))]
+#[cfg(target_os = "windows")]
 use window_shadows::set_shadow;
 
 #[cfg(target_os = "macos")]
@@ -46,6 +46,7 @@ mod commands;
 use commands::{
     git::clone_repo,
     path::{app_data_dir, resolve_resource, user_home_dir},
+    window::new_window,
 };
 
 mod utils;
@@ -208,7 +209,7 @@ fn main() {
             #[cfg(target_os = "macos")]
             let apply_offset = || {
                 let win = e.window();
-                win.set_window_controls_pos(10., 12.);
+                win.set_window_controls_pos(10., 12.5);
             };
 
             #[cfg(target_os = "macos")]
@@ -233,6 +234,7 @@ fn main() {
             app_data_dir,
             user_home_dir,
             resolve_resource,
+            new_window,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

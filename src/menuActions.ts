@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { dialog } from "@tauri-apps/api";
+import { dialog, invoke } from "@tauri-apps/api";
 import { getOS } from "./utils/os";
 import { getVersion } from "@tauri-apps/api/app";
 import { addTab } from "./components/Editor/components/EditorTabs";
@@ -62,4 +62,8 @@ export const settings = () => {
     addTab(["Settings", getSettingsPath()]);
     openFile(getSettingsPath());
   }
+};
+
+export const newWindow = () => {
+  invoke("new_window");
 };

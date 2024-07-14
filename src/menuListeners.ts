@@ -16,7 +16,13 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { appWindow } from "@tauri-apps/api/window";
-import { about, license, licenseThirdParty, settings } from "./menuActions";
+import {
+  about,
+  license,
+  licenseThirdParty,
+  newWindow,
+  settings,
+} from "./menuActions";
 import { info } from "tauri-plugin-log-api";
 import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
 import { getTabs } from "./components/Editor/components/EditorTabs";
@@ -51,7 +57,6 @@ export const addListeners = () => {
   appWindow.listen("flux:license", async () => {
     license();
   });
-
   appWindow.listen("flux:licenses-third-party", async () => {
     licenseThirdParty();
   });
