@@ -26,6 +26,8 @@ import { getSetting, getSettingsPath } from "../../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { extname } from "../../../utils/path";
 
+let activeInterval: NodeJS.Timeout;
+
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
 
@@ -53,6 +55,12 @@ export const addTab = async (tab: string[]) => {
     setTabs([...tabs(), tab]);
   }
   setActiveTab(tabs().findIndex((t) => t[1] === tab[1]));
+};
+
+export const clearTabs = () => {
+  setTabs([]);
+  setActiveTab(0);
+  clearInterval(activeInterval);
 };
 
 export const getTabs = () => {
@@ -133,6 +141,7 @@ const EditorTabs = () => {
             const checkHasSaved = setInterval(() => {
               setHasSaved(savedTabs().includes(tabs()[index()][1]));
             }, 250);
+            activeInterval = checkHasSaved;
 
             onCleanup(() => clearInterval(checkHasSaved)); // deletes the setInterval after tab is closed.
 

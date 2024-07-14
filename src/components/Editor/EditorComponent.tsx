@@ -92,14 +92,19 @@ import "prismjs/components/prism-yaml.min.js";
 
 import { dialog, fs, invoke } from "@tauri-apps/api";
 import { specialCodeFileType } from "../../utils/file";
-import { getTabs, setSavedTabs } from "./components/EditorTabs";
+import {
+  addTab,
+  clearTabs,
+  getTabs,
+  setSavedTabs,
+} from "./components/EditorTabs";
 import {
   getSetting,
   getSettingsPath,
   loadSettings,
 } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
-import { extname } from "../../utils/path";
+import { basename, extname } from "../../utils/path";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
@@ -214,6 +219,10 @@ export const openFile = (pathLocal: string, readonly?: boolean) => {
         .then((data) => {
           setIsValidFile(true);
 
+          if (getTabs().length != 0) {
+            addTab([basename(pathLocal), pathLocal]);
+          }
+
           const fileExt = extname(pathLocal).substring(
             0,
             extname(pathLocal).length,
@@ -242,21 +251,17 @@ export const openFile = (pathLocal: string, readonly?: boolean) => {
           textarea.blur();
         })
         .catch((e: string) => {
-          if (e.toString().includes("stream did not contain valid UTF-8")) {
-            const highlightedContent = document.getElementById(
-              "highlighting-content",
-            );
+          if (getTabs()[0][1] === pathLocal) {
+            clearTabs();
+          }
 
-            textarea.value = "";
-            if (highlightedContent) {
-              highlightedContent.innerHTML = "";
-            }
-
-            dialog.message("This file is currently not supported.", {
+          dialog.message(
+            e.toString().slice(e.toString().lastIndexOf(":") + 1, e.length),
+            {
               type: "error",
               title: "Failed to open file",
-            });
-          }
+            },
+          );
 
           error(e.toString());
         });

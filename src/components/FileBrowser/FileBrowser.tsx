@@ -23,7 +23,7 @@ import { fileIcons, specialFileIcons } from "../../utils/file";
 import { getSetting } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { openFile } from "../Editor/EditorComponent";
-import { addTab } from "../Editor/components/EditorTabs";
+import { addTab, getTabs } from "../Editor/components/EditorTabs";
 import { extname, joinPath, pathSep } from "../../utils/path";
 import Startup from "./Startup";
 
@@ -202,7 +202,9 @@ const FileBrowser = (props: Props) => {
                         error("Error fetching nested contents contents: " + e);
                       });
                   } else {
-                    addTab([itemName, itemPath]);
+                    if (getTabs().length === 0) {
+                      addTab([itemName, itemPath]);
+                    }
                     openFile(itemPath);
                   }
                 }}

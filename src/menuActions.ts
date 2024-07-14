@@ -21,8 +21,8 @@ import { getVersion } from "@tauri-apps/api/app";
 import { addTab } from "./components/Editor/components/EditorTabs";
 import { openFile } from "./components/Editor/EditorComponent";
 import { getSettingsPath } from "./settingsManager";
-import { dirname, resolveResource } from "./utils/path";
-import { loaded, loadEditor } from "./App";
+import { resolveResource } from "./utils/path";
+import { loaded } from "./App";
 
 export const about = async () => {
   const appVersion = getVersion();
