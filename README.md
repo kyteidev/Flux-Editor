@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/badge/build-passing-green" alt="build">
   </a>
   <a>
-    <img src="https://img.shields.io/badge/version-0.2.0-blue" alt="version">
+    <img src="https://img.shields.io/badge/version-0.4.0-blue" alt="version">
   </a>
   <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
     <img src="https://img.shields.io/badge/license-GPL--3.0-orange" alt="license">
@@ -25,7 +25,7 @@
 (NOTE! This project is still WIP. Expect bugs and unfinished features)
 </center>
 
-# Table of Contents
+## Table of Contents
 
 - [Features](#features)
 - [Installation](#installation)
@@ -38,12 +38,12 @@
 
 Flux Editor boasts a ton of features, some of which are unique. Below are some of the features of Flux Editor:
 
+- Syntax highlighting
+- Built-in file browser
 - Incredibly lightweight
 - Minimalist UI
 - Tiny binary
 - No bloat
-- Built-in file browser
-- Syntax highlighting
 - Code suggestions (soon)
 - Built-in terminal (soon)
 - Git integration (partially complete)
