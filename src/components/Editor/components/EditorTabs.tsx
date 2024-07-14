@@ -66,7 +66,7 @@ const EditorTabs = () => {
 
   return (
     <div class="flex h-[40px] max-h-[40px] min-h-[40px] w-full max-w-full flex-col items-center justify-center overflow-hidden bg-base-200">
-      <div class="flex max-h-full min-h-full w-full max-w-full select-none space-x-1 overflow-x-auto overflow-y-hidden">
+      <div class="flex max-h-full min-h-full w-full max-w-full select-none space-x-1 overflow-x-auto overflow-y-hidden p-1">
         <For each={tabs().map((t) => t[0])}>
           {(tabName, index) => {
             const [isClosed, setIsClosed] = createSignal(false);
