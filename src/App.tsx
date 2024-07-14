@@ -23,7 +23,6 @@ import EditorTabs, {
 import { initSettings } from "./settingsManager";
 import { info } from "tauri-plugin-log-api";
 import { basename, initPathOS } from "./utils/path";
-import { platform } from "@tauri-apps/api/os";
 import { addListeners } from "./menuListeners";
 import SplitPane from "./components/SplitPane/SplitPane";
 import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
@@ -60,10 +59,8 @@ export const loadEditor = (
 
 export default function App() {
   initPathOS();
-  const [OS, setOS] = createSignal();
   onMount(async () => {
     initSettings();
-    setOS((await platform()).toString());
     info("Initialized application");
 
     addListeners();
@@ -80,9 +77,7 @@ export default function App() {
         }}
       >
         {/* <div class="w-[79px]" /> */}
-        <Show when={OS() != "darwin"} fallback={<div class="w-[68px]" />}>
-          <Menu />
-        </Show>
+        <Menu />
       </header>
       <div
         style={{

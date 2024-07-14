@@ -57,7 +57,7 @@ const Submenu = (props: {
       <div
         class={`${show() ? "scale-100" : "scale-0"} absolute z-[51]`}
         style={{
-          left: `${props.main ? `calc(79px + 8rem + 10px)` : `calc(8rem + 5px)`}`,
+          left: `${props.main ? `calc(8rem + 5px + 0.25rem)` : `calc(8rem + 5px)`}`,
           top: `calc(${props.item} * 1.5rem + 1rem)`,
         }}
       >
