@@ -175,15 +175,13 @@ const Startup = () => {
             class="flex space-x-[12px]"
             style={{
               position: "absolute",
-              bottom: `calc(20% + 1.5em)`,
-              right: `calc(20% + 1.5em)`,
+              bottom: `calc(20% + 1em)`,
+              right: `calc(20% + 1em)`,
             }}
           >
             <Button
               colorBg={true}
               text="Cancel"
-              width="80px"
-              height="40px"
               action={() => {
                 resetValues();
                 const modal = document.getElementById(
@@ -201,8 +199,6 @@ const Startup = () => {
             />
             <Button
               text="Create"
-              width="80px"
-              height="40px"
               action={() => {
                 beforeLoad("new");
               }}
@@ -232,15 +228,13 @@ const Startup = () => {
             class="flex space-x-[12px]"
             style={{
               position: "absolute",
-              bottom: `calc(32.5% + 1.5em)`,
-              right: `calc(20% + 1.5em)`,
+              bottom: `calc(32.5% + 1em)`,
+              right: `calc(20% + 1em)`,
             }}
           >
             <Button
               colorBg={true}
               text="Cancel"
-              width="80px"
-              height="40px"
               action={() => {
                 resetValues();
                 const modal = document.getElementById(
@@ -255,13 +249,7 @@ const Startup = () => {
                 }, 200);
               }}
             />
-            <Button
-              text="Clone"
-              width="80px"
-              height="40px"
-              disabled={isCloning()}
-              action={clone}
-            />
+            <Button text="Clone" disabled={isCloning()} action={clone} />
           </div>
         </Modal>
       </dialog>

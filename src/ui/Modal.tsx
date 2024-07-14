@@ -41,12 +41,12 @@ const Modal = (props: Props) => {
       }}
     >
       <div
-        class={`${props.class} rounded-xl`}
+        class={`${props.class} rounded`}
         style={{
           width: `${props.width}%`,
           height: `${props.height}%`,
           "z-index": "1000",
-          padding: "1.5em",
+          padding: "1em",
         }}
       >
         {props.children}
