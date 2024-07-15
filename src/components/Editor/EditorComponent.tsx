@@ -603,7 +603,7 @@ const EditorComponent = () => {
           onFocus={updateSelectedLine}
           onBlur={handleBlur}
           onSelect={handleBlur}
-          class={`absolute left-0 top-0 z-10 flex h-full w-full flex-grow overflow-auto whitespace-pre bg-transparent text-transparent caret-content ${styles.textarea}`}
+          class={`absolute left-0 top-0 z-10 flex h-full w-full flex-grow overflow-auto whitespace-pre bg-transparent text-transparent caret-accent ${styles.textarea}`}
         ></textarea>
         <pre
           id="highlighting"
