@@ -131,40 +131,32 @@ const Startup = () => {
           class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
         >
           <div class="flex-col space-y-4">
-            <div class="flex items-center space-x-3">
-              <p class="text-xl text-content">New </p>
-              <Dropdown
-                items={["File", "Project"]}
-                placeholder="File"
-                width="110px"
-                height="40px"
-                selectedItem={setSelectedType}
-              ></Dropdown>
-            </div>
-            <div class="flex items-center space-x-3">
-              <p class="text-xl text-content">Name</p>
+            <Dropdown
+              items={["File", "Project"]}
+              placeholder="File"
+              width="110px"
+              height="35px"
+              selectedItem={setSelectedType}
+            ></Dropdown>
+            <Input
+              width="100%"
+              height="35px"
+              value=""
+              placeholder="Name"
+              onChange={setName}
+            />
+            <div class="flex items-center space-x-2">
               <Input
                 width="100%"
-                height="40px"
-                placeholder="e.g. helloworld"
-                value=""
-                onChange={setName}
-              />
-            </div>
-            <div class="flex items-center space-x-3">
-              <p class="text-xl text-content">Directory</p>
-              <Input
-                width="100%"
-                height="40px"
-                placeholder="e.g. /users/me/"
+                height="35px"
                 value={dirPath()}
+                placeholder="Directory"
                 onChange={setDirPath}
               />
               <Button
                 colorBg={true}
                 text="Browse"
-                width="calc(80px + 2em)"
-                height="40px"
+                height="35px"
                 action={() => {
                   openDir(false);
                 }}
@@ -172,7 +164,7 @@ const Startup = () => {
             </div>
           </div>
           <div
-            class="flex space-x-[12px]"
+            class="flex space-x-2"
             style={{
               position: "absolute",
               bottom: `calc(20% + 1em)`,
@@ -182,6 +174,8 @@ const Startup = () => {
             <Button
               colorBg={true}
               text="Cancel"
+              width="66px"
+              height="35px"
               action={() => {
                 resetValues();
                 const modal = document.getElementById(
@@ -198,6 +192,8 @@ const Startup = () => {
               }}
             />
             <Button
+              width="66px"
+              height="35px"
               text="Create"
               action={() => {
                 beforeLoad("new");
@@ -212,20 +208,15 @@ const Startup = () => {
           height={35}
           class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
         >
-          <div class="flex-col space-y-3">
-            <div class="flex items-center space-x-3">
-              <p class="inline-block text-xl text-content">URL</p>
-              <Input
-                width="100%"
-                height="40px"
-                placeholder="e.g. https://github.com/kyteidev/fluxeditor.git"
-                value=""
-                onChange={setDirPath}
-              />
-            </div>
-          </div>
+          <Input
+            width="100%"
+            height="35px"
+            value=""
+            placeholder="URL"
+            onChange={setDirPath}
+          />
           <div
-            class="flex space-x-[12px]"
+            class="flex space-x-2"
             style={{
               position: "absolute",
               bottom: `calc(32.5% + 1em)`,
@@ -233,6 +224,8 @@ const Startup = () => {
             }}
           >
             <Button
+              width="66px"
+              height="35px"
               colorBg={true}
               text="Cancel"
               action={() => {
@@ -249,7 +242,13 @@ const Startup = () => {
                 }, 200);
               }}
             />
-            <Button text="Clone" disabled={isCloning()} action={clone} />
+            <Button
+              width="66px"
+              height="35px"
+              text="Clone"
+              disabled={isCloning()}
+              action={clone}
+            />
           </div>
         </Modal>
       </dialog>

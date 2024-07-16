@@ -140,34 +140,6 @@ const FileBrowser = (props: Props) => {
             setIsDir(false);
           }
 
-          // TODO: This is rerun every time a folder is opened, so optimize this!
-          /*
-          if (itemName[0] != ".") {
-            getPathContents(itemPath)
-              .then((contents) => {
-                setDirNestedContents(contents);
-
-                if (!(files.includes(itemPath) || dirs.includes(itemPath))) {
-                  if (
-                    contents[0] !== undefined &&
-                    contents[0].includes("Not a directory")
-                  ) {
-                    setIsDir(false); // if name includes "Not a directory", it's not a folder
-                    files.push(itemPath);
-                  } else {
-                    setIsDir(true);
-                    dirs.push(itemPath);
-                  }
-                }
-              })
-              .catch((error: string) => {
-                setDirNestedContents([]);
-                console.error(`Error fetching directory contents: ${error}`);
-                logger(true, "FileBrowser.tsx", error as string);
-              });
-          }
-          */
-
           if (!(files.includes(itemPath) || dirs.includes(itemPath))) {
             if (nestedDirs.includes(itemPath)) {
               dirs.push(itemPath);
@@ -191,7 +163,7 @@ const FileBrowser = (props: Props) => {
           return (
             <div class="relative block min-w-fit">
               <div
-                class="min-w-fit cursor-pointer select-none text-content hover:bg-base-100 active:bg-base-100-hover"
+                class="min-w-fit cursor-pointer select-none px-1 text-content transition duration-100 ease-in-out hover:bg-base-100 active:bg-base-100-hover"
                 onclick={() => {
                   if (isDir()) {
                     setOpen(!open());
@@ -215,11 +187,15 @@ const FileBrowser = (props: Props) => {
                     "padding-left": `${howNested * 1.5}rem`, // makes the nested items look nested
                   }}
                 >
-                  <Show when={!firstRender} fallback={<div class="w-4" />}>
-                    <div class="absolute opacity-80">
+                  <Show when={!firstRender}>
+                    <div
+                      class="absolute opacity-80"
+                      style={{
+                        left: `calc(${howNested * 1.5}rem - 0.75rem)`, // makes the nested items look nested
+                      }}
+                    >
                       <IconLineVertical />
                     </div>
-                    <div class="w-4" />
                   </Show>
                   <Show when={showIcon()}>
                     <div class="opacity-80">
@@ -260,11 +236,11 @@ const FileBrowser = (props: Props) => {
   return (
     <div class="h-full min-h-full w-full min-w-full bg-base-200">
       <Show when={props.loaded} fallback={<Startup />}>
-        <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 pl-6 font-bold text-content">
+        <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold text-content">
           {`${props.rootDirName}`}
         </div>
         <div
-          class="min-w-fit overflow-auto"
+          class="min-w-fit overflow-y-auto overflow-x-hidden"
           style={{ "max-height": `calc(100% - 1.5rem)` }}
         >
           {renderItem(dirContents(), props.dir, true, 0)}

@@ -46,7 +46,7 @@ const Modal = (props: Props) => {
           width: `${props.width}%`,
           height: `${props.height}%`,
           "z-index": "1000",
-          padding: "1em",
+          padding: "1rem",
         }}
       >
         {props.children}

@@ -43,7 +43,7 @@ const Dropdown = (props: Props) => {
   return (
     <div class="relative inline-block">
       <button
-        class={`${isOpen() ? "" : "rounded-b"} flex cursor-pointer items-center rounded-t border-none bg-base-100 p-2 pl-4 text-content transition duration-100 ease-in-out hover:bg-base-100-hover`}
+        class={`${isOpen() ? "rounded-t" : "rounded"} flex cursor-pointer items-center border-none bg-base-100 px-2 text-content transition duration-100 ease-in-out hover:bg-base-100-hover`}
         onClick={toggle}
         style={{
           width: props.width,
@@ -59,12 +59,13 @@ const Dropdown = (props: Props) => {
       </button>
       {isOpen() && (
         <div id="dropdown-container" class="absolute w-full rounded-b shadow">
-          <div class="h-[1px] w-full bg-content opacity-50" />
+          <div class="h-[1px] w-full bg-base-100-hover" />
           <ul id="dropdown-menu" class="w-full text-content last:rounded-b">
             <For each={props.items}>
               {(item) => (
                 <li
-                  class="dropdown-item flex w-full justify-start bg-base-100 p-2 pl-4 transition duration-100 ease-in-out last:rounded-b hover:bg-base-100-hover"
+                  class="dropdown-item flex w-full items-center justify-start bg-base-100 px-2 transition duration-100 ease-in-out last:rounded-b hover:bg-base-100-hover"
+                  style={{ height: props.height }}
                   onClick={() => handleItemClick(item)}
                 >
                   {item}

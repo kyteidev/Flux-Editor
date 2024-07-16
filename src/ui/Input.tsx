@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License along with Flu
 interface Props {
   width: string;
   height: string;
-  placeholder: string;
+  placeholder?: string;
   value: string;
   onChange: (event: Event) => void;
 }
@@ -31,7 +31,7 @@ const Input = (props: Props) => {
   return (
     <input
       type="text"
-      class="rounded border-none bg-base-100 p-2 pl-4 text-content transition duration-100 ease-in-out hover:bg-base-100-hover focus:bg-base-100-hover"
+      class="rounded border-none bg-base-100 px-2 text-content caret-accent transition duration-100 ease-in-out hover:bg-base-100-hover focus:bg-base-100-hover"
       style={{
         width: props.width,
         height: props.height,
