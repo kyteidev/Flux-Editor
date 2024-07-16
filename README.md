@@ -7,17 +7,23 @@
 <h1 align="center">Flux Editor</h1>
 
 <div align="center">
+<a href="https://github.com/kyteidev/FluxEditor/issues">
+  <img src="https://img.shields.io/github/issues/kyteidev/FluxEditor?style=flat-square" alt="issues">
+</a>
+<a href="https://github.com/kyteidev/FluxEditor/pulls">
+  <img src="https://img.shields.io/github/issues-pr/kyteidev/FluxEditor?style=flat-square" alt="pr-open">
+</a>
+<a href="https://github.com/kyteidev/FluxEditor/pulls">
+  <img src="https://img.shields.io/github/issues-pr-closed-raw/kyteidev/FluxEditor?style=flat-square" alt="pr-closed">
+</a>
+<a>
+  <img src="https://img.shields.io/github/stars/kyteidev/FluxEditor?style=flat-square" alt="stars">
+</a>
   <a>
-    <img src="https://img.shields.io/badge/build-passing-green" alt="build">
-  </a>
-  <a>
-    <img src="https://img.shields.io/badge/version-0.4.1-blue" alt="version">
+    <img src="https://img.shields.io/badge/version-0.4.1-blue?style=flat-square" alt="version">
   </a>
   <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
-    <img src="https://img.shields.io/badge/license-GPL--3.0-orange" alt="license">
-  </a>
-  <a href="https://github.com/kyteidev/FluxEditor/issues">
-    <img src="https://img.shields.io/github/issues/kyteidev/FluxEditor" alt="issues">
+    <img src="https://img.shields.io/badge/license-GPL--3.0-orange?style=flat-square" alt="license">
   </a>
 </div>
 
@@ -32,21 +38,20 @@
 - [Known Issues](#known-issues)
 - [Contributors](#contributors)
 - [Contributing](#contributing)
+- [Credits](#credits)
 - [Copyright and Licenses](#license)
 
 ## Features <a name="features"></a>
 
-Flux Editor boasts a ton of features, some of which are unique. Below are some of the features of Flux Editor:
-
 - Syntax highlighting
 - Built-in file browser
+- Code suggestions (soon)
+- Built-in terminal (soon)
+- Git integration (partially complete)
 - Incredibly lightweight
 - Minimalist UI
 - Tiny binary
 - No bloat
-- Code suggestions (soon)
-- Built-in terminal (soon)
-- Git integration (partially complete)
 - and many more!
 
 ## Installation <a name="installation"></a>
@@ -55,11 +60,15 @@ You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEd
 
 ## Known Issues <a name="known-issues"></a>
 
-- Caret height is not corrent on the first line (probably webview issue)
+- Caret height is not correct on the first line in the editor (probably webview issue)
 
 ## Contributing <a name="contributing"></a>
 
 See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md).
+
+## Credits <a name="credits"></a>
+
+- The search bar was inspired by VSCode and Zed
 
 ## Copyright and Licenses <a name="license"></a>
 
