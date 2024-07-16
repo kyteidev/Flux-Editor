@@ -27,9 +27,9 @@
   </a>
 </div>
 
-<center>
+<p align="center">
 (NOTE! This project is still WIP. Expect bugs and unfinished features)
-</center>
+</p>
 
 ## Table of Contents
 
