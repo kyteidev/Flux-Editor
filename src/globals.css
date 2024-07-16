@@ -679,6 +679,10 @@ video {
   display: none;
 }
 
+.h-10 {
+  height: 2.5rem;
+}
+
 .h-4 {
   height: 1rem;
 }
@@ -713,22 +717,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[100px\] {
-  height: 100px;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
-.h-12 {
-  height: 3rem;
-}
-
-.h-10 {
-  height: 2.5rem;
 }
 
 .max-h-8 {
@@ -783,6 +771,10 @@ video {
   width: 1.75rem;
 }
 
+.w-\[28rem\] {
+  width: 28rem;
+}
+
 .w-\[2px\] {
   width: 2px;
 }
@@ -810,26 +802,6 @@ video {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-2\/3 {
-  width: 66.666667%;
-}
-
-.w-20 {
-  width: 5rem;
-}
-
-.w-96 {
-  width: 24rem;
-}
-
-.w-\[32rem\] {
-  width: 32rem;
-}
-
-.w-\[28rem\] {
-  width: 28rem;
 }
 
 .min-w-4 {
@@ -917,6 +889,22 @@ video {
   cursor: row-resize;
 }
 
+.cursor-e-resize {
+  cursor: e-resize;
+}
+
+.cursor-w-resize {
+  cursor: w-resize;
+}
+
+.cursor-n-resize {
+  cursor: n-resize;
+}
+
+.cursor-s-resize {
+  cursor: s-resize;
+}
+
 .select-none {
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -925,14 +913,6 @@ video {
 
 .resize {
   resize: both;
-}
-
-.scroll-m-10 {
-  scroll-margin: 2.5rem;
-}
-
-.scroll-p-9 {
-  scroll-padding: 2.25rem;
 }
 
 .flex-row {
@@ -1081,6 +1061,10 @@ video {
   background-color: var(--base-100);
 }
 
+.bg-base-100-hover {
+  background-color: var(--base-100-hover);
+}
+
 .bg-base-200 {
   background-color: var(--base-200);
 }
@@ -1091,10 +1075,6 @@ video {
 
 .bg-transparent {
   background-color: transparent;
-}
-
-.bg-base-100-hover {
-  background-color: var(--base-100-hover);
 }
 
 .fill-content {
@@ -1189,10 +1169,6 @@ video {
   text-decoration-line: underline;
 }
 
-.caret-content {
-  caret-color: var(--content);
-}
-
 .caret-accent {
   caret-color: var(--accent);
 }
@@ -1248,10 +1224,6 @@ video {
 
 .duration-100 {
   transition-duration: 100ms;
-}
-
-.duration-300 {
-  transition-duration: 300ms;
 }
 
 .ease-in-out {
@@ -1383,10 +1355,6 @@ dialog[open] {
 .last\:rounded-b:last-child {
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
-}
-
-.hover\:border-accent:hover {
-  border-color: var(--accent);
 }
 
 .hover\:bg-\[\#000000\]\/\[\.05\]:hover {

@@ -58,18 +58,6 @@ const SplitPane = (props: Props) => {
 
   onMount(() => setFirstHeight(props.size));
 
-  // TODO: scale second child when window is resized.
-  /*
-  let secondHeight: number;
-
-  appWindow.listen("tauri://resize", () => {
-    setTimeout(() => {
-      setFirstHeight(window.innerHeight - 43 - secondHeight);
-      console.log("hi");
-    }, 10);
-  });
-  */
-
   const handleMouseDown = () => {
     setIsDragging(true);
     windowWidth = window.innerWidth;
@@ -96,8 +84,6 @@ const SplitPane = (props: Props) => {
     const newWidth = firstWidth() + movementX;
     const newHeight = firstHeight() + movementY;
 
-    // FIXME: Hidden children becomes visible when resizing window to reveal them.
-
     if (props.vertical) {
       const cursorOffsetY: number = props.swapPriority
         ? Math.abs(e.clientY - (windowHeight - firstHeight()))
@@ -112,10 +98,8 @@ const SplitPane = (props: Props) => {
           } else {
             setFirstHeight(2); // for some reason first pane height will be 100% when swapped panes
           }
-          // info("First pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(props.firstMinSize);
-          // info("First pane unhidden");
         }
       } else if (
         props.secondMinSize &&
@@ -124,16 +108,12 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetY >= 80 && props.canSecondHide) {
           setCanUnhide(false);
           setFirstHeight(windowHeight - 2 - 30); // sets first height to window height, minus height of splitter and title bar
-          // info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstHeight(windowHeight - props.secondMinSize);
-          // info("Second pane unhidden");
         }
       } else {
         setFirstHeight(newHeight);
       }
-
-      //secondHeight = window.innerHeight - firstHeight() - 43;
     } else {
       const cursorOffsetX: number = Math.abs(e.clientX - firstWidth()); // gets absolute value to avoid checking for negative numbers
 
@@ -143,10 +123,8 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetX >= 80 && props.canFirstHide) {
           setCanUnhide(false);
           setFirstWidth(0);
-          // info("First pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(props.firstMinSize);
-          // info("First pane unhidden");
         }
       } else if (
         props.secondMinSize &&
@@ -155,10 +133,8 @@ const SplitPane = (props: Props) => {
         if (cursorOffsetX >= 80 && props.canSecondHide) {
           setCanUnhide(false);
           setFirstWidth(windowWidth - 2);
-          // info("Second pane hidden");
         } else if (canUnhide()) {
           setFirstWidth(windowWidth - props.secondMinSize);
-          // info("Second pane unhidden");
         }
       } else {
         setFirstWidth(newWidth);
@@ -211,7 +187,7 @@ const SplitPane = (props: Props) => {
       <Show when={secondChild()}>
         <div
           id="splitter"
-          class={`${props.vertical ? "h-[2px] min-h-[2px] w-full cursor-row-resize" : "w-[2px] min-w-[2px] cursor-col-resize"} ${isDragging() ? "bg-accent" : "bg-base-100"} z-50 transition duration-300 ease-in-out hover:border-accent hover:bg-accent`}
+          class={`${props.vertical ? "h-[2px] min-h-[2px] w-full cursor-row-resize" : "w-[2px] min-w-[2px] cursor-col-resize"} ${isDragging() ? "bg-accent" : "bg-base-100"} z-50 transition duration-100 ease-in-out hover:bg-accent`}
           style={{ height: `${props.vertical ?? `calc(100vh - 28px)`}` }}
           onmousedown={handleMouseDown}
           onclick={handleUnhide}
