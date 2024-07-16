@@ -16,6 +16,7 @@
 <a href="https://github.com/kyteidev/FluxEditor/pulls">
   <img src="https://img.shields.io/github/issues-pr-closed-raw/kyteidev/FluxEditor?style=flat-square" alt="pr-closed">
 </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fkyteidev%2FFluxEditor?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkyteidev%2FFluxEditor.svg?type=shield"/></a>
 <a>
   <img src="https://img.shields.io/github/stars/kyteidev/FluxEditor?style=flat-square" alt="stars">
 </a>
@@ -30,6 +31,9 @@
 <p align="center">
 (NOTE! This project is still WIP. Expect bugs and unfinished features)
 </p>
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkyteidev%2FFluxEditor.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkyteidev%2FFluxEditor?ref=badge_large)
 
 ## Table of Contents
 
