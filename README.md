@@ -7,6 +7,9 @@
 <h1 align="center">Flux Editor</h1>
 
 <div align="center">
+<a>
+  <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkyteidev%2FFluxEditor.svg?type=small" alt="fossa-scan">
+</a>
 <a href="https://github.com/kyteidev/FluxEditor/issues">
   <img src="https://img.shields.io/github/issues/kyteidev/FluxEditor?style=flat-square" alt="issues">
 </a>
