@@ -607,6 +607,10 @@ video {
   top: 0px;
 }
 
+.top-\[-2\.5px\] {
+  top: -2.5px;
+}
+
 .top-\[-43\.5px\] {
   top: -43.5px;
 }
@@ -1023,10 +1027,6 @@ video {
 
 .border-base-100 {
   border-color: var(--base-100);
-}
-
-.border-content {
-  border-color: var(--content);
 }
 
 .border-base-100-hover {
