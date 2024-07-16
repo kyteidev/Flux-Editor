@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import Button from "../../ui/Button";
 import Dropdown from "../../ui/Dropdown";
 import Input from "../../ui/Input";
@@ -7,7 +7,7 @@ import { dialog, fs } from "@tauri-apps/api";
 import { cloneRepo, getRepoPath } from "../../utils/git";
 import { error, warn } from "tauri-plugin-log-api";
 import { loadEditor } from "../../App";
-import { checkDirPathValidity, joinPath } from "../../utils/path";
+import { checkDirPathValidity, homeDir, joinPath } from "../../utils/path";
 
 const Startup = () => {
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
@@ -17,9 +17,16 @@ const Startup = () => {
   const [dirPath, setDirPath] = createSignal<string>("");
   const [name, setName] = createSignal<string>("");
 
+  const [homeDirPath, setHomeDirPath] = createSignal("");
+
+  onMount(async () => {
+    setHomeDirPath(await homeDir());
+    setDirPath(homeDirPath());
+  });
+
   const resetValues = () => {
     setSelectedType("File");
-    setDirPath("");
+    setDirPath(homeDirPath());
     setName("");
   };
 
@@ -143,7 +150,13 @@ const Startup = () => {
             </div>
             <div class="flex items-center space-x-2">
               <p>Name: </p>
-              <Input width="100%" height="35px" value="" onChange={setName} />
+              <Input
+                width="100%"
+                height="35px"
+                value=""
+                placeholder="Required"
+                onChange={setName}
+              />
             </div>
             <div class="flex items-center space-x-2">
               <p>Location: </p>
@@ -151,6 +164,7 @@ const Startup = () => {
                 width="100%"
                 height="35px"
                 value={dirPath()}
+                placeholder="Required"
                 onChange={setDirPath}
               />
               <Button
@@ -210,7 +224,13 @@ const Startup = () => {
         >
           <div class="flex items-center space-x-2">
             <p>URL: </p>
-            <Input width="100%" height="35px" value="" onChange={setDirPath} />
+            <Input
+              width="100%"
+              height="35px"
+              value=""
+              placeholder="Required"
+              onChange={setDirPath}
+            />
           </div>
           <div
             class="flex space-x-2"
