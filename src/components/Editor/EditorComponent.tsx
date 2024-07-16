@@ -178,6 +178,7 @@ export const saveFile = async (saveAs?: boolean) => {
 
     return;
   }
+
   if (
     fileSavedContent()[
       fileSavedContent().findIndex((i) => i.includes(filePath))
@@ -185,10 +186,9 @@ export const saveFile = async (saveAs?: boolean) => {
   ) {
     fs.writeFile(filePath, textarea.value);
 
-    if ((filePath = getSettingsPath())) {
+    if (filePath === getSettingsPath()) {
       loadSettings();
     }
-
     updateArrays(filePath);
   }
 };
