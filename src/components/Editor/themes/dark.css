@@ -1,4 +1,4 @@
-/* based on Tomorrow theme by Rose Pritchard */
+/* based on Tomorrow theme by Rose Pritchard and Github Dark theme */
 
 code[class*="language-"],
 pre[class*="language-"] {
@@ -36,49 +36,40 @@ pre[class*="language-"] {
 }
 
 .token.tag,
-.token.attr-name,
 .token.namespace,
-.token.deleted {
-  color: #76f463;
-}
-
-.token.function-name {
-  color: #6196cc;
-}
-
-.token.boolean,
-.token.number {
-  color: #f08d49;
-}
-
-.token.property,
-.token.class-name,
-.token.constant,
-.token.symbol,
-.token.function {
-  color: #efe22d;
-}
-
-.token.selector,
+.token.deleted,
+.token.operator,
+.token.entity,
+.token.url,
 .token.important,
 .token.atrule,
 .token.keyword,
 .token.builtin {
-  color: #f34853;
+  color: #b677f1;
+}
+
+.token.boolean {
+  color: #f08d49;
+}
+
+.token.class-name,
+.token.constant,
+.token.symbol,
+.token.function,
+.token.function-name {
+  color: #6fb5f3;
 }
 
 .token.string,
-.token.char,
+.token.property,
+.token.attr-name,
 .token.attr-value,
+.token.selector,
+.token.number,
+.token.char,
 .token.regex,
 .token.variable {
-  color: #7d9ff6;
-}
-
-.token.operator,
-.token.entity,
-.token.url {
-  color: #ec45bd;
+  color: #9fee75;
 }
 
 .token.important,
@@ -103,20 +94,17 @@ pre[class*="language-"] {
 .rainbow-braces .token.punctuation.brace-level-4,
 .rainbow-braces .token.punctuation.brace-level-7,
 .rainbow-braces .token.punctuation.brace-level-10 {
-  color: #7d9ff6;
-  opacity: 1;
+  color: #6fb5f3;
 }
 .rainbow-braces .token.punctuation.brace-level-2,
 .rainbow-braces .token.punctuation.brace-level-5,
 .rainbow-braces .token.punctuation.brace-level-8,
 .rainbow-braces .token.punctuation.brace-level-11 {
-  color: #76f463;
-  opacity: 1;
+  color: #9fee75;
 }
 .rainbow-braces .token.punctuation.brace-level-3,
 .rainbow-braces .token.punctuation.brace-level-6,
 .rainbow-braces .token.punctuation.brace-level-9,
 .rainbow-braces .token.punctuation.brace-level-12 {
-  color: #f34853;
-  opacity: 1;
+  color: #c090ec;
 }
