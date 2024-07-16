@@ -73,12 +73,12 @@ export const dirname = (pathProp: string) => {
 
 export const appDataDir = async (): Promise<string> => {
   const dir = await invoke<string>("app_data_dir");
-  return dir;
+  return joinPath(dir, "");
 };
 
 export const homeDir = async (): Promise<string> => {
   const dir = await invoke<string>("user_home_dir");
-  return dir;
+  return joinPath(dir, "");
 };
 
 export const resolveResource = async (resource: string): Promise<string> => {
