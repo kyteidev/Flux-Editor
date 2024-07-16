@@ -123,7 +123,7 @@ const Startup = () => {
   };
 
   return (
-    <div class="flex flex-col space-y-2 px-2 pb-1">
+    <div class="flex flex-col space-y-2 px-2 pb-1 text-content">
       <dialog id="modal-new">
         <Modal
           width={60}
@@ -131,26 +131,26 @@ const Startup = () => {
           class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
         >
           <div class="flex-col space-y-4">
-            <Dropdown
-              items={["File", "Project"]}
-              placeholder="File"
-              width="110px"
-              height="35px"
-              selectedItem={setSelectedType}
-            ></Dropdown>
-            <Input
-              width="100%"
-              height="35px"
-              value=""
-              placeholder="Name"
-              onChange={setName}
-            />
             <div class="flex items-center space-x-2">
+              <p>Type: </p>
+              <Dropdown
+                items={["File", "Project"]}
+                placeholder="File"
+                width="110px"
+                height="35px"
+                selectedItem={setSelectedType}
+              ></Dropdown>
+            </div>
+            <div class="flex items-center space-x-2">
+              <p>Name: </p>
+              <Input width="100%" height="35px" value="" onChange={setName} />
+            </div>
+            <div class="flex items-center space-x-2">
+              <p>Location: </p>
               <Input
                 width="100%"
                 height="35px"
                 value={dirPath()}
-                placeholder="Directory"
                 onChange={setDirPath}
               />
               <Button
@@ -208,13 +208,10 @@ const Startup = () => {
           height={35}
           class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
         >
-          <Input
-            width="100%"
-            height="35px"
-            value=""
-            placeholder="URL"
-            onChange={setDirPath}
-          />
+          <div class="flex items-center space-x-2">
+            <p>URL: </p>
+            <Input width="100%" height="35px" value="" onChange={setDirPath} />
+          </div>
           <div
             class="flex space-x-2"
             style={{
