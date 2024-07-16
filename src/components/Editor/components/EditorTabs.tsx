@@ -25,8 +25,9 @@ import { Default } from "../../Icons/FileIcons";
 import { getSetting, getSettingsPath } from "../../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { extname } from "../../../utils/path";
+import { invoke } from "@tauri-apps/api/tauri";
 
-let activeInterval: NodeJS.Timeout;
+let activeInterval: number;
 
 const [tabs, setTabs] = createSignal<string[][]>([]);
 const [activeTab, setActiveTab] = createSignal(0);
@@ -98,6 +99,9 @@ const EditorTabs = () => {
                   ); // for some reason file gets saved when closing, no matter the result of this ask dialog. This removes the path from savedTabs() array
                   return;
                 }
+              }
+              if (savedTabs().length != tabs().length) {
+                invoke("set_doc_edited", { edited: false });
               }
               setIsClosed(true);
               setTabs(tabs().filter((t) => t !== tabs()[index()]));
