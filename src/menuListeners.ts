@@ -21,6 +21,7 @@ import { info } from "tauri-plugin-log-api";
 import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
 import { getTabs } from "./components/Editor/components/EditorTabs";
 import { dialog } from "@tauri-apps/api";
+import { toggleSearch } from "./components/Search/Search";
 
 export const addListeners = () => {
   appWindow.listen("tauri://close-requested", async () => {
@@ -64,6 +65,10 @@ export const addListeners = () => {
   });
   appWindow.listen("flux:save_as", () => {
     saveFile(true);
+  });
+
+  appWindow.listen("flux:search", () => {
+    toggleSearch();
   });
 
   info("Initialized menu event listeners");

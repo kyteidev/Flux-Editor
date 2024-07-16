@@ -14,6 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
 <https://www.gnu.org/licenses/>.
 */
+
 import { createSignal, onMount, Show } from "solid-js";
 import EditorComponent from "./components/Editor/EditorComponent";
 import EditorTabs, {
@@ -29,6 +30,7 @@ import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
 import EditorFallback from "./pages/EditorFallback";
 import WindowControls from "./components/WindowControls/WindowControls";
 import Menu from "./components/Menu/Menu";
+import Search from "./components/Search/Search";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -132,6 +134,7 @@ export default function App() {
           <WindowControls />
         </div>
       </div>
+      <Search />
     </div>
   );
 }

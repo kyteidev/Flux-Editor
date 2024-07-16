@@ -22,7 +22,6 @@ import { addTab } from "./components/Editor/components/EditorTabs";
 import { openFile } from "./components/Editor/EditorComponent";
 import { getSettingsPath } from "./settingsManager";
 import { resolveResource } from "./utils/path";
-import { loaded } from "./App";
 
 export const about = async () => {
   const appVersion = getVersion();
@@ -58,10 +57,8 @@ export const licenseThirdParty = async () => {
 };
 
 export const settings = () => {
-  if (loaded()) {
-    addTab(["Settings", getSettingsPath()]);
-    openFile(getSettingsPath());
-  }
+  addTab(["Settings", getSettingsPath()]);
+  openFile(getSettingsPath());
 };
 
 export const newWindow = () => {
