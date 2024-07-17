@@ -15,6 +15,9 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+// Window controls SVG icons are sourced from https://github.com/agmmnn/tauri-controls. Licensed under MIT.
+// License notice found in resources/THIRD-PARTY-LICENSES-JS.txt
+
 import { appWindow } from "@tauri-apps/api/window";
 import { createSignal, createEffect } from "solid-js";
 import { fileSaved } from "../Editor/EditorComponent";
