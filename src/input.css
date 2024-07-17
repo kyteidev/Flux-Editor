@@ -129,9 +129,9 @@ dialog {
 }
 
 dialog[open] {
-  animation: fadein 0.2s ease-in-out forwards;
+  animation: fadein 0.1s ease-in-out forwards;
 }
 
 .dialog-close {
-  animation: fadeout 0.2s ease-in-out forwards;
+  animation: fadeout 0.1s ease-in-out forwards;
 }

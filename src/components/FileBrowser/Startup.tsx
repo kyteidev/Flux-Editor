@@ -142,7 +142,7 @@ const Startup = () => {
         <Modal
           width={60}
           height={60}
-          class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
+          class={`${closeModal() ? "dialog-close" : ""}`}
         >
           <div class="flex-col space-y-4">
             <div class="flex items-center space-x-2">
@@ -209,7 +209,7 @@ const Startup = () => {
                     modal.close();
                   }
                   setCloseModal(false);
-                }, 200);
+                }, 100);
               }}
             />
             <Button
@@ -227,7 +227,7 @@ const Startup = () => {
         <Modal
           width={60}
           height={35}
-          class={`bg-base-200 ${closeModal() ? "dialog-close" : ""}`}
+          class={`${closeModal() ? "dialog-close" : ""}`}
         >
           <div class="flex items-center space-x-2">
             <p>URL: </p>
@@ -263,7 +263,7 @@ const Startup = () => {
                     modal.close();
                   }
                   setCloseModal(false);
-                }, 200);
+                }, 100);
               }}
             />
             <Button

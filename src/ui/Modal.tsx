@@ -27,6 +27,7 @@ interface Props {
 const Modal = (props: Props) => {
   return (
     <div
+      class={`${props.class}`}
       style={{
         width: "100vw",
         height: "100vh",
@@ -41,7 +42,7 @@ const Modal = (props: Props) => {
       }}
     >
       <div
-        class={`${props.class} rounded`}
+        class="rounded bg-base-200"
         style={{
           width: `${props.width}%`,
           height: `${props.height}%`,
