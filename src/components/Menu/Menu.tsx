@@ -133,33 +133,33 @@ const Menu = () => {
                 first={true}
                 item={1}
                 text="About"
-                width="w-40"
+                width="w-48"
                 action={() => about()}
               />
               <MenuItem
                 item={2}
                 text="Check for Updates"
-                width="w-40"
+                width="w-48"
                 separator={true}
                 action={() => emit("tauri://update")}
               />
               <MenuItem
                 item={3}
                 text="License"
-                width="w-40"
+                width="w-48"
                 action={() => license()}
               />
               <MenuItem
                 item={4}
                 text="JS Third Party Licenses"
-                width="w-40"
+                width="w-48"
                 action={() => licenseThirdPartyJS()}
               />
               <MenuItem
                 last={true}
                 item={5}
                 text="Rust Third Party Licenses"
-                width="w-40"
+                width="w-48"
                 action={() => licenseThirdPartyRust()}
               />
             </Submenu>

@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 /*
-! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.5 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -763,8 +763,8 @@ video {
   width: 1rem;
 }
 
-.w-40 {
-  width: 10rem;
+.w-48 {
+  width: 12rem;
 }
 
 .w-7 {
@@ -1094,10 +1094,6 @@ video {
 
 .pb-1 {
   padding-bottom: 0.25rem;
-}
-
-.pl-3 {
-  padding-left: 0.75rem;
 }
 
 .pl-\[10px\] {
