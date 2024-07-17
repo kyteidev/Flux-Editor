@@ -186,10 +186,15 @@ export const saveFile = async (saveAs?: boolean) => {
   ) {
     fs.writeFile(filePath, textarea.value);
 
+    updateArrays(filePath);
+
+    if (getSavedFiles().length === getTabs().length) {
+      invoke("set_doc_edited", { edited: false });
+    }
+
     if (filePath === getSettingsPath()) {
       loadSettings();
     }
-    updateArrays(filePath);
   }
 };
 
