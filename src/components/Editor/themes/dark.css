@@ -1,4 +1,4 @@
-/* based on Tomorrow theme by Rose Pritchard and Github Dark theme */
+/* inspired by Github Dark theme */
 
 code[class*="language-"],
 pre[class*="language-"] {
@@ -13,13 +13,6 @@ pre[class*="language-"] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-}
-
-/* Code blocks */
-pre[class*="language-"] {
-  padding: 1em;
-  margin: 0.5em 0;
-  overflow: auto;
 }
 
 :not(pre) > code[class*="language-"],
@@ -45,7 +38,7 @@ pre[class*="language-"] {
 .token.atrule,
 .token.keyword,
 .token.builtin {
-  color: #b677f1;
+  color: #b978f5;
 }
 
 .token.boolean {
@@ -56,12 +49,12 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.function,
-.token.function-name {
+.token.function-name,
+.token.property {
   color: #6fb5f3;
 }
 
 .token.string,
-.token.property,
 .token.attr-name,
 .token.attr-value,
 .token.selector,
