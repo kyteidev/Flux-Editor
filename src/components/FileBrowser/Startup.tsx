@@ -7,7 +7,12 @@ import { dialog, fs } from "@tauri-apps/api";
 import { cloneRepo, getRepoPath } from "../../utils/git";
 import { error, warn } from "tauri-plugin-log-api";
 import { loadEditor } from "../../App";
-import { checkDirPathValidity, homeDir, joinPath } from "../../utils/path";
+import {
+  checkDirPathValidity,
+  homeDir,
+  joinPath,
+  pathSep,
+} from "../../utils/path";
 
 const Startup = () => {
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
@@ -33,7 +38,9 @@ const Startup = () => {
   const openDir = async (notNew?: boolean) => {
     dialog.open({ directory: true, multiple: false }).then((path) => {
       if (path) {
-        setDirPath(path.toString() + "/");
+        setDirPath(path.toString() + pathSep());
+      } else {
+        return;
       }
 
       if (notNew) {
