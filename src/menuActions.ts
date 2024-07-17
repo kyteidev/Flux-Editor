@@ -34,7 +34,7 @@ export const about = async () => {
   }
 
   dialog.message(
-    "Copyright © 2024 The Flux Editor Contributors.\nLicensed under the GNU General Public License v3.0.\nSee " +
+    "Copyright © 2024 The Flux Editor Contributors.\nLicensed under the GNU General Public License v3.0.\n\nSee " +
       licensesLocation +
       " for license notices.",
     { title: "Flux Editor " + (await appVersion) },
