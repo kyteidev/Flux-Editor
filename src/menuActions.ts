@@ -28,7 +28,7 @@ export const about = async () => {
 
   let licensesLocation: string;
   if ((await getOS()) === "darwin") {
-    licensesLocation = "Flux Editor > Legal Notices";
+    licensesLocation = "Help > Legal Notices";
   } else {
     licensesLocation = "Menu > Help";
   }

@@ -20,19 +20,6 @@ use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 pub fn menu() -> Menu {
     let app_menu = Menu::new()
         .add_item(CustomMenuItem::new("about".to_string(), "About"))
-        .add_submenu(Submenu::new(
-            "Legal Notices",
-            Menu::new()
-                .add_item(CustomMenuItem::new("license".to_string(), "License"))
-                .add_item(CustomMenuItem::new(
-                    "licenses-third-party-js".to_string(),
-                    "JS Third Party Licenses",
-                ))
-                .add_item(CustomMenuItem::new(
-                    "licenses-third-party-rust".to_string(),
-                    "Rust Third Party Licenses",
-                )),
-        ))
         .add_native_item(MenuItem::Separator)
         .add_item(
             CustomMenuItem::new("settings".to_string(), "Settings").accelerator("CmdOrCtrl+,"),
@@ -88,12 +75,27 @@ pub fn menu() -> Menu {
                 .accelerator("CmdOrCtrl+Shift+T"),
         );
 
+    let help_menu = Menu::new().add_submenu(Submenu::new(
+        "Legal Notices",
+        Menu::new()
+            .add_item(CustomMenuItem::new("license".to_string(), "License"))
+            .add_item(CustomMenuItem::new(
+                "licenses-third-party-js".to_string(),
+                "JS Third Party Licenses",
+            ))
+            .add_item(CustomMenuItem::new(
+                "licenses-third-party-rust".to_string(),
+                "Rust Third Party Licenses",
+            )),
+    ));
+
     let menu = Menu::new()
         .add_submenu(Submenu::new("App", app_menu))
         .add_submenu(Submenu::new("File", file_menu))
         .add_submenu(Submenu::new("Edit", edit_menu))
         .add_submenu(Submenu::new("View", view_menu))
-        .add_submenu(Submenu::new("Modules", modules_menu));
+        .add_submenu(Submenu::new("Modules", modules_menu))
+        .add_submenu(Submenu::new("Help", help_menu));
 
     if cfg!(target_os = "macos") {
         return menu;
