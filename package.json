@@ -1,5 +1,5 @@
 {
-  "name": "Flux Editor",
+  "name": "flux-editor",
   "version": "0.4.1",
   "description": "A minimalist and lightweight code editor",
   "type": "module",
