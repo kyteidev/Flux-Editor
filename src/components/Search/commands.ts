@@ -16,7 +16,13 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { appWindow } from "@tauri-apps/api/window";
-import { about, license, licenseThirdParty, settings } from "../../menuActions";
+import {
+  about,
+  license,
+  licenseThirdPartyJS,
+  licenseThirdPartyRust,
+  settings,
+} from "../../menuActions";
 import { emit } from "@tauri-apps/api/event";
 
 export const cmdFlux: { [key: string]: () => void } = {
@@ -32,7 +38,8 @@ export const cmdFlux: { [key: string]: () => void } = {
   },
   "Flux: Minimize": () => appWindow.minimize(),
   "Flux: Open license": () => license(),
-  "Flux: Open third party licenses": () => licenseThirdParty(),
+  "Flux: Open JS third party licenses": () => licenseThirdPartyJS(),
+  "Flux: Open Rust third party licenses": () => licenseThirdPartyRust(),
   "Flux: Open settings": () => settings(),
   "Flux: Quit": () => appWindow.close(),
 };

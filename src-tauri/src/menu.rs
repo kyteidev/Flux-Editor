@@ -25,8 +25,12 @@ pub fn menu() -> Menu {
             Menu::new()
                 .add_item(CustomMenuItem::new("license".to_string(), "License"))
                 .add_item(CustomMenuItem::new(
-                    "licenses-third-party".to_string(),
-                    "Third Party Licenses",
+                    "licenses-third-party-js".to_string(),
+                    "JS Third Party Licenses",
+                ))
+                .add_item(CustomMenuItem::new(
+                    "licenses-third-party-rust".to_string(),
+                    "Rust Third Party Licenses",
                 )),
         ))
         .add_native_item(MenuItem::Separator)

@@ -22,7 +22,8 @@ import Submenu from "./Submenu";
 import {
   about,
   license,
-  licenseThirdParty,
+  licenseThirdPartyJS,
+  licenseThirdPartyRust,
   newWindow,
   settings,
 } from "../../menuActions";
@@ -141,11 +142,17 @@ const Menu = () => {
                 action={() => license()}
               />
               <MenuItem
-                last={true}
                 item={3}
-                text="Third Party Licenses"
+                text="JS Third Party Licenses"
                 width="w-40"
-                action={() => licenseThirdParty()}
+                action={() => licenseThirdPartyJS()}
+              />
+              <MenuItem
+                last={true}
+                item={4}
+                text="Rust Third Party Licenses"
+                width="w-40"
+                action={() => licenseThirdPartyRust()}
               />
             </Submenu>
           </MenuContainer>

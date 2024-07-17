@@ -48,11 +48,19 @@ export const license = async () => {
   openFile(resourcePath, true);
 };
 
-export const licenseThirdParty = async () => {
+export const licenseThirdPartyJS = async () => {
   const resourcePath = await resolveResource(
-    "../resources/THIRD-PARTY-LICENSES.txt",
+    "../resources/THIRD-PARTY-LICENSES-JS.txt",
   );
-  addTab([":THIRD PARTY LICENSES", resourcePath]);
+  addTab(["JS: THIRD PARTY LICENSES", resourcePath]);
+  openFile(resourcePath, true);
+};
+
+export const licenseThirdPartyRust = async () => {
+  const resourcePath = await resolveResource(
+    "../resources/THIRD-PARTY-LICENSES-Rust.txt",
+  );
+  addTab(["Rust: THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
 

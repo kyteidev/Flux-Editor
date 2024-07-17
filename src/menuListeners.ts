@@ -15,13 +15,19 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+import { dialog } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
-import { about, license, licenseThirdParty, settings } from "./menuActions";
 import { info } from "tauri-plugin-log-api";
 import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
 import { getTabs } from "./components/Editor/components/EditorTabs";
-import { dialog } from "@tauri-apps/api";
 import { toggleSearch } from "./components/Search/Search";
+import {
+  about,
+  license,
+  licenseThirdPartyJS,
+  licenseThirdPartyRust,
+  settings,
+} from "./menuActions";
 
 export const addListeners = () => {
   appWindow.listen("tauri://close-requested", async () => {
@@ -52,8 +58,11 @@ export const addListeners = () => {
   appWindow.listen("flux:license", async () => {
     license();
   });
-  appWindow.listen("flux:licenses-third-party", async () => {
-    licenseThirdParty();
+  appWindow.listen("flux:licenses-third-party-js", async () => {
+    licenseThirdPartyJS();
+  });
+  appWindow.listen("flux:licenses-third-party-rust", async () => {
+    licenseThirdPartyRust();
   });
 
   appWindow.listen("flux:settings", () => {
