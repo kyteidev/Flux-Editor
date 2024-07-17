@@ -28,6 +28,7 @@ import {
   licenseThirdPartyRust,
   settings,
 } from "./menuActions";
+import { emit } from "@tauri-apps/api/event";
 
 export const addListeners = () => {
   appWindow.listen("tauri://close-requested", async () => {
@@ -53,6 +54,9 @@ export const addListeners = () => {
   // TODO: Add separate page for displaying this info, instead of dialog?
   appWindow.listen("flux:about", () => {
     about();
+  });
+  appWindow.listen("flux:update", () => {
+    emit("tauri://update");
   });
 
   appWindow.listen("flux:license", async () => {

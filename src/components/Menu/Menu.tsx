@@ -31,6 +31,7 @@ import { saveFile } from "../Editor/EditorComponent";
 import { appWindow } from "@tauri-apps/api/window";
 import Button from "../../ui/Button";
 import { platform } from "@tauri-apps/api/os";
+import { emit } from "@tauri-apps/api/event";
 
 const [showMenu, setShowMenu] = createSignal(false);
 
@@ -137,19 +138,26 @@ const Menu = () => {
               />
               <MenuItem
                 item={2}
+                text="Check for Updates"
+                width="w-40"
+                separator={true}
+                action={() => emit("tauri://update")}
+              />
+              <MenuItem
+                item={3}
                 text="License"
                 width="w-40"
                 action={() => license()}
               />
               <MenuItem
-                item={3}
+                item={4}
                 text="JS Third Party Licenses"
                 width="w-40"
                 action={() => licenseThirdPartyJS()}
               />
               <MenuItem
                 last={true}
-                item={4}
+                item={5}
                 text="Rust Third Party Licenses"
                 width="w-40"
                 action={() => licenseThirdPartyRust()}

@@ -20,6 +20,10 @@ use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 pub fn menu() -> Menu {
     let app_menu = Menu::new()
         .add_item(CustomMenuItem::new("about".to_string(), "About"))
+        .add_item(CustomMenuItem::new(
+            "update".to_string(),
+            "Check for Updates",
+        ))
         .add_native_item(MenuItem::Separator)
         .add_item(
             CustomMenuItem::new("settings".to_string(), "Settings").accelerator("CmdOrCtrl+,"),
