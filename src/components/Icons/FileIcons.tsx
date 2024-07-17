@@ -1,4 +1,4 @@
-// All icons sourced from Tabler Icons (tabler.io/icons) unless otherwise stated. SVG icons licensed under MIT.
+// All icons sourced from Tabler Icons (tabler.io/icons). SVG icons licensed under MIT. License notice found in resources/THIRD-PARTY-LICENSES-JS.txt
 
 export const Default = () => {
   return (
@@ -70,18 +70,25 @@ export const Zip = () => {
   );
 };
 
-// Image icon sourced from Google Material Symbols (fonts.google.com/icons). SVG icon licensed under Apache 2.0.
 export const Image = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
-      style={{ padding: "3.6px" }}
-      fill="var(--content)"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      style={{ padding: "4px" }}
     >
-      <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z" />
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 8h.01" />
+      <path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12z" />
+      <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" />
+      <path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" />
     </svg>
   );
 };

@@ -1,57 +1,21 @@
-// SOURCE: Google Material Symbols (fonts.google.com/icons) unless otherwise stated. SVG icons licensed under Apache 2.0.
+// All icons sourced from Tabler Icons (tabler.io/icons). SVG icons licensed under MIT. License notice found in resources/THIRD-PARTY-LICENSES-JS.txt
 
 export const IconClose = () => {
   return (
     <svg
-      class="fill-content"
       xmlns="http://www.w3.org/2000/svg"
-      height="100%"
-      viewBox="0 -960 960 960"
       width="100%"
+      height="100%"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     >
-      <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-    </svg>
-  );
-};
-
-export const IconNew = () => {
-  return (
-    <svg
-      class="fill-content"
-      xmlns="http://www.w3.org/2000/svg"
-      height="64"
-      viewBox="0 -960 960 960"
-      width="64"
-    >
-      <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
-    </svg>
-  );
-};
-
-export const IconOpen = () => {
-  return (
-    <svg
-      class="fill-content"
-      xmlns="http://www.w3.org/2000/svg"
-      height="64"
-      viewBox="0 -960 960 960"
-      width="64"
-    >
-      <path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640H447l-80-80H160v480l96-320h684L837-217q-8 26-29.5 41.5T760-160H160Zm84-80h516l72-240H316l-72 240Zm0 0 72-240-72 240Zm-84-400v-80 80Z" />
-    </svg>
-  );
-};
-
-export const IconClone = () => {
-  return (
-    <svg
-      class="fill-content"
-      xmlns="http://www.w3.org/2000/svg"
-      height="64"
-      viewBox="0 -960 960 960"
-      width="64"
-    >
-      <path d="M120-120q-33 0-56.5-23.5T40-200v-520h80v520h680v80H120Zm160-160q-33 0-56.5-23.5T200-360v-440q0-33 23.5-56.5T280-880h200l80 80h280q33 0 56.5 23.5T920-720v360q0 33-23.5 56.5T840-280H280Zm0-80h560v-360H527l-80-80H280v440Zm0 0v-440 440Z" />
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 6l-12 12" />
+      <path d="M6 6l12 12" />
     </svg>
   );
 };
@@ -59,13 +23,18 @@ export const IconClone = () => {
 export const IconExpand = () => {
   return (
     <svg
-      class="fill-content"
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     >
-      <path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z" />
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 9l6 6l6 -6" />
     </svg>
   );
 };
@@ -73,13 +42,18 @@ export const IconExpand = () => {
 export const IconUnexpand = () => {
   return (
     <svg
-      class="fill-content"
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     >
-      <path d="m296-345-56-56 240-240 240 240-56 56-184-184-184 184Z" />
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M6 15l6 -6l6 6" />
     </svg>
   );
 };
@@ -105,7 +79,6 @@ export const IconLineVertical = () => {
   );
 };
 
-// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconGit = () => {
   return (
     <svg
@@ -132,7 +105,6 @@ export const IconGit = () => {
   );
 };
 
-// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconFolder = () => {
   return (
     <svg
@@ -153,7 +125,6 @@ export const IconFolder = () => {
   );
 };
 
-// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconFolderOpen = () => {
   return (
     <svg
@@ -195,7 +166,6 @@ export const IconCircle = () => {
   );
 };
 
-// SOURCE: Tabler Icons. SVG licensed under MIT. License notice available in resources/THIRD-PARTY-LICENSES.txt
 export const IconSettings = () => {
   return (
     <svg
@@ -220,13 +190,18 @@ export const IconSettings = () => {
 export const IconExpandRight = () => {
   return (
     <svg
-      class="fill-content"
       xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="var(--content)"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     >
-      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 6l6 6l-6 6" />
     </svg>
   );
 };
