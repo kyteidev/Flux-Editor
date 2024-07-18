@@ -203,13 +203,13 @@ const FileBrowser = (props: Props) => {
   };
 
   return (
-    <div class="h-full min-h-full w-full min-w-full bg-base-200">
+    <div class="mr-[6px] h-full min-h-full w-full min-w-full max-w-full bg-base-200">
       <Show when={props.loaded} fallback={<Startup />}>
         <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold text-content">
           {`${props.rootDirName}`}
         </div>
         <div
-          class="min-w-fit overflow-y-auto overflow-x-hidden"
+          class="min-w-full max-w-full overflow-y-auto overflow-x-hidden"
           style={{ "max-height": `calc(100% - 1.5rem)` }}
         >
           {renderItem(dirContents(), props.dir, true, 0)}
