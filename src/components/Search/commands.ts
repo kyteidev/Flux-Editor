@@ -28,7 +28,8 @@ import { emit } from "@tauri-apps/api/event";
 export const cmdFlux: { [key: string]: () => void } = {
   "Flux: About": () => about(),
   "Flux: Check updates": () => emit("tauri://update"),
-  "Flux: Fullscreen": () => appWindow.setFullscreen(!appWindow.isFullscreen()),
+  "Flux: Fullscreen": async () =>
+    appWindow.setFullscreen(!(await appWindow.isFullscreen())),
   "Flux: Maximize": async () => {
     if (await appWindow.isMaximized()) {
       appWindow.unmaximize();
