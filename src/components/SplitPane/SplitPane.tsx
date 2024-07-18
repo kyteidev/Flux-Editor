@@ -176,10 +176,10 @@ const SplitPane = (props: Props) => {
         style={{
           width: `${props.swapPriority ? `calc(100vw - ${firstWidth()})` : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
           "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
-          height: `${props.swapPriority ? `calc(100vh - 30px - ${firstHeight()}px - ${fixHeight()}px)` : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
+          height: `${props.swapPriority ? `calc(100vh - 54px - ${firstHeight()}px - ${fixHeight()}px)` : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
           "min-height": `${props.swapPriority ? "" : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
           "max-width": `${!props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
-          "max-height": `${!props.swapPriority ? `${props.vertical && `calc(100vh - 30px - ${firstHeight()}px - ${fixHeight()}px)`}` : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
+          "max-height": `${!props.swapPriority ? `${props.vertical && `calc(100vh - 56px - ${firstHeight()}px - ${fixHeight()}px)`}` : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
         }}
       >
         {firstChild()}
@@ -199,7 +199,7 @@ const SplitPane = (props: Props) => {
           width: `${props.swapPriority ? `${props.vertical ? "100%" : `${firstWidth()}px`}` : `calc(100vw - ${firstWidth()})`}`,
           "max-width": `${props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
           height: `${props.swapPriority ? `${props.vertical ? `${firstHeight()}px` : "100%"}` : `calc(100vh - ${firstHeight()})`}`,
-          "max-height": `${props.swapPriority ? "" : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
+          "max-height": `${props.swapPriority ? "" : `${props.vertical && `calc(100vh - ${firstHeight()}px - 56px)`}`}`,
           "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
           "min-height": `${!props.swapPriority ? "" : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
         }}

@@ -77,7 +77,7 @@ export const fileIcons: { [key: string]: () => JSX.Element } = {
 
   // config files
   json: FI.Config,
-  yaml: FI.Config,
+  yml: FI.Config,
   toml: FI.Config,
 
   // images
@@ -110,4 +110,41 @@ export const fileIcons: { [key: string]: () => JSX.Element } = {
   txt: FI.Text,
   rtf: FI.Text,
   pdf: FI.Text,
+};
+
+export const fileType: { [key: string]: string } = {
+  md: "Markdown",
+  ts: "TypeScript",
+  js: "JavaScript",
+  rs: "Rust",
+  py: "Python",
+  html: "HTML",
+  css: "CSS",
+  scss: "SCSS",
+  sass: "SASS",
+  cs: "C#",
+  kt: "Kotlin",
+  cpp: "C++",
+  svelte: "Svelte",
+  php: "PHP",
+  go: "Golang",
+  swift: "Swift",
+  java: "Java",
+  sh: "Bash",
+  bat: "Batch",
+  c: "C",
+  vue: "Vue",
+  h: "C++",
+  tsx: "TSX",
+  jsx: "JSX",
+  bf: "Brainfuck",
+  sql: "SQL",
+  rb: "Ruby",
+
+  json: "JSON",
+  yml: "YAML",
+  toml: "TOML",
+
+  rtf: "Rich Text",
+  svg: "SVG",
 };

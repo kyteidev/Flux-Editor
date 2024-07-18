@@ -26,6 +26,7 @@ import { getSetting, getSettingsPath } from "../../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { extname } from "../../../utils/path";
 import { invoke } from "@tauri-apps/api/tauri";
+import { updateLang } from "../../StatusBar/StatusBar";
 
 let activeInterval: number;
 
@@ -112,6 +113,7 @@ const EditorTabs = () => {
 
               if (tabs().length === 0) {
                 fixEditorHeight(false); // tabs add height to editor pane, this fixes it by adding height because tabs row is hidden when all tabs are closed
+                updateLang(true);
               } else {
                 try {
                   openFile(tabs()[index() - 1][1]); // opens the previous tab

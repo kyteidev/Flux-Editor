@@ -31,6 +31,7 @@ import EditorFallback from "./pages/EditorFallback";
 import WindowControls from "./components/WindowControls/WindowControls";
 import Menu from "./components/Menu/Menu";
 import Search from "./components/Search/Search";
+import StatusBar from "./components/StatusBar/StatusBar";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -84,8 +85,8 @@ export default function App() {
       </header>
       <div
         style={{
-          "max-height": `calc(100vh - 1.75em)`,
-          "min-height": `calc(100vh - 1.75em)`,
+          "max-height": `calc(100vh - 3.25em - 2px)`,
+          "min-height": `calc(100vh - 3.25em - 2px)`,
         }}
       >
         <SplitPane
@@ -134,6 +135,7 @@ export default function App() {
           <WindowControls />
         </div>
       </div>
+      <StatusBar />
       <Search />
     </div>
   );

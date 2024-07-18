@@ -90,7 +90,7 @@ import "prismjs/components/prism-visual-basic.min.js";
 import "prismjs/components/prism-wasm.min.js";
 import "prismjs/components/prism-yaml.min.js";
 
-import { dialog, fs, invoke } from "@tauri-apps/api";
+import { dialog, fs, invoke, updater } from "@tauri-apps/api";
 import { specialCodeFileType } from "../../utils/file";
 import {
   addTab,
@@ -105,6 +105,7 @@ import {
 } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { basename, extname } from "../../utils/path";
+import { updateLang } from "../StatusBar/StatusBar";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
@@ -121,6 +122,10 @@ const [lines, setLines] = createSignal(["1"]);
 const [lineHeight, setLineHeight] = createSignal("1.5rem");
 
 const [lang, setLang] = createSignal("");
+
+export const getOpenFilePath = () => {
+  return filePath;
+};
 
 export const loadEditorSettings = () => {
   const editorWrapper = document.getElementById("editor-wrapper");
@@ -254,6 +259,8 @@ export const openFile = (pathLocal: string, readonly?: boolean) => {
           updateLineNumbers();
           // TODO: restore selected line and character
           textarea.blur();
+
+          updateLang();
         })
         .catch((e: string) => {
           if (getTabs()[0][1] === pathLocal) {

@@ -635,6 +635,14 @@ video {
   z-index: 51;
 }
 
+.float-end {
+  float: inline-end;
+}
+
+.float-right {
+  float: right;
+}
+
 .m-0 {
   margin: 0px;
 }
@@ -655,12 +663,12 @@ video {
   margin-right: 0.25rem;
 }
 
-.mr-\[6px\] {
-  margin-right: 6px;
-}
-
 .mt-1 {
   margin-top: 0.25rem;
+}
+
+.mr-auto {
+  margin-right: auto;
 }
 
 .block {
@@ -1031,6 +1039,10 @@ video {
 
 .border-b-\[1px\] {
   border-bottom-width: 1px;
+}
+
+.border-t-2 {
+  border-top-width: 2px;
 }
 
 .border-t-\[1px\] {
