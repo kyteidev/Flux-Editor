@@ -27,7 +27,7 @@ interface Props {
 const ButtonIcon = (props: Props) => {
   return (
     <button
-      class={`rounded bg-primary p-2 transition duration-100 ease-in-out hover:bg-primary-hover active:brightness-125`}
+      class={`bg-primary hover:bg-primary-hover rounded p-2 active:brightness-125`}
       style={{
         width: `${props.size}`,
         height: `${props.size}`,

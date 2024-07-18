@@ -187,7 +187,7 @@ const SplitPane = (props: Props) => {
       <Show when={secondChild()}>
         <div
           id="splitter"
-          class={`${props.vertical ? "h-[2px] min-h-[2px] w-full cursor-row-resize" : "w-[2px] min-w-[2px] cursor-col-resize"} ${isDragging() ? "bg-accent" : "bg-base-100"} z-50 transition duration-100 ease-in-out hover:bg-accent`}
+          class={`${props.vertical ? "h-[2px] min-h-[2px] w-full cursor-row-resize" : "w-[2px] min-w-[2px] cursor-col-resize"} ${isDragging() ? "bg-accent" : "bg-base-100"} z-50 hover:bg-accent`}
           style={{ height: `${props.vertical ?? `calc(100vh - 28px)`}` }}
           onmousedown={handleMouseDown}
           onclick={handleUnhide}

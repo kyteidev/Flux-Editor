@@ -132,7 +132,7 @@ const FileBrowser = (props: Props) => {
           return (
             <div class="relative block min-w-fit">
               <div
-                class="min-w-fit cursor-pointer select-none px-1 text-content transition duration-100 ease-in-out hover:bg-base-100 active:bg-base-100-hover"
+                class="min-w-fit cursor-pointer select-none px-1 text-content hover:bg-base-100 active:bg-base-100-hover"
                 onclick={() => {
                   if (isDir()) {
                     setOpen(!open());
