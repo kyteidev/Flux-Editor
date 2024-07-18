@@ -54,10 +54,11 @@ const MenuItem = (props: {
 }) => {
   return (
     <div
-      class={`${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-b-[1px] border-base-100-hover"} ${props.width ? `${props.width}` : "w-32"} absolute z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content transition duration-100 ease-in-out hover:bg-base-100-hover`}
+      class={`menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-b-[1px] border-base-100-hover"} ${props.width ? `${props.width}` : "w-32"} absolute z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content transition duration-100 ease-in-out hover:bg-base-100-hover`}
       style={{ top: `calc(${props.item} * 1.5rem + 0.5rem)` }}
       onClick={() => {
         setShowMenu(false);
+        document.removeEventListener("mousedown", handleOutsideClick);
         if (props.action) {
           props.action();
         }
@@ -93,6 +94,7 @@ const runShortcut = () => {
     if (shortcutKeys.every((key) => filteredKeysPressed.includes(key))) {
       shortcuts[shortcut]();
       setShowMenu(false);
+      document.removeEventListener("mousedown", handleOutsideClick);
       break;
     }
   }
@@ -101,7 +103,6 @@ const runShortcut = () => {
 const handleKeyDown = (e: KeyboardEvent) => {
   if (!keysPressed.includes(e.code)) {
     keysPressed.push(e.code);
-    console.log(e.code);
 
     runShortcut();
   }
@@ -109,6 +110,15 @@ const handleKeyDown = (e: KeyboardEvent) => {
 
 const handleKeyUp = (e: KeyboardEvent) => {
   keysPressed.splice(keysPressed.indexOf(e.code), 1);
+};
+
+const handleOutsideClick = (e: MouseEvent) => {
+  if (e.target instanceof HTMLElement) {
+    if (!e.target.className.includes("menu")) {
+      setShowMenu(false);
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+  }
 };
 
 const Menu = () => {
@@ -125,6 +135,7 @@ const Menu = () => {
     if (os() != "darwin") {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
   });
 
@@ -136,7 +147,14 @@ const Menu = () => {
             colorBg={true}
             height="18px"
             text="Menu"
-            action={() => setShowMenu(!showMenu())}
+            action={() => {
+              setShowMenu(!showMenu());
+              if (showMenu()) {
+                document.addEventListener("mousedown", handleOutsideClick);
+              } else {
+                document.removeEventListener("mousedown", handleOutsideClick);
+              }
+            }}
           />
         </div>
         <Show when={showMenu()}>
