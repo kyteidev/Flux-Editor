@@ -66,6 +66,6 @@ jobs:
           releaseBody: |
             ## Release notes
 
-          releaseDraft: false
+          releaseDraft: true
           prerelease: true
           args: ${{ matrix.args }}
