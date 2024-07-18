@@ -15,11 +15,19 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { createEffect, createSignal, onMount, Show } from "solid-js";
+import {
+  createEffect,
+  createSignal,
+  For,
+  onCleanup,
+  onMount,
+  Show,
+} from "solid-js";
 import { cmdFlux } from "./commands";
 
 const [show, setShow] = createSignal(false);
 const [query, setQuery] = createSignal("");
+const [selected, setSelected] = createSignal(0);
 
 let inputRef: HTMLInputElement | undefined;
 
@@ -42,11 +50,14 @@ export const toggleSearch = () => {
     document.addEventListener("mousedown", handleOutsideClick);
   } else {
     setQuery("");
+    setSelected(0);
     document.removeEventListener("mousedown", handleOutsideClick);
   }
 };
 
 const Search = () => {
+  let containerRef: HTMLUListElement | undefined;
+
   const [mergedCmds, setMergedCmds] = createSignal<{
     [key: string]: () => void;
   }>({});
@@ -57,9 +68,15 @@ const Search = () => {
   let altPressed = false;
   let spacePressed = false;
 
+  let delayID: number;
+
   onMount(async () => {
     setMergedCmds(data);
     setSuggestions(Object.keys(data));
+  });
+
+  onCleanup(() => {
+    clearTimeout(delayID);
   });
 
   createEffect(() => {
@@ -67,6 +84,19 @@ const Search = () => {
       filterSuggestions(query());
     } else {
       setSuggestions(Object.keys(data));
+    }
+  });
+
+  createEffect(() => {
+    const currentSelected = selected();
+    if (containerRef) {
+      const suggestions = containerRef.querySelectorAll("li"); // Assuming 'li' elements are your suggestion items
+      if (suggestions.length > 0 && suggestions[currentSelected]) {
+        suggestions[currentSelected].scrollIntoView({
+          behavior: "instant", // looks horrible if set to smooth when scrolling fast
+          block: "nearest",
+        });
+      }
     }
   });
 
@@ -81,24 +111,61 @@ const Search = () => {
     setSuggestions(filteredSuggestions);
   };
 
+  let time = 0;
+
   const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.code === "Enter") {
+      data[suggestions()[selected()]]();
+      toggleSearch();
+    }
+
     altPressed = e.altKey;
     spacePressed = e.code === "Space";
+
     if (altPressed && spacePressed) {
       altPressed = false;
       spacePressed = false;
 
       e.preventDefault();
       toggleSearch();
+      return;
     }
     if (e.code === "Escape") {
       toggleSearch();
+      return;
+    }
+
+    const updateSelected = () => {
+      if (e.code === "ArrowDown" || e.code === "ArrowRight") {
+        if (selected() === suggestions().length - 1) {
+          setSelected(0);
+        } else {
+          setSelected(selected() + 1);
+        }
+      } else {
+        if (selected() === 0) {
+          setSelected(suggestions().length - 1);
+        } else {
+          setSelected(selected() - 1);
+        }
+      }
+    };
+
+    if (e.code.includes("Arrow")) {
+      if (new Date().getTime() - time >= 50) {
+        updateSelected();
+        time = new Date().getTime();
+      }
     }
   };
 
   const handleKeyUp = (e: KeyboardEvent) => {
     altPressed = e.altKey;
     spacePressed = e.code === "Space";
+
+    if (e.code.includes("Arrow")) {
+      clearTimeout(delayID);
+    }
   };
 
   const handleInput = (e: Event) => {
@@ -133,6 +200,7 @@ const Search = () => {
         }}
       />
       <ul
+        ref={containerRef}
         class="shadows absolute z-50 w-[28rem] overflow-auto rounded-b bg-base-100"
         style={{
           left: `calc((100vw - 28rem) / 2)`,
@@ -140,23 +208,28 @@ const Search = () => {
           "max-height": "40vh",
         }}
       >
-        {suggestions().length > 0 ? (
-          suggestions().map((suggestion) => (
-            <li
-              class="flex h-10 items-center bg-base-100 px-2 py-1 transition duration-100 ease-in-out last:rounded-b hover:bg-base-100-hover active:brightness-125"
-              onClick={() => {
-                data[suggestion]();
-                toggleSearch();
-              }}
-            >
-              {suggestion}
+        <Show
+          when={suggestions().length > 0}
+          fallback={
+            <li class="flex h-10 items-center rounded-b bg-base-100 px-2 py-1">
+              No Results
             </li>
-          ))
-        ) : (
-          <li class="flex h-10 items-center rounded-b bg-base-100 px-2 py-1">
-            No Results
-          </li>
-        )}
+          }
+        >
+          <For each={suggestions()}>
+            {(suggestion, index) => (
+              <li
+                class={`${index() === selected() && "bg-base-100-hover"} flex h-10 items-center bg-base-100 px-2 py-1 last:rounded-b hover:bg-base-100-hover active:brightness-125`}
+                onClick={() => {
+                  data[suggestion]();
+                  toggleSearch();
+                }}
+              >
+                {suggestion}
+              </li>
+            )}
+          </For>
+        </Show>
       </ul>
     </Show>
   );
