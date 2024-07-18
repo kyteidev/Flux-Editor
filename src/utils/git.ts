@@ -39,11 +39,10 @@ export const getRepoName = (url: string): string => {
   return repoWithGit.replace(".git", "");
 };
 
-export async function cloneRepo(url: string): Promise<string> {
+export async function cloneRepo(url: string, path: string): Promise<string> {
   const repoName = getRepoName(url);
-  let homePath = await homeDir();
 
-  repoPath = joinPath(homePath ? homePath.toString() : "", repoName);
+  repoPath = joinPath(path, repoName);
 
   info(`Cloning repository ${url} to ${repoPath}`);
 

@@ -16,6 +16,7 @@ import {
 
 const Startup = () => {
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
+  const [cloneUrl, setCloneUrl] = createSignal("");
   const [closeModal, setCloseModal] = createSignal(false);
   const [selectedType, setSelectedType] = createSignal<string>("File");
   // used as directory path for new open, and clone functions
@@ -50,9 +51,9 @@ const Startup = () => {
   };
 
   const clone = async () => {
-    if (dirPath() != "") {
+    if (cloneUrl() != "" && dirPath() != "") {
       setIsCloning(true);
-      const result = await cloneRepo(dirPath());
+      const result = await cloneRepo(cloneUrl(), dirPath());
       setIsCloning(false);
       if (result === "") {
         beforeLoad("clone");
@@ -62,12 +63,18 @@ const Startup = () => {
           type: "error",
         });
       }
-    } else {
+    } else if (cloneUrl() === "") {
       dialog.message("Please enter a valid URL.", {
         title: "Failed to clone repository",
         type: "error",
       });
       warn("Invalid URL provided for cloning");
+    } else {
+      dialog.message("Please enter a valid location.", {
+        title: "Failed to clone repository",
+        type: "error",
+      });
+      warn("Invalid location provided for cloning");
     }
   };
 
@@ -86,11 +93,11 @@ const Startup = () => {
           dirPath() === "" ||
           checkDirPathValidity(dirPath()) === false
         ) {
-          dialog.message("Please select a valid directory.", {
+          dialog.message("Please select a valid location.", {
             title: "Error",
             type: "error",
           });
-          warn("Invalid directory");
+          warn("Invalid location");
         } else {
           switch (selectedType()) {
             case "File":
@@ -198,7 +205,6 @@ const Startup = () => {
               width="66px"
               height="35px"
               action={() => {
-                resetValues();
                 const modal = document.getElementById(
                   "modal-new",
                 ) as HTMLDialogElement;
@@ -209,6 +215,7 @@ const Startup = () => {
                     modal.close();
                   }
                   setCloseModal(false);
+                  resetValues();
                 }, 100);
               }}
             />
@@ -229,15 +236,35 @@ const Startup = () => {
           height={35}
           class={`${closeModal() ? "dialog-close" : ""}`}
         >
-          <div class="flex items-center space-x-2">
-            <p>URL: </p>
-            <Input
-              width="100%"
-              height="35px"
-              value=""
-              placeholder="Required"
-              onChange={setDirPath}
-            />
+          <div class="flex-col space-y-4">
+            <div class="flex items-center space-x-2">
+              <p>URL: </p>
+              <Input
+                width="100%"
+                height="35px"
+                value=""
+                placeholder="Required"
+                onChange={setCloneUrl}
+              />
+            </div>
+            <div class="flex items-center space-x-2">
+              <p>Location: </p>
+              <Input
+                width="100%"
+                height="35px"
+                value={dirPath()}
+                placeholder="Required"
+                onChange={setDirPath}
+              />
+              <Button
+                colorBg={true}
+                text="Browse"
+                height="35px"
+                action={() => {
+                  openDir(false);
+                }}
+              />
+            </div>
           </div>
           <div
             class="flex space-x-2"
@@ -253,7 +280,6 @@ const Startup = () => {
               colorBg={true}
               text="Cancel"
               action={() => {
-                resetValues();
                 const modal = document.getElementById(
                   "modal-clone",
                 ) as HTMLDialogElement;
@@ -263,6 +289,7 @@ const Startup = () => {
                     modal.close();
                   }
                   setCloseModal(false);
+                  resetValues();
                 }, 100);
               }}
             />
