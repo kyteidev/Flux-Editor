@@ -655,12 +655,12 @@ video {
   margin-right: 0.25rem;
 }
 
-.mt-1 {
-  margin-top: 0.25rem;
-}
-
 .mr-\[6px\] {
   margin-right: 6px;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
 }
 
 .block {
@@ -1270,7 +1270,7 @@ video {
 
 ::-webkit-scrollbar-thumb {
   background-color: var(--accent);
-  border-radius: 12px;
+  border-radius: 0.25rem;
   opacity: 0.5;
 }
 
@@ -1288,7 +1288,9 @@ video {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--content);
+  opacity: 0.05;
+  border-radius: 0.25rem;
 }
 
 ::-webkit-scrollbar-corner {
