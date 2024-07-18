@@ -103,9 +103,13 @@ const EditorTabs = () => {
               if (savedTabs().length != tabs().length) {
                 invoke("set_doc_edited", { edited: false });
               }
-              setIsClosed(true);
+              savedTabs().splice(savedTabs().indexOf(tabs()[index()][1]), 1);
               setTabs(tabs().filter((t) => t !== tabs()[index()]));
+
+              setIsClosed(true);
+
               closeFile();
+
               if (tabs().length === 0) {
                 fixEditorHeight(false); // tabs add height to editor pane, this fixes it by adding height because tabs row is hidden when all tabs are closed
               } else {
