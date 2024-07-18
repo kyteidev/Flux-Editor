@@ -15,9 +15,11 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use tauri::WindowBuilder;
+use tauri::{TitleBarStyle, WindowBuilder};
 
 use crate::utils::time::time_ms;
+#[cfg(target_os = "macos")]
+use crate::window_ext::WindowExt;
 
 #[cfg(any(windows))]
 use window_shadows::set_shadow;
@@ -25,26 +27,37 @@ use window_shadows::set_shadow;
 #[tauri::command]
 pub async fn new_window(app: tauri::AppHandle) {
     let id = time_ms();
-    let _win = WindowBuilder::new(
-        &app,
-        id.to_string(),
-        tauri::WindowUrl::App("index.html".into()),
-    )
-    .title("Flux Editor")
-    .decorations(false)
-    .inner_size(960., 620.)
-    .min_inner_size(660., 450.)
-    .build()
-    .unwrap();
 
-    #[cfg(any(windows))]
-    set_shadow(&_win, true).unwrap();
+    if cfg!(target_os = "macos") {
+        let win = WindowBuilder::new(
+            &app,
+            id.to_string(),
+            tauri::WindowUrl::App("index.html".into()),
+        )
+        .title("Flux Editor")
+        .decorations(true)
+        .hidden_title(true)
+        .title_bar_style(TitleBarStyle::Overlay)
+        .inner_size(960., 620.)
+        .min_inner_size(660., 450.)
+        .build()
+        .unwrap();
 
-    /*
-    #[cfg(target_os = "macos")]
-    {
-        win.set_transparent_titlebar(true, false);
         win.set_window_controls_pos(10., 12.5);
+    } else {
+        let _win = WindowBuilder::new(
+            &app,
+            id.to_string(),
+            tauri::WindowUrl::App("index.html".into()),
+        )
+        .title("Flux Editor")
+        .decorations(false)
+        .inner_size(960., 620.)
+        .min_inner_size(660., 450.)
+        .build()
+        .unwrap();
+
+        #[cfg(any(windows))]
+        set_shadow(&_win, true).unwrap();
     }
-    */
 }

@@ -42,6 +42,9 @@ pub fn menu() -> Menu {
             CustomMenuItem::new("new_project".to_string(), "New Project")
                 .accelerator("CmdOrCtrl+Shift+N"),
         )
+        .add_item(
+            CustomMenuItem::new("new_window".to_string(), "New Window").accelerator("CmdOrCtrl+W"),
+        )
         .add_native_item(MenuItem::Separator)
         .add_item(CustomMenuItem::new("open".to_string(), "Open...").accelerator("CmdOrCtrl+O"))
         .add_item(CustomMenuItem::new("save".to_string(), "Save").accelerator("CmdOrCtrl+S"))

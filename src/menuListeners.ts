@@ -29,6 +29,7 @@ import {
   settings,
 } from "./menuActions";
 import { emit } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/tauri";
 
 export const addListeners = () => {
   appWindow.listen("tauri://close-requested", async () => {
@@ -71,6 +72,11 @@ export const addListeners = () => {
 
   appWindow.listen("flux:settings", () => {
     settings();
+  });
+
+  appWindow.listen("flux:new_window", () => {
+    console.log("hi");
+    invoke("new_window");
   });
 
   appWindow.listen("flux:save", () => {
