@@ -72,6 +72,8 @@ export const fileIcons: { [key: string]: () => JSX.Element } = {
   tsx: FI.React,
   jsx: FI.React,
   bf: FI.Brainfuck,
+  sql: FI.SQL,
+  rb: FI.Ruby,
 
   // config files
   json: FI.Config,
