@@ -27,7 +27,9 @@ use menu::menu;
 
 use lsp_client::{init_server, install_server, send_request};
 use serde_json::{json, Value};
-use tauri::{Manager, Window, WindowEvent};
+#[cfg(target_os = "macos")]
+use tauri::WindowEvent;
+use tauri::{Manager, Window};
 use tauri_plugin_log::LogTarget;
 
 #[cfg(target_os = "macos")]
@@ -58,12 +60,12 @@ use utils::dir::{get_app_log_dir, get_ls_dir};
 mod lsp_client;
 
 #[tauri::command]
-fn set_doc_edited(window: Window, edited: bool) {
+fn set_doc_edited(_window: Window, _edited: bool) {
     #[cfg(target_os = "macos")]
     {
-        let ns_window: id = window.ns_window().unwrap() as id;
-        unsafe { ns_window.setDocumentEdited_(if edited { YES } else { NO }) }
-        window.set_window_controls_pos(10., 12.5)
+        let ns_window: id = _window.ns_window().unwrap() as id;
+        unsafe { ns_window.setDocumentEdited_(if _edited { YES } else { NO }) }
+        _window.set_window_controls_pos(10., 12.5)
     }
 }
 
@@ -112,6 +114,7 @@ fn main() {
             install_server(get_ls_dir(), "typescript"); // temporary for testing purposes
             */
 
+            #[cfg(any(windows, target_os = "macos"))]
             let win = app.get_window("main").unwrap();
 
             #[cfg(target_os = "macos")]
@@ -125,17 +128,17 @@ fn main() {
 
             Ok(())
         })
-        .on_window_event(|e| {
+        .on_window_event(|_e| {
             // [start] source: https://github.com/tauri-apps/tauri/issues/4789#issuecomment-1387243148
 
             #[cfg(target_os = "macos")]
             let apply_offset = || {
-                let win = e.window();
+                let win = _e.window();
                 win.set_window_controls_pos(10., 12.5);
             };
 
             #[cfg(target_os = "macos")]
-            match e.event() {
+            match _e.event() {
                 WindowEvent::Resized(..) => apply_offset(),
                 WindowEvent::ThemeChanged(..) => apply_offset(),
                 _ => {}
