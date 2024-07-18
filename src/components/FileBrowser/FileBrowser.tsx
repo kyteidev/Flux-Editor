@@ -15,7 +15,6 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { readDir } from "@tauri-apps/api/fs";
 import { For, Show, createSignal, onMount } from "solid-js";
 import { IconFolder, IconFolderOpen, IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
@@ -26,6 +25,7 @@ import { openFile } from "../Editor/EditorComponent";
 import { addTab, getTabs } from "../Editor/components/EditorTabs";
 import { extname, joinPath, pathSep } from "../../utils/path";
 import Startup from "./Startup";
+import { dialog, invoke } from "@tauri-apps/api";
 
 interface Props {
   dir: string;
@@ -34,7 +34,7 @@ interface Props {
 }
 
 const [showIcon, setShowIcon] = createSignal(true);
-const [dirContents, setDirContents] = createSignal<string[]>([]);
+const [dirContents, setDirContents] = createSignal<string[][]>([]);
 
 export const loadFBSettings = () => {
   if (
@@ -52,37 +52,39 @@ export const loadDir = async (dir: string) => {
   setDirContents(contents);
 };
 
-const getPathContents = async (dirPath: string): Promise<string[]> => {
+const getPathContents = async (dirPath: string): Promise<string[][]> => {
   try {
-    const contents = await readDir(dirPath);
-    const nonEmptyContents = contents
-      .map((content) => content.name)
-      .filter(
-        (content): content is string =>
-          content !== undefined && content[0] != ".",
-      );
-    return nonEmptyContents.sort((a, b) =>
+    const contents = await invoke<{ dirs: string[]; files: string[] }>(
+      "get_dir_contents",
+      {
+        path: dirPath,
+      },
+    );
+
+    // sort items alphabetically without considering case
+    const dirs = contents.dirs.sort((a, b) =>
       a.localeCompare(b, undefined, { sensitivity: "base" }),
     );
+    const files = contents.files.sort((a, b) =>
+      a.localeCompare(b, undefined, { sensitivity: "base" }),
+    );
+
+    return [dirs, files];
   } catch (e) {
-    if (!(e as string).includes("Not a directory")) {
-      error(`Error fetching directory contents: ${e}`);
-    }
-    return [e as string]; // return error as string, so the error is like a nested file in a folder
+    error(`Error fetching directory contents: ${e}`);
+    dialog.message(e as string, { title: "Error fetching directory contents" });
+    return [[], []];
   }
 };
 
 const FileBrowser = (props: Props) => {
-  const files: string[] = [];
-  const dirs: string[] = [];
-
   onMount(async () => {
     // load settings
     loadFBSettings();
   });
 
   const renderItem = (
-    contents: string[],
+    contents: string[][],
     parentDir: string,
     firstRender: boolean,
     howNested: number, // how nested it is, e.g. root=0, nested=1, nested-in-nested=2, ...
@@ -90,38 +92,15 @@ const FileBrowser = (props: Props) => {
     const nestedFiles: string[] = [];
     const nestedDirs: string[] = [];
 
+    const sep = pathSep();
+
     const [nestedContent, setNestedContent] = createSignal<string[]>();
 
-    // TODO: utilize the nested content obtained here to avoid fetching again later on?
-    for (let i = 0; i < contents.length; i++) {
-      getPathContents(joinPath(parentDir, contents[i])).then((content) => {
-        if (content[0] != undefined && content[0].includes("Not a directory")) {
-          nestedFiles.push(joinPath(parentDir, contents[i]));
-        } else {
-          nestedDirs.push(joinPath(parentDir, contents[i]));
-        }
-        if ([...nestedDirs, ...nestedFiles].length === contents.length) {
-          setNestedContent([
-            ...nestedDirs
-              .map((item) => {
-                const parts = item.split(pathSep());
-                return parts[parts.length - 1];
-              })
-              .sort((a, b) =>
-                a.localeCompare(b, undefined, { sensitivity: "base" }),
-              ),
-            ...nestedFiles
-              .map((item) => {
-                const parts = item.split(pathSep());
-                return parts[parts.length - 1];
-              })
-              .sort((a, b) =>
-                a.localeCompare(b, undefined, { sensitivity: "base" }),
-              ),
-          ]);
-        }
-      });
+    for (let i = 0; i < contents.flat().length; i++) {
+      nestedDirs.push(parentDir + contents[0][i]);
+      nestedFiles.push(parentDir + contents[1][i]);
     }
+    setNestedContent(contents.flat());
 
     return (
       <For each={nestedContent()}>
@@ -129,25 +108,15 @@ const FileBrowser = (props: Props) => {
           const [open, setOpen] = createSignal(false);
           const [isDir, setIsDir] = createSignal();
           const [dirNestedContents, setDirNestedContents] = createSignal<
-            string[]
+            string[][]
           >([]);
 
           const itemPath = joinPath(parentDir, itemName);
 
-          if (dirs.includes(itemPath)) {
+          if (nestedDirs.includes(itemPath)) {
             setIsDir(true);
-          } else if (files.includes(itemPath)) {
+          } else {
             setIsDir(false);
-          }
-
-          if (!(files.includes(itemPath) || dirs.includes(itemPath))) {
-            if (nestedDirs.includes(itemPath)) {
-              dirs.push(itemPath);
-              setIsDir(true);
-            } else {
-              files.push(itemPath);
-              setIsDir(false);
-            }
           }
 
           // if file name matches special file name, set special icon. Otherwise check file extension
@@ -171,7 +140,7 @@ const FileBrowser = (props: Props) => {
                       .then((contents) => setDirNestedContents(contents))
                       .catch((e) => {
                         setDirNestedContents([]);
-                        error("Error fetching nested contents contents: " + e);
+                        error("Error fetching nested contents: " + e);
                       });
                   } else {
                     if (getTabs().length === 0) {
@@ -219,7 +188,7 @@ const FileBrowser = (props: Props) => {
                   <div class="">
                     {renderItem(
                       dirNestedContents(),
-                      itemPath,
+                      itemPath + sep,
                       false,
                       howNested + 1,
                     )}

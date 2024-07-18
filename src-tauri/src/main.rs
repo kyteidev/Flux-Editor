@@ -49,6 +49,7 @@ mod window_ext;
 
 mod commands;
 use commands::{
+    fs::get_dir_contents,
     git::clone_repo,
     path::{app_data_dir, resolve_resource, user_home_dir},
     window::new_window,
@@ -160,6 +161,7 @@ fn main() {
             user_home_dir,
             resolve_resource,
             new_window,
+            get_dir_contents,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

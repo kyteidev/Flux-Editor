@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+pub mod fs;
 pub mod git;
 pub mod path;
 pub mod window;
