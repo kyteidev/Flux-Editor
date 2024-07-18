@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { For, Show } from "solid-js";
+import { For, onCleanup, onMount, Show } from "solid-js";
 import { createSignal } from "solid-js";
 
 import { IconExpand, IconUnexpand } from "../components/Icons/Icons";
@@ -34,6 +34,22 @@ const Dropdown = (props: Props) => {
 
   const toggle = () => setOpen(!isOpen());
 
+  onMount(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener("mousedown", handleOutsideClick);
+  });
+
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (e.target instanceof HTMLElement) {
+      if (!e.target.className.includes("dropdown")) {
+        setOpen(false);
+      }
+    }
+  };
+
   const handleItemClick = (item: string) => {
     setSelected(item);
     setOpen(false);
@@ -43,7 +59,7 @@ const Dropdown = (props: Props) => {
   return (
     <div class="relative inline-block">
       <button
-        class={`${isOpen() ? "rounded-t" : "rounded"} flex cursor-pointer items-center border-none bg-base-100 px-2 text-content transition duration-100 ease-in-out hover:bg-base-100-hover`}
+        class={`dropdown ${isOpen() ? "rounded-t" : "rounded"} flex cursor-pointer items-center border-none bg-base-100 px-2 text-content transition duration-100 ease-in-out hover:bg-base-100-hover`}
         onClick={toggle}
         style={{
           width: props.width,
@@ -57,14 +73,14 @@ const Dropdown = (props: Props) => {
           </Show>
         </div>
       </button>
-      {isOpen() && (
+      <Show when={isOpen()}>
         <div id="dropdown-container" class="absolute w-full rounded-b shadow">
           <div class="h-[1px] w-full bg-base-100-hover" />
           <ul id="dropdown-menu" class="w-full text-content last:rounded-b">
             <For each={props.items}>
               {(item) => (
                 <li
-                  class="dropdown-item flex w-full items-center justify-start bg-base-100 px-2 transition duration-100 ease-in-out last:rounded-b hover:bg-base-100-hover"
+                  class="dropdown flex w-full items-center justify-start bg-base-100 px-2 transition duration-100 ease-in-out last:rounded-b hover:bg-base-100-hover"
                   style={{ height: props.height }}
                   onClick={() => handleItemClick(item)}
                 >
@@ -74,7 +90,7 @@ const Dropdown = (props: Props) => {
             </For>
           </ul>
         </div>
-      )}
+      </Show>
     </div>
   );
 };
