@@ -1,6 +1,6 @@
 [package]
 name = "FluxEditor"
-version = "0.4.1"
+version = "0.5.0"
 description = "A minimalist and lightweight code editor"
 authors = ["The Flux Editor Contributors"]
 edition = "2021"

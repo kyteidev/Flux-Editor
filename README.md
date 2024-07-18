@@ -23,7 +23,7 @@
   <img src="https://img.shields.io/github/stars/kyteidev/FluxEditor?style=flat-square" alt="stars">
 </a>
   <a>
-    <img src="https://img.shields.io/badge/version-0.4.1-blue?style=flat-square" alt="version">
+    <img src="https://img.shields.io/badge/version-0.5.0-blue?style=flat-square" alt="version">
   </a>
   <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
     <img src="https://img.shields.io/badge/license-GPL--3.0-orange?style=flat-square" alt="license">
