@@ -85,8 +85,8 @@ export default function App() {
       </header>
       <div
         style={{
-          "max-height": `calc(100vh - 3.25em - 2px)`,
-          "min-height": `calc(100vh - 3.25em - 2px)`,
+          "max-height": `calc(100vh - 3.25rem - 2px)`,
+          "min-height": `calc(100vh - 3.25rem - 2px)`,
         }}
       >
         <SplitPane
@@ -98,9 +98,9 @@ export default function App() {
         >
           <div
             style={{
-              height: `calc(100vh - 1.75em)`,
-              "max-height": `calc(100vh - 1.75em)`,
-              "min-height": `calc(100vh - 1.75em)`,
+              height: `calc(100vh - 3.25rem - 2px)`,
+              "max-height": `calc(100vh - 3.25em - 2px)`,
+              "min-height": `calc(100vh - 3.25em - 2px)`,
             }}
           >
             <FileBrowser

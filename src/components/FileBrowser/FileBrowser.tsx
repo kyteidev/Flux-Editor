@@ -211,7 +211,7 @@ const FileBrowser = (props: Props) => {
         </div>
         <div
           class="min-w-full max-w-full overflow-y-auto overflow-x-hidden"
-          style={{ "max-height": `calc(100% - 3rem)` }}
+          style={{ "max-height": `calc(100% - 1.5rem)` }}
         >
           {renderItem(dirContents(), props.dir, true, 0)}
         </div>
