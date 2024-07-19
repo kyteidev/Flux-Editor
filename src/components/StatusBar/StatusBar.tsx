@@ -16,16 +16,22 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import Lang from "./components/Lang";
+import Update from "./components/Update";
 
 const StatusBar = () => {
   return (
     <div
-      class="z-50 w-screen border-t-2 border-base-100 bg-base-200 px-2 text-sm"
+      class="z-50 w-screen border-t-2 border-base-100 bg-base-200 px-1 text-[12px]"
       style={{
         "min-height": `calc(1.5rem + 2px)`,
         "max-height": `calc(1.5rem + 2px)`,
+        "padding-top": "2px",
+        "padding-bottom": "2px",
       }}
     >
+      <div class="me-auto">
+        <Update />
+      </div>
       <div class="float-right ml-auto">
         <Lang />
       </div>

@@ -663,6 +663,10 @@ video {
   margin-top: 0.25rem;
 }
 
+.me-auto {
+  margin-inline-end: auto;
+}
+
 .block {
   display: block;
 }
@@ -1097,6 +1101,10 @@ video {
   padding: 5px;
 }
 
+.p-0 {
+  padding: 0px;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -1160,6 +1168,24 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.text-\[12px\] {
+  font-size: 12px;
+}
+
+.text-\[10px\] {
+  font-size: 10px;
 }
 
 .font-bold {
@@ -1412,5 +1438,10 @@ dialog[open] {
 
 .active\:brightness-125:active {
   --tw-brightness: brightness(1.25);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.active\:brightness-200:active {
+  --tw-brightness: brightness(2);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
