@@ -87,7 +87,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 ::-webkit-scrollbar-track {
   background: var(--content);
-  opacity: 0.05;
+  opacity: 0.08;
   border-radius: 0.25rem;
 }
 
