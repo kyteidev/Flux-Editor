@@ -80,6 +80,8 @@ export const fileIcons: { [key: string]: () => JSX.Element } = {
   yml: FI.Config,
   toml: FI.Config,
 
+  lock: FI.Lockfile,
+
   // images
   png: FI.Image,
   jpg: FI.Image,
@@ -140,11 +142,13 @@ export const fileType: { [key: string]: string } = {
   bf: "Brainfuck",
   sql: "SQL",
   rb: "Ruby",
+  hbs: "Handlebars",
 
   json: "JSON",
   yml: "YAML",
   toml: "TOML",
 
+  txt: "Plain Text",
   rtf: "Rich Text",
   svg: "SVG",
 };
