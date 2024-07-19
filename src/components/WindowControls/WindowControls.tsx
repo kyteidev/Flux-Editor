@@ -28,7 +28,7 @@ function WindowControls() {
 
   return (
     <Switch>
-      <Match when={currentOS() === "windows"}>
+      <Match when={currentOS() === "win32"}>
         <WinControls />
       </Match>
       <Match when={currentOS() === "linux"}>

@@ -32,7 +32,7 @@ export const checkDirPathValidity = (dirPath: string) => {
 
 // IMPORTANT: do not call this in App.tsx, os variable may not have finished initializing, so this will think os is undefined.
 export const pathSep = (): string => {
-  if (os === "windows") {
+  if (os === "win32") {
     return "\\";
   } else {
     return "/";
