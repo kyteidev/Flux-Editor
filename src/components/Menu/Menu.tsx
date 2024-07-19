@@ -147,6 +147,7 @@ const Menu = () => {
             colorBg={true}
             height="18px"
             text="Menu"
+            class="menu"
             action={() => {
               setShowMenu(!showMenu());
               if (showMenu()) {

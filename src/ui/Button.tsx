@@ -22,12 +22,13 @@ interface Props {
   text: string;
   disabled?: boolean;
   colorBg?: boolean;
+  class?: string;
 }
 
 const Button = (props: Props) => {
   return (
     <button
-      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : `bg-accent ${props.disabled ? "cursor-not-allowed brightness-200" : "cursor-pointer hover:bg-accent-hover"}`} ${!props.width && "w-fit px-2"} inline-flex items-center justify-center rounded py-1 text-center active:brightness-125`}
+      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : `bg-accent ${props.disabled ? "cursor-not-allowed brightness-200" : "cursor-pointer hover:bg-accent-hover"}`} ${!props.width && "w-fit px-2"} ${props.class && props.class} inline-flex items-center justify-center rounded py-1 text-center active:brightness-125`}
       style={{
         width: `${props.width && props.width}`,
         height: `${props.height && props.height}`,
