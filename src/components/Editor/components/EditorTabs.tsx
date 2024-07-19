@@ -63,6 +63,7 @@ export const clearTabs = () => {
   setTabs([]);
   setActiveTab(0);
   clearInterval(activeInterval);
+  fixEditorHeight(false);
 };
 
 export const getTabs = () => {
