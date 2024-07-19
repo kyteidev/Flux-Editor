@@ -635,10 +635,6 @@ video {
   z-index: 51;
 }
 
-.float-end {
-  float: inline-end;
-}
-
 .float-right {
   float: right;
 }
@@ -665,10 +661,6 @@ video {
 
 .mt-1 {
   margin-top: 0.25rem;
-}
-
-.mr-auto {
-  margin-right: auto;
 }
 
 .block {
@@ -1341,6 +1333,11 @@ dialog[open] {
 
 .dialog-close {
   animation: fadeout 0.1s ease-in-out forwards;
+}
+
+#fileicon > svg {
+  stroke: var(--content);
+  padding: 4px;
 }
 
 .last\:rounded-b:last-child {

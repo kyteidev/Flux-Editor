@@ -1,6 +1,26 @@
-// All icons sourced from Tabler Icons (tabler.io/icons). SVG icons licensed under MIT. License notice found in resources/THIRD-PARTY-LICENSES-JS.txt
+// All icons sourced from Tabler Icons (tabler.io/icons). SVG icons licensed under MIT.
+// License notice found in resources/THIRD-PARTY-LICENSES-JS.txt
 
 export const Default = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+      <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+    </svg>
+  );
+};
+
+export const IconFolder = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,13 +35,12 @@ export const Default = () => {
       style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-      <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+      <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
     </svg>
   );
 };
 
-export const Markdown = () => {
+export const IconFolderOpen = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +53,24 @@ export const Markdown = () => {
       stroke-linecap="round"
       stroke-linejoin="round"
       style={{ padding: "4px" }}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M5 19l2.757 -7.351a1 1 0 0 1 .936 -.649h12.307a1 1 0 0 1 .986 1.164l-.996 5.211a2 2 0 0 1 -1.964 1.625h-14.026a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v2" />
+    </svg>
+  );
+};
+
+export const Markdown = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
@@ -51,11 +88,9 @@ export const Zip = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M6 20.735a2 2 0 0 1 -1 -1.735v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2h-1" />
@@ -78,11 +113,9 @@ export const Image = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M15 8h.01" />
@@ -101,11 +134,9 @@ export const SVG = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -125,11 +156,9 @@ export const Video = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M15 10l4.553 -2.276a1 1 0 0 1 1.447 .894v6.764a1 1 0 0 1 -1.447 .894l-4.553 -2.276v-4z" />
@@ -146,11 +175,9 @@ export const Typescript = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M15 17.5c.32 .32 .754 .5 1.207 .5h.543c.69 0 1.25 -.56 1.25 -1.25v-.25a1.5 1.5 0 0 0 -1.5 -1.5a1.5 1.5 0 0 1 -1.5 -1.5v-.25c0 -.69 .56 -1.25 1.25 -1.25h.543c.453 0 .887 .18 1.207 .5" />
@@ -169,11 +196,9 @@ export const Javascript = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M20 4l-2 14.5l-6 2l-6 -2l-2 -14.5z" />
@@ -191,11 +216,9 @@ export const Rust = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M10.139 3.463c.473 -1.95 3.249 -1.95 3.722 0a1.916 1.916 0 0 0 2.859 1.185c1.714 -1.045 3.678 .918 2.633 2.633a1.916 1.916 0 0 0 1.184 2.858c1.95 .473 1.95 3.249 0 3.722a1.916 1.916 0 0 0 -1.185 2.859c1.045 1.714 -.918 3.678 -2.633 2.633a1.916 1.916 0 0 0 -2.858 1.184c-.473 1.95 -3.249 1.95 -3.722 0a1.916 1.916 0 0 0 -2.859 -1.185c-1.714 1.045 -3.678 -.918 -2.633 -2.633a1.916 1.916 0 0 0 -1.184 -2.858c-1.95 -.473 -1.95 -3.249 0 -3.722a1.916 1.916 0 0 0 1.185 -2.859c-1.045 -1.714 .918 -3.678 2.633 -2.633a1.914 1.914 0 0 0 2.858 -1.184z" />
@@ -215,11 +238,9 @@ export const Python = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 9h-7a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h3" />
@@ -239,11 +260,9 @@ export const HTML = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M20 4l-2 14.5l-6 2l-6 -2l-2 -14.5z" />
@@ -260,11 +279,9 @@ export const CSS = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M20 4l-2 14.5l-6 2l-6 -2l-2 -14.5z" />
@@ -281,11 +298,9 @@ export const CSharp = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M10 9a3 3 0 0 0 -3 -3h-.5a3.5 3.5 0 0 0 -3.5 3.5v5a3.5 3.5 0 0 0 3.5 3.5h.5a3 3 0 0 0 3 -3" />
@@ -305,11 +320,9 @@ export const Kotlin = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M20 20h-16v-16h16" />
@@ -328,11 +341,9 @@ export const CPlusPlus = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 12h4" />
@@ -352,11 +363,9 @@ export const Config = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M15 12h.01" />
@@ -376,11 +385,9 @@ export const Svelte = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M15 8l-5 3l.821 -.495c1.86 -1.15 4.412 -.49 5.574 1.352a3.91 3.91 0 0 1 -1.264 5.42l-5.053 3.126c-1.86 1.151 -4.312 .591 -5.474 -1.251a3.91 3.91 0 0 1 1.263 -5.42l.26 -.16" />
@@ -397,11 +404,9 @@ export const Vue = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M16.5 4l-4.5 8l-4.5 -8" />
@@ -418,11 +423,9 @@ export const C = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M14 10a2 2 0 1 0 -4 0v4a2 2 0 1 0 4 0" />
@@ -438,11 +441,9 @@ export const Java = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1" />
@@ -462,11 +463,9 @@ export const Golang = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M15.695 14.305c1.061 1.06 2.953 .888 4.226 -.384c1.272 -1.273 1.444 -3.165 .384 -4.226c-1.061 -1.06 -2.953 -.888 -4.226 .384c-1.272 1.273 -1.444 3.165 -.384 4.226z" />
@@ -486,11 +485,9 @@ export const PHP = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 12m-10 0a10 9 0 1 0 20 0a10 9 0 1 0 -20 0" />
@@ -510,11 +507,9 @@ export const Swift = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M20.547 15.828c1.33 -4.126 -1.384 -9.521 -6.047 -12.828c-.135 -.096 2.39 6.704 1.308 9.124c-2.153 -1.454 -4.756 -3.494 -7.808 -6.124l-.5 2l-3.5 -1c4.36 4.748 7.213 7.695 8.56 8.841c-4.658 2.089 -10.65 -.978 -10.56 -.841c1.016 1.545 6 6 11 6c2 0 3.788 -.502 4.742 -1.389c.005 -.005 .432 -.446 1.378 -.17c.504 .148 1.463 .667 2.88 1.559v-1.507c0 -1.377 -.515 -2.67 -1.453 -3.665z" />
@@ -530,11 +525,9 @@ export const React = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M6.306 8.711c-2.602 .723 -4.306 1.926 -4.306 3.289c0 2.21 4.477 4 10 4c.773 0 1.526 -.035 2.248 -.102" />
@@ -556,11 +549,9 @@ export const Brainfuck = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 4c4.418 0 8 3.358 8 7.5c0 1.901 -.755 3.637 -2 4.96l0 2.54a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1v-2.54c-1.245 -1.322 -2 -3.058 -2 -4.96c0 -4.142 3.582 -7.5 8 -7.5z" />
@@ -580,11 +571,9 @@ export const Terminal = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M5 7l5 5l-5 5" />
@@ -601,11 +590,9 @@ export const Font = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M17.5 15.5m-3.5 0a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0" />
@@ -624,11 +611,9 @@ export const CPPHeader = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M10 16v-8" />
@@ -646,11 +631,9 @@ export const Tailwind = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M11.667 6c-2.49 0 -4.044 1.222 -4.667 3.667c.933 -1.223 2.023 -1.68 3.267 -1.375c.71 .174 1.217 .68 1.778 1.24c.916 .912 2 1.968 4.288 1.968c2.49 0 4.044 -1.222 4.667 -3.667c-.933 1.223 -2.023 1.68 -3.267 1.375c-.71 -.174 -1.217 -.68 -1.778 -1.24c-.916 -.912 -1.975 -1.968 -4.288 -1.968zm-4 6.5c-2.49 0 -4.044 1.222 -4.667 3.667c.933 -1.223 2.023 -1.68 3.267 -1.375c.71 .174 1.217 .68 1.778 1.24c.916 .912 1.975 1.968 4.288 1.968c2.49 0 4.044 -1.222 4.667 -3.667c-.933 1.223 -2.023 1.68 -3.267 1.375c-.71 -.174 -1.217 -.68 -1.778 -1.24c-.916 -.912 -1.975 -1.968 -4.288 -1.968z" />
@@ -666,11 +649,9 @@ export const Vite = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M10 4.5l6 -1.5l-2 6.5l2 -.5l-4 7v-5l-3 1z" />
@@ -687,11 +668,9 @@ export const Readme = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -710,11 +689,9 @@ export const License = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -731,11 +708,9 @@ export const NodeJS = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M9 9v8.044a2 2 0 0 1 -2.996 1.734l-1.568 -.9a3 3 0 0 1 -1.436 -2.561v-6.635a3 3 0 0 1 1.436 -2.56l6 -3.667a3 3 0 0 1 3.128 0l6 3.667a3 3 0 0 1 1.436 2.561v6.634a3 3 0 0 1 -1.436 2.56l-6 3.667a3 3 0 0 1 -3.128 0" />
@@ -752,11 +727,9 @@ export const Icon = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M2 5m0 3a3 3 0 0 1 3 -3h14a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-14a3 3 0 0 1 -3 -3z" />
@@ -775,11 +748,9 @@ export const NextJS = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M9 15v-6l7.745 10.65a9 9 0 1 1 2.255 -1.993" />
@@ -796,11 +767,9 @@ export const SASS = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
@@ -817,11 +786,9 @@ export const Text = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -841,11 +808,9 @@ export const SQL = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M14 3v4a1 1 0 0 0 1 1h4" />
@@ -867,11 +832,9 @@ export const Ruby = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M6 5h12l3 5l-8.5 9.5a.7 .7 0 0 1 -1 0l-8.5 -9.5l3 -5" />
@@ -888,16 +851,33 @@ export const Lockfile = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      style={{ padding: "4px" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z" />
       <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
       <path d="M8 11v-4a4 4 0 1 1 8 0v4" />
+    </svg>
+  );
+};
+
+export const Handlebars = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 9a3 3 0 0 1 2.599 1.5h0c.933 1.333 2.133 1.556 3.126 1.556l.291 0l.77 -.044l.213 0c-.963 1.926 -3.163 2.925 -6.6 3l-.4 0l-.165 0a3 3 0 0 1 .165 -6z" />
+      <path d="M9 9a3 3 0 0 0 -2.599 1.5h0c-.933 1.333 -2.133 1.556 -3.126 1.556l-.291 0l-.77 -.044l-.213 0c.963 1.926 3.163 2.925 6.6 3l.4 0l.165 0a3 3 0 0 0 -.165 -6z" />
     </svg>
   );
 };

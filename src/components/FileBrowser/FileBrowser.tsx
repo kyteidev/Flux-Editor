@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { For, Show, createSignal, onMount } from "solid-js";
-import { IconFolder, IconFolderOpen, IconLineVertical } from "../Icons/Icons";
+import { IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
 import { fileIcons, specialFileIcons } from "../../utils/file";
 import { getSetting } from "../../settingsManager";
@@ -168,9 +168,16 @@ const FileBrowser = (props: Props) => {
                   </Show>
                   <Show when={showIcon()}>
                     <div class="opacity-80">
-                      <Show when={isDir()} fallback={<FileIconComponent />}>
-                        <Show when={open()} fallback={<IconFolder />}>
-                          <IconFolderOpen />
+                      <Show
+                        when={isDir()}
+                        fallback={
+                          <div id="fileicon">
+                            <FileIconComponent />
+                          </div>
+                        }
+                      >
+                        <Show when={open()} fallback={<FI.IconFolder />}>
+                          <FI.IconFolderOpen />
                         </Show>
                       </Show>
                     </div>
