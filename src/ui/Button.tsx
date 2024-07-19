@@ -15,6 +15,9 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+import { Show } from "solid-js";
+import { JSX } from "solid-js/jsx-runtime";
+
 interface Props {
   width?: string;
   height?: string;
@@ -23,18 +26,20 @@ interface Props {
   disabled?: boolean;
   colorBg?: boolean;
   class?: string;
+  icon?: JSX.Element;
 }
 
 const Button = (props: Props) => {
   return (
     <button
-      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : `bg-accent ${props.disabled ? "cursor-not-allowed brightness-200" : "cursor-pointer hover:bg-accent-hover"}`} ${!props.width && "w-fit px-2"} ${props.class && props.class} inline-flex items-center justify-center rounded py-1 text-center active:brightness-125`}
+      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : `bg-accent ${props.disabled ? "cursor-not-allowed brightness-200" : "cursor-pointer hover:bg-accent-hover"}`} ${!props.width && `w-fit ${props.icon ? "pr-[5px]" : "px-2"}`} ${props.class && props.class} inline-flex items-center justify-center rounded py-1 text-center active:brightness-125`}
       style={{
         width: `${props.width && props.width}`,
         height: `${props.height && props.height}`,
       }}
       onClick={props.action}
     >
+      {props.icon}
       {props.text}
     </button>
   );

@@ -33,6 +33,7 @@ import Button from "../../ui/Button";
 import { platform } from "@tauri-apps/api/os";
 import { emit } from "@tauri-apps/api/event";
 import { toggleSearch } from "../Search/Search";
+import { IconMenu } from "../Icons/Icons";
 
 const [showMenu, setShowMenu] = createSignal(false);
 
@@ -142,22 +143,21 @@ const Menu = () => {
   return (
     <Show when={os() != "darwin"} fallback={<div class="w-[68px]" />}>
       <div>
-        <div class="relative top-[-2.5px] h-full">
-          <Button
-            colorBg={true}
-            height="18px"
-            text="Menu"
-            class="menu"
-            action={() => {
-              setShowMenu(!showMenu());
-              if (showMenu()) {
-                document.addEventListener("mousedown", handleOutsideClick);
-              } else {
-                document.removeEventListener("mousedown", handleOutsideClick);
-              }
-            }}
-          />
-        </div>
+        <Button
+          colorBg={true}
+          height="18px"
+          text="Menu"
+          class="menu bg-base-200"
+          icon={<IconMenu />}
+          action={() => {
+            setShowMenu(!showMenu());
+            if (showMenu()) {
+              document.addEventListener("mousedown", handleOutsideClick);
+            } else {
+              document.removeEventListener("mousedown", handleOutsideClick);
+            }
+          }}
+        />
         <Show when={showMenu()}>
           <MenuContainer>
             <Submenu text="File" item={1} main={true} first={true}>
