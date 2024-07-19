@@ -1,18 +1,4 @@
-import { createSignal } from "solid-js";
-import { getOpenFilePath } from "../Editor/EditorComponent";
-import { extname } from "../../utils/path";
-import { fileType } from "../../utils/file";
-
-const [lang, setLang] = createSignal("");
-
-export const updateLang = (clear?: boolean) => {
-  if (clear) {
-    setLang("");
-    return;
-  }
-  const fileExt = extname(getOpenFilePath());
-  setLang(fileType[fileExt] || "Unknown");
-};
+import Lang from "./components/Lang";
 
 const StatusBar = () => {
   return (
@@ -23,7 +9,9 @@ const StatusBar = () => {
         "max-height": `calc(1.5rem + 2px)`,
       }}
     >
-      <div class="float-right ml-auto">{lang()}</div>
+      <div class="float-right ml-auto">
+        <Lang />
+      </div>
     </div>
   );
 };

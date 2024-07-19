@@ -26,7 +26,7 @@ import { getSetting, getSettingsPath } from "../../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { extname } from "../../../utils/path";
 import { invoke } from "@tauri-apps/api/tauri";
-import { updateLang } from "../../StatusBar/StatusBar";
+import { updateLang } from "../../StatusBar/components/Lang";
 
 let activeInterval: number;
 

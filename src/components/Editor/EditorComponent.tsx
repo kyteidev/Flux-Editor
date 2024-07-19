@@ -105,7 +105,7 @@ import {
 } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
 import { basename, extname } from "../../utils/path";
-import { updateLang } from "../StatusBar/StatusBar";
+import { updateLang } from "../StatusBar/components/Lang";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
