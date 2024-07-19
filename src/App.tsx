@@ -27,11 +27,11 @@ import { basename, initPathOS } from "./utils/path";
 import { addListeners } from "./menuListeners";
 import SplitPane from "./components/SplitPane/SplitPane";
 import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
-import EditorFallback from "./pages/EditorFallback";
 import WindowControls from "./components/WindowControls/WindowControls";
 import Menu from "./components/Menu/Menu";
 import Search from "./components/Search/Search";
 import StatusBar from "./components/StatusBar/StatusBar";
+import { FluxLogo } from "./components/Icons/FluxLogo";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -120,7 +120,18 @@ export default function App() {
             canSecondHide={false}
             swapPriority={true}
           >
-            <Show when={getTabs().length != 0} fallback={<EditorFallback />}>
+            <Show
+              when={getTabs().length != 0}
+              fallback={
+                <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-10 bg-base-200">
+                  <div
+                    style={{ width: "12rem", height: "auto", opacity: "0.8" }}
+                  >
+                    <FluxLogo color="base-100" />
+                  </div>
+                </div>
+              }
+            >
               <EditorComponent />
             </Show>
             <div class="h-full w-full bg-base-200"></div>
