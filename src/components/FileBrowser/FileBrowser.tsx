@@ -26,7 +26,6 @@ import { addTab, getTabs } from "../Editor/components/EditorTabs";
 import { extname, joinPath, pathSep } from "../../utils/path";
 import Startup from "./Startup";
 import { dialog, invoke } from "@tauri-apps/api";
-import { updateLang } from "../StatusBar/StatusBar";
 
 interface Props {
   dir: string;

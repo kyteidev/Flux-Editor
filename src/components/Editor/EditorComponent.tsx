@@ -90,7 +90,7 @@ import "prismjs/components/prism-visual-basic.min.js";
 import "prismjs/components/prism-wasm.min.js";
 import "prismjs/components/prism-yaml.min.js";
 
-import { dialog, fs, invoke, updater } from "@tauri-apps/api";
+import { dialog, fs, invoke } from "@tauri-apps/api";
 import { specialCodeFileType } from "../../utils/file";
 import {
   addTab,
