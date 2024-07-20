@@ -727,6 +727,10 @@ video {
   height: 100vh;
 }
 
+.h-\[18px\] {
+  height: 18px;
+}
+
 .max-h-8 {
   max-height: 2rem;
 }
@@ -818,6 +822,22 @@ video {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-\[65px\] {
+  width: 65px;
+}
+
+.w-\[18px\] {
+  width: 18px;
+}
+
+.w-\[60px\] {
+  width: 60px;
+}
+
+.w-\[58px\] {
+  width: 58px;
 }
 
 .min-w-4 {
@@ -1164,6 +1184,10 @@ video {
 
 .text-transparent {
   color: transparent;
+}
+
+.text-base-100 {
+  color: var(--base-100);
 }
 
 .underline {

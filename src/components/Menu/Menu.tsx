@@ -124,11 +124,18 @@ const handleOutsideClick = (e: MouseEvent) => {
 
 const Menu = () => {
   const [os, setOS] = createSignal();
+  const [isFullscreen, setIsFullscreen] = createSignal(false);
+
   onMount(async () => {
     setOS(await platform());
     if (os() != "darwin") {
       document.addEventListener("keydown", handleKeyDown);
       document.addEventListener("keyup", handleKeyUp);
+    } else if (os() === "darwin") {
+      setIsFullscreen(await appWindow.isFullscreen());
+      appWindow.listen("tauri://resize", async () => {
+        setIsFullscreen(await appWindow.isFullscreen());
+      });
     }
   });
 
@@ -141,7 +148,14 @@ const Menu = () => {
   });
 
   return (
-    <Show when={os() != "darwin"} fallback={<div class="w-[68px]" />}>
+    <Show
+      when={os() != "darwin"}
+      fallback={
+        <Show when={!isFullscreen()}>
+          <div class="w-[58px]" />
+        </Show>
+      }
+    >
       <div>
         <Button
           colorBg={true}

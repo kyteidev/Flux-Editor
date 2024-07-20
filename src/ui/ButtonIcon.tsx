@@ -15,29 +15,25 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { Component } from "solid-js";
+import { JSX } from "solid-js/jsx-runtime";
 
 interface Props {
   size: string;
-  rounding: number;
-  icon: Component;
+  icon: JSX.Element;
   action: () => void;
 }
 
 const ButtonIcon = (props: Props) => {
   return (
     <button
-      class={`bg-primary hover:bg-primary-hover rounded p-2 active:brightness-125`}
+      class="flex items-center justify-center rounded bg-base-200 hover:bg-base-100-hover active:brightness-125"
       style={{
         width: `${props.size}`,
         height: `${props.size}`,
-        "border-radius": `${props.rounding}px`,
       }}
       onClick={props.action}
     >
-      <div class="flex items-center justify-center">
-        <props.icon />
-      </div>
+      {props.icon}
     </button>
   );
 };

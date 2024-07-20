@@ -28,6 +28,7 @@ interface Props {
   canFirstHide?: boolean;
   canSecondHide?: boolean;
   swapPriority?: boolean;
+  hideFirst?: boolean;
 }
 
 const [fixHeight, setFixHeight] = createSignal(0);
@@ -171,20 +172,22 @@ const SplitPane = (props: Props) => {
       onmousemove={handleMouseMove}
     >
       {optionalChild()}
-      <div
-        class={`${props.swapPriority && "flex flex-grow"} relative`}
-        style={{
-          width: `${props.swapPriority ? `calc(100vw - ${firstWidth()})` : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
-          "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
-          height: `${props.swapPriority ? `calc(100vh - 54px - ${firstHeight()}px - ${fixHeight()}px)` : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
-          "min-height": `${props.swapPriority ? "" : `${props.vertical ? `${firstHeight()}px` : `calc(100vh - 3.25rem - 2px)`}`}`,
-          "max-width": `${!props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
-          "max-height": `${!props.swapPriority ? `${props.vertical ? `calc(100vh - 56px - ${firstHeight()}px - ${fixHeight()}px)` : `calc(100vh - 3.25rem - 2px)`}` : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
-        }}
-      >
-        {firstChild()}
-      </div>
-      <Show when={secondChild()}>
+      <Show when={!props.hideFirst}>
+        <div
+          class={`${props.swapPriority && "flex flex-grow"} relative`}
+          style={{
+            width: `${props.swapPriority ? `calc(100vw - ${firstWidth()})` : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
+            "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
+            height: `${props.swapPriority ? `calc(100vh - 54px - ${firstHeight()}px - ${fixHeight()}px)` : `${props.vertical ? `${firstHeight()}px` : "100%"}`}`,
+            "min-height": `${props.swapPriority ? "" : `${props.vertical ? `${firstHeight()}px` : `calc(100vh - 3.25rem - 2px)`}`}`,
+            "max-width": `${!props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
+            "max-height": `${!props.swapPriority ? `${props.vertical ? `calc(100vh - 56px - ${firstHeight()}px - ${fixHeight()}px)` : `calc(100vh - 3.25rem - 2px)`}` : `${props.vertical && `calc(100vh - ${firstHeight()}px - 2px)`}`}`,
+          }}
+        >
+          {firstChild()}
+        </div>
+      </Show>
+      <Show when={secondChild() && !props.hideFirst}>
         <div
           id="splitter"
           class={`${props.vertical ? "h-[2px] min-h-[2px] w-full cursor-row-resize" : "w-[2px] min-w-[2px] cursor-col-resize"} ${isDragging() ? "bg-accent" : "bg-base-100"} z-50 hover:bg-accent`}
@@ -198,8 +201,8 @@ const SplitPane = (props: Props) => {
       <div
         class={`${props.swapPriority ? "" : "flex flex-grow"} relative`}
         style={{
-          width: `${props.swapPriority ? `${props.vertical ? "100%" : `${firstWidth()}px`}` : `calc(100vw - ${firstWidth()})`}`,
-          "max-width": `${props.swapPriority ? "" : `${!props.vertical && `calc(100vw - ${firstWidth()}px - 2px)`}`}`,
+          width: `${props.swapPriority ? `${props.vertical ? "100%" : `${firstWidth()}px`}` : `${props.hideFirst ? "100%" : `calc(100vw - ${firstWidth()})`}`}`,
+          "max-width": `${props.swapPriority ? "" : `${!props.vertical && `${props.hideFirst ? "100%" : `calc(100vw - ${firstWidth()}px - 2px)`}`}`}`,
           height: `${props.swapPriority ? `${props.vertical ? `${firstHeight()}px` : "100%"}` : `calc(100vh - ${firstHeight()})`}`,
           "max-height": `${props.swapPriority ? "" : `${props.vertical && `calc(100vh - ${firstHeight()}px - 56px)`}`}`,
           "min-width": `${!props.swapPriority ? "" : `${props.vertical ? "100%" : `${firstWidth()}px`}`}`,
