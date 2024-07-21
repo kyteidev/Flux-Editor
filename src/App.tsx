@@ -34,12 +34,17 @@ import StatusBar from "./components/StatusBar/StatusBar";
 import { FluxLogo } from "./components/Icons/FluxLogo";
 import ButtonIcon from "./ui/ButtonIcon";
 import { IconFileBrowser } from "./components/Icons/Icons";
+import FluxTerminal from "./components/Terminal/Terminal";
 
 export const [dir, setDir] = createSignal<string>("");
 
 export const [loaded, setLoaded] = createSignal(false);
 
-const [projectName, setProjectName] = createSignal<string>();
+const [projectName, setProjectName] = createSignal("");
+
+export const getProjectName = () => {
+  return projectName();
+};
 
 export const loadEditor = (
   dirPath: string,
@@ -142,7 +147,7 @@ export default function App() {
             >
               <EditorComponent />
             </Show>
-            <div class="h-full w-full bg-base-200"></div>
+            <FluxTerminal />
             <Show when={getTabs().length != 0}>
               <div class="max-w-full">
                 <EditorTabs />

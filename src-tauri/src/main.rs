@@ -23,6 +23,7 @@ You should have received a copy of the GNU General Public License along with Flu
 extern crate objc;
 
 mod menu;
+
 use log::error;
 use menu::menu;
 
@@ -50,6 +51,7 @@ mod window_ext;
 
 mod commands;
 use commands::{
+    cmd::{abort_command, spawn_command},
     fs::get_dir_contents,
     git::clone_repo,
     path::{app_data_dir, resolve_resource, user_home_dir},
@@ -167,6 +169,8 @@ fn main() {
             resolve_resource,
             new_window,
             get_dir_contents,
+            spawn_command,
+            abort_command,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

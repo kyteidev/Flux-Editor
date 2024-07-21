@@ -15,8 +15,14 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-pub mod cmd;
-pub mod fs;
-pub mod git;
-pub mod path;
-pub mod window;
+@font-face {
+  font-family: "notosans";
+  src: url("../../assets/fonts/NotoSansMono.woff2") format("woff2");
+}
+
+.textarea,
+.pre,
+.pre * {
+  font-family: "notosans", monospace;
+  padding: 0.25rem 0.5rem;
+}
