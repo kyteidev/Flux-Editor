@@ -1,14 +1,11 @@
-import { resolve } from "path";
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
-import { compression } from "vite-plugin-compression2";
 import license from "rollup-plugin-license";
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [
     solid(),
-    compression(),
     license({
       sourcemap: true,
 
@@ -21,7 +18,7 @@ export default defineConfig(async () => ({
             return dependencies
               .map(
                 (dependency) =>
-                  `${dependency.name} - v${dependency.version}\nLicense: ${dependency.license}\n===\n${dependency.licenseText}\n---`,
+                  `${dependency.name}\nLicense: ${dependency.license}\n==========\n${dependency.licenseText}\n----------`,
               )
               .join("\n\n");
           },
