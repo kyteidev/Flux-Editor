@@ -23,9 +23,10 @@ You should have received a copy of the GNU General Public License along with Flu
 extern crate objc;
 
 mod menu;
+use log::error;
 use menu::menu;
 
-use lsp_client::{init_server, install_server, send_request};
+use lsp_client::{init_server, send_request};
 use serde_json::{json, Value};
 #[cfg(target_os = "macos")]
 use tauri::WindowEvent;
@@ -90,7 +91,7 @@ async fn ls_send_request(id: &str, method: &str, params: Value) -> Result<String
 }
 
 fn main() {
-    #[cfg(not(any(windows)))]
+    #[cfg(not(target_os = "windows"))]
     fix_path_env::fix().unwrap();
 
     #[cfg(debug_assertions)]
@@ -99,6 +100,10 @@ fn main() {
         LogTarget::Webview,
         LogTarget::Folder(get_app_log_dir()),
     ];
+
+    std::panic::set_hook(Box::new(|e| {
+        error!("PANIC: {}", e.to_string());
+    }));
 
     #[cfg(not(debug_assertions))]
     let log_targets: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::Folder(get_app_log_dir())];
