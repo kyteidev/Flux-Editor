@@ -68,12 +68,11 @@ const FluxTerminal = () => {
 
         break;
       case "Enter":
-        if (cmd === "") {
-          cmd = getCurrentLineContents().slice(prefixText.length);
+        const userInput = getCurrentLineContents().slice(prefixText.length);
+        if (!userInput.includes(" ")) {
+          cmd = userInput;
         }
-        const args = getCurrentLineContents()
-          .substring(prefixText.length + cmd.length + 1)
-          .split(" ");
+        const args = userInput.substring(cmd.length + 1).split(" ");
 
         console.log(cmd, args);
         invoke<string>("spawn_command", { command: cmd, args: args }).then(
