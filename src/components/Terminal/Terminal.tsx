@@ -137,14 +137,6 @@ const FluxTerminal = () => {
     return currentLineContent;
   };
 
-  const getRelativeCaretPos = () => {
-    const start = textarea?.selectionStart || 0;
-    const currentLineStartIndex = getCurrentLineStart();
-
-    const relativeCaretPos = start - currentLineStartIndex;
-    return relativeCaretPos;
-  };
-
   const setCmd = () => {
     window.requestAnimationFrame(() => {
       const currentLineContent = getCurrentLineContents();

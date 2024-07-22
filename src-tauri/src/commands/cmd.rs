@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader};
-use std::process::{Child, Command, Stdio};
+use std::process::{Command, Stdio};
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 
