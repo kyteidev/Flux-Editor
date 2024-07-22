@@ -98,6 +98,12 @@ const FluxTerminal = () => {
     }
     const args = userInput.substring(cmd.length + 1).split(" ");
 
+    switch (cmd) {
+      case "clear":
+        clearTerm();
+        return;
+    }
+
     invoke<string>("spawn_command", { command: cmd, args: args }).then((id) =>
       info(id),
     );
@@ -120,6 +126,15 @@ const FluxTerminal = () => {
         }
       },
     );
+  };
+
+  const clearTerm = () => {
+    window.requestAnimationFrame(() => {
+      if (textarea && pre) {
+        textarea.value = prefixText;
+        pre.innerHTML = textarea.value;
+      }
+    });
   };
 
   const getCurrentLineStart = () => {
