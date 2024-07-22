@@ -112,19 +112,7 @@ const FluxTerminal = () => {
         break;
       case "ArrowUp":
       case "ArrowDown":
-        window.requestAnimationFrame(() => {
-          const newStart = getRelativeCaretPos();
-          const contents = getCurrentLineContents();
-
-          const zeroWidthSpacePos = contents.indexOf("\u200B");
-
-          if (newStart <= zeroWidthSpacePos && textarea) {
-            textarea.selectionStart = textarea.selectionEnd =
-              textarea.selectionStart + (zeroWidthSpacePos - newStart) + 2;
-          }
-
-          handleScroll();
-        });
+        e.preventDefault();
     }
 
     handleScroll();
