@@ -67,6 +67,7 @@ const FluxTerminal = () => {
 
     switch (e.code) {
       case "Backspace":
+      case "ArrowLeft":
         if (start === end && textarea?.value.charAt(start - 1) === "\u200B") {
           e.preventDefault();
         }
@@ -109,17 +110,17 @@ const FluxTerminal = () => {
           },
         );
         break;
-      case "ArrowLeft":
       case "ArrowUp":
       case "ArrowDown":
         window.requestAnimationFrame(() => {
-          const newStart = textarea?.selectionStart || 0;
+          const newStart = getRelativeCaretPos();
           const contents = getCurrentLineContents();
 
           const zeroWidthSpacePos = contents.indexOf("\u200B");
+
           if (newStart <= zeroWidthSpacePos && textarea) {
             textarea.selectionStart = textarea.selectionEnd =
-              newStart + (zeroWidthSpacePos - newStart) + 1;
+              textarea.selectionStart + (zeroWidthSpacePos - newStart) + 2;
           }
 
           handleScroll();
@@ -129,7 +130,7 @@ const FluxTerminal = () => {
     handleScroll();
   };
 
-  const getCurrentLine = () => {
+  const getCurrentLineStart = () => {
     const start = textarea?.selectionStart;
     const currentLine =
       textarea?.value.substring(0, start).lastIndexOf("\n") || 0;
@@ -139,9 +140,17 @@ const FluxTerminal = () => {
 
   const getCurrentLineContents = () => {
     const currentLineContent =
-      textarea?.value.substring(getCurrentLine()) || "";
+      textarea?.value.substring(getCurrentLineStart()) || "";
 
     return currentLineContent;
+  };
+
+  const getRelativeCaretPos = () => {
+    const start = textarea?.selectionStart || 0;
+    const currentLineStartIndex = getCurrentLineStart();
+
+    const relativeCaretPos = start - currentLineStartIndex;
+    return relativeCaretPos;
   };
 
   const setCmd = () => {
