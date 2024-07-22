@@ -46,12 +46,6 @@ impl CommandController {
         let mut cmd = Command::new(command);
         cmd.args(args).stdout(Stdio::piped()).stderr(Stdio::piped());
 
-        /* .spawn()
-        .map_err(|e| {
-            error!("Failed to execute process {}: {}", command, e);
-        })
-        .unwrap(); */
-
         let shared_child = Arc::new(Mutex::new(SharedChild::spawn(&mut cmd).unwrap()));
         let id = Uuid::new_v4();
 
@@ -103,29 +97,6 @@ impl CommandController {
                 tx_stderr.send(true).unwrap();
             });
         }
-        /*
-        let app_clone = app.clone();
-        let shared_child_clone = shared_child.clone();
-        thread::spawn(move || {
-            let wait_result = shared_child_clone.lock().unwrap().wait();
-            match wait_result {
-                Ok(_) => {
-                    // Handle the child's exit status, e.g., log it or emit another event.
-                    app_clone
-                        .emit_all(
-                            "flux:cmd-output",
-                            Payload {
-                                message: "flux:output-completed".into(),
-                            },
-                        )
-                        .map_err(|e| error!("Failed to emit completion event: {}", e))
-                        .unwrap();
-                    info!("COMPLETED");
-                }
-                Err(e) => error!("Failed to wait on child process: {}", e),
-            }
-        });
-        */
 
         let app_clone = app.clone();
         thread::spawn(move || {
