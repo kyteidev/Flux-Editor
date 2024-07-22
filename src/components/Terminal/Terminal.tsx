@@ -78,37 +78,7 @@ const FluxTerminal = () => {
 
         break;
       case "Enter":
-        const userInput = getCurrentLineContents().slice(prefixText.length);
-        if (!userInput.includes(" ")) {
-          cmd = userInput;
-        }
-        if (cmd.includes("\u200B")) {
-          cmd = cmd.slice(1);
-        }
-        const args = userInput.substring(cmd.length + 1).split(" ");
-
-        invoke<string>("spawn_command", { command: cmd, args: args }).then(
-          (id) => info(id),
-        );
-
-        if (outputListener) {
-          outputListener();
-        }
-        outputListener = await listen<{ message: string }>(
-          "flux:cmd-output",
-          (e) => {
-            if (e.payload.message === "flux:output-completed") {
-              outputListener();
-              addText(prefixText);
-            } else {
-              addText(e.payload.message + "\n");
-            }
-            if (textarea && textarea.scrollHeight - textarea.scrollTop <= 300) {
-              textarea.scrollTop = textarea.scrollHeight;
-              handleScroll();
-            }
-          },
-        );
+        runCommand();
         break;
       case "ArrowUp":
       case "ArrowDown":
@@ -116,6 +86,40 @@ const FluxTerminal = () => {
     }
 
     handleScroll();
+  };
+
+  const runCommand = async () => {
+    const userInput = getCurrentLineContents().slice(prefixText.length);
+    if (!userInput.includes(" ")) {
+      cmd = userInput;
+    }
+    if (cmd.includes("\u200B")) {
+      cmd = cmd.slice(1);
+    }
+    const args = userInput.substring(cmd.length + 1).split(" ");
+
+    invoke<string>("spawn_command", { command: cmd, args: args }).then((id) =>
+      info(id),
+    );
+
+    if (outputListener) {
+      outputListener();
+    }
+    outputListener = await listen<{ message: string }>(
+      "flux:cmd-output",
+      (e) => {
+        if (e.payload.message === "flux:output-completed") {
+          outputListener();
+          addText(prefixText);
+        } else {
+          addText(e.payload.message + "\n");
+        }
+        if (textarea && textarea.scrollHeight - textarea.scrollTop <= 300) {
+          textarea.scrollTop = textarea.scrollHeight;
+          handleScroll();
+        }
+      },
+    );
   };
 
   const getCurrentLineStart = () => {
