@@ -30,6 +30,15 @@ const FluxTerminal = () => {
     }
   };
 
+  const handleScroll = () => {
+    if (textarea && pre) {
+      pre.scrollTop = textarea.scrollTop;
+      pre.scrollLeft = textarea.scrollLeft;
+
+      console.log(pre.scrollTop, textarea.scrollTop);
+    }
+  };
+
   const handleInput = () => {
     if (textarea && pre) {
       let fixLastLine = false;
@@ -50,6 +59,8 @@ const FluxTerminal = () => {
         textarea.selectionStart = textarea.selectionEnd = selectionStart;
       }
     }
+
+    handleScroll();
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -114,14 +125,6 @@ const FluxTerminal = () => {
     return currentLineContent;
   };
 
-  const getRelativeCaretPos = () => {
-    const start = textarea?.selectionStart || 0;
-    const currentLineStartIndex = getCurrentLine(); // +1 to move past the '\n' character
-
-    const relativeCaretPos = start - currentLineStartIndex;
-    return relativeCaretPos;
-  };
-
   const setCmd = () => {
     window.requestAnimationFrame(() => {
       const currentLineContent = getCurrentLineContents();
@@ -143,6 +146,7 @@ const FluxTerminal = () => {
         spellcheck={false}
         onInput={handleInput}
         onKeyDown={handleKeyDown}
+        onScroll={handleScroll}
       />
       <pre
         ref={pre}
