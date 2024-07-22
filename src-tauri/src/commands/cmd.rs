@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader};
+use std::path::PathBuf;
 use std::process::{Command, Stdio};
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
@@ -24,7 +25,6 @@ use std::thread;
 use log::{error, info};
 use shared_child::SharedChild;
 use tauri::Manager;
-use uuid::Uuid;
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {
@@ -32,22 +32,36 @@ struct Payload {
 }
 
 pub struct CommandController {
-    commands: Arc<Mutex<HashMap<Uuid, Arc<Mutex<SharedChild>>>>>,
+    commands: Arc<Mutex<HashMap<u64, Arc<Mutex<SharedChild>>>>>,
+    next_id: Arc<Mutex<u64>>,
 }
 
 impl CommandController {
     pub fn new() -> Self {
         CommandController {
             commands: Arc::new(Mutex::new(HashMap::new())),
+            next_id: Arc::new(Mutex::new(0)),
         }
     }
 
-    pub fn run_command(&self, command: &str, args: Vec<String>, app: tauri::AppHandle) -> Uuid {
+    pub fn run_command(
+        &self,
+        command: &str,
+        args: Vec<String>,
+        dir: PathBuf,
+        app: tauri::AppHandle,
+    ) -> u64 {
         let mut cmd = Command::new(command);
-        cmd.args(args).stdout(Stdio::piped()).stderr(Stdio::piped());
+        cmd.args(args)
+            .current_dir(dir)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
 
         let shared_child = Arc::new(Mutex::new(SharedChild::spawn(&mut cmd).unwrap()));
-        let id = Uuid::new_v4();
+
+        let mut id_manager = self.next_id.lock().unwrap();
+        let id = *id_manager;
+        *id_manager += 1;
 
         let (tx_stdout, rx) = mpsc::channel();
         let tx_stderr = tx_stdout.clone();
@@ -118,7 +132,7 @@ impl CommandController {
         id
     }
 
-    pub fn abort_command(&self, id: Uuid) {
+    pub fn abort_command(&self, id: u64) {
         let mut commands = self.commands.lock().unwrap();
         if let Some(child) = commands.remove(&id) {
             match child.lock().unwrap().kill() {
@@ -138,27 +152,23 @@ pub fn get_cmd_controller() -> &'static Mutex<CommandController> {
 }
 
 #[tauri::command(async)]
-pub fn spawn_command(command: &str, args: Vec<String>, app: tauri::AppHandle) -> String {
+pub fn spawn_command(
+    command: &str,
+    args: Vec<String>,
+    dir: PathBuf,
+    app: tauri::AppHandle,
+) -> String {
     let controller = get_cmd_controller().lock().unwrap_or_else(|e| {
         error!("Failed to get command controller: {}", e);
         e.into_inner()
     });
-    let id = controller.run_command(command, args, app.clone());
+    let id = controller.run_command(command, args, dir, app.clone());
 
     id.to_string()
 }
 
 #[tauri::command(async)]
-pub fn abort_command(id: String) {
+pub fn abort_command(id: u64) {
     let controller = get_cmd_controller().lock().unwrap();
-
-    let uuid = match Uuid::parse_str(&id) {
-        Ok(uuid) => uuid,
-        Err(e) => {
-            error!("Error parsing UUID: {}", e);
-            return;
-        }
-    };
-
-    controller.abort_command(uuid);
+    controller.abort_command(id);
 }
