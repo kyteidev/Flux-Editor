@@ -18,10 +18,11 @@ You should have received a copy of the GNU General Public License along with Flu
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader};
 use std::process::{Child, Command, Stdio};
-use std::sync::{Arc, Mutex};
+use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 
 use log::{error, info};
+use shared_child::SharedChild;
 use tauri::Manager;
 use uuid::Uuid;
 
@@ -31,7 +32,7 @@ struct Payload {
 }
 
 pub struct CommandController {
-    commands: Arc<Mutex<HashMap<Uuid, Child>>>,
+    commands: Arc<Mutex<HashMap<Uuid, Arc<Mutex<SharedChild>>>>>,
 }
 
 impl CommandController {
@@ -42,39 +43,114 @@ impl CommandController {
     }
 
     pub fn run_command(&self, command: &str, args: Vec<String>, app: tauri::AppHandle) -> Uuid {
-        let mut child = Command::new(command)
-            .args(args)
-            .stdout(Stdio::piped())
-            .spawn()
-            .expect("failed to execute process");
+        let mut cmd = Command::new(command);
+        cmd.args(args).stdout(Stdio::piped()).stderr(Stdio::piped());
 
+        /* .spawn()
+        .map_err(|e| {
+            error!("Failed to execute process {}: {}", command, e);
+        })
+        .unwrap(); */
+
+        let shared_child = Arc::new(Mutex::new(SharedChild::spawn(&mut cmd).unwrap()));
         let id = Uuid::new_v4();
 
-        if let Some(stdout) = child.stdout.take() {
+        let (tx_stdout, rx) = mpsc::channel();
+        let tx_stderr = tx_stdout.clone();
+
+        if let Some(stdout) = shared_child.clone().lock().unwrap().take_stdout() {
+            let app_clone = app.clone();
             let lines = BufReader::new(stdout).lines();
 
             thread::spawn(move || {
                 for line in lines {
-                    app.emit_all(
-                        "flux:cmd-output",
-                        Payload {
-                            message: line.unwrap().into(),
-                        },
-                    )
-                    .map_err(|e| error!("Failed to emit event: {}", e))
-                    .unwrap();
+                    app_clone
+                        .emit_all(
+                            "flux:cmd-output",
+                            Payload {
+                                message: line.unwrap_or_else(|e| {
+                                    error!("{}", e);
+                                    "Error reading line from stdout".into()
+                                }),
+                            },
+                        )
+                        .map_err(|e| error!("Failed to emit event: {}", e))
+                        .unwrap();
                 }
+                tx_stdout.send(true).unwrap();
             });
         }
 
-        self.commands.lock().unwrap().insert(id, child);
+        if let Some(stderr) = shared_child.clone().lock().unwrap().take_stderr() {
+            let app_clone = app.clone();
+            let lines = BufReader::new(stderr).lines();
+
+            thread::spawn(move || {
+                for line in lines {
+                    app_clone
+                        .emit_all(
+                            "flux:cmd-output",
+                            Payload {
+                                message: line.unwrap_or_else(|e| {
+                                    error!("{}", e);
+                                    "Error reading line from stdout".into()
+                                }),
+                            },
+                        )
+                        .map_err(|e| error!("Failed to emit stderr event: {}", e))
+                        .unwrap();
+                }
+                tx_stderr.send(true).unwrap();
+            });
+        }
+        /*
+        let app_clone = app.clone();
+        let shared_child_clone = shared_child.clone();
+        thread::spawn(move || {
+            let wait_result = shared_child_clone.lock().unwrap().wait();
+            match wait_result {
+                Ok(_) => {
+                    // Handle the child's exit status, e.g., log it or emit another event.
+                    app_clone
+                        .emit_all(
+                            "flux:cmd-output",
+                            Payload {
+                                message: "flux:output-completed".into(),
+                            },
+                        )
+                        .map_err(|e| error!("Failed to emit completion event: {}", e))
+                        .unwrap();
+                    info!("COMPLETED");
+                }
+                Err(e) => error!("Failed to wait on child process: {}", e),
+            }
+        });
+        */
+
+        let app_clone = app.clone();
+        thread::spawn(move || {
+            rx.recv().unwrap();
+            rx.recv().unwrap();
+
+            app_clone
+                .emit_all(
+                    "flux:cmd-output",
+                    Payload {
+                        message: "flux:output-completed".into(),
+                    },
+                )
+                .map_err(|e| error!("Failed to emit completion event: {}", e))
+                .unwrap();
+        });
+
+        self.commands.lock().unwrap().insert(id, shared_child);
         id
     }
 
     pub fn abort_command(&self, id: Uuid) {
         let mut commands = self.commands.lock().unwrap();
-        if let Some(mut child) = commands.remove(&id) {
-            match child.kill() {
+        if let Some(child) = commands.remove(&id) {
+            match child.lock().unwrap().kill() {
                 Ok(_) => info!("Command {} aborted successfully.", id),
                 Err(e) => error!("Failed to abort command {}: {}", id, e),
             }

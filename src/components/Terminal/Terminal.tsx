@@ -2,8 +2,8 @@ import { onMount } from "solid-js";
 import styles from "./Terminal.module.css";
 import { getProjectName } from "../../App";
 import { invoke } from "@tauri-apps/api/tauri";
-import { appWindow } from "@tauri-apps/api/window";
 import { info } from "tauri-plugin-log-api";
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
 
 const FluxTerminal = () => {
   let textarea: HTMLTextAreaElement | undefined;
@@ -11,7 +11,7 @@ const FluxTerminal = () => {
 
   let prefixText = "";
   let cmd = "";
-  let outputListener;
+  let outputListener: UnlistenFn;
 
   onMount(() => {
     setPrefix();
@@ -34,8 +34,6 @@ const FluxTerminal = () => {
     if (textarea && pre) {
       pre.scrollTop = textarea.scrollTop;
       pre.scrollLeft = textarea.scrollLeft;
-
-      console.log(pre.scrollTop, textarea.scrollTop);
     }
   };
 
@@ -63,7 +61,7 @@ const FluxTerminal = () => {
     handleScroll();
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = async (e: KeyboardEvent) => {
     const start = textarea?.selectionStart || 0;
     const end = textarea?.selectionEnd || 0;
 
@@ -83,16 +81,33 @@ const FluxTerminal = () => {
         if (!userInput.includes(" ")) {
           cmd = userInput;
         }
+        if (cmd.includes("\u200B")) {
+          cmd = cmd.slice(1);
+        }
         const args = userInput.substring(cmd.length + 1).split(" ");
 
-        console.log(cmd, args);
         invoke<string>("spawn_command", { command: cmd, args: args }).then(
           (id) => info(id),
         );
 
-        outputListener = appWindow.listen("flux:cmd-output", (payload) => {
-          console.log(payload);
-        });
+        if (outputListener) {
+          outputListener();
+        }
+        outputListener = await listen<{ message: string }>(
+          "flux:cmd-output",
+          (e) => {
+            if (e.payload.message === "flux:output-completed") {
+              outputListener();
+              addText(prefixText);
+            } else {
+              addText(e.payload.message + "\n");
+            }
+            if (textarea && textarea.scrollHeight - textarea.scrollTop <= 300) {
+              textarea.scrollTop = textarea.scrollHeight;
+              handleScroll();
+            }
+          },
+        );
         break;
       case "ArrowLeft":
       case "ArrowUp":
@@ -106,8 +121,12 @@ const FluxTerminal = () => {
             textarea.selectionStart = textarea.selectionEnd =
               newStart + (zeroWidthSpacePos - newStart) + 1;
           }
+
+          handleScroll();
         });
     }
+
+    handleScroll();
   };
 
   const getCurrentLine = () => {
@@ -140,7 +159,7 @@ const FluxTerminal = () => {
     <div class="relative h-full w-full">
       <textarea
         ref={textarea}
-        class={`${styles.textarea} absolute left-0 top-0 z-10 h-full w-full bg-transparent text-transparent caret-accent`}
+        class={`${styles.textarea} absolute left-0 top-0 z-10 h-full w-full overflow-auto whitespace-pre bg-transparent text-transparent caret-accent`}
         autocomplete="off"
         autoCapitalize="off"
         spellcheck={false}
@@ -150,7 +169,7 @@ const FluxTerminal = () => {
       />
       <pre
         ref={pre}
-        class={`${styles.pre} absolute left-0 top-0 z-0 h-full w-full bg-base-200`}
+        class={`${styles.pre} absolute left-0 top-0 z-0 h-full w-full overflow-auto whitespace-pre bg-base-200`}
       ></pre>
     </div>
   );
