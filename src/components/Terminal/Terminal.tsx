@@ -140,6 +140,10 @@ const FluxTerminal = () => {
           }
           addText("^C\n" + prefixText);
           removeKeyListeners();
+          if (textarea) {
+            textarea.scrollTop = textarea.scrollHeight;
+            handleScroll();
+          }
         }
       }
     };
