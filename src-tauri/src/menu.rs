@@ -85,7 +85,10 @@ pub fn menu() -> Menu {
     let help_menu = Menu::new().add_submenu(Submenu::new(
         "Legal Notices",
         Menu::new()
-            .add_item(CustomMenuItem::new("license".to_string(), "License"))
+            .add_item(CustomMenuItem::new(
+                "license".to_string(),
+                "Flux Editor License",
+            ))
             .add_item(CustomMenuItem::new(
                 "licenses-third-party-js".to_string(),
                 "JS Third Party Licenses",
@@ -93,6 +96,10 @@ pub fn menu() -> Menu {
             .add_item(CustomMenuItem::new(
                 "licenses-third-party-rust".to_string(),
                 "Rust Third Party Licenses",
+            ))
+            .add_item(CustomMenuItem::new(
+                "licenses-fonts".to_string(),
+                "Font Licenses and Legal Notices",
             )),
     ));
 

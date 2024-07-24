@@ -24,6 +24,7 @@ import { toggleSearch } from "./components/Search/Search";
 import {
   about,
   license,
+  licenseFonts,
   licenseThirdPartyJS,
   licenseThirdPartyRust,
   settings,
@@ -68,6 +69,9 @@ export const addListeners = () => {
   });
   appWindow.listen("flux:licenses-third-party-rust", async () => {
     licenseThirdPartyRust();
+  });
+  appWindow.listen("flux:licenses-fonts", async () => {
+    licenseFonts();
   });
 
   appWindow.listen("flux:settings", () => {

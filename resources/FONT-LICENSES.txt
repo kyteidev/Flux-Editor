@@ -1,13 +1,13 @@
-MESLO FONT LICENSE AND LEGAL NOTICES
+FONT LICENSES AND LEGAL NOTICES
 Updated: 24.7.2024 at 07:07 UTC
 
-This file contains the copyright and license notices for the Meslo LG S font.
-The Meslo LG S font is obtained from [ https://github.com/andreberg/Meslo-Font ]
+This file contains the copyright and license notices.
 
 
 
-Copyright and Trademark information
-==========
+COPYRIGHT AND TRADEMARK INFORMATION
+===================================
+
 Menlo is a Trademark of Apple Inc.
 Bitstream Vera is a Trademark of Bitstream, Inc., designed by Jim Lyles.
 
@@ -22,9 +22,15 @@ registered trademarks of their respective owners.
 
 ----------
 
+
+
+LICENSE NOTICES
+===============
+
 Meslo LG S
 License: Apache-2.0
 Copyright: Copyright 2009, 2010, 2013 André Berg
+Source: https://github.com/andreberg/Meslo-Font
 ==========
 
                                  Apache License
