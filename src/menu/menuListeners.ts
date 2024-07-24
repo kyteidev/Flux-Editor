@@ -18,9 +18,9 @@ You should have received a copy of the GNU General Public License along with Flu
 import { dialog } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 import { info } from "tauri-plugin-log-api";
-import { fileSaved, saveFile } from "./components/Editor/EditorComponent";
-import { getTabs } from "./components/Editor/components/EditorTabs";
-import { toggleSearch } from "./components/Search/Search";
+import { fileSaved, saveFile } from "../components/Editor/EditorComponent";
+import { getTabs } from "../components/Editor/components/EditorTabs";
+import { toggleSearch } from "../components/Search/Search";
 import {
   about,
   license,

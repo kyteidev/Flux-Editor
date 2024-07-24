@@ -24,7 +24,7 @@ import EditorTabs, {
 import { initSettings } from "./settingsManager";
 import { info } from "tauri-plugin-log-api";
 import { basename, initPathOS } from "./utils/path";
-import { addListeners } from "./menuListeners";
+import { addListeners } from "./menu/menuListeners";
 import SplitPane from "./components/SplitPane/SplitPane";
 import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
 import WindowControls from "./components/WindowControls/WindowControls";

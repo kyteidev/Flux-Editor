@@ -27,7 +27,7 @@ import {
   licenseThirdPartyRust,
   newWindow,
   settings,
-} from "../../menuActions";
+} from "../../menu/menuActions";
 import { saveFile } from "../Editor/EditorComponent";
 import { appWindow } from "@tauri-apps/api/window";
 import Button from "../../ui/Button";

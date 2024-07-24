@@ -22,7 +22,7 @@ import {
   licenseThirdPartyJS,
   licenseThirdPartyRust,
   settings,
-} from "../../menuActions";
+} from "../../menu/menuActions";
 import { emit } from "@tauri-apps/api/event";
 
 export const cmdFlux: { [key: string]: () => void } = {
