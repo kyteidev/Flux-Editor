@@ -118,6 +118,22 @@ const FluxTerminal = () => {
     handleScroll();
   };
 
+  const handleClick = () => {
+    window.requestAnimationFrame(() => {
+      const start = textarea?.selectionStart || 0;
+      const end = textarea?.selectionEnd || 0;
+
+      if (
+        textarea &&
+        start === end &&
+        start < textarea.value.lastIndexOf("\u200B")
+      ) {
+        textarea.selectionStart = textarea.selectionEnd =
+          textarea.value.lastIndexOf("\u200B") + 1;
+      }
+    });
+  };
+
   const runCommand = async () => {
     let cmdId = -1;
 
@@ -343,6 +359,7 @@ const FluxTerminal = () => {
         onInput={handleInput}
         onKeyDown={handleKeyDown}
         onScroll={handleScroll}
+        onClick={handleClick}
       />
       <pre
         ref={pre}
