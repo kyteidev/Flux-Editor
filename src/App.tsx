@@ -35,7 +35,7 @@ import Search from "./components/Search/Search";
 import StatusBar from "./components/StatusBar/StatusBar";
 import { FluxLogo } from "./components/Icons/FluxLogo";
 import ButtonIcon from "./ui/ButtonIcon";
-import { IconFileBrowser } from "./components/Icons/Icons";
+import { IconFileBrowser, IconTerminal } from "./components/Icons/Icons";
 import FluxTerminal from "./components/Terminal/Terminal";
 import { appWindow } from "@tauri-apps/api/window";
 import { dialog, invoke } from "@tauri-apps/api";
@@ -81,6 +81,7 @@ export const loadEditor = (
 
 export default function App() {
   const [hideFB, setHideFB] = createSignal(false); // whether to hide File Browser
+  const [hideTerm, setHideTerm] = createSignal(true); // whether to hide Terminal
 
   onMount(async () => {
     initPathOS().then(() => {
@@ -120,11 +121,18 @@ export default function App() {
         }}
       >
         <Menu />
-        <ButtonIcon
-          size="18px"
-          icon={<IconFileBrowser />}
-          action={() => setHideFB(!hideFB())}
-        />
+        <div class="flex space-x-1">
+          <ButtonIcon
+            size="18px"
+            icon={<IconFileBrowser />}
+            action={() => setHideFB(!hideFB())}
+          />
+          <ButtonIcon
+            size="18px"
+            icon={<IconTerminal />}
+            action={() => setHideTerm(!hideTerm())}
+          />
+        </div>
       </header>
       <div
         style={{
@@ -162,6 +170,7 @@ export default function App() {
             secondMinSize={250}
             canSecondHide={false}
             swapPriority={true}
+            hideSecond={hideTerm()}
           >
             <Show
               when={getTabs().length != 0}
