@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "meslo";
+  src: url("../../assets/fonts/MesloLGS.woff2") format("woff2");
+}
+
+.textarea,
+.pre,
+.pre * {
+  font-family: "meslo", monospace !important;
+}
