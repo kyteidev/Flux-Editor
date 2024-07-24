@@ -1,5 +1,4 @@
 import { onMount } from "solid-js";
-import styles from "./Terminal.module.css";
 import { getProjectName } from "../../App";
 import { invoke } from "@tauri-apps/api/tauri";
 import { error, info } from "tauri-plugin-log-api";
@@ -337,7 +336,7 @@ const FluxTerminal = () => {
     <div class="relative h-full w-full">
       <textarea
         ref={textarea}
-        class={`${styles.textarea} absolute left-0 top-0 z-10 h-full w-full overflow-auto whitespace-pre bg-transparent text-transparent caret-accent`}
+        class="font-meslo absolute left-0 top-0 z-10 h-full w-full overflow-auto whitespace-pre bg-transparent px-2 py-1 text-transparent caret-accent"
         autocomplete="off"
         autoCapitalize="off"
         spellcheck={false}
@@ -347,7 +346,7 @@ const FluxTerminal = () => {
       />
       <pre
         ref={pre}
-        class={`${styles.pre} absolute left-0 top-0 z-0 h-full w-full overflow-auto whitespace-pre bg-base-200`}
+        class="font-meslo absolute left-0 top-0 z-0 h-full w-full overflow-auto whitespace-pre bg-base-200 px-2 py-1"
       ></pre>
     </div>
   );

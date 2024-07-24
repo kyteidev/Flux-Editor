@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./src/input.css"],
   theme: {
+    fontFamily: {
+      meslo: ["meslo", "monospace"],
+    },
     colors: {
       content: "var(--content)",
       accent: "var(--accent)",

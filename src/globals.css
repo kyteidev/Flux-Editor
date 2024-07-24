@@ -1132,6 +1132,10 @@ video {
   vertical-align: middle;
 }
 
+.font-meslo {
+  font-family: meslo, monospace;
+}
+
 .text-\[12px\] {
   font-size: 12px;
 }
@@ -1245,6 +1249,12 @@ video {
   }
 }
 
+@font-face {
+  font-family: "meslo";
+
+  src: url("../../assets/fonts/MesloLGS.woff2") format("woff2");
+}
+
 *,
 *::before,
 *::after {
@@ -1340,6 +1350,10 @@ dialog[open] {
   padding: 4px;
 }
 
+.\*\:font-meslo > * {
+  font-family: meslo, monospace;
+}
+
 .last\:rounded-b:last-child {
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
@@ -1397,4 +1411,12 @@ dialog[open] {
 .active\:brightness-125:active {
   --tw-brightness: brightness(1.25);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.\[\&\>\*\]\:font-meslo>* {
+  font-family: meslo, monospace;
+}
+
+.\[\&_\*\]\:font-meslo * {
+  font-family: meslo, monospace;
 }
