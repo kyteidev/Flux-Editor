@@ -10,7 +10,6 @@ import {
   normalizePath,
   resolvePath,
 } from "../../utils/path";
-import { fs } from "@tauri-apps/api";
 
 const FluxTerminal = () => {
   let textarea: HTMLTextAreaElement | undefined;
@@ -105,6 +104,54 @@ const FluxTerminal = () => {
   };
 
   const runCommand = async () => {
+    let cmdId = -1;
+
+    // command abort code
+    const keysPressed: string[] = [];
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      console.log(keysPressed);
+      if (!keysPressed.includes(e.code)) {
+        keysPressed.push(e.code);
+
+        const shortcutKeys = ["Control", "KeyC"];
+        const filteredKeysPressed = keysPressed.map((key) =>
+          key.replace("Left", "").replace("Right", ""),
+        );
+        if (shortcutKeys.every((key) => filteredKeysPressed.includes(key))) {
+          if (cmdId != -1) {
+            abortCommand(cmdId);
+          }
+          addText("^C\n" + prefixText);
+          removeKeyListeners();
+        }
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      keysPressed.splice(keysPressed.indexOf(e.code), 1);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    document.addEventListener("keyup", handleKeyUp);
+
+    const abortCommand = (id: number) => {
+      outputListener();
+      invoke("abort_command", { id: id })
+        .then(() => {
+          info("Command with ID " + id + " aborted successfully");
+        })
+        .catch((e: string) => {
+          error("Error aborting command with ID " + id + ": " + e);
+        });
+    };
+
+    const removeKeyListeners = () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+
     const userInput = getCurrentLineContents().slice(prefixText.length);
     if (!userInput.includes(" ")) {
       cmd = userInput;
@@ -127,6 +174,7 @@ const FluxTerminal = () => {
 
     // callerAsync: whether the function calling this is async
     const addErrorText = (error: string, callerAsync?: boolean) => {
+      removeKeyListeners();
       if (!callerAsync) {
         addText("\n" + error);
       } else {
@@ -138,6 +186,7 @@ const FluxTerminal = () => {
     switch (cmd) {
       case "clear":
         clearTerm();
+        removeKeyListeners();
         return;
       case "cd":
         if (args.length > 1) {
@@ -194,14 +243,18 @@ const FluxTerminal = () => {
           }
           addPrefixText();
         }
+        removeKeyListeners();
         return;
     }
 
-    invoke<string>("spawn_command", {
+    invoke<number>("spawn_command", {
       command: cmd,
       args: args,
       dir: cmdDir,
-    }).then((id) => info(id));
+    }).then((id) => {
+      cmdId = id;
+      info(id.toString());
+    });
 
     if (outputListener) {
       outputListener();
@@ -210,8 +263,10 @@ const FluxTerminal = () => {
       "flux:cmd-output",
       (e) => {
         if (e.payload.message === "flux:output-completed") {
+          cmdId = -1;
           outputListener();
           addPrefixText();
+          removeKeyListeners();
         } else {
           addText(e.payload.message + "\n");
         }

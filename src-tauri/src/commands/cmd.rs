@@ -168,7 +168,15 @@ pub fn spawn_command(
 }
 
 #[tauri::command(async)]
-pub fn abort_command(id: u64) {
+pub fn abort_command(id: &str) {
+    let id_u64 = match id.parse::<u64>() {
+        Ok(n) => n,
+        Err(e) => {
+            error!("Failed to parse: {} to u64: {}", id, e);
+            return;
+        }
+    };
+
     let controller = get_cmd_controller().lock().unwrap();
-    controller.abort_command(id);
+    controller.abort_command(id_u64);
 }
