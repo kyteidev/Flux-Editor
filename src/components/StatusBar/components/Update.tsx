@@ -28,13 +28,10 @@ import { createSignal, onCleanup, onMount, Show } from "solid-js";
 import { error, info } from "tauri-plugin-log-api";
 import { getOS } from "../../../utils/os";
 import { dialog } from "@tauri-apps/api";
-import { getVersion } from "@tauri-apps/api/app";
 
 const Update = () => {
   const [os, setOs] = createSignal("");
   const [hasUpdate, setHasUpdate] = createSignal(false);
-
-  const [latestVer, setLatestVer] = createSignal("");
 
   const unlisten = onUpdaterEvent(({ error, status }) => {
     info("Updater event: " + error + status);
@@ -44,12 +41,10 @@ const Update = () => {
     setOs(await getOS());
 
     try {
-      const { shouldUpdate, manifest } = await checkUpdate();
+      const { shouldUpdate } = await checkUpdate();
 
       if (shouldUpdate) {
         setHasUpdate(true);
-
-        setLatestVer(manifest?.version || "");
 
         if (os() != "win32") {
           installUpdate();
@@ -66,22 +61,13 @@ const Update = () => {
   });
 
   const update = async () => {
-    if (os() === "win32") {
-      const update = await dialog.ask(
-        "Latest version: " +
-          latestVer() +
-          "\nYour version: " +
-          (await getVersion()),
-        { title: "Do you want to install update?" },
-      );
-      if (update) {
+    const restart = await dialog.ask("Do you want to restart now?", {
+      title: "Restart required",
+    });
+    if (restart) {
+      if (os() === "win32") {
         installUpdate();
-      }
-    } else {
-      const restart = await dialog.ask("Do you want to restart now?", {
-        title: "Restart required",
-      });
-      if (restart) {
+      } else {
         relaunch();
       }
     }
@@ -93,9 +79,7 @@ const Update = () => {
         class="flex items-center justify-center rounded bg-base-200 px-1 text-center hover:bg-base-100-hover active:brightness-125"
         onClick={update}
       >
-        {os() === "win32"
-          ? "Click to view new update"
-          : "Click to apply update"}
+        Click to apply update
       </button>
     </Show>
   );
