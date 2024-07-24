@@ -16,13 +16,13 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 @font-face {
-  font-family: "notosans";
-  src: url("../../assets/fonts/NotoSansMono.woff2") format("woff2");
+  font-family: "meslo";
+  src: url("../../assets/fonts/MesloLGS.woff2") format("woff2");
 }
 
 .textarea,
 .pre,
 .pre * {
-  font-family: "notosans", monospace;
+  font-family: "meslo", monospace;
   padding: 0.25rem 0.5rem;
 }

@@ -21,13 +21,13 @@ You should have received a copy of the GNU General Public License along with Flu
 }
 
 @font-face {
-  font-family: "notosans";
-  src: url("../../assets/fonts/NotoSansMono.woff2") format("woff2");
+  font-family: "meslo";
+  src: url("../../assets/fonts/MesloLGS.woff2") format("woff2");
 }
 
 .lineNumber {
   direction: rtl;
-  font-family: "notosans", monospace !important;
+  font-family: "meslo", monospace !important;
   font-size: var(--editor-fontSize);
   line-height: var(--editor-lineHeight);
 }
@@ -35,7 +35,7 @@ You should have received a copy of the GNU General Public License along with Flu
 .textarea,
 .highlighted,
 .highlighted * {
-  font-family: "notosans", monospace !important;
+  font-family: "meslo", monospace !important;
   font-size: var(--editor-fontSize);
   line-height: var(--editor-lineHeight);
   border: none !important;
