@@ -86,6 +86,19 @@ const FluxTerminal = () => {
     switch (e.code) {
       case "Backspace":
       case "ArrowLeft":
+        if (e.code === "Backspace" && start != end && textarea && pre) {
+          e.preventDefault();
+
+          textarea.value = textarea.value.slice(
+            0,
+            textarea.value.lastIndexOf("\u200B") + 1,
+          );
+          pre.innerText = textarea.value;
+
+          textarea.selectionStart = textarea.selectionEnd =
+            textarea.value.length;
+        }
+
         if (start === end && textarea?.value.charAt(start - 1) === "\u200B") {
           e.preventDefault();
         }
