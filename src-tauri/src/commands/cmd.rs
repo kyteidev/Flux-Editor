@@ -141,6 +141,17 @@ impl CommandController {
             }
         }
     }
+
+    pub fn abort_all_commands(&self) {
+        let mut commands = self.commands.lock().unwrap();
+        for (id, child) in commands.drain() {
+            match child.lock().unwrap().kill() {
+                Ok(_) => info!("Command {} aborted successfully.", id),
+                Err(e) => error!("Failed to abort command {}: {}", id, e),
+            }
+        }
+        info!("Aborted all commands successfully.")
+    }
 }
 
 lazy_static::lazy_static! {
@@ -179,4 +190,10 @@ pub fn abort_command(id: &str) {
 
     let controller = get_cmd_controller().lock().unwrap();
     controller.abort_command(id_u64);
+}
+
+#[tauri::command(async)]
+pub fn abort_all_commands() {
+    let controller = get_cmd_controller().lock().unwrap();
+    controller.abort_all_commands();
 }

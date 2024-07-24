@@ -51,7 +51,7 @@ mod window_ext;
 
 mod commands;
 use commands::{
-    cmd::{abort_command, spawn_command},
+    cmd::{abort_all_commands, abort_command, spawn_command},
     fs::{get_dir_contents, is_dir, path_exists},
     git::clone_repo,
     path::{app_data_dir, resolve_resource, user_home_dir},
@@ -172,7 +172,8 @@ fn main() {
             spawn_command,
             abort_command,
             is_dir,
-            path_exists
+            path_exists,
+            abort_all_commands
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

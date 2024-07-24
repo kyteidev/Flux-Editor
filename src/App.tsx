@@ -38,7 +38,7 @@ import ButtonIcon from "./ui/ButtonIcon";
 import { IconFileBrowser } from "./components/Icons/Icons";
 import FluxTerminal from "./components/Terminal/Terminal";
 import { appWindow } from "@tauri-apps/api/window";
-import { dialog } from "@tauri-apps/api";
+import { dialog, invoke } from "@tauri-apps/api";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -102,6 +102,7 @@ export default function App() {
           },
         );
         if (closeEditor) {
+          await invoke("abort_all_commands");
           appWindow.close();
         }
       }
