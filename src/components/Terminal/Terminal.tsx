@@ -42,7 +42,9 @@ const FluxTerminal = () => {
   const addText = (text: string) => {
     if (textarea && pre) {
       textarea.value += text;
-      pre.innerHTML = textarea.value;
+      pre.innerText = textarea.value;
+
+      handleScroll();
     }
   };
 
@@ -63,9 +65,7 @@ const FluxTerminal = () => {
         fixLastLine = true;
       }
 
-      pre.innerHTML = textarea.value
-        .replace(new RegExp("&", "g"), "&amp;")
-        .replace(new RegExp("<", "g"), "&lt;");
+      pre.innerText = textarea.value;
 
       if (fixLastLine && textarea.value[textarea.value.length - 1] == " ") {
         textarea.value = textarea.value.substring(0, textarea.value.length - 1);
@@ -227,7 +227,7 @@ const FluxTerminal = () => {
     window.requestAnimationFrame(() => {
       if (textarea && pre) {
         textarea.value = prefixText;
-        pre.innerHTML = textarea.value;
+        pre.innerText = textarea.value;
       }
     });
   };
