@@ -15,11 +15,9 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { dialog } from "@tauri-apps/api";
 import { appWindow } from "@tauri-apps/api/window";
 import { info } from "tauri-plugin-log-api";
-import { fileSaved, saveFile } from "../components/Editor/EditorComponent";
-import { getTabs } from "../components/Editor/components/EditorTabs";
+import { saveFile } from "../components/Editor/EditorComponent";
 import { toggleSearch } from "../components/Search/Search";
 import {
   about,
@@ -33,20 +31,6 @@ import { emit } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/tauri";
 
 export const addListeners = () => {
-  appWindow.listen("tauri://close-requested", async () => {
-    if (fileSaved().length === getTabs().length) {
-      appWindow.close();
-    } else {
-      const closeEditor = await dialog.ask("Your changes will not be saved.", {
-        title: "Are you sure you want to close Flux Editor?",
-        type: "warning",
-      });
-      if (closeEditor) {
-        appWindow.close();
-      }
-    }
-  });
-
   /*
   appWindow.listen("flux:ls-test", async () => {
     send_request();

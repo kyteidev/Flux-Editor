@@ -16,7 +16,9 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { createSignal, onMount, Show } from "solid-js";
-import EditorComponent from "./components/Editor/EditorComponent";
+import EditorComponent, {
+  fileSaved,
+} from "./components/Editor/EditorComponent";
 import EditorTabs, {
   addTab,
   getTabs,
@@ -35,6 +37,8 @@ import { FluxLogo } from "./components/Icons/FluxLogo";
 import ButtonIcon from "./ui/ButtonIcon";
 import { IconFileBrowser } from "./components/Icons/Icons";
 import FluxTerminal from "./components/Terminal/Terminal";
+import { appWindow } from "@tauri-apps/api/window";
+import { dialog } from "@tauri-apps/api";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -85,6 +89,23 @@ export default function App() {
     info("Initialized application");
 
     addListeners();
+
+    appWindow.listen("tauri://close-requested", async () => {
+      if (fileSaved().length === getTabs().length) {
+        appWindow.close();
+      } else {
+        const closeEditor = await dialog.ask(
+          "Your changes will not be saved.",
+          {
+            title: "Are you sure you want to close Flux Editor?",
+            type: "warning",
+          },
+        );
+        if (closeEditor) {
+          appWindow.close();
+        }
+      }
+    });
   });
 
   return (
