@@ -23,7 +23,7 @@
   <img src="https://img.shields.io/github/stars/kyteidev/FluxEditor?style=flat-square" alt="stars">
 </a>
   <a>
-    <img src="https://img.shields.io/badge/version-0.5.0-blue?style=flat-square" alt="version">
+    <img src="https://img.shields.io/github/package-json/v/kyteidev/FluxEditor?style=flat-square&color=blue" alt="version">
   </a>
   <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
     <img src="https://img.shields.io/badge/license-GPL--3.0-orange?style=flat-square" alt="license">
@@ -48,8 +48,8 @@
 
 - Syntax highlighting
 - Built-in file browser
+- Built-in terminal
 - Code suggestions (soon)
-- Built-in terminal (soon)
 - Git integration (partially complete)
 - Incredibly lightweight
 - Minimalist UI
@@ -71,6 +71,7 @@ See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTI
 
 ## Credits <a name="credits"></a>
 
+- Syntax highlighting is powered by PrismJS
 - The search bar was inspired by VSCode and Zed
 
 ## Copyright and Licenses <a name="license"></a>
