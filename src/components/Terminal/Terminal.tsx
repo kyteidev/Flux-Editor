@@ -27,7 +27,10 @@ const FluxTerminal = () => {
 
   onMount(async () => {
     setPrefix();
-    addText(prefixText);
+    addText(
+      "NOTE: This is merely a command runner that simulates a terminal UI.\nThis doesn't support, for example, inputs and terminal apps.\n" +
+        prefixText,
+    );
 
     homeDirPath = await homeDir();
     cmdDir = homeDirPath;
