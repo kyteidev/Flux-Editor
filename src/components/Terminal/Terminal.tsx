@@ -2,8 +2,15 @@ import { onMount } from "solid-js";
 import styles from "./Terminal.module.css";
 import { getProjectName } from "../../App";
 import { invoke } from "@tauri-apps/api/tauri";
-import { info } from "tauri-plugin-log-api";
+import { error, info } from "tauri-plugin-log-api";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
+import {
+  basename,
+  homeDir,
+  normalizePath,
+  resolvePath,
+} from "../../utils/path";
+import { fs } from "@tauri-apps/api";
 
 const FluxTerminal = () => {
   let textarea: HTMLTextAreaElement | undefined;
@@ -11,11 +18,20 @@ const FluxTerminal = () => {
 
   let prefixText = "";
   let cmd = "";
+  let cmdDir: string;
+
+  let prevDir: string;
+
+  let homeDirPath: string;
+
   let outputListener: UnlistenFn;
 
-  onMount(() => {
+  onMount(async () => {
     setPrefix();
     addText(prefixText);
+
+    homeDirPath = await homeDir();
+    cmdDir = homeDirPath;
   });
 
   const setPrefix = () => {
@@ -96,17 +112,96 @@ const FluxTerminal = () => {
     if (cmd.includes("\u200B")) {
       cmd = cmd.slice(1);
     }
-    const args = userInput.substring(cmd.length + 1).split(" ");
+    const args = userInput
+      .substring(cmd.length + 1)
+      .trim()
+      .split(" ")
+      .map((arg) => arg.trim())
+      .filter((arg) => arg !== "");
+
+    const addPrefixText = () => {
+      window.requestAnimationFrame(() => {
+        addText(prefixText);
+      });
+    };
+
+    // callerAsync: whether the function calling this is async
+    const addErrorText = (error: string, callerAsync?: boolean) => {
+      if (!callerAsync) {
+        addText("\n" + error);
+      } else {
+        addText(error + "\n");
+      }
+      addPrefixText();
+    };
 
     switch (cmd) {
       case "clear":
         clearTerm();
         return;
+      case "cd":
+        if (args.length > 1) {
+          addErrorText("cd: too many arguments");
+          return;
+        } else {
+          switch (args[0]) {
+            case "":
+            case "~":
+            case "--":
+              cmdDir = homeDirPath;
+              break;
+            case "-":
+              const tempDir = cmdDir;
+              cmdDir = prevDir || homeDirPath;
+              prevDir = tempDir;
+              break;
+            default:
+              cmdDir = await resolvePath(args[0], cmdDir);
+
+              if (normalizePath(cmdDir) === normalizePath(homeDirPath)) {
+                cmdDir = homeDirPath;
+                break;
+              }
+
+              try {
+                // custom path exists bypasses Tauri config's scope
+                if (!(await invoke("path_exists", { path: cmdDir }))) {
+                  addErrorText(
+                    "cd: no such file or directory: " + basename(cmdDir),
+                    true,
+                  );
+                  return;
+                } else if (!(await invoke("is_dir", { path: cmdDir }))) {
+                  addErrorText(
+                    "cd: not a directory: " + basename(cmdDir),
+                    true,
+                  );
+                  return;
+                }
+              } catch (e) {
+                error(e as string);
+                addErrorText("cd: " + e, true);
+                return;
+              }
+
+              break;
+          }
+
+          if (normalizePath(cmdDir) === normalizePath(homeDirPath)) {
+            prefixText = "% \u200B";
+          } else {
+            prefixText = basename(cmdDir) + " % \u200B";
+          }
+          addPrefixText();
+        }
+        return;
     }
 
-    invoke<string>("spawn_command", { command: cmd, args: args }).then((id) =>
-      info(id),
-    );
+    invoke<string>("spawn_command", {
+      command: cmd,
+      args: args,
+      dir: cmdDir,
+    }).then((id) => info(id));
 
     if (outputListener) {
       outputListener();
@@ -116,7 +211,7 @@ const FluxTerminal = () => {
       (e) => {
         if (e.payload.message === "flux:output-completed") {
           outputListener();
-          addText(prefixText);
+          addPrefixText();
         } else {
           addText(e.payload.message + "\n");
         }

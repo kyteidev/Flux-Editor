@@ -85,3 +85,47 @@ export const resolveResource = async (resource: string): Promise<string> => {
   const path = await invoke<string>("resolve_resource", { resource: resource });
   return path;
 };
+
+export const normalizePath = (path: string) => {
+  let normalizedPath = path.replace(/\/{2,}/g, pathSep());
+  if (normalizedPath.charAt(normalizedPath.length - 1) != pathSep()) {
+    normalizedPath += pathSep();
+  }
+  return normalizedPath;
+};
+
+export const resolvePath = async (
+  path: string,
+  currentDir: string,
+): Promise<string> => {
+  if (path[0] === pathSep()) {
+    return path;
+  }
+
+  const pathParts = path.split(pathSep());
+
+  let finalPath = currentDir;
+
+  for (let i = 0; i < pathParts.length; i++) {
+    console.log(pathParts[i]);
+    switch (pathParts[i]) {
+      case ".":
+        break;
+      case "..":
+        if (finalPath.length === 0) {
+          break;
+        } else {
+          finalPath = normalizePath(finalPath).slice(0, finalPath.length - 1);
+          finalPath = finalPath.slice(0, finalPath.lastIndexOf(pathSep()));
+        }
+        break;
+      case "~":
+        finalPath = await homeDir();
+        break;
+      default:
+        finalPath = finalPath + pathSep() + pathParts[i];
+    }
+  }
+
+  return normalizePath(finalPath);
+};

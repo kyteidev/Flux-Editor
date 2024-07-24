@@ -73,3 +73,13 @@ pub fn get_dir_contents(path: PathBuf) -> Result<ItemTypes, String> {
         files: files,
     })
 }
+
+#[tauri::command]
+pub fn path_exists(path: PathBuf) -> bool {
+    path.exists()
+}
+
+#[tauri::command]
+pub fn is_dir(path: PathBuf) -> bool {
+    path.is_dir()
+}
