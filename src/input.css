@@ -57,6 +57,7 @@ You should have received a copy of the GNU General Public License along with Flu
 *::before,
 *::after {
   font-family: system-ui, sans-serif;
+  font-feature-settings: "liga" 0 !important;
   color: var(--content);
   user-select: none;
 }
