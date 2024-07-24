@@ -26,6 +26,7 @@ import { addTab, getTabs } from "../Editor/components/EditorTabs";
 import { extname, joinPath, pathSep } from "../../utils/path";
 import Startup from "./Startup";
 import { dialog, invoke } from "@tauri-apps/api";
+import { updateBreadcrumbs } from "../Editor/components/EditorBreadcrumbs";
 
 interface Props {
   dir: string;
@@ -147,6 +148,7 @@ const FileBrowser = (props: Props) => {
                       addTab([itemName, itemPath]);
                     }
                     openFile(itemPath);
+                    updateBreadcrumbs(itemPath);
                   }
                 }}
               >

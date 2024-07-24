@@ -39,6 +39,7 @@ import { IconFileBrowser, IconTerminal } from "./components/Icons/Icons";
 import FluxTerminal from "./components/Terminal/Terminal";
 import { appWindow } from "@tauri-apps/api/window";
 import { dialog, invoke } from "@tauri-apps/api";
+import EditorBreadcrumbs from "./components/Editor/components/EditorBreadcrumbs";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -190,6 +191,7 @@ export default function App() {
             <Show when={getTabs().length != 0}>
               <div class="max-w-full">
                 <EditorTabs />
+                <EditorBreadcrumbs />
               </div>
             </Show>
           </SplitPane>
