@@ -34,6 +34,13 @@
 (NOTE! This project is still WIP. Expect bugs and unfinished features)
 </p>
 
+## Screenshots
+
+<div align="center">
+<img width="auto" height="320px" src="images/flux-welcome.png" alt="Welcome Screen" />
+<img width="auto" height="320px" src="images/flux-code.png" alt="Editing screen" />
+</div>
+
 ## Table of Contents
 
 - [Features](#features)
