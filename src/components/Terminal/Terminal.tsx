@@ -1,5 +1,5 @@
 import { onMount } from "solid-js";
-import { getProjectName } from "../../App";
+import { getProjectName, getProjectPath } from "../../App";
 import { invoke } from "@tauri-apps/api/tauri";
 import { error, info } from "tauri-plugin-log-api";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
@@ -32,7 +32,8 @@ const FluxTerminal = () => {
     );
 
     homeDirPath = await homeDir();
-    cmdDir = homeDirPath;
+
+    cmdDir = getProjectPath() || homeDirPath;
   });
 
   const setPrefix = () => {

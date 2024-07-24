@@ -46,6 +46,14 @@ export const getProjectName = () => {
   return projectName();
 };
 
+export const getProjectPath = () => {
+  if (dir() === "") {
+    return undefined;
+  } else {
+    return dir();
+  }
+};
+
 export const loadEditor = (
   dirPath: string,
   openFile?: boolean,
