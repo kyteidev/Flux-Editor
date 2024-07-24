@@ -19,6 +19,7 @@ import { appWindow } from "@tauri-apps/api/window";
 import {
   about,
   license,
+  licenseFonts,
   licenseThirdPartyJS,
   licenseThirdPartyRust,
   settings,
@@ -41,6 +42,7 @@ export const cmdFlux: { [key: string]: () => void } = {
   "Flux: Open license": () => license(),
   "Flux: Open JS third party licenses": () => licenseThirdPartyJS(),
   "Flux: Open Rust third party licenses": () => licenseThirdPartyRust(),
+  "Flux: Open Font Licenses and Legal Notices": () => licenseFonts(),
   "Flux: Open settings": () => settings(),
   "Flux: Quit": () => appWindow.close(),
 };
