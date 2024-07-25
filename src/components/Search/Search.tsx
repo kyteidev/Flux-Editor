@@ -222,7 +222,7 @@ const Search = () => {
               const highlightQuery = (suggestion: string, query: string) => {
                 const parts = suggestion.split(new RegExp(`(${query})`, "i"));
                 let highlighted = false;
-                return parts.map((part, i) => {
+                return parts.map((part) => {
                   if (
                     !highlighted &&
                     part.toLowerCase() === query.toLowerCase()
