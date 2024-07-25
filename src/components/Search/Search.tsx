@@ -36,7 +36,8 @@ const handleOutsideClick = (e: MouseEvent) => {
     if (
       !inputRef?.contains(e.target) &&
       e.target.tagName != "LI" &&
-      e.target.tagName != "UL"
+      e.target.tagName != "UL" &&
+      !e.target.className.includes("search-suggestion")
     ) {
       toggleSearch();
     }
@@ -228,10 +229,12 @@ const Search = () => {
                   ) {
                     highlighted = true;
                     return (
-                      <span class="text-accent brightness-125">{part}</span>
+                      <span class="search-suggestion text-accent brightness-125">
+                        {part}
+                      </span>
                     );
                   }
-                  return <span>{part}</span>;
+                  return <span class="search-suggestion">{part}</span>;
                 });
               };
 
