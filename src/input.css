@@ -70,11 +70,10 @@ You should have received a copy of the GNU General Public License along with Flu
 ::-webkit-scrollbar-thumb {
   background-color: var(--accent);
   border-radius: 0.25rem;
-  opacity: 0.5;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--accent);
+  background-color: var(--accent-hover);
   opacity: 1;
 }
 
