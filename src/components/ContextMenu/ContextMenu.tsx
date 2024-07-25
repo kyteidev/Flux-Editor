@@ -100,13 +100,7 @@ const ContextMenu = () => {
         <Switch>
           <Match when={menuID() === 0}>
             <MenuItem first text="New File" action={() => newItem("file")} />
-            <MenuItem
-              text="New Folder"
-              separator
-              action={() => newItem("folder")}
-            />
-            <MenuItem text="Trash" />
-            <MenuItem last text="Delete" />
+            <MenuItem last text="New Folder" action={() => newItem("folder")} />
           </Match>
         </Switch>
       </div>
