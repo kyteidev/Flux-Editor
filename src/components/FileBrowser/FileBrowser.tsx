@@ -188,6 +188,10 @@ const FileBrowser = (props: Props) => {
                   .then(() => {
                     nestedFiles.push(newItemPath);
                     nestedFiles.sortInsensitive();
+
+                    addTab([basename(newItemPath), newItemPath]);
+                    openFile(newItemPath);
+                    updateBreadcrumbs(newItemPath);
                   })
                   .catch(async (e) => {
                     error("Error creating file: " + e);
