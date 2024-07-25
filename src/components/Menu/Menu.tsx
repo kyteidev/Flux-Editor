@@ -27,6 +27,7 @@ import {
   licenseThirdPartyRust,
   newWindow,
   settings,
+  viewLogs,
 } from "../../menu/menuActions";
 import { saveFile } from "../Editor/EditorComponent";
 import { appWindow } from "@tauri-apps/api/window";
@@ -298,38 +299,44 @@ const Menu = () => {
               <MenuItem
                 first={true}
                 item={1}
+                text="View Logs"
+                width="w-48"
+                action={() => viewLogs()}
+              />
+              <MenuItem
+                item={2}
                 text="About"
                 width="w-48"
                 action={() => about()}
               />
               <MenuItem
-                item={2}
+                item={3}
                 text="Check for Updates"
                 width="w-48"
                 separator={true}
                 action={() => emit("tauri://update")}
               />
               <MenuItem
-                item={3}
+                item={4}
                 text="Flux Editor License"
                 width="w-48"
                 action={() => license()}
               />
               <MenuItem
-                item={4}
+                item={5}
                 text="JS Third Party Licenses"
                 width="w-48"
                 action={() => licenseThirdPartyJS()}
               />
               <MenuItem
-                item={5}
+                item={6}
                 text="Rust Third Party Licenses"
                 width="w-48"
                 action={() => licenseThirdPartyRust()}
               />
               <MenuItem
                 last={true}
-                item={6}
+                item={7}
                 text="Font Licenses and Legal Notices"
                 width="w-48"
                 action={() => licenseFonts()}

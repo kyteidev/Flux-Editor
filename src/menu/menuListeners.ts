@@ -26,6 +26,7 @@ import {
   licenseThirdPartyJS,
   licenseThirdPartyRust,
   settings,
+  viewLogs,
 } from "./menuActions";
 import { emit } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/tauri";
@@ -56,6 +57,10 @@ export const addListeners = () => {
   });
   appWindow.listen("flux:licenses-fonts", async () => {
     licenseFonts();
+  });
+
+  appWindow.listen("flux:logs", async () => {
+    viewLogs();
   });
 
   appWindow.listen("flux:settings", () => {

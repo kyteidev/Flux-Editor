@@ -23,6 +23,7 @@ import {
   licenseThirdPartyJS,
   licenseThirdPartyRust,
   settings,
+  viewLogs,
 } from "../../menu/menuActions";
 import { emit } from "@tauri-apps/api/event";
 
@@ -44,5 +45,6 @@ export const cmdFlux: { [key: string]: () => void } = {
   "Flux: Open Rust third party licenses": () => licenseThirdPartyRust(),
   "Flux: Open Font Licenses and Legal Notices": () => licenseFonts(),
   "Flux: Open settings": () => settings(),
+  "Flux: View logs": () => viewLogs(),
   "Flux: Quit": () => appWindow.close(),
 };

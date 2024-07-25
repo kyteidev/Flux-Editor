@@ -21,7 +21,8 @@ import { getVersion } from "@tauri-apps/api/app";
 import { addTab } from "../components/Editor/components/EditorTabs";
 import { openFile } from "../components/Editor/EditorComponent";
 import { getSettingsPath } from "../settingsManager";
-import { resolveResource } from "../utils/path";
+import { appDataDir, joinPath, resolveResource } from "../utils/path";
+import { updateBreadcrumbs } from "../components/Editor/components/EditorBreadcrumbs";
 
 export const about = async () => {
   const appVersion = getVersion();
@@ -65,6 +66,15 @@ export const licenseFonts = async () => {
   const resourcePath = await resolveResource("../resources/FONT-LICENSES.txt");
   addTab([":FONT LICENSES", resourcePath]);
   openFile(resourcePath, true);
+};
+
+export const viewLogs = async () => {
+  const logDir = joinPath(await appDataDir(), "logs");
+  const logFilePath = joinPath(logDir, "main.log");
+
+  addTab([":FLUX LOGS", logFilePath]);
+  openFile(logFilePath, true);
+  updateBreadcrumbs(logFilePath);
 };
 
 export const settings = () => {
