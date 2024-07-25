@@ -66,8 +66,6 @@ pub fn get_dir_contents(path: PathBuf) -> Result<ItemTypes, String> {
         }
     }
 
-    println!("{:?}, {:?}", dirs, files);
-
     Ok(ItemTypes {
         dirs: dirs,
         files: files,
