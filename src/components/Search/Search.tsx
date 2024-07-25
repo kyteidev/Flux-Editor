@@ -219,14 +219,20 @@ const Search = () => {
           <For each={suggestions()}>
             {(suggestion, index) => {
               const highlightQuery = (suggestion: string, query: string) => {
-                const parts = suggestion.split(new RegExp(`(${query})`, "gi"));
-                return parts.map((part) =>
-                  part.toLowerCase() === query.toLowerCase() ? (
-                    <span class="text-accent brightness-125">{part}</span>
-                  ) : (
-                    <span>{part}</span>
-                  ),
-                );
+                const parts = suggestion.split(new RegExp(`(${query})`, "i"));
+                let highlighted = false;
+                return parts.map((part, i) => {
+                  if (
+                    !highlighted &&
+                    part.toLowerCase() === query.toLowerCase()
+                  ) {
+                    highlighted = true;
+                    return (
+                      <span class="text-accent brightness-125">{part}</span>
+                    );
+                  }
+                  return <span>{part}</span>;
+                });
               };
 
               return (
