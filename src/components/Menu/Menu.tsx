@@ -33,10 +33,10 @@ import { saveFile } from "../Editor/EditorComponent";
 import { appWindow } from "@tauri-apps/api/window";
 import Button from "../../ui/Button";
 import { platform } from "@tauri-apps/api/os";
-import { emit } from "@tauri-apps/api/event";
 import { toggleSearch } from "../Search/Search";
 import { IconMenu } from "../Icons/Icons";
 import { hideFB, hideTerm, setHideFB, setHideTerm } from "../../App";
+import { checkUpdates } from "../StatusBar/components/Update";
 
 const [showMenu, setShowMenu] = createSignal(false);
 
@@ -323,7 +323,7 @@ const Menu = () => {
                 text="Check for Updates"
                 width="w-48"
                 separator={true}
-                action={() => emit("tauri://update")}
+                action={() => checkUpdates()}
               />
               <MenuItem
                 item={4}

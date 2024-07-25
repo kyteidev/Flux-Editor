@@ -25,17 +25,23 @@ import { createSignal, onCleanup, onMount, Show } from "solid-js";
 import { error, info } from "tauri-plugin-log-api";
 import { getOS } from "../../../utils/os";
 import { dialog } from "@tauri-apps/api";
+import { UnlistenFn } from "@tauri-apps/api/event";
 
-const Update = () => {
-  const [os, setOs] = createSignal("");
-  const [show, setShow] = createSignal(true);
+const [os, setOs] = createSignal("");
+const [show, setShow] = createSignal(true);
 
-  const [text, setText] = createSignal("");
+const [text, setText] = createSignal("");
 
-  let failed = false;
-  let errorMsg = "";
+let failed = false;
+let errorMsg = "";
 
-  const unlisten = onUpdaterEvent(({ error, status }) => {
+let unlisten: UnlistenFn;
+
+export const checkUpdates = async () => {
+  setShow(true);
+  setText("Checking for updates");
+
+  unlisten = await onUpdaterEvent(({ error, status }) => {
     info("Updater event: " + error + ", " + status);
     if (error) {
       setText("Failed to check updates");
@@ -44,31 +50,31 @@ const Update = () => {
     }
   });
 
+  try {
+    const { shouldUpdate } = await checkUpdate();
+
+    if (shouldUpdate) {
+      if (os() != "win32") {
+        await installUpdate();
+      }
+      setText("Click to apply update");
+    } else {
+      setShow(false);
+    }
+  } catch (e) {
+    error(e as string);
+  }
+};
+
+const Update = () => {
   onMount(async () => {
     setOs(await getOS());
-    setText("Checking for updates");
 
-    try {
-      const { shouldUpdate } = await checkUpdate();
-
-      if (shouldUpdate) {
-        setShow(true);
-
-        if (os() != "win32") {
-          await installUpdate();
-        }
-        setText("Click to apply update");
-      } else {
-        setShow(false);
-      }
-    } catch (e) {
-      error(e as string);
-    }
+    checkUpdates();
   });
 
   onCleanup(async () => {
-    const unlistenfn = await unlisten;
-    unlistenfn();
+    unlisten();
   });
 
   const handleClick = async () => {

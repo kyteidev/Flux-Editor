@@ -25,12 +25,12 @@ import {
   settings,
   viewLogs,
 } from "../../menu/menuActions";
-import { emit } from "@tauri-apps/api/event";
 import { hideFB, hideTerm, setHideFB, setHideTerm } from "../../App";
+import { checkUpdates } from "../StatusBar/components/Update";
 
 export const cmdFlux: { [key: string]: () => void } = {
   "Flux: About": () => about(),
-  "Flux: Check updates": () => emit("tauri://update"),
+  "Flux: Check updates": () => checkUpdates(),
   "Flux: Fullscreen": async () =>
     appWindow.setFullscreen(!(await appWindow.isFullscreen())),
   "Flux: Maximize": async () => {

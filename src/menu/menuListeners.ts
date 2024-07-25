@@ -28,9 +28,9 @@ import {
   settings,
   viewLogs,
 } from "./menuActions";
-import { emit } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/tauri";
 import { hideFB, hideTerm, setHideFB, setHideTerm } from "../App";
+import { checkUpdates } from "../components/StatusBar/components/Update";
 
 export const addListeners = () => {
   /*
@@ -44,7 +44,7 @@ export const addListeners = () => {
     about();
   });
   appWindow.listen("flux:update", () => {
-    emit("tauri://update");
+    checkUpdates();
   });
 
   appWindow.listen("flux:license", async () => {
