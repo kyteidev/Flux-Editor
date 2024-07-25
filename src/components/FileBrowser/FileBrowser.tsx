@@ -43,7 +43,7 @@ interface Props {
   loaded: boolean;
 }
 
-let checkMustOpenDir: number;
+let checkMustOpenDir: number[] = [];
 
 let selectedItem = "";
 let selectedDir = false;
@@ -54,6 +54,15 @@ const [dirContents, setDirContents] = createSignal<string[][]>([]);
 const [newItemDir, setNewItemDir] = createSignal(""); // dir where the new file/project will be created
 //const [newItemParentDir, setNewItemParentDir] = createSignal(""); // dir where the new file/project will be created
 const [newItemType, setNewItemType] = createSignal("");
+
+const forceClearInterval = async () => {
+  if (checkMustOpenDir.length > 0) {
+    for (let i = 0; i < checkMustOpenDir.length; i++) {
+      clearInterval(checkMustOpenDir[i]);
+      checkMustOpenDir.splice(0, 1);
+    }
+  }
+};
 
 export const newItem = (type: string) => {
   const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
@@ -285,19 +294,26 @@ const FileBrowser = (props: Props) => {
                     let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
 
                     if (isDir() && !open() && newItemDir() === "") {
-                      checkMustOpenDir = setInterval(() => {
+                      const id = setInterval(() => {
                         if (normalizedItemPath === newItemDir()) {
                           openDir();
                           normalizedItemPath = "";
 
-                          clearInterval(checkMustOpenDir);
+                          clearInterval(checkMustOpenDir[0]);
+                          checkMustOpenDir.splice(0, 1);
+
+                          forceClearInterval();
                         }
                       }, 250);
+                      checkMustOpenDir.push(id);
                     }
                   }}
                   onMouseLeave={() => {
                     if (!isContextMenuShown()) {
-                      clearInterval(checkMustOpenDir);
+                      clearInterval(checkMustOpenDir[0]);
+                      checkMustOpenDir.splice(0, 1);
+
+                      forceClearInterval();
                     }
                   }}
                   onclick={() => {
@@ -381,7 +397,10 @@ const FileBrowser = (props: Props) => {
         if (!isContextMenuShown()) {
           selectedItem = "";
           selectedDir = false;
-          clearInterval(checkMustOpenDir);
+          clearInterval(checkMustOpenDir[0]);
+          checkMustOpenDir.splice(0, 1);
+
+          forceClearInterval();
         }
       }}
     >
