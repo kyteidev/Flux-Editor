@@ -217,17 +217,30 @@ const Search = () => {
           }
         >
           <For each={suggestions()}>
-            {(suggestion, index) => (
-              <li
-                class={`${index() === selected() && "bg-base-100-hover"} flex h-10 items-center bg-base-100 px-2 py-1 last:rounded-b hover:bg-base-100-hover active:brightness-125`}
-                onClick={() => {
-                  data[suggestion]();
-                  toggleSearch();
-                }}
-              >
-                {suggestion}
-              </li>
-            )}
+            {(suggestion, index) => {
+              const highlightQuery = (suggestion: string, query: string) => {
+                const parts = suggestion.split(new RegExp(`(${query})`, "gi"));
+                return parts.map((part) =>
+                  part.toLowerCase() === query.toLowerCase() ? (
+                    <span class="text-accent">{part}</span>
+                  ) : (
+                    <span>{part}</span>
+                  ),
+                );
+              };
+
+              return (
+                <li
+                  class={`${index() === selected() && "bg-base-100-hover"} flex h-10 items-center bg-base-100 px-2 py-1 last:rounded-b hover:bg-base-100-hover active:brightness-125`}
+                  onClick={() => {
+                    data[suggestion]();
+                    toggleSearch();
+                  }}
+                >
+                  <p>{highlightQuery(suggestion, query())}</p>
+                </li>
+              );
+            }}
           </For>
         </Show>
       </ul>
