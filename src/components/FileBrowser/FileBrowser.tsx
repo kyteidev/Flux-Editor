@@ -174,6 +174,8 @@ const FileBrowser = (props: Props) => {
                   .then(() => {
                     nestedDirs.push(newItemPath);
                     nestedDirs.sortInsensitive();
+
+                    updateContent();
                   })
                   .catch(async (e) => {
                     error("Error creating folder: " + e);
@@ -192,6 +194,8 @@ const FileBrowser = (props: Props) => {
                     addTab([basename(newItemPath), newItemPath]);
                     openFile(newItemPath);
                     updateBreadcrumbs(newItemPath);
+
+                    updateContent();
                   })
                   .catch(async (e) => {
                     error("Error creating file: " + e);
@@ -203,14 +207,16 @@ const FileBrowser = (props: Props) => {
                   });
               }
 
-              setNestedContent(
-                [
-                  nestedDirs.map((dir) => basename(dir)),
-                  nestedFiles.map((file) => basename(file)),
-                ].flat(),
-              );
+              const updateContent = () => {
+                setNestedContent(
+                  [
+                    nestedDirs.map((dir) => basename(dir)),
+                    nestedFiles.map((file) => basename(file)),
+                  ].flat(),
+                );
 
-              handleHide();
+                handleHide();
+              };
             }
           };
 
