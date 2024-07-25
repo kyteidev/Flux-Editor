@@ -144,6 +144,11 @@ const FileBrowser = (props: Props) => {
           onMount(() => {
             input?.addEventListener("keydown", handleKeyDown);
             document.addEventListener("mousedown", handleOutsideClick);
+
+            if (input && newItemDir() === parentDir) {
+              input.scrollIntoView({ behavior: "instant", block: "nearest" });
+              input.focus();
+            }
           });
 
           onCleanup(() => {
@@ -233,6 +238,7 @@ const FileBrowser = (props: Props) => {
                   height="1.5rem"
                   autocorrect="off"
                   autocomplete="off"
+                  autofocus
                 />
               </div>
             </Show>
