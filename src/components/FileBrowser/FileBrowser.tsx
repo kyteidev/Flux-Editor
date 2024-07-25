@@ -295,18 +295,18 @@ const FileBrowser = (props: Props) => {
 
                       let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
 
-                      if (isDir() && !open() && newItemDir() === "") {
+                      if (isDir() && newItemDir() === "") {
                         const id = setInterval(() => {
-                          if (normalizedItemPath === newItemDir()) {
-                            openDir();
+                          if (
+                            normalizedItemPath === newItemDir() &&
+                            normalizedItemPath != ""
+                          ) {
+                            if (!open()) {
+                              openDir();
+                            }
                             normalizedItemPath = "";
-
-                            clearInterval(checkMustOpenDir[0]);
-                            checkMustOpenDir.splice(0, 1);
-
-                            forceClearInterval();
                           }
-                        }, 250);
+                        }, 200);
                         checkMustOpenDir.push(id);
                       }
                     }
@@ -315,8 +315,6 @@ const FileBrowser = (props: Props) => {
                     if (!isContextMenuShown()) {
                       clearInterval(checkMustOpenDir[0]);
                       checkMustOpenDir.splice(0, 1);
-
-                      forceClearInterval();
                     }
                   }}
                   onclick={() => {
