@@ -288,24 +288,26 @@ const FileBrowser = (props: Props) => {
                     // TODO: Optimize this!
                     // (avoid using setInterval. I don't know what other methods I could use to open the folder)
 
-                    selectedItem = normalizePath(itemPath);
-                    selectedDir = isDir();
+                    if (!isContextMenuShown()) {
+                      selectedItem = normalizePath(itemPath);
+                      selectedDir = isDir();
 
-                    let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
+                      let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
 
-                    if (isDir() && !open() && newItemDir() === "") {
-                      const id = setInterval(() => {
-                        if (normalizedItemPath === newItemDir()) {
-                          openDir();
-                          normalizedItemPath = "";
+                      if (isDir() && !open() && newItemDir() === "") {
+                        const id = setInterval(() => {
+                          if (normalizedItemPath === newItemDir()) {
+                            openDir();
+                            normalizedItemPath = "";
 
-                          clearInterval(checkMustOpenDir[0]);
-                          checkMustOpenDir.splice(0, 1);
+                            clearInterval(checkMustOpenDir[0]);
+                            checkMustOpenDir.splice(0, 1);
 
-                          forceClearInterval();
-                        }
-                      }, 250);
-                      checkMustOpenDir.push(id);
+                            forceClearInterval();
+                          }
+                        }, 250);
+                        checkMustOpenDir.push(id);
+                      }
                     }
                   }}
                   onMouseLeave={() => {
@@ -397,10 +399,13 @@ const FileBrowser = (props: Props) => {
         if (!isContextMenuShown()) {
           selectedItem = "";
           selectedDir = false;
-          clearInterval(checkMustOpenDir[0]);
-          checkMustOpenDir.splice(0, 1);
 
-          forceClearInterval();
+          if (!isContextMenuShown()) {
+            clearInterval(checkMustOpenDir[0]);
+            checkMustOpenDir.splice(0, 1);
+
+            forceClearInterval();
+          }
         }
       }}
     >
