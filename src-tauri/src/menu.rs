@@ -75,11 +75,10 @@ pub fn menu() -> Menu {
         .add_item(CustomMenuItem::new("search".to_string(), "Search").accelerator("Alt+Space"))
         .add_item(
             CustomMenuItem::new("file_browser".to_string(), "File Browser")
-                .accelerator("CmdOrCtrl+Shift+F"),
+                .accelerator("CmdOrCtrl+1"),
         )
         .add_item(
-            CustomMenuItem::new("terminal".to_string(), "Terminal")
-                .accelerator("CmdOrCtrl+Shift+T"),
+            CustomMenuItem::new("terminal".to_string(), "Terminal").accelerator("CmdOrCtrl+2"),
         );
 
     let help_menu = Menu::new()

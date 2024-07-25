@@ -23,7 +23,7 @@ import {
   onMount,
   Show,
 } from "solid-js";
-import { cmdFlux } from "./commands";
+import { cmdFlux, cmdModules } from "./commands";
 
 const [show, setShow] = createSignal(false);
 const [query, setQuery] = createSignal("");
@@ -64,7 +64,7 @@ const Search = () => {
   }>({});
   const [suggestions, setSuggestions] = createSignal<string[]>([]);
 
-  const data = Object.assign({}, cmdFlux);
+  const data = Object.assign({}, cmdFlux, cmdModules);
 
   let altPressed = false;
   let spacePressed = false;

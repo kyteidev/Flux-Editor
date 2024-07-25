@@ -26,6 +26,7 @@ import {
   viewLogs,
 } from "../../menu/menuActions";
 import { emit } from "@tauri-apps/api/event";
+import { hideFB, hideTerm, setHideFB, setHideTerm } from "../../App";
 
 export const cmdFlux: { [key: string]: () => void } = {
   "Flux: About": () => about(),
@@ -47,4 +48,9 @@ export const cmdFlux: { [key: string]: () => void } = {
   "Flux: Open settings": () => settings(),
   "Flux: View logs": () => viewLogs(),
   "Flux: Quit": () => appWindow.close(),
+};
+
+export const cmdModules: { [key: string]: () => void } = {
+  "Modules: Toggle file browser": () => setHideFB(!hideFB()),
+  "Modules: Toggle terminal": () => setHideTerm(!hideTerm()),
 };

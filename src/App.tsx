@@ -46,6 +46,9 @@ export const [dir, setDir] = createSignal<string>("");
 
 export const [loaded, setLoaded] = createSignal(false);
 
+export const [hideFB, setHideFB] = createSignal(false); // whether to hide File Browser
+export const [hideTerm, setHideTerm] = createSignal(true); // whether to hide Terminal
+
 const [projectName, setProjectName] = createSignal("");
 
 export const getProjectName = () => {
@@ -82,9 +85,6 @@ export const loadEditor = (
 };
 
 export default function App() {
-  const [hideFB, setHideFB] = createSignal(false); // whether to hide File Browser
-  const [hideTerm, setHideTerm] = createSignal(true); // whether to hide Terminal
-
   onMount(async () => {
     initPathOS().then(() => {
       initSettings();

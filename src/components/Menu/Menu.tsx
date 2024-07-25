@@ -36,6 +36,7 @@ import { platform } from "@tauri-apps/api/os";
 import { emit } from "@tauri-apps/api/event";
 import { toggleSearch } from "../Search/Search";
 import { IconMenu } from "../Icons/Icons";
+import { hideFB, hideTerm, setHideFB, setHideTerm } from "../../App";
 
 const [showMenu, setShowMenu] = createSignal(false);
 
@@ -85,6 +86,12 @@ const shortcuts: { [key: string]: () => void } = {
   },
   "Alt,Space": () => {
     toggleSearch();
+  },
+  "Control,1": () => {
+    setHideFB(!hideFB());
+  },
+  "Control,2": () => {
+    setHideTerm(!hideTerm());
   },
 };
 
@@ -284,15 +291,17 @@ const Menu = () => {
               <MenuItem
                 item={2}
                 text="File Browser"
-                shortcut="Ctrl+Shift+F"
+                shortcut="Ctrl+1"
                 width="w-44"
+                action={() => setHideFB(!hideFB())}
               />
               <MenuItem
                 last={true}
                 item={3}
                 text="Terminal"
-                shortcut="Ctrl+Shift+T"
+                shortcut="Ctrl+2"
                 width="w-44"
+                action={() => setHideTerm(!hideTerm())}
               />
             </Submenu>
             <Submenu text="Help" item={5} main={true} last={true}>
