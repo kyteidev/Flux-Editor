@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+// TODO: add real pty shell integration with Xterm
+
 import { onMount } from "solid-js";
 import { getProjectName, getProjectPath } from "../../App";
 import { invoke } from "@tauri-apps/api/tauri";
