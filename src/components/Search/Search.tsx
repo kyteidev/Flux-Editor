@@ -222,7 +222,7 @@ const Search = () => {
                 const parts = suggestion.split(new RegExp(`(${query})`, "gi"));
                 return parts.map((part) =>
                   part.toLowerCase() === query.toLowerCase() ? (
-                    <span class="text-accent">{part}</span>
+                    <span class="text-accent brightness-125">{part}</span>
                   ) : (
                     <span>{part}</span>
                   ),
