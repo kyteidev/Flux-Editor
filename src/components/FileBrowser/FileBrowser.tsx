@@ -68,11 +68,6 @@ export const newItem = (type: string) => {
   const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
   setNewItemDir(normalizePath(parentDir));
   setNewItemType(type);
-
-  if (type === "folder") {
-  } else {
-    //setNewItemParentDir(parentDir);
-  }
 };
 
 export const loadFBSettings = () => {
