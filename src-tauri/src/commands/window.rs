@@ -15,7 +15,9 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use tauri::{TitleBarStyle, WindowBuilder};
+#[cfg(target_os = "macos")]
+use tauri::TitleBarStyle;
+use tauri::WindowBuilder;
 
 use crate::utils::time::time_ms;
 #[cfg(target_os = "macos")]
@@ -28,7 +30,8 @@ use window_shadows::set_shadow;
 pub async fn new_window(app: tauri::AppHandle) {
     let id = time_ms();
 
-    if cfg!(target_os = "macos") {
+    #[cfg(target_os = "macos")]
+    {
         let win = WindowBuilder::new(
             &app,
             id.to_string(),
@@ -44,7 +47,10 @@ pub async fn new_window(app: tauri::AppHandle) {
         .unwrap();
 
         win.set_window_controls_pos(10., 12.5);
-    } else {
+    }
+
+    #[cfg(not(target_os = "macos"))]
+    {
         let _win = WindowBuilder::new(
             &app,
             id.to_string(),
