@@ -40,6 +40,7 @@ import FluxTerminal from "./components/Terminal/Terminal";
 import { appWindow } from "@tauri-apps/api/window";
 import { dialog, invoke } from "@tauri-apps/api";
 import EditorBreadcrumbs from "./components/Editor/components/EditorBreadcrumbs";
+import ContextMenu from "./components/ContextMenu/ContextMenu";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -202,6 +203,7 @@ export default function App() {
       </div>
       <StatusBar />
       <Search />
+      <ContextMenu />
     </div>
   );
 }
