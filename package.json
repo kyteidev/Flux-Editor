@@ -16,7 +16,7 @@
   "dependencies": {
     "@tauri-apps/api": "^1",
     "prismjs": "^1.29.0",
-    "solid-js": "^1.8.19",
+    "solid-js": "^1.8.21",
     "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1"
   },
   "devDependencies": {
