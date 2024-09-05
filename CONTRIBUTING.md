@@ -38,12 +38,8 @@ to clone the repo. Afterwards open the folder and run
 ```
 npm install
 ```
-and
-```
-cd src-tauri
-cargo install
-```
-to install dependencies.
+
+Cargo dependencies will be installed and built when the application is run.
 
 ### Running <a name="running"></a>
 
