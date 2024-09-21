@@ -178,7 +178,7 @@ const Search = () => {
     <Show when={show()}>
       <input
         ref={inputRef}
-        class="shadows absolute z-50 h-10 w-[28rem] rounded-t bg-base-100 px-2 py-1 caret-accent"
+        class="shadows text-content-main absolute z-50 h-10 w-[28rem] rounded-t bg-base-100 px-2 py-1 caret-accent"
         style={{
           left: `calc((100vw - 28rem) / 2)`,
           top: `calc((100vh - 2.5rem) / 4)`,
@@ -234,13 +234,19 @@ const Search = () => {
                       </span>
                     );
                   }
-                  return <span class="search-suggestion">{part}</span>;
+                  return (
+                    <span
+                      class={`${index() === selected() ? "text-content-main" : "text-content"} search-suggestion group-hover:text-content-main`}
+                    >
+                      {part}
+                    </span>
+                  );
                 });
               };
 
               return (
                 <li
-                  class={`${index() === selected() && "bg-base-100-hover"} flex h-10 items-center bg-base-100 px-2 py-1 last:rounded-b hover:bg-base-100-hover active:brightness-125`}
+                  class={`${index() === selected() && "bg-base-100-hover"} group flex h-10 items-center bg-base-100 px-2 py-1 last:rounded-b hover:bg-base-100-hover active:brightness-125`}
                   onClick={() => {
                     data[suggestion]();
                     toggleSearch();
