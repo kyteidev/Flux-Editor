@@ -47,7 +47,7 @@ const FluxTerminal = () => {
   onMount(async () => {
     setPrefix();
     addText(
-      "NOTE: This is merely a command runner that simulates a terminal UI.\nThis doesn't support, for example, inputs and terminal apps.\n" +
+      "NOTE: This is merely a command runner that emulates a terminal UI.\nThis doesn't support, for example, inputs and terminal apps.\n" +
         prefixText,
     );
 
@@ -373,7 +373,7 @@ const FluxTerminal = () => {
     <div class="relative h-full w-full">
       <textarea
         ref={textarea}
-        class={`${styles.textarea} absolute left-0 top-0 z-10 h-full w-full overflow-auto whitespace-pre bg-transparent px-2 py-1 text-transparent caret-accent`}
+        class={`${styles.textarea} absolute left-0 top-0 z-10 h-full w-full resize-none overflow-auto whitespace-pre bg-transparent px-2 py-1 text-transparent caret-accent`}
         autocomplete="off"
         autoCapitalize="off"
         spellcheck={false}
