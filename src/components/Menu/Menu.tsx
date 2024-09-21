@@ -158,7 +158,7 @@ const Menu = () => {
 
   return (
     <Show
-      when={os() != "darwin"}
+      when={os() === "darwin"}
       fallback={
         <Show when={!isFullscreen()}>
           <div class="w-[58px]" />
@@ -306,48 +306,48 @@ const Menu = () => {
             </Submenu>
             <Submenu text="Help" item={5} main={true} last={true}>
               <MenuItem
-                first={true}
+                first
                 item={1}
-                text="View Logs"
-                width="w-48"
-                action={() => viewLogs()}
-              />
-              <MenuItem
-                item={2}
                 text="About"
-                width="w-48"
+                width="w-60"
                 action={() => about()}
               />
               <MenuItem
-                item={3}
+                item={2}
                 text="Check for Updates"
-                width="w-48"
-                separator={true}
+                width="w-60"
                 action={() => checkUpdates()}
+              />
+              <MenuItem
+                item={3}
+                text="View Logs"
+                width="w-60"
+                separator
+                action={() => viewLogs()}
               />
               <MenuItem
                 item={4}
                 text="Flux Editor License"
-                width="w-48"
+                width="w-60"
                 action={() => license()}
               />
               <MenuItem
                 item={5}
                 text="JS Third Party Licenses"
-                width="w-48"
+                width="w-60"
                 action={() => licenseThirdPartyJS()}
               />
               <MenuItem
                 item={6}
                 text="Rust Third Party Licenses"
-                width="w-48"
+                width="w-60"
                 action={() => licenseThirdPartyRust()}
               />
               <MenuItem
                 last={true}
                 item={7}
                 text="Font Licenses and Legal Notices"
-                width="w-48"
+                width="w-60"
                 action={() => licenseFonts()}
               />
             </Submenu>
