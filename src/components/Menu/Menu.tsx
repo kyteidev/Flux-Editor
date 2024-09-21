@@ -158,7 +158,7 @@ const Menu = () => {
 
   return (
     <Show
-      when={os() === "darwin"}
+      when={os() != "darwin"}
       fallback={
         <Show when={!isFullscreen()}>
           <div class="w-[58px]" />
