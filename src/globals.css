@@ -1085,6 +1085,14 @@ video {
   fill: var(--content);
 }
 
+.stroke-content-main {
+  stroke: var(--content-main);
+}
+
+.stroke-content {
+  stroke: var(--content);
+}
+
 .p-1 {
   padding: 0.25rem;
 }
@@ -1174,6 +1182,10 @@ video {
   color: transparent;
 }
 
+.text-content-main {
+  color: var(--content-main);
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -1238,7 +1250,9 @@ video {
 }
 
 :root {
-  --content: #f3f4f6;
+  --content: #a7a7a8;
+  --content-main: #f3f4f6;
+  /* used for e.g. hovered button text, title bar buttons, etc. */
   --accent: #3a5fc7;
   --accent-hover: #4878fa;
   --base-100: #1d232a;
@@ -1396,6 +1410,10 @@ dialog[open] {
   background-color: var(--base-100-hover);
 }
 
+.hover\:text-content-main:hover {
+  color: var(--content-main);
+}
+
 .hover\:opacity-50:hover {
   opacity: 0.5;
 }
@@ -1406,6 +1424,10 @@ dialog[open] {
 
 .focus\:bg-base-100-hover:focus {
   background-color: var(--base-100-hover);
+}
+
+.focus\:text-content-main:focus {
+  color: var(--content-main);
 }
 
 .active\:bg-\[\#ffffff\]\/\[\.04\]:active {
@@ -1420,6 +1442,10 @@ dialog[open] {
   background-color: var(--base-300);
 }
 
+.active\:text-content-main:active {
+  color: var(--content-main);
+}
+
 .active\:brightness-110:active {
   --tw-brightness: brightness(1.1);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -1428,4 +1454,12 @@ dialog[open] {
 .active\:brightness-125:active {
   --tw-brightness: brightness(1.25);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.group:hover .group-hover\:stroke-content-main {
+  stroke: var(--content-main);
+}
+
+.group:hover .group-hover\:text-content-main {
+  color: var(--content-main);
 }

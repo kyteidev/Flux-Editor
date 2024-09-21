@@ -101,7 +101,7 @@ const Update = () => {
   return (
     <Show when={show()}>
       <button
-        class="flex items-center justify-center rounded bg-base-200 px-1 text-center hover:bg-base-100-hover active:brightness-125"
+        class="text-content-main flex items-center justify-center rounded bg-base-200 px-1 text-center hover:bg-base-100-hover active:brightness-125"
         onClick={handleClick}
       >
         {text()}

@@ -20,7 +20,8 @@ You should have received a copy of the GNU General Public License along with Flu
 @tailwind utilities;
 
 :root {
-  --content: #f3f4f6;
+  --content: #a7a7a8;
+  --content-main: #f3f4f6; /* used for e.g. hovered button text, title bar buttons, etc. */
   --accent: #3a5fc7;
   --accent-hover: #4878fa;
 

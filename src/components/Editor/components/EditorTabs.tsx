@@ -158,7 +158,7 @@ const EditorTabs = () => {
 
             return (
               <div
-                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} mr-1 flex h-8 max-w-52 items-center rounded px-2 py-1 text-center hover:bg-base-100-hover active:brightness-125`}
+                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} group mr-1 flex h-8 max-w-52 items-center rounded px-2 py-1 text-center hover:bg-base-100-hover active:brightness-125`}
                 onclick={() => {
                   if (!isClosed()) {
                     setActiveTab(index());
@@ -171,11 +171,13 @@ const EditorTabs = () => {
                     <FileIconComponent />
                   </div>
                 </Show>
-                <div class="block max-h-8 max-w-52 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                <div
+                  class={`${activeTab() === index() ? "text-content-main" : "text-content"} group-hover:text-content-main block max-h-8 max-w-52 overflow-hidden overflow-ellipsis whitespace-nowrap`}
+                >
                   {tabName}
                 </div>
                 <button
-                  class="ml-2 h-4 min-h-4 w-4 min-w-4 hover:opacity-50"
+                  class={`${activeTab() === index() ? "stroke-content-main" : "stroke-content"} group-hover:stroke-content-main ml-2 h-4 min-h-4 w-4 min-w-4 hover:opacity-50`}
                   onclick={closeTab}
                 >
                   <Show

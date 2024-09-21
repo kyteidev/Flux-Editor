@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     colors: {
       content: "var(--content)",
+      "content-main": "var(--content-main)",
       accent: "var(--accent)",
       "accent-hover": "var(--accent-hover)",
 

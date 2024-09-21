@@ -32,7 +32,7 @@ export const updateLang = (clear?: boolean) => {
 };
 
 const Lang = () => {
-  return <div>{lang()}</div>;
+  return <div class="text-content-main">{lang()}</div>;
 };
 
 export default Lang;

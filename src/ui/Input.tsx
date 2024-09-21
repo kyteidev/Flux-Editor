@@ -31,7 +31,7 @@ const Input = (props: Props) => {
   return (
     <input
       type="text"
-      class="rounded border-none bg-base-100 px-2 text-content caret-accent hover:bg-base-100-hover focus:bg-base-100-hover"
+      class="hover:text-content-main focus:text-content-main rounded border-none bg-base-100 px-2 text-content caret-accent hover:bg-base-100-hover focus:bg-base-100-hover"
       style={{
         width: props.width,
         height: props.height,

@@ -59,15 +59,17 @@ const Dropdown = (props: Props) => {
   return (
     <div class="relative inline-block">
       <button
-        class={`dropdown ${isOpen() ? "rounded-t" : "rounded"} flex cursor-pointer items-center border-none bg-base-100 px-2 hover:bg-base-100-hover`}
+        class={`dropdown ${isOpen() ? "rounded-t" : "rounded"} group flex cursor-pointer items-center border-none bg-base-100 px-2 hover:bg-base-100-hover`}
         onClick={toggle}
         style={{
           width: props.width,
           height: props.height,
         }}
       >
-        <div class="justify-start">{selected()}</div>
-        <div class="absolute right-2">
+        <div class="group-hover:text-content-main justify-start text-content">
+          {selected()}
+        </div>
+        <div class="group-hover:stroke-content-main absolute right-2 stroke-content">
           <Show when={isOpen()} fallback={<IconExpand />}>
             <IconUnexpand />
           </Show>
@@ -76,11 +78,14 @@ const Dropdown = (props: Props) => {
       <Show when={isOpen()}>
         <div id="dropdown-container" class="absolute w-full rounded-b shadow">
           <div class="h-[1px] w-full bg-base-100-hover" />
-          <ul id="dropdown-menu" class="w-full text-content last:rounded-b">
+          <ul
+            id="dropdown-menu"
+            class="hover:text-content-main w-full text-content last:rounded-b"
+          >
             <For each={props.items}>
               {(item) => (
                 <li
-                  class="dropdown flex w-full items-center justify-start bg-base-100 px-2 last:rounded-b hover:bg-base-100-hover"
+                  class="dropdown hover:text-content-main flex w-full items-center justify-start bg-base-100 px-2 text-content last:rounded-b hover:bg-base-100-hover"
                   style={{ height: props.height }}
                   onClick={() => handleItemClick(item)}
                 >

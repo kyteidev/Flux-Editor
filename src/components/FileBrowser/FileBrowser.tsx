@@ -409,7 +409,7 @@ const FileBrowser = (props: Props) => {
       }}
     >
       <Show when={props.loaded} fallback={<Startup />}>
-        <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold text-content">
+        <div class="text-content-main z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold">
           {`${props.rootDirName}`}
         </div>
         <div

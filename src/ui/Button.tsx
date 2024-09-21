@@ -33,7 +33,7 @@ interface Props {
 const Button = (props: Props) => {
   return (
     <button
-      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : `bg-accent ${props.disabled ? "cursor-not-allowed brightness-200" : "cursor-pointer hover:bg-accent-hover"}`} ${!props.width && `w-fit ${props.icon ? "pr-[5px]" : "px-2"}`} ${props.class && props.class} inline-flex items-center justify-center rounded py-1 text-center brightness-90 active:brightness-110`}
+      class={`${props.colorBg ? `bg-base-100 hover:bg-base-100-hover` : `bg-accent ${props.disabled ? "cursor-not-allowed brightness-200" : "cursor-pointer hover:bg-accent-hover"}`} ${!props.width && `w-fit ${props.icon ? "pr-[5px]" : "px-2"}`} ${props.class && props.class} hover:text-content-main inline-flex items-center justify-center rounded py-1 text-center text-content brightness-90 active:brightness-110`}
       style={{
         width: `${props.width && props.width}`,
         height: `${props.height && props.height}`,
