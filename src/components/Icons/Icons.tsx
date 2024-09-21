@@ -151,7 +151,7 @@ export const IconExpandRight = () => {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="var(--content)"
+      stroke="var(--content-main)"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
