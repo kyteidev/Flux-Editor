@@ -72,6 +72,7 @@ You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEd
 
 - Caret height is not correct on the first line in the editor (probably webview issue)
 - Terminal will reset when closing all tabs or opening first tab
+- Settings not working properly
 
 ## Contributing <a name="contributing"></a>
 
