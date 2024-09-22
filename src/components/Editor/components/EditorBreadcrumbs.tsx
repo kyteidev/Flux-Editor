@@ -33,7 +33,7 @@ const EditorBreadcrumbs = () => {
   });
 
   return (
-    <div class="flex h-5 w-full items-center bg-base-200 px-2 py-1 text-sm text-content">
+    <div class="flex h-7 w-full items-center border-b-2 border-base-100 bg-base-200 p-2 text-sm text-content">
       {path()}
     </div>
   );

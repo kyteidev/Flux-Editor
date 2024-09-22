@@ -36,7 +36,7 @@ const [fixHeight, setFixHeight] = createSignal(0);
 
 export const fixEditorHeight = (firstTab: boolean) => {
   if (firstTab) {
-    setFixHeight(56); // editor tabs: 36px, breadcrumbs: 20px
+    setFixHeight(64); // editor tabs: 36px, breadcrumbs: 28px
   } else {
     setFixHeight(0);
   }
