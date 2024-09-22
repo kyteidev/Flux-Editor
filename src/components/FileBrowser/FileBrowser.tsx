@@ -36,6 +36,7 @@ import { dialog, fs, invoke } from "@tauri-apps/api";
 import { updateBreadcrumbs } from "../Editor/components/EditorBreadcrumbs";
 import { isContextMenuShown } from "../ContextMenu/ContextMenu";
 import "../../utils/array";
+import { emit, once, UnlistenFn } from "@tauri-apps/api/event";
 
 interface Props {
   dir: string;
@@ -43,7 +44,7 @@ interface Props {
   loaded: boolean;
 }
 
-let checkMustOpenDir: number[] = [];
+let checkMustOpenDir: UnlistenFn[] = [];
 
 let selectedItem = "";
 let selectedDir = false;
@@ -52,13 +53,12 @@ const [showIcon, setShowIcon] = createSignal(true);
 const [dirContents, setDirContents] = createSignal<string[][]>([]);
 
 const [newItemDir, setNewItemDir] = createSignal(""); // dir where the new file/project will be created
-//const [newItemParentDir, setNewItemParentDir] = createSignal(""); // dir where the new file/project will be created
 const [newItemType, setNewItemType] = createSignal("");
 
-const forceClearInterval = async () => {
+const forceUnlisten = async () => {
   if (checkMustOpenDir.length > 0) {
     for (let i = 0; i < checkMustOpenDir.length; i++) {
-      clearInterval(checkMustOpenDir[i]);
+      checkMustOpenDir[i]();
       checkMustOpenDir.splice(0, 1);
     }
   }
@@ -68,6 +68,8 @@ export const newItem = (type: string) => {
   const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
   setNewItemDir(normalizePath(parentDir));
   setNewItemType(type);
+
+  emit("flux:checkMustOpenDir");
 };
 
 export const loadFBSettings = () => {
@@ -285,10 +287,7 @@ const FileBrowser = (props: Props) => {
               <div class="relative block min-w-fit">
                 <div
                   class="min-w-fit cursor-pointer select-none px-1 text-content hover:bg-base-100 active:bg-base-100-hover"
-                  onMouseEnter={() => {
-                    // TODO: Optimize this!
-                    // (avoid using setInterval. I don't know what other methods I could use to open the folder)
-
+                  onMouseEnter={async () => {
                     if (!isContextMenuShown()) {
                       selectedItem = normalizePath(itemPath);
                       selectedDir = isDir();
@@ -296,7 +295,7 @@ const FileBrowser = (props: Props) => {
                       let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
 
                       if (isDir() && newItemDir() === "") {
-                        const id = setInterval(() => {
+                        const id = await once("flux:checkMustOpenDir", () => {
                           if (
                             normalizedItemPath === newItemDir() &&
                             normalizedItemPath != ""
@@ -306,14 +305,14 @@ const FileBrowser = (props: Props) => {
                             }
                             normalizedItemPath = "";
                           }
-                        }, 200);
+                        });
                         checkMustOpenDir.push(id);
                       }
                     }
                   }}
                   onMouseLeave={() => {
-                    if (!isContextMenuShown()) {
-                      clearInterval(checkMustOpenDir[0]);
+                    if (!isContextMenuShown() && checkMustOpenDir.length > 0) {
+                      checkMustOpenDir[0]();
                       checkMustOpenDir.splice(0, 1);
                     }
                   }}
@@ -399,17 +398,17 @@ const FileBrowser = (props: Props) => {
           selectedItem = "";
           selectedDir = false;
 
-          if (!isContextMenuShown()) {
-            clearInterval(checkMustOpenDir[0]);
+          if (!isContextMenuShown() && checkMustOpenDir.length > 0) {
+            checkMustOpenDir[0]();
             checkMustOpenDir.splice(0, 1);
 
-            forceClearInterval();
+            forceUnlisten();
           }
         }
       }}
     >
       <Show when={props.loaded} fallback={<Startup />}>
-        <div class="text-content-main z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold">
+        <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold text-content-main">
           {`${props.rootDirName}`}
         </div>
         <div

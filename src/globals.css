@@ -787,6 +787,10 @@ video {
   width: 12rem;
 }
 
+.w-60 {
+  width: 15rem;
+}
+
 .w-7 {
   width: 1.75rem;
 }
@@ -818,18 +822,6 @@ video {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-52 {
-  width: 13rem;
-}
-
-.w-56 {
-  width: 14rem;
-}
-
-.w-60 {
-  width: 15rem;
 }
 
 .min-w-4 {
@@ -1097,12 +1089,12 @@ video {
   fill: var(--content);
 }
 
-.stroke-content-main {
-  stroke: var(--content-main);
-}
-
 .stroke-content {
   stroke: var(--content);
+}
+
+.stroke-content-main {
+  stroke: var(--content-main);
 }
 
 .p-1 {
@@ -1190,12 +1182,12 @@ video {
   color: var(--content);
 }
 
-.text-transparent {
-  color: transparent;
-}
-
 .text-content-main {
   color: var(--content-main);
+}
+
+.text-transparent {
+  color: transparent;
 }
 
 .underline {
@@ -1452,10 +1444,6 @@ dialog[open] {
 
 .active\:bg-base-300:active {
   background-color: var(--base-300);
-}
-
-.active\:text-content-main:active {
-  color: var(--content-main);
 }
 
 .active\:brightness-110:active {
