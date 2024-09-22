@@ -115,6 +115,7 @@ fn main() {
             tauri_plugin_log::Builder::default()
                 .targets(log_targets)
                 .log_name("main")
+                .level(log::LevelFilter::Debug)
                 .build(),
         )
         .setup(|app| {
