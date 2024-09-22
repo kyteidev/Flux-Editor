@@ -241,6 +241,9 @@ const FileBrowser = (props: Props) => {
                   autocorrect="off"
                   autocomplete="off"
                   autofocus
+                  style={{
+                    "padding-left": `calc(${howNested * 1.5}rem + 4px + 1px + ${showIcon() ? "24px" : "7px"})`,
+                  }}
                 />
               </div>
             </Show>
