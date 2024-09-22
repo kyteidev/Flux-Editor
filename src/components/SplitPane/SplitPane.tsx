@@ -74,6 +74,8 @@ const SplitPane = (props: Props) => {
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging()) return;
 
+    // cursor movement method: smoother movement but possibly unreliable
+    /*
     let movementX = e.movementX;
     let movementY = e.movementY;
 
@@ -85,6 +87,22 @@ const SplitPane = (props: Props) => {
 
     const newWidth = firstWidth() + movementX;
     const newHeight = firstHeight() + movementY;
+    */
+
+    // cursor position method: reliable but less smooth
+    let cursorOffsetX;
+    let cursorOffsetY;
+
+    if (props.swapPriority) {
+      cursorOffsetX = windowWidth - e.clientX - firstWidth();
+      cursorOffsetY = windowHeight - e.clientY - 26 - firstHeight();
+    } else {
+      cursorOffsetX = e.clientX - firstWidth();
+      cursorOffsetY = e.clientY - firstHeight();
+    }
+
+    const newWidth = firstWidth() + cursorOffsetX;
+    const newHeight = firstHeight() + cursorOffsetY;
 
     if (props.vertical) {
       const cursorOffsetY: number = props.swapPriority
