@@ -236,7 +236,7 @@ const FileBrowser = (props: Props) => {
               <div class="fb-input relative block h-6 select-none overflow-hidden text-content">
                 <input
                   ref={input}
-                  class="fb-input bg-base-100 px-2 caret-accent"
+                  class="fb-input bg-base-100 px-2 text-content-main caret-accent"
                   height="1.5rem"
                   autocorrect="off"
                   autocomplete="off"
@@ -286,7 +286,7 @@ const FileBrowser = (props: Props) => {
             return (
               <div class="relative block min-w-fit">
                 <div
-                  class="min-w-fit cursor-pointer select-none px-1 text-content hover:bg-base-100 active:bg-base-100-hover"
+                  class="group min-w-fit cursor-pointer select-none px-1 hover:bg-base-100 active:bg-base-100-hover"
                   onMouseEnter={async () => {
                     if (!isContextMenuShown()) {
                       selectedItem = normalizePath(itemPath);
@@ -361,7 +361,7 @@ const FileBrowser = (props: Props) => {
                       </div>
                     </Show>
                     <span
-                      class={`${!showIcon() && isDir() ? "underline" : ""} context-0 whitespace-nowrap`}
+                      class={`${!showIcon() && isDir() ? "underline" : ""} context-0 whitespace-nowrap text-content group-hover:text-content-main`}
                       style={{
                         "margin-left": `${!showIcon() ? "0.5rem" : "0"}`,
                       }}
