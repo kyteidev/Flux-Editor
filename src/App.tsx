@@ -30,17 +30,15 @@ import { addListeners } from "./menu/menuListeners";
 import SplitPane from "./components/SplitPane/SplitPane";
 import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
 import WindowControls from "./components/WindowControls/WindowControls";
-import Menu from "./components/Menu/Menu";
 import Search from "./components/Search/Search";
 import StatusBar from "./components/StatusBar/StatusBar";
 import { FluxLogo } from "./components/Icons/FluxLogo";
-import ButtonIcon from "./ui/ButtonIcon";
-import { IconFileBrowser, IconTerminal } from "./components/Icons/Icons";
 import FluxTerminal from "./components/Terminal/Terminal";
 import { appWindow } from "@tauri-apps/api/window";
 import { dialog, invoke } from "@tauri-apps/api";
 import EditorBreadcrumbs from "./components/Editor/components/EditorBreadcrumbs";
 import ContextMenu from "./components/ContextMenu/ContextMenu";
+import TitleBar from "./components/TitleBar/TitleBar";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -114,28 +112,7 @@ export default function App() {
 
   return (
     <div class="flex h-screen max-h-screen w-screen flex-col">
-      <header
-        data-tauri-drag-region
-        class="header flex w-full flex-shrink-0 space-x-2 border-b-2 border-base-100 bg-base-200 p-[5px]"
-        style={{
-          "min-height": `calc(1.75rem + 2px)`,
-          "max-height": `calc(1.75rem + 2px)`,
-        }}
-      >
-        <Menu />
-        <div class="flex space-x-1">
-          <ButtonIcon
-            size="18px"
-            icon={<IconFileBrowser />}
-            action={() => setHideFB(!hideFB())}
-          />
-          <ButtonIcon
-            size="18px"
-            icon={<IconTerminal />}
-            action={() => setHideTerm(!hideTerm())}
-          />
-        </div>
-      </header>
+      <TitleBar />
       <div
         style={{
           "max-height": `calc(100vh - 3.25rem - 2px)`,
