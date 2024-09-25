@@ -162,7 +162,6 @@ const FluxTerminal = () => {
     const keysPressed: string[] = [];
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      console.log(keysPressed);
       if (!keysPressed.includes(e.code)) {
         keysPressed.push(e.code);
 

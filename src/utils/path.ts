@@ -107,7 +107,6 @@ export const resolvePath = async (
   let finalPath = currentDir;
 
   for (let i = 0; i < pathParts.length; i++) {
-    console.log(pathParts[i]);
     switch (pathParts[i]) {
       case ".":
         break;
