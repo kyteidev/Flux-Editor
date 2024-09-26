@@ -53,7 +53,7 @@ mod commands;
 use commands::{
     cmd::{abort_all_commands, abort_command, spawn_command},
     fs::{get_dir_contents, is_dir, path_exists},
-    git::clone_repo,
+    git::{clone_repo, current_branch},
     path::{app_data_dir, resolve_resource, user_home_dir},
     window::new_window,
 };
@@ -174,7 +174,8 @@ fn main() {
             abort_command,
             is_dir,
             path_exists,
-            abort_all_commands
+            abort_all_commands,
+            current_branch
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

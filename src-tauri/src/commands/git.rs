@@ -69,3 +69,26 @@ pub async fn clone_repo(url: String, path: String) -> Result<(), String> {
         Err("Git is not installed".to_string())
     }
 }
+
+#[tauri::command]
+pub async fn current_branch(dir: String) -> Result<String, String> {
+    let git_installed = is_git_installed().await;
+    if git_installed {
+        let output = Command::new("git")
+            .args(["branch", "--show-current"])
+            .current_dir(dir)
+            .output()
+            .map_err(|e| {
+                error!("Failed to check current git branch: {}", e);
+                format!("Failed to check current git branch: {}", e)
+            })?;
+
+        if output.status.success() {
+            Ok(String::from_utf8_lossy(&output.stdout).to_string())
+        } else {
+            Err("".to_string())
+        }
+    } else {
+        Err("Git is not installed".to_string())
+    }
+}

@@ -39,6 +39,7 @@ import { dialog, invoke } from "@tauri-apps/api";
 import EditorBreadcrumbs from "./components/Editor/components/EditorBreadcrumbs";
 import ContextMenu from "./components/ContextMenu/ContextMenu";
 import TitleBar from "./components/TitleBar/TitleBar";
+import { emit } from "@tauri-apps/api/event";
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -73,6 +74,7 @@ export const loadEditor = (
     setLoaded(true);
     addTab([fileName, dirPath]);
     info("Editor loaded");
+    emit("flux:editor-loaded");
     return;
   }
 
@@ -80,6 +82,7 @@ export const loadEditor = (
 
   info("Editor loaded");
   setLoaded(true);
+  emit("flux:editor-loaded");
 };
 
 export default function App() {
