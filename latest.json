@@ -1,0 +1,23 @@
+{
+  "version": "0.4.1",
+  "notes": "## Release notes\n\n- fixed windows build error",
+  "pub_date": "2024-07-14T14:13:10.347Z",
+  "platforms": {
+    "darwin-aarch64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVJWdHIyb29iVm9JV0VJVW1Jb2RIb3FwZTVxT3NrNEFMZ1NzbVZsNlJFS2VsVU94QzVvb0gwUkdKbHNTT0g2eDNmZkVISmhGN0hESnpIa0hFN3hNMVE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2MDcwCWZpbGU6Rmx1eCBFZGl0b3IuYXBwLnRhci5negoxdkZLVWJ1eU1aR3BRTE5JMTRjWkVqM0tFQjFmMkRET0QyTFMvOHlYUk9qemdvWWxTd0lCQis3SHYxUFZEcndaZG5USEE5Um9oMWhmTkk0YklnNlZBQT09Cg==",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/Flux.Editor_aarch64.app.tar.gz"
+    },
+    "darwin-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVpOTjB1ZEdsbEM1aUNZU2ZkNnpKSnVhczFmNnJTUmlsZ29hZ240Z1o4Q0MrZDcrVFU0M1hZWWZOUHQ5SEl6MXFzVDBoR3hvWDRQK3A5WDJ1cXk1T0FRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2MDg5CWZpbGU6Rmx1eCBFZGl0b3IuYXBwLnRhci5negpod2lBK1BmTUk1Ym9MR2VUUjR4ZDVMRXFKcFF3b1ArWkxaTXdIZ2kzVVBzemNsYjNyK0wwRTdXNDZVNUx6b0txc0d2N2JjejFCVE45VDVWOG1MQTdDZz09Cg==",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/Flux.Editor_x64.app.tar.gz"
+    },
+    "linux-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVl3SUFpcE0vVkpIeUVacndpcnVCKzZuc0QzekhzTllWdUpySkpWOWRuVDJValhIa24xV21PUHVEeStKQm5ORjl4NUhnOVNuNk9pbm1qWExsWHdldGdNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2MjAzCWZpbGU6Zmx1eC1lZGl0b3JfMC40LjFfYW1kNjQuQXBwSW1hZ2UudGFyLmd6Cis1QnpqcEpJSkw3Vi9IZ2pxYkN6TVN2aytFd1JraGtRWHg4UE9WcWZsc1FVU1FMT0xSOXh3ZW54MG11ZWsvS1hweHVIaWJWNUV1ZmxROUtpT0FxWUF3PT0K",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/flux-editor_0.4.1_amd64.AppImage.tar.gz"
+    },
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRbEdLZHQxTXUxRVY3RHJ3YUhweE85cTJSVzhEV0VyV01TNXdVN3JnS3A5dWdnK1FlVXFkSDM5S3lOKzRHYXJZZkxjWHZRcEo0amRXS0pJOUR0Z3dYTDlHaXdUZW9zcUFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIwOTY2Mzg3CWZpbGU6Rmx1eCBFZGl0b3JfMC40LjFfeDY0X2VuLVVTLm1zaS56aXAKR1pMM3JIV0RRWnJ5OUZOMkgzWnhjUXpUa3pVT3R0ZEtON1JoM3N2MStEN1NVQndwamV5cDRYNVhHN3JzdzZXRC9telhzS21JTCtMWm9zNGc1UEVCQ0E9PQo=",
+      "url": "https://github.com/kyteidev/FluxEditor/releases/download/app-v0.4.1/Flux.Editor_0.4.1_x64_en-US.msi.zip"
+    }
+  }
+}

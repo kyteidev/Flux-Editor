@@ -1,0 +1,137 @@
+/*
+Copyright © 2024 The Flux Editor Contributors.
+
+This file is part of Flux Editor.
+
+Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+<https://www.gnu.org/licenses/>.
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --content: #f3f4f6;
+  --accent: #2f4da1;
+  --accent-hover: #3d65d4;
+
+  --base-100: #1d232a;
+  --base-100-hover: #2c3540;
+  --base-200: #13171c;
+  --base-300: #090a0d;
+
+  --info: #1e40af;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #b91c1c;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+*,
+*::before,
+*::after {
+  font-family: system-ui, sans-serif;
+  color: var(--content);
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 12px;
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--accent);
+}
+
+::-webkit-scrollbar-button {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background-color: transparent !important;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+
+  pre {
+    scrollbar-color: transparent transparent;
+  }
+}
+
+*:focus {
+  outline: none;
+}
+
+body {
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+}
+
+input,
+textarea {
+  user-select: initial;
+  -webkit-user-select: initial;
+}
+
+dialog {
+  opacity: 0;
+}
+
+dialog[open] {
+  animation: fadein 0.1s ease-in-out forwards;
+}
+
+.dialog-close {
+  animation: fadeout 0.1s ease-in-out forwards;
+}
