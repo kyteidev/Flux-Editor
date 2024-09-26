@@ -1,0 +1,87 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "Flux Editor",
+    "version": "0.2.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "app": {
+        "all": true,
+        "show": false,
+        "hide": false
+      },
+      "dialog": {
+        "all": false,
+        "ask": true,
+        "confirm": false,
+        "message": true,
+        "open": true,
+        "save": true
+      },
+      "fs": {
+        "all": false,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "createDir": true,
+        "exists": true,
+        "scope": {
+          "allow": ["$HOME/**", "$RESOURCE/*"],
+          "requireLiteralLeadingDot": false
+        }
+      },
+      "os": {
+        "all": true
+      },
+      "path": {
+        "all": true
+      },
+      "window": {
+        "all": false,
+        "startDragging": true,
+        "close": true,
+        "maximize": true,
+        "unmaximize": true,
+        "minimize": true,
+        "setFullscreen": true,
+        "setSize": true
+      }
+    },
+    "windows": [
+      {
+        "title": "Flux Editor",
+        "width": 960,
+        "height": 620,
+        "minWidth": 660,
+        "minHeight": 450,
+        "decorations": false
+      }
+    ],
+    "security": {
+      "csp": null
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "dev.fluxcode.editor",
+      "resources": [
+        "../resources/THIRD-PARTY-LICENSES.txt",
+        "../resources/LICENSE.txt"
+      ],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ]
+    }
+  }
+}

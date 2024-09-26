@@ -1,0 +1,26 @@
+{
+  "tauri": {
+    "windows": [
+      {
+        "title": "Narvik Editor",
+        "width": 960,
+        "height": 620,
+        "minWidth": 660,
+        "minHeight": 450,
+        "decorations": true
+      }
+    ],
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "dev.narvik.editor",
+      "icon": [
+        "icons/mac/32x32.png",
+        "icons/mac/128x128.png",
+        "icons/mac/128x128@2x.png",
+        "icons/mac/icon.icns",
+        "icons/mac/icon.ico"
+      ]
+    }
+  }
+}
