@@ -85,7 +85,7 @@ See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTI
 
 ## Copyright and Licenses <a name="license"></a>
 
-Copyright © 2024 [The Flux Editor Contributors](https://github.com/kyteidev/FluxEditor/graphs/contributors). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
+Copyright © 2024 [kyteidev](https://github.com/kyteidev/). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
 
 The original designer of the Flux Editor Logo is [kyteidev](https://github.com/kyteidev/).
 

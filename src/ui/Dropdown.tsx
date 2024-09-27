@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 The Flux Editor Contributors.
+Copyright © 2024 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -66,10 +66,10 @@ const Dropdown = (props: Props) => {
           height: props.height,
         }}
       >
-        <div class="group-hover:text-content-main justify-start text-content">
+        <div class="justify-start text-content group-hover:text-content-main">
           {selected()}
         </div>
-        <div class="group-hover:stroke-content-main absolute right-2 stroke-content">
+        <div class="absolute right-2 stroke-content group-hover:stroke-content-main">
           <Show when={isOpen()} fallback={<IconExpand />}>
             <IconUnexpand />
           </Show>
@@ -80,12 +80,12 @@ const Dropdown = (props: Props) => {
           <div class="h-[1px] w-full bg-base-100-hover" />
           <ul
             id="dropdown-menu"
-            class="hover:text-content-main w-full text-content last:rounded-b"
+            class="w-full text-content last:rounded-b hover:text-content-main"
           >
             <For each={props.items}>
               {(item) => (
                 <li
-                  class="dropdown hover:text-content-main flex w-full items-center justify-start bg-base-100 px-2 text-content last:rounded-b hover:bg-base-100-hover"
+                  class="dropdown flex w-full items-center justify-start bg-base-100 px-2 text-content last:rounded-b hover:bg-base-100-hover hover:text-content-main"
                   style={{ height: props.height }}
                   onClick={() => handleItemClick(item)}
                 >

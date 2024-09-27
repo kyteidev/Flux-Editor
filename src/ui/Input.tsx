@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 The Flux Editor Contributors.
+Copyright © 2024 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -31,7 +31,7 @@ const Input = (props: Props) => {
   return (
     <input
       type="text"
-      class="hover:text-content-main focus:text-content-main rounded border-none bg-base-100 px-2 text-content caret-accent hover:bg-base-100-hover focus:bg-base-100-hover"
+      class="rounded border-none bg-base-100 px-2 text-content caret-accent hover:bg-base-100-hover hover:text-content-main focus:bg-base-100-hover focus:text-content-main"
       style={{
         width: props.width,
         height: props.height,

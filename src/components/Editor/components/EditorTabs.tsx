@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 The Flux Editor Contributors.
+Copyright © 2024 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -172,12 +172,12 @@ const EditorTabs = () => {
                   </div>
                 </Show>
                 <div
-                  class={`${activeTab() === index() ? "text-content-main" : "text-content"} group-hover:text-content-main block max-h-8 max-w-52 overflow-hidden overflow-ellipsis whitespace-nowrap`}
+                  class={`${activeTab() === index() ? "text-content-main" : "text-content"} block max-h-8 max-w-52 overflow-hidden overflow-ellipsis whitespace-nowrap group-hover:text-content-main`}
                 >
                   {tabName}
                 </div>
                 <button
-                  class={`${activeTab() === index() ? "stroke-content-main" : "stroke-content"} group-hover:stroke-content-main ml-2 h-4 min-h-4 w-4 min-w-4 hover:opacity-50`}
+                  class={`${activeTab() === index() ? "stroke-content-main" : "stroke-content"} ml-2 h-4 min-h-4 w-4 min-w-4 hover:opacity-50 group-hover:stroke-content-main`}
                   onclick={closeTab}
                 >
                   <Show

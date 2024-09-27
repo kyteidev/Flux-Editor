@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 The Flux Editor Contributors.
+Copyright © 2024 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -178,7 +178,7 @@ const Search = () => {
     <Show when={show()}>
       <input
         ref={inputRef}
-        class="shadows text-content-main absolute z-50 h-10 w-[28rem] rounded-t bg-base-100 px-2 py-1 caret-accent"
+        class="shadows absolute z-50 h-10 w-[28rem] rounded-t bg-base-100 px-2 py-1 text-content-main caret-accent"
         style={{
           left: `calc((100vw - 28rem) / 2)`,
           top: `calc((100vh - 2.5rem) / 4)`,

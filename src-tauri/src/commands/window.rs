@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 The Flux Editor Contributors.
+Copyright © 2024 kyteidev.
 
 This file is part of Flux Editor.
 
