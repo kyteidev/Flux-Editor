@@ -2,7 +2,7 @@
 name = "FluxEditor"
 version = "0.6.2"
 description = "A minimalist and lightweight code editor"
-authors = ["The Flux Editor Contributors"]
+authors = ["kyteidev"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
