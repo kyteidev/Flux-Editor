@@ -136,7 +136,7 @@ impl CommandController {
         let mut commands = self.commands.lock().unwrap();
         if let Some(child) = commands.remove(&id) {
             match child.lock().unwrap().kill() {
-                Ok(_) => info!("Command {} aborted successfully.", id),
+                Ok(_) => info!("Command with ID {} aborted successfully.", id),
                 Err(e) => error!("Failed to abort command {}: {}", id, e),
             }
         }
@@ -146,7 +146,7 @@ impl CommandController {
         let mut commands = self.commands.lock().unwrap();
         for (id, child) in commands.drain() {
             match child.lock().unwrap().kill() {
-                Ok(_) => info!("Command {} aborted successfully.", id),
+                Ok(_) => info!("Command with ID {} aborted successfully.", id),
                 Err(e) => error!("Failed to abort command {}: {}", id, e),
             }
         }
@@ -183,7 +183,7 @@ pub fn abort_command(id: &str) {
     let id_u64 = match id.parse::<u64>() {
         Ok(n) => n,
         Err(e) => {
-            error!("Failed to parse: {} to u64: {}", id, e);
+            error!("Failed to parse '{}' to u64: {}", id, e);
             return;
         }
     };

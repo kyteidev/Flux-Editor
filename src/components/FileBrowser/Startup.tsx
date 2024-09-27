@@ -123,11 +123,11 @@ const Startup = () => {
                   title: "Error",
                   type: "error",
                 });
-                warn("File " + name() + " already exists in " + dirPath());
+                warn("File already exists.");
                 return;
               }
               fs.writeFile(joinPath(dirPath(), name()), "").catch((e) => {
-                error("Failed to create file " + name() + ": " + e);
+                error("Failed to create file: " + e);
               });
               loadEditor(joinPath(dirPath(), name()), true, name());
               break;
@@ -137,7 +137,7 @@ const Startup = () => {
                   title: "Error",
                   type: "error",
                 });
-                warn("Directory " + name() + " already exists in " + dirPath());
+                warn("Directory already exists.");
               } else {
                 const projectPath = joinPath(dirPath(), name());
 

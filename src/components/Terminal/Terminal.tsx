@@ -308,7 +308,7 @@ const FluxTerminal = () => {
       dir: cmdDir,
     }).then((id) => {
       cmdId = id;
-      info(id.toString());
+      info("Spawned new command with ID " + id.toString());
     });
 
     if (outputListener) {
