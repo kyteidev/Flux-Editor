@@ -55,7 +55,8 @@ impl CommandController {
         cmd.args(args)
             .current_dir(dir)
             .stdout(Stdio::piped())
-            .stderr(Stdio::piped());
+            .stderr(Stdio::piped())
+            .env("FORCE_COLOR", "1");
 
         let shared_child = Arc::new(Mutex::new(SharedChild::spawn(&mut cmd).unwrap()));
 

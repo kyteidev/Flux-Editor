@@ -15,8 +15,10 @@
   "license": "GPL-3.0-only",
   "dependencies": {
     "@tauri-apps/api": "^1",
+    "ansi-to-html": "^0.7.2",
     "prismjs": "^1.29.0",
     "solid-js": "^1.8.19",
+    "strip-ansi": "^7.1.0",
     "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1"
   },
   "devDependencies": {

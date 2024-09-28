@@ -28,15 +28,28 @@ import {
   normalizePath,
   resolvePath,
 } from "../../utils/path";
+import ansiToHtml from "ansi-to-html";
+import stripAnsi from "strip-ansi";
 import styles from "./Terminal.module.css";
+import "../../utils/string.ts";
+import { escapeHtml } from "../../utils/char.ts";
 
 const FluxTerminal = () => {
+  const converter = new ansiToHtml({
+    newline: true,
+    escapeXML: true,
+    stream: false,
+  });
+
   let textarea: HTMLTextAreaElement | undefined;
   let pre: HTMLPreElement | undefined;
 
   let prefixText = "";
   let cmd = "";
   let cmdDir: string;
+
+  let cmdRunning = false;
+  let userHasScrolled = false;
 
   let prevDir: string;
 
@@ -56,6 +69,10 @@ const FluxTerminal = () => {
     cmdDir = getProjectPath() || homeDirPath;
   });
 
+  const cleanAnsiText = (text: string) => {
+    return text.replace(/\x1b\[\d*[GK]/g, "").replace(/\x1b\[0G/g, "");
+  };
+
   const setPrefix = () => {
     prefixText =
       getProjectName() + `${getProjectName() != "" ? " " : ""}` + "% \u200B";
@@ -63,17 +80,45 @@ const FluxTerminal = () => {
 
   const addText = (text: string) => {
     if (textarea && pre) {
-      textarea.value += text;
-      pre.innerText = textarea.value;
+      textarea.value += stripAnsi(text);
 
-      handleScroll();
+      if (text === prefixText) {
+        pre.innerHTML += prefixText;
+
+        let preLines = pre.innerHTML.splitMultiple(["<br>", "\n"]);
+
+        preLines[preLines.length - 1] =
+          preLines[preLines.length - 1].trimStart();
+
+        pre.innerHTML = preLines.join("<br>");
+      } else {
+        const colorizedHtml = converter.toHtml(cleanAnsiText(text));
+        pre.innerHTML = pre.innerHTML.trimEnd() + colorizedHtml;
+      }
+
+      if (!userHasScrolled) {
+        scrollToBottom();
+      }
     }
   };
 
   const handleScroll = () => {
     if (textarea && pre) {
+      const isAtBottom =
+        textarea.scrollHeight - textarea.scrollTop <=
+        textarea.clientHeight + 50;
+
+      userHasScrolled = !isAtBottom;
+
       pre.scrollTop = textarea.scrollTop;
       pre.scrollLeft = textarea.scrollLeft;
+    }
+  };
+
+  const scrollToBottom = () => {
+    if (textarea && pre) {
+      textarea.scrollTop = textarea.scrollHeight;
+      pre.scrollTop = pre.scrollHeight;
     }
   };
 
@@ -87,7 +132,13 @@ const FluxTerminal = () => {
         fixLastLine = true;
       }
 
-      pre.innerText = textarea.value;
+      const lines = textarea.value.split("\n");
+      const preLines = pre.innerHTML.splitMultiple(["<br>", "\n"]);
+
+      if (!cmdRunning) {
+        preLines[preLines.length - 1] = escapeHtml(lines[lines.length - 1]);
+        pre.innerHTML = preLines.join("<br>");
+      }
 
       if (fixLastLine && textarea.value[textarea.value.length - 1] == " ") {
         textarea.value = textarea.value.substring(0, textarea.value.length - 1);
@@ -129,6 +180,9 @@ const FluxTerminal = () => {
 
         break;
       case "Enter":
+        if (pre) {
+          pre.innerHTML += "<br>";
+        }
         runCommand();
         break;
       case "ArrowUp":
@@ -319,15 +373,13 @@ const FluxTerminal = () => {
       (e) => {
         if (e.payload.message === "flux:output-completed") {
           cmdId = -1;
+          cmdRunning = false;
           outputListener();
           addPrefixText();
           removeKeyListeners();
         } else {
           addText(e.payload.message + "\n");
-        }
-        if (textarea && textarea.scrollHeight - textarea.scrollTop <= 300) {
-          textarea.scrollTop = textarea.scrollHeight;
-          handleScroll();
+          cmdRunning = true;
         }
       },
     );

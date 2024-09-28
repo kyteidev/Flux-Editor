@@ -15,25 +15,14 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-export const getClosingChar = (openingChar: string): string => {
-  const closingChars: Record<string, string> = {
-    "{": "}",
-    "[": "]",
-    "(": ")",
-    '"': '"',
-    "'": "'",
-    "`": "`",
-    "<": ">",
-  };
+interface String {
+  splitMultiple(separators: string[]): string[];
+}
 
-  return closingChars[openingChar] || "";
-};
-
-export const escapeHtml = (input: string) => {
-  return input
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+String.prototype.splitMultiple = function (separators: string[]): string[] {
+  let parts = [this.toString()];
+  for (const separator of separators) {
+    parts = parts.flatMap((part) => part.split(separator));
+  }
+  return parts;
 };
