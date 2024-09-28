@@ -40,7 +40,7 @@ impl CommandController {
     pub fn new() -> Self {
         CommandController {
             commands: Arc::new(Mutex::new(HashMap::new())),
-            next_id: Arc::new(Mutex::new(0)),
+            next_id: Arc::new(Mutex::new(1)),
         }
     }
 
@@ -58,7 +58,13 @@ impl CommandController {
             .stderr(Stdio::piped())
             .env("FORCE_COLOR", "1");
 
-        let shared_child = Arc::new(Mutex::new(SharedChild::spawn(&mut cmd).unwrap()));
+        let shared_child = match SharedChild::spawn(&mut cmd) {
+            Ok(child) => Arc::new(Mutex::new(child)),
+            Err(e) => {
+                error!("Failed to spawn command: {}", e);
+                return 0;
+            }
+        };
 
         let mut id_manager = self.next_id.lock().unwrap();
         let id = *id_manager;

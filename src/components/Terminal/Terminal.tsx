@@ -301,6 +301,10 @@ const FluxTerminal = () => {
         if (args.length > 1) {
           addErrorText("cd: too many arguments");
           return;
+        } else if (args.length === 0) {
+          cmdDir = homeDirPath;
+          prefixText = "% \u200B";
+          addPrefixText();
         } else {
           switch (args[0]) {
             case "":
@@ -361,6 +365,12 @@ const FluxTerminal = () => {
       args: args,
       dir: cmdDir,
     }).then((id) => {
+      if (id.toString() === "0") {
+        addText("command not found: " + cmd + "\n");
+        addPrefixText();
+        removeKeyListeners();
+        return;
+      }
       cmdId = id;
       info("Spawned new command with ID " + id.toString());
     });
