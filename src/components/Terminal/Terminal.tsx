@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 // TODO: add real pty shell integration with Xterm
+// TODO: sometimes terminal super slow to detect when command is done running
 
 import { onMount } from "solid-js";
 import { getProjectName, getProjectPath } from "../../App";
@@ -33,13 +34,21 @@ import stripAnsi from "strip-ansi";
 import styles from "./Terminal.module.css";
 import "../../utils/string.ts";
 import { escapeHtml } from "../../utils/char.ts";
+import { createStore } from "solid-js/store";
 
 const FluxTerminal = () => {
-  const converter = new ansiToHtml({
-    newline: true,
-    escapeXML: true,
-    stream: false,
+  const [termColors, setTermColors] = createStore({
+    black: "",
+    red: "",
+    green: "",
+    yellow: "",
+    blue: "",
+    magenta: "",
+    cyan: "",
+    white: "",
   });
+
+  let converter: ansiToHtml;
 
   let textarea: HTMLTextAreaElement | undefined;
   let pre: HTMLPreElement | undefined;
@@ -58,15 +67,42 @@ const FluxTerminal = () => {
   let outputListener: UnlistenFn;
 
   onMount(async () => {
+    homeDirPath = await homeDir();
+
+    cmdDir = getProjectPath() || homeDirPath;
+
+    setTermColors({
+      black: "#333333",
+      red: "#f04949",
+      green: "#9fee75",
+      yellow: "#eeea75",
+      blue: "#6fb5f3",
+      magenta: "#f049c3",
+      cyan: "#6fe6f3",
+      white: " #f3f4f6",
+    });
+
+    converter = new ansiToHtml({
+      newline: true,
+      escapeXML: true,
+      stream: false,
+      colors: {
+        0: termColors.black,
+        1: termColors.red,
+        2: termColors.green,
+        3: termColors.yellow,
+        4: termColors.blue,
+        5: termColors.magenta,
+        6: termColors.cyan,
+        7: termColors.white,
+      },
+    });
+
     setPrefix();
     addText(
       "NOTE: This is merely a command runner that emulates a terminal UI.\nThis doesn't support, for example, inputs and terminal apps.\n" +
         prefixText,
     );
-
-    homeDirPath = await homeDir();
-
-    cmdDir = getProjectPath() || homeDirPath;
   });
 
   const cleanAnsiText = (text: string) => {
