@@ -24,7 +24,7 @@ extern crate objc;
 
 mod menu;
 
-use log::error;
+use log::{error, info};
 use menu::menu;
 
 use lsp_client::{init_server, send_request};
@@ -62,6 +62,16 @@ mod utils;
 use utils::dir::{get_app_log_dir, get_ls_dir};
 
 mod lsp_client;
+
+#[tauri::command]
+fn show_main_window(window: Window) {
+    info!("Showing Window");
+    window
+        .get_window("main")
+        .expect("No window labeled 'main'")
+        .show()
+        .unwrap();
+}
 
 #[tauri::command]
 fn set_doc_edited(_window: Window, _edited: bool) {
@@ -162,6 +172,7 @@ fn main() {
         })
         .menu(menu())
         .invoke_handler(tauri::generate_handler![
+            show_main_window,
             clone_repo,
             set_doc_edited,
             ls_send_request,

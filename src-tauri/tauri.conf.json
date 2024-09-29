@@ -66,7 +66,8 @@
         "height": 620,
         "minWidth": 660,
         "minHeight": 450,
-        "decorations": false
+        "decorations": false,
+        "visible": false
       }
     ],
     "security": {
@@ -75,7 +76,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "dev.fluxcode.editor",
+      "identifier": "dev.kyteidev.fluxeditor",
       "resources": ["../resources/**/*"],
       "icon": [
         "icons/32x32.png",

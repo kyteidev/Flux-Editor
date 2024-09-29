@@ -7,13 +7,14 @@
         "height": 620,
         "minWidth": 660,
         "minHeight": 450,
-        "decorations": true
+        "decorations": true,
+        "visible": false
       }
     ],
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "dev.narvik.editor",
+      "identifier": "dev.kyteidev.fluxeditor",
       "icon": [
         "icons/mac/32x32.png",
         "icons/mac/128x128.png",

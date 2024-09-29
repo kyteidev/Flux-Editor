@@ -20,7 +20,12 @@ import { render } from "solid-js/web";
 import { attachConsole } from "tauri-plugin-log-api";
 import App from "./App";
 import "./globals.css";
+import { invoke } from "@tauri-apps/api";
 
 attachConsole();
+
+document.addEventListener("DOMContentLoaded", () => {
+  invoke("show_main_window");
+});
 
 render(() => <App />, document.getElementById("root") as HTMLElement);
