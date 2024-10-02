@@ -19,6 +19,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
 import { dir, loaded } from "../../../App";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
+import { error } from "tauri-plugin-log-api";
 
 const GitBranch = () => {
   const [currentBranch, setCurrentBranch] = createSignal("");
@@ -27,7 +28,13 @@ const GitBranch = () => {
 
   onMount(async () => {
     unlisten = await listen("flux:editor-loaded", async () => {
-      setCurrentBranch(await invoke("current_branch", { dir: dir() }));
+      let branch = "";
+      try {
+        branch = await invoke("current_branch", { dir: dir() });
+      } catch (e) {
+        error("Failed to get current git branch: " + e);
+      }
+      setCurrentBranch(branch);
       interval = setInterval(async () => {
         setCurrentBranch(await invoke("current_branch", { dir: dir() }));
       }, 3000);
