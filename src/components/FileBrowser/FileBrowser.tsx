@@ -69,7 +69,12 @@ export const newItem = (type: string) => {
   setNewItemDir(normalizePath(parentDir));
   setNewItemType(type);
 
-  emit("flux:checkMustOpenDir");
+  emit("flux:contextMenuClicked", { type: "newItem" });
+};
+
+export const removeItem = (trash: boolean) => {
+  invoke("remove_file", { trash: trash, path: selectedItem });
+  emit("flux:contextMenuClicked", { type: "removeItem" });
 };
 
 export const loadFBSettings = () => {
@@ -138,6 +143,15 @@ const FileBrowser = (props: Props) => {
     }
     setNestedContent(contents.flat());
 
+    const updateContent = () => {
+      setNestedContent(
+        [
+          nestedDirs.map((dir) => basename(dir)),
+          nestedFiles.map((file) => basename(file)),
+        ].flat(),
+      );
+    };
+
     return (
       <>
         {() => {
@@ -187,6 +201,7 @@ const FileBrowser = (props: Props) => {
                     nestedDirs.sortInsensitive();
 
                     updateContent();
+                    handleHide();
                   })
                   .catch(async (e) => {
                     error("Error creating folder: " + e);
@@ -207,6 +222,7 @@ const FileBrowser = (props: Props) => {
                     updateBreadcrumbs(newItemPath);
 
                     updateContent();
+                    handleHide();
                   })
                   .catch(async (e) => {
                     error("Error creating file: " + e);
@@ -217,17 +233,6 @@ const FileBrowser = (props: Props) => {
                     return;
                   });
               }
-
-              const updateContent = () => {
-                setNestedContent(
-                  [
-                    nestedDirs.map((dir) => basename(dir)),
-                    nestedFiles.map((file) => basename(file)),
-                  ].flat(),
-                );
-
-                handleHide();
-              };
             }
           };
 
@@ -296,21 +301,41 @@ const FileBrowser = (props: Props) => {
                       selectedDir = isDir();
 
                       let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
-
-                      if (isDir() && newItemDir() === "") {
-                        const id = await once("flux:checkMustOpenDir", () => {
-                          if (
-                            normalizedItemPath === newItemDir() &&
-                            normalizedItemPath != ""
-                          ) {
-                            if (!open()) {
-                              openDir();
-                            }
-                            normalizedItemPath = "";
+                      const id = await once<{ type: string }>(
+                        "flux:contextMenuClicked",
+                        (e) => {
+                          switch (e.payload.type) {
+                            case "newItem":
+                              if (
+                                isDir() &&
+                                normalizedItemPath === newItemDir() &&
+                                normalizedItemPath != ""
+                              ) {
+                                if (!open()) {
+                                  openDir();
+                                }
+                                normalizedItemPath = "";
+                              }
+                              break;
+                            case "removeItem":
+                              const item = selectedItem.slice(
+                                0,
+                                selectedItem.length - 1,
+                              );
+                              if (selectedDir) {
+                                nestedDirs.splice(nestedDirs.indexOf(item), 1);
+                              } else {
+                                nestedFiles.splice(
+                                  nestedFiles.indexOf(item),
+                                  1,
+                                );
+                              }
+                              updateContent();
+                              break;
                           }
-                        });
-                        checkMustOpenDir.push(id);
-                      }
+                        },
+                      );
+                      checkMustOpenDir.push(id);
                     }
                   }}
                   onMouseLeave={() => {

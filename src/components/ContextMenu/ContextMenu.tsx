@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { createSignal, Match, onMount, Show, Switch } from "solid-js";
-import { newItem } from "../FileBrowser/FileBrowser";
+import { newItem, removeItem } from "../FileBrowser/FileBrowser";
 
 const [show, setShow] = createSignal(false);
 const [xPos, setXPos] = createSignal(0);
@@ -100,7 +100,13 @@ const ContextMenu = () => {
         <Switch>
           <Match when={menuID() === 0}>
             <MenuItem first text="New File" action={() => newItem("file")} />
-            <MenuItem last text="New Folder" action={() => newItem("folder")} />
+            <MenuItem
+              separator
+              text="New Folder"
+              action={() => newItem("folder")}
+            />
+            <MenuItem text="Trash" action={() => removeItem(true)} />
+            <MenuItem last text="Delete" action={() => removeItem(false)} />
           </Match>
         </Switch>
       </div>

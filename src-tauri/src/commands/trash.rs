@@ -15,9 +15,19 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-pub mod cmd;
-pub mod fs;
-pub mod git;
-pub mod path;
-pub mod trash;
-pub mod window;
+use std::fs;
+
+#[tauri::command]
+pub fn remove_file(trash: bool, path: String) -> Result<(), String> {
+    if trash {
+        match trash::delete(&path) {
+            Ok(_) => Ok(()),
+            Err(e) => Err(format!("Failed to move file to trash: {}", e)),
+        }
+    } else {
+        match fs::remove_file(&path) {
+            Ok(_) => Ok(()),
+            Err(e) => Err(format!("Failed to delete file: {}", e)),
+        }
+    }
+}

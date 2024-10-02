@@ -55,6 +55,7 @@ use commands::{
     fs::{get_dir_contents, is_dir, path_exists},
     git::{clone_repo, current_branch},
     path::{app_data_dir, resolve_resource, user_home_dir},
+    trash::remove_file,
     window::new_window,
 };
 
@@ -186,7 +187,8 @@ fn main() {
             is_dir,
             path_exists,
             abort_all_commands,
-            current_branch
+            current_branch,
+            remove_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
