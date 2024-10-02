@@ -20,13 +20,13 @@ You should have received a copy of the GNU General Public License along with Flu
 @tailwind utilities;
 
 :root {
-  --content: #a7a7a8;
+  --content: #b1b1b3;
   --content-main: #f3f4f6; /* used for e.g. hovered button text, title bar buttons, etc. */
   --accent: #3a5fc7;
   --accent-hover: #4878fa;
 
+  --base-50: #2c3540;
   --base-100: #1d232a;
-  --base-100-hover: #2c3540;
   --base-200: #13171c;
   --base-300: #090a0d;
 

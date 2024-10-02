@@ -58,7 +58,7 @@ const MenuItem = (props: {
 }) => {
   return (
     <div
-      class={`menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-b-[1px] border-base-100-hover"} ${props.width ? `${props.width}` : "w-32"} absolute z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content-main hover:bg-base-100-hover`}
+      class={`menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-base-50 border-b-[1px]"} ${props.width ? `${props.width}` : "w-32"} hover:bg-base-50 absolute z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content-main`}
       style={{ top: `calc(${props.item} * 1.5rem + 0.5rem)` }}
       onClick={() => {
         setShowMenu(false);

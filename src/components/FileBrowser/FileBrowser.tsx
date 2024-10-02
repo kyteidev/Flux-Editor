@@ -289,7 +289,7 @@ const FileBrowser = (props: Props) => {
             return (
               <div class="relative block min-w-fit">
                 <div
-                  class="group min-w-fit cursor-pointer select-none px-1 hover:bg-base-100 active:bg-base-100-hover"
+                  class="active:bg-base-50 group min-w-fit cursor-pointer select-none px-1 hover:bg-base-100"
                   onMouseEnter={async () => {
                     if (!isContextMenuShown()) {
                       selectedItem = normalizePath(itemPath);

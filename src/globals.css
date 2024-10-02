@@ -1057,8 +1057,8 @@ video {
   border-color: var(--base-100);
 }
 
-.border-base-100-hover {
-  border-color: var(--base-100-hover);
+.border-base-50 {
+  border-color: var(--base-50);
 }
 
 .bg-accent {
@@ -1069,12 +1069,12 @@ video {
   background-color: var(--base-100);
 }
 
-.bg-base-100-hover {
-  background-color: var(--base-100-hover);
-}
-
 .bg-base-200 {
   background-color: var(--base-200);
+}
+
+.bg-base-50 {
+  background-color: var(--base-50);
 }
 
 .bg-content {
@@ -1263,13 +1263,13 @@ video {
 }
 
 :root {
-  --content: #a7a7a8;
+  --content: #b1b1b3;
   --content-main: #f3f4f6;
   /* used for e.g. hovered button text, title bar buttons, etc. */
   --accent: #3a5fc7;
   --accent-hover: #4878fa;
+  --base-50: #2c3540;
   --base-100: #1d232a;
-  --base-100-hover: #2c3540;
   --base-200: #13171c;
   --base-300: #090a0d;
   --info: #1e40af;
@@ -1419,8 +1419,8 @@ dialog[open] {
   background-color: var(--base-100);
 }
 
-.hover\:bg-base-100-hover:hover {
-  background-color: var(--base-100-hover);
+.hover\:bg-base-50:hover {
+  background-color: var(--base-50);
 }
 
 .hover\:text-content-main:hover {
@@ -1435,8 +1435,8 @@ dialog[open] {
   opacity: 0.9;
 }
 
-.focus\:bg-base-100-hover:focus {
-  background-color: var(--base-100-hover);
+.focus\:bg-base-50:focus {
+  background-color: var(--base-50);
 }
 
 .focus\:text-content-main:focus {
@@ -1447,12 +1447,12 @@ dialog[open] {
   background-color: rgb(255 255 255 / .04);
 }
 
-.active\:bg-base-100-hover:active {
-  background-color: var(--base-100-hover);
-}
-
 .active\:bg-base-300:active {
   background-color: var(--base-300);
+}
+
+.active\:bg-base-50:active {
+  background-color: var(--base-50);
 }
 
 .active\:brightness-110:active {

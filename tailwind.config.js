@@ -8,8 +8,8 @@ module.exports = {
       accent: "var(--accent)",
       "accent-hover": "var(--accent-hover)",
 
+      "base-50": "var(--base-50)",
       "base-100": "var(--base-100)",
-      "base-100-hover": "var(--base-100-hover)",
       "base-200": "var(--base-200)",
       "base-300": "var(--base-300)",
 
