@@ -24,6 +24,9 @@ const [yPos, setYPos] = createSignal(0);
 
 const [menuID, setMenuID] = createSignal(-1);
 
+const menuWidth = 128;
+const menuHeight = 24 * 4;
+
 export const isContextMenuShown = () => {
   return show();
 };
@@ -47,8 +50,16 @@ const handleContextMenu = (e: MouseEvent) => {
   document.addEventListener("mousedown", handleOutsideClick);
   setShow(true);
 
-  setXPos(e.clientX);
-  setYPos(e.clientY);
+  if (e.clientX + menuWidth >= window.innerWidth) {
+    setXPos(e.clientX - menuWidth);
+  } else {
+    setXPos(e.clientX);
+  }
+  if (e.clientY + menuHeight >= window.innerHeight) {
+    setYPos(e.clientY - menuHeight);
+  } else {
+    setYPos(e.clientY);
+  }
 };
 
 const handleOutsideClick = (e: MouseEvent) => {
@@ -71,7 +82,7 @@ const MenuItem = (props: {
 }) => {
   return (
     <div
-      class={`context-menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-base-50 border-b-[1px]"} ${props.width ? `${props.width}` : "w-32"} hover:bg-base-50 z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content-main`}
+      class={`context-menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-b-[1px] border-base-50"} ${props.width ? `${props.width}` : "w-32"} z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content-main hover:bg-base-50`}
       onClick={() => {
         setShow(false);
         document.removeEventListener("mousedown", handleOutsideClick);
