@@ -168,7 +168,7 @@ fn main() {
         .on_menu_event(|event| {
             event
                 .window()
-                .emit(&("flux:".to_owned() + event.menu_item_id()), "")
+                .emit(&("flux:menu:".to_owned() + event.menu_item_id()), "")
                 .unwrap();
         })
         .menu(menu())

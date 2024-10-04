@@ -27,7 +27,7 @@ const GitBranch = () => {
   let unlisten: UnlistenFn;
 
   onMount(async () => {
-    unlisten = await listen("flux:editor-loaded", async () => {
+    unlisten = await listen("flux:event:editor-loaded", async () => {
       let branch = "";
       try {
         branch = await invoke("current_branch", { dir: dir() });

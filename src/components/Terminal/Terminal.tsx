@@ -415,9 +415,9 @@ const FluxTerminal = () => {
       outputListener();
     }
     outputListener = await listen<{ message: string }>(
-      "flux:cmd-output",
+      "flux:event:cmdOutput",
       (e) => {
-        if (e.payload.message === "flux:output-completed") {
+        if (e.payload.message === "flux:event:cmdOutputCompleted") {
           cmdId = -1;
           cmdRunning = false;
           outputListener();

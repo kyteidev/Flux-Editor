@@ -34,59 +34,59 @@ import { checkUpdates } from "../components/StatusBar/components/Update";
 
 export const addListeners = () => {
   /*
-  appWindow.listen("flux:ls-test", async () => {
+  appWindow.listen("flux:menu:ls-test", async () => {
     send_request();
   });
   */
 
   // TODO: Add separate page for displaying this info, instead of dialog?
-  appWindow.listen("flux:about", () => {
+  appWindow.listen("flux:menu:about", () => {
     about();
   });
-  appWindow.listen("flux:update", () => {
+  appWindow.listen("flux:menu:update", () => {
     checkUpdates();
   });
 
-  appWindow.listen("flux:license", async () => {
+  appWindow.listen("flux:menu:license", async () => {
     license();
   });
-  appWindow.listen("flux:licenses-third-party-js", async () => {
+  appWindow.listen("flux:menu:licenses-third-party-js", async () => {
     licenseThirdPartyJS();
   });
-  appWindow.listen("flux:licenses-third-party-rust", async () => {
+  appWindow.listen("flux:menu:licenses-third-party-rust", async () => {
     licenseThirdPartyRust();
   });
-  appWindow.listen("flux:licenses-fonts", async () => {
+  appWindow.listen("flux:menu:licenses-fonts", async () => {
     licenseFonts();
   });
 
-  appWindow.listen("flux:logs", async () => {
+  appWindow.listen("flux:menu:logs", async () => {
     viewLogs();
   });
 
-  appWindow.listen("flux:settings", () => {
+  appWindow.listen("flux:menu:settings", () => {
     settings();
   });
 
-  appWindow.listen("flux:new_window", () => {
+  appWindow.listen("flux:menu:new_window", () => {
     console.log("hi");
     invoke("new_window");
   });
 
-  appWindow.listen("flux:save", () => {
+  appWindow.listen("flux:menu:save", () => {
     saveFile();
   });
-  appWindow.listen("flux:save_as", () => {
+  appWindow.listen("flux:menu:save_as", () => {
     saveFile(true);
   });
 
-  appWindow.listen("flux:search", () => {
+  appWindow.listen("flux:menu:search", () => {
     toggleSearch();
   });
-  appWindow.listen("flux:file_browser", () => {
+  appWindow.listen("flux:menu:file_browser", () => {
     setHideFB(!hideFB());
   });
-  appWindow.listen("flux:terminal", () => {
+  appWindow.listen("flux:menu:menu:terminal", () => {
     setHideTerm(!hideTerm());
   });
 

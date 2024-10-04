@@ -81,7 +81,7 @@ impl CommandController {
                 for line in lines {
                     app_clone
                         .emit_all(
-                            "flux:cmd-output",
+                            "flux:event:cmdOutput",
                             Payload {
                                 message: line.unwrap_or_else(|e| {
                                     error!("{}", e);
@@ -104,7 +104,7 @@ impl CommandController {
                 for line in lines {
                     app_clone
                         .emit_all(
-                            "flux:cmd-output",
+                            "flux:event:cmdOutput",
                             Payload {
                                 message: line.unwrap_or_else(|e| {
                                     error!("{}", e);
@@ -126,9 +126,9 @@ impl CommandController {
 
             app_clone
                 .emit_all(
-                    "flux:cmd-output",
+                    "flux:event:cmdOutput",
                     Payload {
-                        message: "flux:output-completed".into(),
+                        message: "flux:event:cmdOutputCompleted".into(),
                     },
                 )
                 .map_err(|e| error!("Failed to emit completion event: {}", e))

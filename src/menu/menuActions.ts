@@ -45,26 +45,26 @@ export const about = async () => {
 // TODO: maybe merge these two functions?
 export const license = async () => {
   const resourcePath = await resolveResource("../resources/LICENSE.txt");
-  addTab([":LICENSE", resourcePath]);
+  addTab(["flux:file:LICENSE", resourcePath]);
   openFile(resourcePath, true);
 };
 export const licenseThirdPartyJS = async () => {
   const resourcePath = await resolveResource(
     "../resources/THIRD-PARTY-LICENSES-JS.txt",
   );
-  addTab(["JS: THIRD PARTY LICENSES", resourcePath]);
+  addTab(["flux:file:JS THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
 export const licenseThirdPartyRust = async () => {
   const resourcePath = await resolveResource(
     "../resources/THIRD-PARTY-LICENSES-Rust.txt",
   );
-  addTab(["Rust: THIRD PARTY LICENSES", resourcePath]);
+  addTab(["flux:file:RUST THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
 export const licenseFonts = async () => {
   const resourcePath = await resolveResource("../resources/FONT-LICENSES.txt");
-  addTab([":FONT LICENSES", resourcePath]);
+  addTab(["flux:file:FONT LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
 

@@ -74,7 +74,7 @@ export const loadEditor = (
     setLoaded(true);
     addTab([fileName, dirPath]);
     info("Editor loaded");
-    emit("flux:editor-loaded");
+    emit("flux:event:editor-loaded");
     return;
   }
 
@@ -82,7 +82,7 @@ export const loadEditor = (
 
   info("Editor loaded");
   setLoaded(true);
-  emit("flux:editor-loaded");
+  emit("flux:event:editor-loaded");
 };
 
 export default function App() {

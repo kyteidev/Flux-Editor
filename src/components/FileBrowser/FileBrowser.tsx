@@ -83,12 +83,12 @@ export const newItem = (type: string) => {
   console.log(newItemDir(), rootDir());
   setNewItemType(type);
 
-  emit("flux:contextMenuClicked", { type: "newItem" });
+  emit("flux:event:contextMenuClicked", { type: "newItem" });
 };
 
 export const removeItem = (trash: boolean) => {
   invoke("remove_file", { trash: trash, path: selectedItem });
-  emit("flux:contextMenuClicked", { type: "removeItem" });
+  emit("flux:event:contextMenuClicked", { type: "removeItem" });
 };
 
 export const loadFBSettings = () => {
@@ -322,7 +322,7 @@ const FileBrowser = (props: Props) => {
 
                       let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
                       const id = await once<{ type: string }>(
-                        "flux:contextMenuClicked",
+                        "flux:event:contextMenuClicked",
                         (e) => {
                           switch (e.payload.type) {
                             case "newItem":
