@@ -158,7 +158,7 @@ const EditorTabs = () => {
 
             return (
               <div
-                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} hover:bg-base-50 group mr-1 flex h-8 max-w-52 items-center rounded px-2 py-1 text-center active:brightness-125`}
+                class={`${activeTab() === index() ? "bg-base-100" : "bg-base-200"} group mr-1 flex h-8 max-w-72 items-center rounded px-2 py-1 text-center hover:bg-base-50 active:brightness-125`}
                 onclick={() => {
                   if (!isClosed()) {
                     setActiveTab(index());
