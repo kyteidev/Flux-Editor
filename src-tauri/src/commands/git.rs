@@ -36,6 +36,20 @@ async fn is_git_installed() -> bool {
     }
 }
 
+async fn is_git_repo(dir: String) -> bool {
+    let output = Command::new("git")
+        .args(&["rev-parse", "--is-inside-work-tree"])
+        .current_dir(dir)
+        .output()
+        .map_err(|e| {
+            error!("Failed to check if directory is a git repo: {}", e);
+            false
+        })
+        .map_or(false, |output| output.status.success());
+
+    output
+}
+
 #[tauri::command]
 pub async fn clone_repo(url: String, path: String) -> Result<(), String> {
     let git_installed = is_git_installed().await;
@@ -74,19 +88,24 @@ pub async fn clone_repo(url: String, path: String) -> Result<(), String> {
 pub async fn current_branch(dir: String) -> Result<String, String> {
     let git_installed = is_git_installed().await;
     if git_installed {
-        let output = Command::new("git")
-            .args(["branch", "--show-current"])
-            .current_dir(dir)
-            .output()
-            .map_err(|e| {
-                error!("Failed to check current git branch: {}", e);
-                format!("Failed to check current git branch: {}", e)
-            })?;
+        let is_git_repo = is_git_repo(dir.clone()).await;
+        if is_git_repo {
+            let output = Command::new("git")
+                .args(["branch", "--show-current"])
+                .current_dir(dir)
+                .output()
+                .map_err(|e| {
+                    error!("Failed to check current git branch: {}", e);
+                    format!("Failed to check current git branch: {}", e)
+                })?;
 
-        if output.status.success() {
-            Ok(String::from_utf8_lossy(&output.stdout).to_string())
+            if output.status.success() {
+                Ok(String::from_utf8_lossy(&output.stdout).to_string())
+            } else {
+                Err("".to_string())
+            }
         } else {
-            Err("".to_string())
+            Err("flux:git:not_repo".to_string())
         }
     } else {
         Err("Git is not installed".to_string())

@@ -32,14 +32,17 @@ const GitBranch = () => {
       try {
         branch = await invoke("current_branch", { dir: dir() });
       } catch (e) {
-        error("Failed to get current git branch: " + e);
+        if (e === "flux:git:not_repo") {
+          return;
+        }
+        error("Failed to get current git branch");
       }
       setCurrentBranch(branch);
       interval = setInterval(async () => {
         try {
           branch = await invoke("current_branch", { dir: dir() });
         } catch (e) {
-          error("Failed to get current git branch: " + e);
+          error("Failed to get current git branch");
         }
         setCurrentBranch(branch);
       }, 3000);
