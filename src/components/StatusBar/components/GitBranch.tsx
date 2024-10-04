@@ -36,7 +36,12 @@ const GitBranch = () => {
       }
       setCurrentBranch(branch);
       interval = setInterval(async () => {
-        setCurrentBranch(await invoke("current_branch", { dir: dir() }));
+        try {
+          branch = await invoke("current_branch", { dir: dir() });
+        } catch (e) {
+          error("Failed to get current git branch: " + e);
+        }
+        setCurrentBranch(branch);
       }, 3000);
     });
   });
