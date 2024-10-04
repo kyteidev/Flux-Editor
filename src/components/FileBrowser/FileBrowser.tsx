@@ -15,7 +15,14 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
+import {
+  For,
+  Show,
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
 import { fileIcons, specialFileIcons } from "../../utils/file";
@@ -49,6 +56,8 @@ let checkMustOpenDir: UnlistenFn[] = [];
 let selectedItem = "";
 let selectedDir = false;
 
+const [rootDir, setRootDir] = createSignal("");
+
 const [showIcon, setShowIcon] = createSignal(true);
 const [dirContents, setDirContents] = createSignal<string[][]>([]);
 
@@ -66,7 +75,12 @@ const forceUnlisten = async () => {
 
 export const newItem = (type: string) => {
   const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
-  setNewItemDir(normalizePath(parentDir));
+  if (selectedItem === "") {
+    setNewItemDir(normalizePath(rootDir()));
+  } else {
+    setNewItemDir(normalizePath(parentDir));
+  }
+  console.log(newItemDir(), rootDir());
   setNewItemType(type);
 
   emit("flux:contextMenuClicked", { type: "newItem" });
@@ -118,6 +132,12 @@ const FileBrowser = (props: Props) => {
   onMount(async () => {
     // load settings
     loadFBSettings();
+  });
+
+  createEffect(() => {
+    if (props.loaded === true) {
+      setRootDir(props.dir);
+    }
   });
 
   const renderItem = (
@@ -294,7 +314,7 @@ const FileBrowser = (props: Props) => {
             return (
               <div class="relative block min-w-fit">
                 <div
-                  class="active:bg-base-50 group min-w-fit cursor-pointer select-none px-1 hover:bg-base-100"
+                  class="group min-w-fit cursor-pointer select-none px-1 hover:bg-base-100 active:bg-base-50"
                   onMouseEnter={async () => {
                     if (!isContextMenuShown()) {
                       selectedItem = normalizePath(itemPath);
