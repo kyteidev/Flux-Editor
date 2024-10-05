@@ -49,6 +49,7 @@ import { updateBreadcrumbs } from "../Editor/components/EditorBreadcrumbs";
 import { isContextMenuShown } from "../ContextMenu/ContextMenu";
 import "../../utils/array";
 import { emit, once, UnlistenFn } from "@tauri-apps/api/event";
+import { throttle } from "../../utils/timing";
 
 interface Props {
   dir: string;
@@ -90,7 +91,7 @@ export const newItem = (type: string) => {
   emit("flux:event:contextMenuClicked", { type: "newItem" });
 };
 
-export const removeItem = (trash: boolean) => {
+export const removeItem = throttle((trash: boolean) => {
   invoke("remove_file", { trash: trash, path: selectedItem });
   emit("flux:event:contextMenuClicked", { type: "removeItem" });
 
@@ -98,7 +99,7 @@ export const removeItem = (trash: boolean) => {
     closeFile();
     closeTabGlobal(selectedItem);
   }
-};
+}, 500);
 
 export const loadFBSettings = () => {
   if (
@@ -347,6 +348,7 @@ const FileBrowser = (props: Props) => {
                               }
                               break;
                             case "removeItem":
+                              console.log(selectedItem);
                               const item = selectedItem.slice(
                                 0,
                                 selectedItem.length - 1,
