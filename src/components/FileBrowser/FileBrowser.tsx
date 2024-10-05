@@ -28,8 +28,13 @@ import * as FI from "../Icons/FileIcons";
 import { fileIcons, specialFileIcons } from "../../utils/file";
 import { getSetting } from "../../settingsManager";
 import { error } from "tauri-plugin-log-api";
-import { openFile } from "../Editor/EditorComponent";
-import { addTab, getTabs } from "../Editor/components/EditorTabs";
+import { closeFile, openFile } from "../Editor/EditorComponent";
+import {
+  addTab,
+  closeTabGlobal,
+  getTabs,
+  isTabOpen,
+} from "../Editor/components/EditorTabs";
 import {
   basename,
   dirname,
@@ -80,7 +85,6 @@ export const newItem = (type: string) => {
   } else {
     setNewItemDir(normalizePath(parentDir));
   }
-  console.log(newItemDir(), rootDir());
   setNewItemType(type);
 
   emit("flux:event:contextMenuClicked", { type: "newItem" });
@@ -89,6 +93,11 @@ export const newItem = (type: string) => {
 export const removeItem = (trash: boolean) => {
   invoke("remove_file", { trash: trash, path: selectedItem });
   emit("flux:event:contextMenuClicked", { type: "removeItem" });
+
+  if (!selectedDir && isTabOpen(selectedItem)) {
+    closeFile();
+    closeTabGlobal(selectedItem);
+  }
 };
 
 export const loadFBSettings = () => {

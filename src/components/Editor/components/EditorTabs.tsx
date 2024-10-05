@@ -24,7 +24,7 @@ import { fileIcons, specialFileIcons } from "../../../utils/file";
 import { Default } from "../../Icons/FileIcons";
 import { getSetting, getSettingsPath } from "../../../settingsManager";
 import { error } from "tauri-plugin-log-api";
-import { extname } from "../../../utils/path";
+import { extname, normalizePath } from "../../../utils/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { updateLang } from "../../StatusBar/components/Lang";
 
@@ -56,6 +56,7 @@ export const addTab = async (tab: string[]) => {
     // checks if the tab is already open.
     setTabs([...tabs(), tab]);
   }
+  // file will be added to savedTabs in EditorComponent openFile()
   setActiveTab(tabs().findIndex((t) => t[1] === tab[1]));
 };
 
@@ -68,6 +69,41 @@ export const clearTabs = () => {
 
 export const getTabs = () => {
   return tabs();
+};
+
+export const isTabOpen = (path: string) => {
+  return tabs().some((sub) =>
+    sub.includes(normalizePath(path).slice(0, path.length - 1)),
+  );
+};
+
+export const closeTabGlobal = (path: string) => {
+  const normalizedPath = normalizePath(path);
+  const index = tabs().findIndex((sub) =>
+    sub.includes(normalizedPath.slice(0, normalizedPath.length - 1)),
+  );
+  if (savedTabs().length != tabs().length) {
+    invoke("set_doc_edited", { edited: false });
+  }
+  savedTabs().splice(savedTabs().indexOf(tabs()[index][1]), 1);
+  setTabs(tabs().filter((t) => t !== tabs()[index]));
+
+  if (tabs().length === 0) {
+    fixEditorHeight(false); // tabs add height to editor pane, this fixes it by adding height because tabs row is hidden when all tabs are closed
+    updateLang(true);
+  } else {
+    try {
+      openFile(tabs()[index - 1][1]); // opens the previous tab
+      setActiveTab(index - 1);
+    } catch {
+      try {
+        openFile(tabs()[index][1]); // opens the next tab if no tabs are before closed tab
+        setActiveTab(index);
+      } catch (e) {
+        error(e as string);
+      }
+    }
+  }
 };
 
 const EditorTabs = () => {
