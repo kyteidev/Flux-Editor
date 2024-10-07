@@ -22,7 +22,7 @@
     "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1",
+    "@tauri-apps/cli": "^2",
     "@types/prismjs": "^1.26.4",
     "license-compliance": "^3.0.1",
     "prettier": "^3.3.3",
