@@ -14,15 +14,20 @@
   },
   "license": "GPL-3.0-only",
   "dependencies": {
-    "@tauri-apps/api": "^1",
+    "@tauri-apps/api": "^2.0.2",
+    "@tauri-apps/plugin-dialog": "^2.0.0",
+    "@tauri-apps/plugin-fs": "^2.0.0",
+    "@tauri-apps/plugin-log": "^2.0.0",
+    "@tauri-apps/plugin-os": "^2.0.0",
+    "@tauri-apps/plugin-process": "^2.0.0",
+    "@tauri-apps/plugin-updater": "^2.0.0",
     "ansi-to-html": "^0.7.2",
     "prismjs": "^1.29.0",
     "solid-js": "^1.8.19",
-    "strip-ansi": "^7.1.0",
-    "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log#v1"
+    "strip-ansi": "^7.1.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1",
+    "@tauri-apps/cli": "^2.0.2",
     "@types/prismjs": "^1.26.4",
     "license-compliance": "^3.0.1",
     "prettier": "^3.3.3",

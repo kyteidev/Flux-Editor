@@ -1,5 +1,5 @@
 {
-  "tauri": {
+  "app": {
     "windows": [
       {
         "title": "Flux Editor",
@@ -10,18 +10,19 @@
         "decorations": true,
         "visible": false
       }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/mac/32x32.png",
+      "icons/mac/128x128.png",
+      "icons/mac/128x128@2x.png",
+      "icons/mac/icon.icns",
+      "icons/mac/icon.ico"
     ],
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "dev.kyteidev.fluxeditor",
-      "icon": [
-        "icons/mac/32x32.png",
-        "icons/mac/128x128.png",
-        "icons/mac/128x128@2x.png",
-        "icons/mac/icon.icns",
-        "icons/mac/icon.ico"
-      ]
-    }
+    "resources": ["../resources/**/*"],
+    "createUpdaterArtifacts": "v1Compatible"
   }
 }

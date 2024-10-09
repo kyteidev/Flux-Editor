@@ -15,11 +15,11 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
 import { dir, loaded } from "../../../App";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
-import { error } from "tauri-plugin-log-api";
+import { error } from "@tauri-apps/plugin-log";
 
 const GitBranch = () => {
   const [currentBranch, setCurrentBranch] = createSignal("");

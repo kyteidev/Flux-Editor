@@ -15,17 +15,14 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { relaunch } from "@tauri-apps/api/process";
-import {
-  checkUpdate,
-  installUpdate,
-  onUpdaterEvent,
-} from "@tauri-apps/api/updater";
+import { relaunch } from "@tauri-apps/plugin-process";
 import { createSignal, onCleanup, onMount, Show } from "solid-js";
-import { error, info } from "tauri-plugin-log-api";
+import { error, info } from "@tauri-apps/plugin-log";
 import { getOS } from "../../../utils/os";
-import { dialog } from "@tauri-apps/api";
+import {} from "@tauri-apps/api";
 import { UnlistenFn } from "@tauri-apps/api/event";
+import * as dialog from "@tauri-apps/plugin-dialog";
+import { check } from "@tauri-apps/plugin-updater";
 
 const [os, setOs] = createSignal("");
 const [show, setShow] = createSignal(true);
@@ -35,27 +32,30 @@ const [text, setText] = createSignal("");
 let failed = false;
 let errorMsg = "";
 
+let update: any;
 let unlisten: UnlistenFn;
 
 export const checkUpdates = async () => {
   setShow(true);
   setText("Checking for updates");
 
-  unlisten = await onUpdaterEvent(({ error, status }) => {
-    info("Updater event: " + error + ", " + status);
-    if (error) {
-      setText("Failed to check updates");
-      failed = true;
-      errorMsg = error;
-    }
-  });
-
   try {
-    const { shouldUpdate } = await checkUpdate();
+    update = await check();
 
-    if (shouldUpdate) {
+    if (update) {
+      info(`New version ${update.version} available.`);
+      await update.download((e: any) => {
+        switch (e.event) {
+          case "Started":
+            info("Downloading update...");
+            break;
+          case "Finished":
+            info("Download completed.");
+            break;
+        }
+      });
       if (os() != "win32") {
-        await installUpdate();
+        await update.install();
       }
       setText("Click to apply update");
     } else {
@@ -82,7 +82,7 @@ const Update = () => {
       setShow(false);
       dialog.message(errorMsg, {
         title: "Failed to check updates",
-        type: "error",
+        kind: "error",
       });
     } else {
       const restart = await dialog.ask("Do you want to restart now?", {
@@ -90,7 +90,7 @@ const Update = () => {
       });
       if (restart) {
         if (os() === "win32") {
-          installUpdate();
+          update.install();
         } else {
           relaunch();
         }
@@ -101,7 +101,7 @@ const Update = () => {
   return (
     <Show when={show()}>
       <button
-        class="hover:bg-base-50 flex items-center justify-center rounded bg-base-200 px-1 text-center text-content-main active:brightness-125"
+        class="flex items-center justify-center rounded bg-base-200 px-1 text-center text-content-main hover:bg-base-50 active:brightness-125"
         onClick={handleClick}
       >
         {text()}

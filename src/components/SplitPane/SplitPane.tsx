@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 import { JSX, Show, children, createSignal, onMount } from "solid-js";
-import { info } from "tauri-plugin-log-api";
+import { info } from "@tauri-apps/plugin-log";
 
 interface Props {
   children: JSX.Element;

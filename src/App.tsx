@@ -24,8 +24,8 @@ import EditorTabs, {
   getTabs,
 } from "./components/Editor/components/EditorTabs";
 import { initSettings } from "./settingsManager";
-import { info } from "tauri-plugin-log-api";
-import { basename, initPathOS } from "./utils/path";
+import { info } from "@tauri-apps/plugin-log";
+import { basename } from "./utils/path";
 import { addListeners } from "./menu/menuListeners";
 import SplitPane from "./components/SplitPane/SplitPane";
 import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
@@ -34,12 +34,14 @@ import Search from "./components/Search/Search";
 import StatusBar from "./components/StatusBar/StatusBar";
 import { FluxLogo } from "./components/Icons/FluxLogo";
 import FluxTerminal from "./components/Terminal/Terminal";
-import { appWindow } from "@tauri-apps/api/window";
-import { dialog, invoke } from "@tauri-apps/api";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { invoke } from "@tauri-apps/api/core";
 import EditorBreadcrumbs from "./components/Editor/components/EditorBreadcrumbs";
 import ContextMenu from "./components/ContextMenu/ContextMenu";
 import TitleBar from "./components/TitleBar/TitleBar";
 import { emit } from "@tauri-apps/api/event";
+import * as dialog from "@tauri-apps/plugin-dialog";
+const appWindow = getCurrentWebviewWindow();
 
 export const [dir, setDir] = createSignal<string>("");
 
@@ -87,27 +89,25 @@ export const loadEditor = (
 
 export default function App() {
   onMount(async () => {
-    initPathOS().then(() => {
-      initSettings();
-    });
+    initSettings();
     info("Initialized application");
 
     addListeners();
 
     appWindow.listen("tauri://close-requested", async () => {
       if (fileSaved().length === getTabs().length) {
-        appWindow.close();
+        appWindow.destroy();
       } else {
         const closeEditor = await dialog.ask(
           "Your changes will not be saved.",
           {
             title: "Are you sure you want to close Flux Editor?",
-            type: "warning",
+            kind: "warning",
           },
         );
         if (closeEditor) {
           await invoke("abort_all_commands");
-          appWindow.close();
+          appWindow.destroy();
         }
       }
     });

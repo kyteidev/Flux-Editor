@@ -15,12 +15,13 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { fs } from "@tauri-apps/api";
+import {} from "@tauri-apps/api";
 import { loadFBSettings } from "./components/FileBrowser/FileBrowser";
 import { loadEditorSettings } from "./components/Editor/EditorComponent";
 import { loadEditorTabsSettings } from "./components/Editor/components/EditorTabs";
-import { warn } from "tauri-plugin-log-api";
+import { warn } from "@tauri-apps/plugin-log";
 import { appDataDir, joinPath } from "./utils/path";
+import * as fs from "@tauri-apps/plugin-fs";
 
 let settingsDir: string;
 let settingsFile: string;
@@ -36,13 +37,13 @@ export const initSettings = async () => {
   settingsFile = joinPath(settingsDir, "settings.json");
 
   if (!(await fs.exists(await appDataDir()))) {
-    await fs.createDir(await appDataDir());
+    await fs.mkdir(await appDataDir());
   }
   if (!(await fs.exists(settingsDir))) {
-    fs.createDir(settingsDir);
+    fs.mkdir(settingsDir);
   }
   if (!(await fs.exists(settingsFile))) {
-    fs.writeFile(
+    fs.writeTextFile(
       joinPath(settingsDir, "settings.json"),
       JSON.stringify(settings, null, 2),
     );
@@ -71,14 +72,14 @@ export const initSettings = async () => {
           }
         }
       }
-      fs.writeFile(settingsFile, JSON.stringify(settings, null, 2));
+      fs.writeTextFile(settingsFile, JSON.stringify(settings, null, 2));
     });
   }
 };
 
 export const setSetting = (setting: string, value: any) => {
   settings[setting] = value;
-  fs.writeFile(settingsFile, JSON.stringify(settings, null, 2));
+  fs.writeTextFile(settingsFile, JSON.stringify(settings, null, 2));
 };
 
 export const getSetting = (setting: string): any => {

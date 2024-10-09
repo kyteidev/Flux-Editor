@@ -18,13 +18,16 @@ You should have received a copy of the GNU General Public License along with Flu
 // Window controls SVG icons are sourced from https://github.com/agmmnn/tauri-controls. Licensed under MIT.
 // License notice found in resources/THIRD-PARTY-LICENSES-JS.txt
 
-import { appWindow } from "@tauri-apps/api/window";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { createSignal, createEffect } from "solid-js";
 import { fileSaved } from "../Editor/EditorComponent";
 import { getTabs } from "../Editor/components/EditorTabs";
-import { dialog } from "@tauri-apps/api";
+import {} from "@tauri-apps/api";
+import * as dialog from "@tauri-apps/plugin-dialog";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 function GnomeControls() {
+  const appWindow = getCurrentWebviewWindow();
   const [isMaximized, setMaximized] = createSignal(false);
 
   const checkMaximized = async () => {
@@ -51,14 +54,14 @@ function GnomeControls() {
 
   const closeWindow = async () => {
     if (fileSaved().length === getTabs().length) {
-      appWindow.close();
+      getCurrentWindow().destroy();
     } else {
       const closeEditor = await dialog.ask("Your changes will not be saved.", {
         title: "Are you sure you want to close Flux Editor?",
-        type: "warning",
+        kind: "warning",
       });
       if (closeEditor) {
-        appWindow.close();
+        getCurrentWindow().destroy();
       }
     }
   };

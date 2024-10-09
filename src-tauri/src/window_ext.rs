@@ -6,7 +6,7 @@ use cocoa::appkit::{NSWindow, NSWindowButton, NSWindowStyleMask, NSWindowTitleVi
 #[cfg(target_os = "macos")]
 use objc::runtime::YES;
 
-use tauri::{Runtime, Window};
+use tauri::{Manager, Runtime, WebviewWindow, Window};
 
 pub trait WindowExt {
     #[cfg(target_os = "macos")]
@@ -16,7 +16,7 @@ pub trait WindowExt {
     fn set_window_controls_pos(&self, x: f64, y: f64);
 }
 
-impl<R: Runtime> WindowExt for Window<R> {
+impl<R: Runtime> WindowExt for WebviewWindow<R> {
     #[cfg(target_os = "macos")]
     fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
         unsafe {
@@ -96,3 +96,19 @@ impl<R: Runtime> WindowExt for Window<R> {
     }
 }
 // [end]
+
+impl<R: Runtime> WindowExt for Window<R> {
+    #[cfg(target_os = "macos")]
+    fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
+        self.get_webview_window("main")
+            .unwrap()
+            .set_transparent_titlebar(title_transparent, remove_tool_bar)
+    }
+
+    #[cfg(target_os = "macos")]
+    fn set_window_controls_pos(&self, x: f64, y: f64) {
+        self.get_webview_window("main")
+            .unwrap()
+            .set_window_controls_pos(x, y)
+    }
+}

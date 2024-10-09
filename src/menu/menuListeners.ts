@@ -15,8 +15,8 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { appWindow } from "@tauri-apps/api/window";
-import { info } from "tauri-plugin-log-api";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { info } from "@tauri-apps/plugin-log";
 import { saveFile } from "../components/Editor/EditorComponent";
 import { toggleSearch } from "../components/Search/Search";
 import {
@@ -28,9 +28,10 @@ import {
   settings,
   viewLogs,
 } from "./menuActions";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { hideFB, hideTerm, setHideFB, setHideTerm } from "../App";
 import { checkUpdates } from "../components/StatusBar/components/Update";
+const appWindow = getCurrentWebviewWindow();
 
 export const addListeners = () => {
   /*

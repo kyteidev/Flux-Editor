@@ -15,13 +15,8 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { getOS } from "./os";
-
-let os: string;
-export const initPathOS = async () => {
-  os = await getOS();
-};
 
 export const checkDirPathValidity = (dirPath: string) => {
   const unixPathRegex = /^\/[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/$/;
@@ -32,7 +27,7 @@ export const checkDirPathValidity = (dirPath: string) => {
 
 // IMPORTANT: do not call this in App.tsx, os variable may not have finished initializing, so this will think os is undefined.
 export const pathSep = (): string => {
-  if (os === "win32") {
+  if (getOS() === "win32") {
     return "\\";
   } else {
     return "/";
@@ -79,11 +74,6 @@ export const appDataDir = async (): Promise<string> => {
 export const homeDir = async (): Promise<string> => {
   const dir = await invoke<string>("user_home_dir");
   return joinPath(dir, "");
-};
-
-export const resolveResource = async (resource: string): Promise<string> => {
-  const path = await invoke<string>("resolve_resource", { resource: resource });
-  return path;
 };
 
 export const normalizePath = (path: string) => {

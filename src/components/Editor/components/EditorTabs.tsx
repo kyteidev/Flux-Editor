@@ -19,14 +19,15 @@ import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 import { IconCircle, IconClose, IconSettings } from "../../Icons/Icons";
 import { closeFile, openFile } from "../EditorComponent";
 import { fixEditorHeight } from "../../SplitPane/SplitPane";
-import { dialog } from "@tauri-apps/api";
+import {} from "@tauri-apps/api";
 import { fileIcons, specialFileIcons } from "../../../utils/file";
 import { Default } from "../../Icons/FileIcons";
 import { getSetting, getSettingsPath } from "../../../settingsManager";
-import { error } from "tauri-plugin-log-api";
+import { error } from "@tauri-apps/plugin-log";
 import { extname, normalizePath } from "../../../utils/path";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { updateLang } from "../../StatusBar/components/Lang";
+import * as dialog from "@tauri-apps/plugin-dialog";
 
 let activeInterval: number;
 
@@ -128,7 +129,7 @@ const EditorTabs = () => {
                 if (
                   (await dialog.ask("Your changes will not be saved.", {
                     title: "Are you sure you want to close this file?",
-                    type: "warning",
+                    kind: "warning",
                   })) === false
                 ) {
                   savedTabs().splice(

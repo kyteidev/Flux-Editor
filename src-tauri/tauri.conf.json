@@ -2,63 +2,35 @@
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "Flux Editor",
-    "version": "0.6.2"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": ["../resources/**/*"],
+    "createUpdaterArtifacts": "v1Compatible"
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "app": {
-        "all": true,
-        "show": false,
-        "hide": false
-      },
-      "dialog": {
-        "all": false,
-        "ask": true,
-        "confirm": false,
-        "message": true,
-        "open": true,
-        "save": true
-      },
-      "fs": {
-        "all": false,
-        "readFile": true,
-        "writeFile": true,
-        "readDir": true,
-        "createDir": true,
-        "exists": true,
-        "scope": {
-          "allow": ["$HOME/**", "$RESOURCE/*"],
-          "requireLiteralLeadingDot": false
-        }
-      },
-      "os": {
-        "all": true
-      },
-      "window": {
-        "all": false,
-        "startDragging": true,
-        "close": true,
-        "maximize": true,
-        "unmaximize": true,
-        "minimize": true,
-        "setFullscreen": true,
-        "setSize": true
-      }
-    },
+  "productName": "Flux Editor",
+  "mainBinaryName": "Flux Editor",
+  "version": "0.6.2",
+  "identifier": "dev.kyteidev.fluxeditor",
+  "plugins": {
     "updater": {
-      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDExQjVDQkQ0NkRBNzE4MjUKUldRbEdLZHQxTXUxRWZkV1FCbnJ0NjR4NmRvY2VsRWlOWnYvVFMyeEJreFRvWDhYN2ttQ1NFWjEK",
       "endpoints": [
         "https://raw.githubusercontent.com/kyteidev/FluxEditor/dev/latest.json"
-      ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDExQjVDQkQ0NkRBNzE4MjUKUldRbEdLZHQxTXUxRWZkV1FCbnJ0NjR4NmRvY2VsRWlOWnYvVFMyeEJreFRvWDhYN2ttQ1NFWjEK"
-    },
+      ]
+    }
+  },
+  "app": {
     "windows": [
       {
         "title": "Flux Editor",
@@ -71,20 +43,8 @@
       }
     ],
     "security": {
-      "csp": null
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "dev.kyteidev.fluxeditor",
-      "resources": ["../resources/**/*"],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ]
+      "csp": null,
+      "capabilities": ["main"]
     }
   }
 }

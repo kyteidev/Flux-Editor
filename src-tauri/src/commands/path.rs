@@ -15,10 +15,8 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use std::path::PathBuf;
-
 use log::error;
-use tauri::api::path::home_dir;
+use std::path::PathBuf;
 
 use crate::utils::dir::get_app_data_dir;
 
@@ -30,18 +28,11 @@ pub fn app_data_dir() -> PathBuf {
 
 #[tauri::command]
 pub fn user_home_dir() -> PathBuf {
-    let dir = home_dir().unwrap();
-    dir
-}
-
-#[tauri::command]
-pub fn resolve_resource(app: tauri::AppHandle, resource: &str) -> PathBuf {
-    let path = match app.path_resolver().resolve_resource(resource) {
-        Some(resource) => resource,
+    match directories::UserDirs::new() {
+        Some(dirs) => dirs.home_dir().to_path_buf(),
         None => {
-            error!("Failed to resolve resource");
-            return PathBuf::new();
+            error!("Failed to get home directory");
+            PathBuf::new()
         }
-    };
-    path
+    }
 }

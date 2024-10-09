@@ -30,13 +30,14 @@ import {
   viewLogs,
 } from "../../menu/menuActions";
 import { saveFile } from "../Editor/EditorComponent";
-import { appWindow } from "@tauri-apps/api/window";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import Button from "../../ui/Button";
-import { platform } from "@tauri-apps/api/os";
 import { toggleSearch } from "../Search/Search";
 import { IconMenu } from "../Icons/Icons";
 import { hideFB, hideTerm, setHideFB, setHideTerm } from "../../App";
 import { checkUpdates } from "../StatusBar/components/Update";
+import { getOS } from "../../utils/os";
+const appWindow = getCurrentWebviewWindow();
 
 const [showMenu, setShowMenu] = createSignal(false);
 
@@ -58,7 +59,7 @@ const MenuItem = (props: {
 }) => {
   return (
     <div
-      class={`menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-base-50 border-b-[1px]"} ${props.width ? `${props.width}` : "w-32"} hover:bg-base-50 absolute z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content-main`}
+      class={`menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-b-[1px] border-base-50"} ${props.width ? `${props.width}` : "w-32"} absolute z-[51] flex h-6 cursor-pointer items-center bg-base-100 px-2 align-middle text-sm text-content-main hover:bg-base-50`}
       style={{ top: `calc(${props.item} * 1.5rem + 0.5rem)` }}
       onClick={() => {
         setShowMenu(false);
@@ -136,7 +137,7 @@ const Menu = () => {
   const [isFullscreen, setIsFullscreen] = createSignal(false);
 
   onMount(async () => {
-    setOS(await platform());
+    setOS(getOS());
     if (os() != "darwin") {
       document.addEventListener("keydown", handleKeyDown);
       document.addEventListener("keyup", handleKeyUp);

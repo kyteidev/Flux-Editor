@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { appWindow } from "@tauri-apps/api/window";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import {
   about,
   license,
@@ -27,6 +27,7 @@ import {
 } from "../../menu/menuActions";
 import { hideFB, hideTerm, setHideFB, setHideTerm } from "../../App";
 import { checkUpdates } from "../StatusBar/components/Update";
+const appWindow = getCurrentWebviewWindow()
 
 export const cmdFlux: { [key: string]: () => void } = {
   "Flux: About": () => about(),

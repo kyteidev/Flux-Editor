@@ -1,120 +1,156 @@
-/*
-Copyright © 2024 kyteidev.
+use tauri::{
+    menu::{Menu, MenuBuilder, MenuItemBuilder, SubmenuBuilder},
+    AppHandle, Wry,
+};
 
-This file is part of Flux Editor.
+pub fn menu(app: &AppHandle) -> Menu<Wry> {
+    let app_settings = MenuItemBuilder::new("Settings")
+        .id("settings")
+        .accelerator("CmdOrCtrl+,")
+        .build(app)
+        .unwrap();
 
-Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
-Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.
+    let app_menu = SubmenuBuilder::new(app, "App")
+        .text("about", "About")
+        .text("update", "Check for Updates")
+        .separator()
+        .item(&app_settings)
+        .separator()
+        .services()
+        .separator()
+        .quit()
+        .build()
+        .unwrap();
 
-Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
-the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+    let file_new_file = MenuItemBuilder::new("New File")
+        .id("new_file")
+        .accelerator("CmdOrCtrl+N")
+        .build(app)
+        .unwrap();
 
-You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
-<https://www.gnu.org/licenses/>.
-*/
+    let file_new_project = MenuItemBuilder::new("New Project")
+        .id("new_project")
+        .accelerator("CmdOrCtrl+Shift+N")
+        .build(app)
+        .unwrap();
 
-use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+    let file_new_window = MenuItemBuilder::new("New Window")
+        .id("new_window")
+        .accelerator("CmdOrCtrl+W")
+        .build(app)
+        .unwrap();
 
-pub fn menu() -> Menu {
-    let app_menu = Menu::new()
-        .add_item(CustomMenuItem::new("about".to_string(), "About"))
-        .add_item(CustomMenuItem::new(
-            "update".to_string(),
-            "Check for Updates",
-        ))
-        .add_native_item(MenuItem::Separator)
-        .add_item(
-            CustomMenuItem::new("settings".to_string(), "Settings").accelerator("CmdOrCtrl+,"),
-        )
-        .add_item(CustomMenuItem::new("plugins".to_string(), "Plugins"))
-        .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Services)
-        .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Quit);
+    let file_open = MenuItemBuilder::new("Open...")
+        .id("open")
+        .accelerator("CmdOrCtrl+O")
+        .build(app)
+        .unwrap();
 
-    let file_menu = Menu::new()
-        .add_item(
-            CustomMenuItem::new("new_file".to_string(), "New File").accelerator("CmdOrCtrl+N"),
-        )
-        .add_item(
-            CustomMenuItem::new("new_project".to_string(), "New Project")
-                .accelerator("CmdOrCtrl+Shift+N"),
-        )
-        .add_item(
-            CustomMenuItem::new("new_window".to_string(), "New Window").accelerator("CmdOrCtrl+W"),
-        )
-        .add_native_item(MenuItem::Separator)
-        .add_item(CustomMenuItem::new("open".to_string(), "Open...").accelerator("CmdOrCtrl+O"))
-        .add_item(CustomMenuItem::new("save".to_string(), "Save").accelerator("CmdOrCtrl+S"))
-        .add_item(
-            CustomMenuItem::new("save_as".to_string(), "Save As...")
-                .accelerator("CmdOrCtrl+Shift+S"),
-        );
+    let file_save = MenuItemBuilder::new("Save")
+        .id("save")
+        .accelerator("CmdOrCtrl+S")
+        .build(app)
+        .unwrap();
 
-    let edit_menu = Menu::new()
-        .add_native_item(MenuItem::Undo)
-        .add_native_item(MenuItem::Redo)
-        .add_native_item(MenuItem::Separator)
-        .add_native_item(MenuItem::Cut)
-        .add_native_item(MenuItem::Copy)
-        .add_native_item(MenuItem::Paste)
-        .add_native_item(MenuItem::SelectAll)
-        .add_native_item(MenuItem::Separator)
-        .add_item(CustomMenuItem::new("find".to_string(), "Find").accelerator("CmdOrCtrl+F"))
-        .add_item(
-            CustomMenuItem::new("replace".to_string(), "Replace").accelerator("CmdOrCtrl+Alt+F"),
-        );
+    let file_save_as = MenuItemBuilder::new("Save As...")
+        .id("save_as")
+        .accelerator("CmdOrCtrl+Shift+S")
+        .build(app)
+        .unwrap();
 
-    let view_menu = Menu::new()
-        .add_item(CustomMenuItem::new("themes".to_string(), "Themes"))
-        .add_item(CustomMenuItem::new("focus_mode".to_string(), "Focus Mode"));
+    let file_menu = SubmenuBuilder::new(app, "File")
+        .item(&file_new_file)
+        .item(&file_new_project)
+        .item(&file_new_window)
+        .separator()
+        .item(&file_open)
+        .item(&file_save)
+        .item(&file_save_as)
+        .build()
+        .unwrap();
 
-    let modules_menu = Menu::new()
-        .add_item(CustomMenuItem::new("search".to_string(), "Search").accelerator("Alt+Space"))
-        .add_item(
-            CustomMenuItem::new("file_browser".to_string(), "File Browser")
-                .accelerator("CmdOrCtrl+1"),
-        )
-        .add_item(
-            CustomMenuItem::new("terminal".to_string(), "Terminal").accelerator("CmdOrCtrl+2"),
-        );
+    let edit_find = MenuItemBuilder::new("Find")
+        .id("find")
+        .accelerator("CmdOrCtrl+F")
+        .build(app)
+        .unwrap();
 
-    let help_menu = Menu::new()
-        .add_item(CustomMenuItem::new("logs".to_string(), "View Logs"))
-        .add_submenu(Submenu::new(
-            "Legal Notices",
-            Menu::new()
-                .add_item(CustomMenuItem::new(
-                    "license".to_string(),
-                    "Flux Editor License",
-                ))
-                .add_item(CustomMenuItem::new(
-                    "licenses-third-party-js".to_string(),
-                    "JS Third Party Licenses",
-                ))
-                .add_item(CustomMenuItem::new(
-                    "licenses-third-party-rust".to_string(),
-                    "Rust Third Party Licenses",
-                ))
-                .add_item(CustomMenuItem::new(
-                    "licenses-fonts".to_string(),
-                    "Font Licenses and Legal Notices",
-                )),
-        ));
+    let edit_replace = MenuItemBuilder::new("Replace")
+        .id("replace")
+        .accelerator("CmdOrCtrl+Alt+F")
+        .build(app)
+        .unwrap();
 
-    let menu = Menu::new()
-        .add_submenu(Submenu::new("App", app_menu))
-        .add_submenu(Submenu::new("File", file_menu))
-        .add_submenu(Submenu::new("Edit", edit_menu))
-        .add_submenu(Submenu::new("View", view_menu))
-        .add_submenu(Submenu::new("Modules", modules_menu))
-        .add_submenu(Submenu::new("Help", help_menu));
+    let edit_menu = SubmenuBuilder::new(app, "Edit")
+        .undo()
+        .redo()
+        .separator()
+        .cut()
+        .copy()
+        .paste()
+        .select_all()
+        .separator()
+        .item(&edit_find)
+        .item(&edit_replace)
+        .build()
+        .unwrap();
 
-    if cfg!(target_os = "macos") {
-        return menu;
-    } else {
-        return Menu::new();
-    }
+    let view_menu = SubmenuBuilder::new(app, "View")
+        .text("themes", "Themes")
+        .text("focus_mode", "Focus Mode")
+        .build()
+        .unwrap();
+
+    let modules_search = MenuItemBuilder::new("Search")
+        .id("search")
+        .accelerator("Alt+Space")
+        .build(app)
+        .unwrap();
+
+    let modules_file_browser = MenuItemBuilder::new("File Browser")
+        .id("file_browser")
+        .accelerator("CmdOrCtrl+1")
+        .build(app)
+        .unwrap();
+
+    let modules_terminal = MenuItemBuilder::new("Terminal")
+        .id("terminal")
+        .accelerator("CmdOrCtrl+2")
+        .build(app)
+        .unwrap();
+
+    let modules_menu = SubmenuBuilder::new(app, "Modules")
+        .item(&modules_search)
+        .item(&modules_file_browser)
+        .item(&modules_terminal)
+        .build()
+        .unwrap();
+
+    let help_submenu = SubmenuBuilder::new(app, "Legal Notices")
+        .text("license", "Flux Editor License")
+        .text("licenses-third-party-js", "JS Third Party Licenses")
+        .text("licenses-third-party-rust", "Rust Third Party Licenses")
+        .text("licenses-fonts", "Font Licenses and Legal Notices")
+        .build()
+        .unwrap();
+
+    let help_menu = SubmenuBuilder::new(app, "Help")
+        .text("logs", "View Logs")
+        .item(&help_submenu)
+        .build()
+        .unwrap();
+
+    let menu = MenuBuilder::new(app)
+        .items(&[
+            &app_menu,
+            &file_menu,
+            &edit_menu,
+            &view_menu,
+            &modules_menu,
+            &help_menu,
+        ])
+        .build()
+        .unwrap();
+
+    menu
 }
