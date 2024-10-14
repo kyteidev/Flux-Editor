@@ -27,7 +27,7 @@
     "strip-ansi": "^7.1.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.2",
+    "@tauri-apps/cli": "^2.0.3",
     "@types/prismjs": "^1.26.4",
     "license-compliance": "^3.0.1",
     "prettier": "^3.3.3",
