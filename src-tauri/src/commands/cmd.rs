@@ -24,7 +24,7 @@ use std::thread;
 
 use log::{error, info};
 use shared_child::SharedChild;
-use tauri::Manager;
+use tauri::Emitter;
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {
@@ -80,7 +80,7 @@ impl CommandController {
             thread::spawn(move || {
                 for line in lines {
                     app_clone
-                        .emit_all(
+                        .emit(
                             "flux:event:cmdOutput",
                             Payload {
                                 message: line.unwrap_or_else(|e| {
@@ -103,7 +103,7 @@ impl CommandController {
             thread::spawn(move || {
                 for line in lines {
                     app_clone
-                        .emit_all(
+                        .emit(
                             "flux:event:cmdOutput",
                             Payload {
                                 message: line.unwrap_or_else(|e| {
@@ -125,7 +125,7 @@ impl CommandController {
             rx.recv().unwrap();
 
             app_clone
-                .emit_all(
+                .emit(
                     "flux:event:cmdOutput",
                     Payload {
                         message: "flux:event:cmdOutputCompleted".into(),

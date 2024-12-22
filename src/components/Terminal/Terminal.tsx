@@ -20,8 +20,8 @@ You should have received a copy of the GNU General Public License along with Flu
 
 import { onMount } from "solid-js";
 import { getProjectName, getProjectPath } from "../../App";
-import { invoke } from "@tauri-apps/api/tauri";
-import { error, info } from "tauri-plugin-log-api";
+import { invoke } from "@tauri-apps/api/core";
+import { error, info } from "@tauri-apps/plugin-log";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import {
   basename,

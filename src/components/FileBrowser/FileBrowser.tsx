@@ -27,7 +27,7 @@ import { IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
 import { fileIcons, specialFileIcons } from "../../utils/file";
 import { getSetting } from "../../settingsManager";
-import { error } from "tauri-plugin-log-api";
+import { error } from "@tauri-apps/plugin-log";
 import { closeFile, openFile } from "../Editor/EditorComponent";
 import {
   addTab,
@@ -44,12 +44,14 @@ import {
   pathSep,
 } from "../../utils/path";
 import Startup from "./Startup";
-import { dialog, fs, invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { updateBreadcrumbs } from "../Editor/components/EditorBreadcrumbs";
 import { isContextMenuShown } from "../ContextMenu/ContextMenu";
 import "../../utils/array";
 import { emit, once, UnlistenFn } from "@tauri-apps/api/event";
 import { throttle } from "../../utils/timing";
+import * as dialog from "@tauri-apps/plugin-dialog";
+import * as fs from "@tauri-apps/plugin-fs";
 
 interface Props {
   dir: string;
@@ -225,7 +227,7 @@ const FileBrowser = (props: Props) => {
               const newItemPath = joinPath(newItemDir(), input?.value || "");
 
               if (newItemType() === "folder") {
-                fs.createDir(newItemPath, { recursive: true })
+                fs.mkdir(newItemPath, { recursive: true })
                   .then(() => {
                     nestedDirs.push(newItemPath);
                     nestedDirs.sortInsensitive();
@@ -233,16 +235,16 @@ const FileBrowser = (props: Props) => {
                     updateContent();
                     handleHide();
                   })
-                  .catch(async (e) => {
-                    error("Error creating folder: " + e);
+                  .catch(async (e: any) => {
+                    error("Error creating folder: " + e.toString());
                     await dialog.message(e, {
                       title: "Error creating folder",
-                      type: "error",
+                      kind: "error",
                     });
                     return;
                   });
               } else {
-                fs.writeFile(newItemPath, "")
+                fs.writeTextFile(newItemPath, "")
                   .then(() => {
                     nestedFiles.push(newItemPath);
                     nestedFiles.sortInsensitive();
@@ -254,11 +256,11 @@ const FileBrowser = (props: Props) => {
                     updateContent();
                     handleHide();
                   })
-                  .catch(async (e) => {
-                    error("Error creating file: " + e);
+                  .catch(async (e: any) => {
+                    error("Error creating file: " + e.toString());
                     await dialog.message(e, {
                       title: "Error creating file",
-                      type: "error",
+                      kind: "error",
                     });
                     return;
                   });

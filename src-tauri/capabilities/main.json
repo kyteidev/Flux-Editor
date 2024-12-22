@@ -1,0 +1,51 @@
+{
+  "identifier": "main",
+  "description": "permissions that were migrated from v1",
+  "local": true,
+  "windows": ["*"],
+  "permissions": [
+    "core:app:allow-version",
+    "core:event:allow-emit",
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "core:path:allow-resolve-directory",
+    "core:webview:allow-internal-toggle-devtools",
+    "core:window:allow-start-resize-dragging",
+    "core:window:allow-start-dragging",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-unmaximize",
+    "core:window:allow-unminimize",
+    "core:window:allow-close",
+    "core:window:allow-create",
+    "core:window:allow-destroy",
+    "core:window:allow-is-maximized",
+    "core:window:allow-is-fullscreen",
+    "core:window:allow-maximize",
+    "core:window:allow-minimize",
+    "core:window:allow-hide",
+    "dialog:allow-ask",
+    "dialog:allow-message",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "fs:allow-read-file",
+    "fs:allow-read-text-file",
+    "fs:allow-write-text-file",
+    "fs:allow-read-dir",
+    "fs:allow-mkdir",
+    "fs:allow-exists",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$HOME/**"
+        },
+        {
+          "path": "$RESOURCE/*"
+        }
+      ]
+    },
+    "os:allow-platform",
+    "updater:default",
+    "log:default"
+  ]
+}

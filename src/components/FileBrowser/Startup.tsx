@@ -20,9 +20,9 @@ import Button from "../../ui/Button";
 import Dropdown from "../../ui/Dropdown";
 import Input from "../../ui/Input";
 import Modal from "../../ui/Modal";
-import { dialog, fs } from "@tauri-apps/api";
+import {} from "@tauri-apps/api";
 import { cloneRepo, getRepoPath } from "../../utils/git";
-import { error, warn } from "tauri-plugin-log-api";
+import { error, warn } from "@tauri-apps/plugin-log";
 import { loadEditor } from "../../App";
 import {
   checkDirPathValidity,
@@ -30,6 +30,8 @@ import {
   joinPath,
   pathSep,
 } from "../../utils/path";
+import * as dialog from "@tauri-apps/plugin-dialog";
+import * as fs from "@tauri-apps/plugin-fs";
 
 const Startup = () => {
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
@@ -77,19 +79,19 @@ const Startup = () => {
       } else {
         dialog.message(result, {
           title: "Failed to clone repository",
-          type: "error",
+          kind: "error",
         });
       }
     } else if (cloneUrl() === "") {
       dialog.message("Please enter a valid URL.", {
         title: "Failed to clone repository",
-        type: "error",
+        kind: "error",
       });
       warn("Invalid URL provided for cloning");
     } else {
       dialog.message("Please enter a valid location.", {
         title: "Failed to clone repository",
-        type: "error",
+        kind: "error",
       });
       warn("Invalid location provided for cloning");
     }
@@ -103,7 +105,7 @@ const Startup = () => {
             "Please enter a valid " +
               selectedType().toLocaleLowerCase() +
               " name.",
-            { title: "Error", type: "error" },
+            { title: "Error", kind: "error" },
           );
           warn("Invalid " + selectedType().toLocaleLowerCase() + " name");
         } else if (
@@ -112,7 +114,7 @@ const Startup = () => {
         ) {
           dialog.message("Please select a valid location.", {
             title: "Error",
-            type: "error",
+            kind: "error",
           });
           warn("Invalid location");
         } else {
@@ -121,12 +123,12 @@ const Startup = () => {
               if (await fs.exists(joinPath(dirPath() + name()))) {
                 dialog.message("File already exists.", {
                   title: "Error",
-                  type: "error",
+                  kind: "error",
                 });
                 warn("File already exists.");
                 return;
               }
-              fs.writeFile(joinPath(dirPath(), name()), "").catch((e) => {
+              fs.writeTextFile(joinPath(dirPath(), name()), "").catch((e) => {
                 error("Failed to create file: " + e);
               });
               loadEditor(joinPath(dirPath(), name()), true, name());
@@ -135,13 +137,13 @@ const Startup = () => {
               if (await fs.exists(joinPath(dirPath(), name()))) {
                 dialog.message("Directory already exists.", {
                   title: "Error",
-                  type: "error",
+                  kind: "error",
                 });
                 warn("Directory already exists.");
               } else {
                 const projectPath = joinPath(dirPath(), name());
 
-                await fs.createDir(projectPath);
+                await fs.mkdir(projectPath);
                 loadEditor(projectPath);
               }
           }

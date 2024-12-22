@@ -18,10 +18,11 @@ You should have received a copy of the GNU General Public License along with Flu
 use std::{fs, path::PathBuf};
 
 use log::error;
-use tauri::api::path::data_dir;
 
 pub fn get_app_data_dir() -> PathBuf {
-    let app_data_dir = data_dir().map(|dir| dir.join("Flux Editor")).unwrap();
+    let app_data_dir = directories::ProjectDirs::from("", "", "Flux Editor")
+        .map(|proj_dirs| proj_dirs.data_dir().to_path_buf())
+        .unwrap_or_else(|| PathBuf::from("./data"));
 
     app_data_dir
 }

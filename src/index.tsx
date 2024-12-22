@@ -17,10 +17,10 @@ You should have received a copy of the GNU General Public License along with Flu
 
 /* @refresh reload */
 import { render } from "solid-js/web";
-import { attachConsole } from "tauri-plugin-log-api";
+import { attachConsole } from "@tauri-apps/plugin-log";
 import App from "./App";
 import "./globals.css";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 attachConsole();
 

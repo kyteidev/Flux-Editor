@@ -90,7 +90,7 @@ import "prismjs/components/prism-visual-basic.min.js";
 import "prismjs/components/prism-wasm.min.js";
 import "prismjs/components/prism-yaml.min.js";
 
-import { dialog, fs, invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { specialCodeFileType } from "../../utils/file";
 import {
   addTab,
@@ -103,9 +103,11 @@ import {
   getSettingsPath,
   loadSettings,
 } from "../../settingsManager";
-import { error } from "tauri-plugin-log-api";
+import { error } from "@tauri-apps/plugin-log";
 import { basename, extname } from "../../utils/path";
 import { updateLang } from "../StatusBar/components/Lang";
+import * as dialog from "@tauri-apps/plugin-dialog";
+import * as fs from "@tauri-apps/plugin-fs";
 
 const [selectedLine, setSelectedLine] = createSignal(-1);
 
@@ -176,7 +178,7 @@ export const saveFile = async (saveAs?: boolean) => {
     filePath = (await dialog.save()) || "";
     if (filePath === "") return;
 
-    fs.writeFile(filePath, textarea.value);
+    fs.writeTextFile(filePath, textarea.value);
     filePath = oldFilePath;
 
     updateArrays(filePath);
@@ -189,7 +191,7 @@ export const saveFile = async (saveAs?: boolean) => {
       fileSavedContent().findIndex((i) => i.includes(filePath))
     ][1] != textarea.value // checks if the saved content is equal to textarea.value
   ) {
-    fs.writeFile(filePath, textarea.value);
+    fs.writeTextFile(filePath, textarea.value);
 
     updateArrays(filePath);
 
@@ -270,7 +272,7 @@ export const openFile = (pathLocal: string, readonly?: boolean) => {
           dialog.message(
             e.toString().slice(e.toString().lastIndexOf(":") + 1, e.length),
             {
-              type: "error",
+              kind: "error",
               title: "Failed to open file",
             },
           );

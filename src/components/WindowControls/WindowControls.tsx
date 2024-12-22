@@ -23,7 +23,7 @@ function WindowControls() {
   const [currentOS, setCurrentOS] = createSignal("");
 
   onMount(async () => {
-    setCurrentOS(await getOS());
+    setCurrentOS(getOS());
   });
 
   return (

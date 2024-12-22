@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 #[cfg(target_os = "macos")]
 use tauri::TitleBarStyle;
-use tauri::WindowBuilder;
+use tauri::WebviewWindowBuilder;
 
 use crate::utils::time::time_ms;
 #[cfg(target_os = "macos")]
@@ -32,10 +32,10 @@ pub async fn new_window(app: tauri::AppHandle) {
 
     #[cfg(target_os = "macos")]
     {
-        let win = WindowBuilder::new(
+        let win = WebviewWindowBuilder::new(
             &app,
             id.to_string(),
-            tauri::WindowUrl::App("index.html".into()),
+            tauri::WebviewUrl::App("index.html".into()),
         )
         .title("Flux Editor")
         .decorations(true)

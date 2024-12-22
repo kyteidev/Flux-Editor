@@ -22,17 +22,14 @@ You should have received a copy of the GNU General Public License along with Flu
 #[macro_use]
 extern crate objc;
 
-mod menu;
-
 use log::{error, info};
-use menu::menu;
 
 use lsp_client::{init_server, send_request};
 use serde_json::{json, Value};
 #[cfg(target_os = "macos")]
 use tauri::WindowEvent;
-use tauri::{Manager, Window};
-use tauri_plugin_log::LogTarget;
+use tauri::{Emitter, Manager, Window};
+use tauri_plugin_log::{Target, TargetKind};
 
 #[cfg(target_os = "macos")]
 use cocoa::appkit::NSWindow;
@@ -54,7 +51,7 @@ use commands::{
     cmd::{abort_all_commands, abort_command, spawn_command},
     fs::{get_dir_contents, is_dir, path_exists},
     git::{clone_repo, current_branch},
-    path::{app_data_dir, resolve_resource, user_home_dir},
+    path::{app_data_dir, user_home_dir},
     trash::remove_file,
     window::new_window,
 };
@@ -63,12 +60,13 @@ mod utils;
 use utils::dir::{get_app_log_dir, get_ls_dir};
 
 mod lsp_client;
+mod menu;
+use menu::menu;
 
 #[tauri::command]
-fn show_main_window(window: Window) {
+fn show_main_window(app: tauri::AppHandle) {
     info!("Showing Window");
-    window
-        .get_window("main")
+    app.get_webview_window("main")
         .expect("No window labeled 'main'")
         .show()
         .unwrap();
@@ -108,34 +106,49 @@ fn main() {
     fix_path_env::fix().unwrap();
 
     #[cfg(debug_assertions)]
-    let log_targets: [LogTarget; 3] = [
-        LogTarget::Stdout,
-        LogTarget::Webview,
-        LogTarget::Folder(get_app_log_dir()),
+    let log_targets: [Target; 3] = [
+        Target::new(TargetKind::Stdout),
+        Target::new(TargetKind::Webview),
+        Target::new(TargetKind::Folder {
+            path: get_app_log_dir(),
+            file_name: Some("main".to_string()),
+        }),
+    ];
+
+    #[cfg(not(debug_assertions))]
+    let log_targets: [Target; 3] = [
+        Target::new(TargetKind::Stdout),
+        Target::new(TargetKind::Webview),
+        Target::new(TargetKind::Folder {
+            path: get_app_log_dir(),
+            file_name: Some("main".to_string()),
+        }),
     ];
 
     std::panic::set_hook(Box::new(|e| {
         error!("PANIC: {}", e.to_string());
     }));
 
-    #[cfg(not(debug_assertions))]
-    let log_targets: [LogTarget; 2] = [LogTarget::Stdout, LogTarget::Folder(get_app_log_dir())];
-
     tauri::Builder::default()
+        .plugin(tauri_plugin_log::Builder::new().build())
         .plugin(
             tauri_plugin_log::Builder::default()
                 .targets(log_targets)
-                .log_name("main")
                 .level(log::LevelFilter::Debug)
                 .build(),
         )
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             /*
             install_server(get_ls_dir(), "typescript"); // temporary for testing purposes
             */
 
             #[cfg(any(windows, target_os = "macos"))]
-            let win = app.get_window("main").unwrap();
+            let win = app.get_webview_window("main").unwrap();
 
             #[cfg(target_os = "macos")]
             win.set_transparent_titlebar(true, false);
@@ -143,35 +156,37 @@ fn main() {
             #[cfg(target_os = "macos")]
             win.set_window_controls_pos(10., 12.5);
 
-            #[cfg(any(windows))]
+            #[cfg(windows)]
             set_shadow(&win, true).unwrap();
+
+            let app_clone = app.handle();
+
+            app.set_menu(menu(&app_clone))?;
+
+            app_clone.on_menu_event(move |app, event| {
+                app.emit(&("flux:menu:".to_owned() + &event.id().as_ref()), "")
+                    .unwrap();
+            });
 
             Ok(())
         })
-        .on_window_event(|_e| {
+        .on_window_event(|window, _e| {
             // [start] source: https://github.com/tauri-apps/tauri/issues/4789#issuecomment-1387243148
 
             #[cfg(target_os = "macos")]
             let apply_offset = || {
-                let win = _e.window();
+                let win = window;
                 win.set_window_controls_pos(10., 12.5);
             };
 
             #[cfg(target_os = "macos")]
-            match _e.event() {
+            match _e {
                 WindowEvent::Resized(..) => apply_offset(),
                 WindowEvent::ThemeChanged(..) => apply_offset(),
                 _ => {}
             }
             // [end]
         })
-        .on_menu_event(|event| {
-            event
-                .window()
-                .emit(&("flux:menu:".to_owned() + event.menu_item_id()), "")
-                .unwrap();
-        })
-        .menu(menu())
         .invoke_handler(tauri::generate_handler![
             show_main_window,
             clone_repo,
@@ -179,7 +194,6 @@ fn main() {
             ls_send_request,
             app_data_dir,
             user_home_dir,
-            resolve_resource,
             new_window,
             get_dir_contents,
             spawn_command,
