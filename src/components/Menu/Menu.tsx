@@ -317,7 +317,7 @@ const Menu = () => {
                 item={2}
                 text="Check for Updates"
                 width="w-60"
-                action={() => checkUpdates()}
+                action={() => checkUpdates(false)}
               />
               <MenuItem
                 item={3}

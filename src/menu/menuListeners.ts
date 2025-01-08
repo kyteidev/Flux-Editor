@@ -45,7 +45,7 @@ export const addListeners = () => {
     about();
   });
   appWindow.listen("flux:menu:update", () => {
-    checkUpdates();
+    checkUpdates(false);
   });
 
   appWindow.listen("flux:menu:license", async () => {

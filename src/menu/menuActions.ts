@@ -30,7 +30,7 @@ export const about = async () => {
   const appVersion = getVersion();
 
   let licensesLocation: string;
-  if ((await getOS()) === "darwin") {
+  if (getOS() === "darwin") {
     licensesLocation = "Help > Legal Notices";
   } else {
     licensesLocation = "Menu > Help";

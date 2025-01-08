@@ -35,7 +35,7 @@ let errorMsg = "";
 let update: any;
 let unlisten: UnlistenFn;
 
-export const checkUpdates = async () => {
+export const checkUpdates = async (firstCheck: boolean) => {
   setShow(true);
   setText("Checking for updates");
 
@@ -60,6 +60,11 @@ export const checkUpdates = async () => {
       setText("Click to apply update");
     } else {
       setShow(false);
+      if (!firstCheck) {
+        dialog.message("No updates available.", {
+          kind: "info",
+        });
+      }
     }
   } catch (e) {
     error(e as string);
@@ -68,13 +73,15 @@ export const checkUpdates = async () => {
 
 const Update = () => {
   onMount(async () => {
-    setOs(await getOS());
+    setOs(getOS());
 
-    checkUpdates();
+    checkUpdates(true);
   });
 
   onCleanup(async () => {
-    unlisten();
+    if (unlisten) {
+      unlisten();
+    }
   });
 
   const handleClick = async () => {
