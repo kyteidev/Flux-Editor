@@ -66,7 +66,11 @@
 
 ## Installation <a name="installation"></a>
 
-You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page. (NOTE: since I don't have a code-signing certificate yet, you may encounter a "unidentified developer" or "Windows protected your PC" popup. If you don't trust the builds, you can always build Flux Editor from source. See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md) for instructions)
+You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page.
+
+> [!WARNING]
+> I don't have an Apple Developer account yet. You may encounter a dialog that says Apple cannot verify this app or something similar. Click **Okay**, then go to **System Settings** > **Privacy and Security**, scroll down and click **Open Anyway**.
+> If you don't trust the builds, you can always build Flux Editor from source. See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md) for instructions)
 
 ## Known Issues <a name="known-issues"></a>
 
@@ -85,7 +89,7 @@ See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTI
 
 ## Copyright and Licenses <a name="license"></a>
 
-Copyright © 2024 [kyteidev](https://github.com/kyteidev/). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
+Copyright © 2024-2025 [kyteidev](https://github.com/kyteidev/). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
 
 The original designer of the Flux Editor Logo is [kyteidev](https://github.com/kyteidev/).
 

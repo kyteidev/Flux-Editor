@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -27,7 +27,7 @@ import {
 } from "../../menu/menuActions";
 import { hideFB, hideTerm, setHideFB, setHideTerm } from "../../App";
 import { checkUpdates } from "../StatusBar/components/Update";
-const appWindow = getCurrentWebviewWindow()
+const appWindow = getCurrentWebviewWindow();
 
 export const cmdFlux: { [key: string]: () => void } = {
   "Flux: About": () => about(),
