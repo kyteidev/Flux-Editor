@@ -20,7 +20,7 @@
     "@tauri-apps/plugin-log": "^2.0.0",
     "@tauri-apps/plugin-os": "^2.0.0",
     "@tauri-apps/plugin-process": "^2.0.0",
-    "@tauri-apps/plugin-updater": "^2.0.0",
+    "@tauri-apps/plugin-updater": "^2.4.0",
     "ansi-to-html": "^0.7.2",
     "prismjs": "^1.29.0",
     "solid-js": "^1.9.3",
