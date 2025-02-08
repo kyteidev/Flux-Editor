@@ -1,38 +1,7 @@
-<p align="center"><img src="./images/FluxEditorLogo.png"
-     alt="Flux Editor logo"
-     width="160px"
-     height="160px" />
-</p>
+![Flux-Editor](https://socialify.git.ci/kyteidev/Flux-Editor/image?description=1&font=Source+Code+Pro&issues=1&language=1&logo=https%3A%2F%2Fgithub.com%2Fkyteidev%2FFlux-Editor%2Fblob%2Fdev%2Fimages%2FFluxEditorLogo.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Circuit+Board&pulls=1&stargazers=1&theme=Auto)
 
-<h1 align="center">Flux Editor</h1>
-
-<div align="center">
-<a>
-  <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkyteidev%2FFluxEditor.svg?type=small" alt="fossa-scan">
-</a>
-<a href="https://github.com/kyteidev/FluxEditor/issues">
-  <img src="https://img.shields.io/github/issues/kyteidev/FluxEditor?style=flat-square" alt="issues">
-</a>
-<a href="https://github.com/kyteidev/FluxEditor/pulls">
-  <img src="https://img.shields.io/github/issues-pr/kyteidev/FluxEditor?style=flat-square" alt="pr-open">
-</a>
-<a href="https://github.com/kyteidev/FluxEditor/pulls">
-  <img src="https://img.shields.io/github/issues-pr-closed-raw/kyteidev/FluxEditor?style=flat-square" alt="pr-closed">
-</a>
-<a>
-  <img src="https://img.shields.io/github/stars/kyteidev/FluxEditor?style=flat-square" alt="stars">
-</a>
-  <a>
-    <img src="https://img.shields.io/github/package-json/v/kyteidev/FluxEditor?style=flat-square&color=blue" alt="version">
-  </a>
-  <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
-    <img src="https://img.shields.io/badge/license-GPL--3.0-orange?style=flat-square" alt="license">
-  </a>
-</div>
-
-<p align="center">
-(NOTE! This project is still WIP. Expect bugs and unfinished features)
-</p>
+> [!NOTE]
+> This project is still in beta. Expect bugs and unfinished features.
 
 ## Screenshots
 
