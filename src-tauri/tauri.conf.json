@@ -20,7 +20,7 @@
   },
   "productName": "Flux Editor",
   "mainBinaryName": "Flux Editor",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "identifier": "dev.kyteidev.fluxeditor",
   "plugins": {
     "updater": {
