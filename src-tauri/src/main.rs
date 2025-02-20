@@ -37,8 +37,6 @@ use cocoa::appkit::NSWindow;
 use cocoa::base::id;
 #[cfg(target_os = "macos")]
 use objc::runtime::{NO, YES};
-#[cfg(target_os = "windows")]
-use window_shadows::set_shadow;
 
 #[cfg(target_os = "macos")]
 use window_ext::WindowExt;
@@ -155,9 +153,6 @@ fn main() {
 
             #[cfg(target_os = "macos")]
             win.set_window_controls_pos(10., 12.5);
-
-            #[cfg(windows)]
-            set_shadow(&win, true).unwrap();
 
             let app_clone = app.handle();
 
