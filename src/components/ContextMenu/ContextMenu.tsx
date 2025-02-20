@@ -36,7 +36,7 @@ export const isContextMenuShown = () => {
 };
 
 const handleContextMenu = (e: MouseEvent) => {
-  //e.preventDefault();
+  e.preventDefault();
 
   if (e.target instanceof HTMLElement) {
     const className = e.target.className;

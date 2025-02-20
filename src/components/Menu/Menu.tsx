@@ -23,8 +23,8 @@ import {
   about,
   license,
   licenseFonts,
-  licenseThirdPartyJS,
-  licenseThirdPartyRust,
+  licenseThirdPartyNPM,
+  licenseThirdPartyCargo,
   newWindow,
   settings,
   viewLogs,
@@ -334,15 +334,15 @@ const Menu = () => {
               />
               <MenuItem
                 item={5}
-                text="JS Third Party Licenses"
+                text="NPM Third Party Licenses"
                 width="w-60"
-                action={() => licenseThirdPartyJS()}
+                action={() => licenseThirdPartyNPM()}
               />
               <MenuItem
                 item={6}
-                text="Rust Third Party Licenses"
+                text="Cargo Third Party Licenses"
                 width="w-60"
-                action={() => licenseThirdPartyRust()}
+                action={() => licenseThirdPartyCargo()}
               />
               <MenuItem
                 last={true}

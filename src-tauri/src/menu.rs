@@ -145,8 +145,8 @@ pub fn menu(app: &AppHandle) -> Menu<Wry> {
 
     let help_submenu = SubmenuBuilder::new(app, "Legal Notices")
         .text("license", "Flux Editor License")
-        .text("licenses-third-party-js", "JS Third Party Licenses")
-        .text("licenses-third-party-rust", "Rust Third Party Licenses")
+        .text("licenses-third-party-npm", "NPM Third Party Licenses")
+        .text("licenses-third-party-cargo", "Cargo Third Party Licenses")
         .text("licenses-fonts", "Font Licenses and Legal Notices")
         .build()
         .unwrap();
