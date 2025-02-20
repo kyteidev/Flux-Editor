@@ -28,6 +28,9 @@
       "endpoints": [
         "https://raw.githubusercontent.com/kyteidev/FluxEditor/dev/latest.json"
       ]
+    },
+    "fs": {
+      "requireLiteralLeadingDot": false
     }
   },
   "app": {
