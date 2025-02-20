@@ -31,7 +31,7 @@ const appWindow = getCurrentWebviewWindow();
 
 export const cmdFlux: { [key: string]: () => void } = {
   "Flux: About": () => about(),
-  "Flux: Check updates": () => checkUpdates(),
+  "Flux: Check updates": () => checkUpdates(false),
   "Flux: Fullscreen": async () =>
     appWindow.setFullscreen(!(await appWindow.isFullscreen())),
   "Flux: Maximize": async () => {

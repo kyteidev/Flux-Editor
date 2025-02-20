@@ -33,7 +33,7 @@ let failed = false;
 let errorMsg = "";
 
 let update: any;
-let unlisten: UnlistenFn;
+let unlisten!: UnlistenFn;
 
 export const checkUpdates = async (firstCheck: boolean) => {
   setShow(true);
@@ -79,8 +79,10 @@ const Update = () => {
   });
 
   onCleanup(async () => {
-    if (unlisten) {
+    try {
       unlisten();
+    } catch (e) {
+      error(e as string);
     }
   });
 
