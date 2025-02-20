@@ -81,6 +81,10 @@ const forceUnlisten = async () => {
   }
 };
 
+export const revealLocation = () => {
+  invoke("reveal_location", { path: dirname(selectedItem) });
+};
+
 export const newItem = (type: string) => {
   const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
   if (selectedItem === "") {
@@ -90,7 +94,7 @@ export const newItem = (type: string) => {
   }
   setNewItemType(type);
 
-  emit("flux:event:contextMenuClicked", { type: "newItem" });
+  emit("flux:event:contextMenuClicked", { type: "newItem" }); // event listener in hovered item
 };
 
 export const removeItem = throttle((trash: boolean) => {

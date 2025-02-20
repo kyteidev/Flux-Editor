@@ -49,7 +49,7 @@ mod window_ext;
 mod commands;
 use commands::{
     cmd::{abort_all_commands, abort_command, spawn_command},
-    fs::{get_dir_contents, is_dir, path_exists},
+    fs::{get_dir_contents, is_dir, path_exists, reveal_location},
     git::{clone_repo, current_branch},
     path::{app_data_dir, user_home_dir},
     trash::remove_file,
@@ -203,6 +203,7 @@ fn main() {
             abort_all_commands,
             current_branch,
             remove_file,
+            reveal_location,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
