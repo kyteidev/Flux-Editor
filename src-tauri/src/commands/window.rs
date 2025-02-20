@@ -51,10 +51,10 @@ pub async fn new_window(app: tauri::AppHandle) {
 
     #[cfg(not(target_os = "macos"))]
     {
-        let _win = WindowBuilder::new(
+        let _win = WebviewWindowBuilder::new(
             &app,
             id.to_string(),
-            tauri::WindowUrl::App("index.html".into()),
+            tauri::WebviewUrl::App("index.html".into()),
         )
         .title("Flux Editor")
         .decorations(false)
