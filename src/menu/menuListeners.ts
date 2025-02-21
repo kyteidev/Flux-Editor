@@ -87,7 +87,7 @@ export const addListeners = () => {
   appWindow.listen("flux:menu:file_browser", () => {
     setHideFB(!hideFB());
   });
-  appWindow.listen("flux:menu:menu:terminal", () => {
+  appWindow.listen("flux:menu:terminal", () => {
     setHideTerm(!hideTerm());
   });
 
