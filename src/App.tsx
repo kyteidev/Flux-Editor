@@ -72,6 +72,8 @@ export const loadEditor = (
   setDir(dirPath);
   loadDir(dirPath);
 
+  setProjectName(basename(dirPath)); // sets project name to be directory name
+
   if (openFile && fileName) {
     setLoaded(true);
     addTab([fileName, dirPath]);
@@ -79,8 +81,6 @@ export const loadEditor = (
     emit("flux:event:editor-loaded");
     return;
   }
-
-  setProjectName(basename(dirPath)); // sets project name to be directory name
 
   info("Editor loaded");
   setLoaded(true);

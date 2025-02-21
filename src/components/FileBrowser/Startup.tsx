@@ -131,7 +131,7 @@ const Startup = () => {
               fs.writeTextFile(joinPath(dirPath(), name()), "").catch((e) => {
                 error("Failed to create file: " + e);
               });
-              loadEditor(joinPath(dirPath(), name()), true, name());
+              loadEditor(dirPath(), true, name());
               break;
             case "Project":
               if (await fs.exists(joinPath(dirPath(), name()))) {
