@@ -27,7 +27,7 @@ import { IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
 import { fileIcons, specialFileIcons } from "../../utils/file";
 import { getSetting } from "../../settingsManager";
-import { error } from "@tauri-apps/plugin-log";
+import { error, info } from "@tauri-apps/plugin-log";
 import { closeFile, openFile } from "../Editor/EditorComponent";
 import {
   addTab,
@@ -86,6 +86,8 @@ export const revealLocation = () => {
 };
 
 export const newItem = (type: string) => {
+  info("Creating new item in file browser");
+
   const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
   if (selectedItem === "") {
     setNewItemDir(normalizePath(rootDir()));
@@ -354,7 +356,6 @@ const FileBrowser = (props: Props) => {
                               }
                               break;
                             case "removeItem":
-                              console.log(selectedItem);
                               const item = selectedItem.slice(
                                 0,
                                 selectedItem.length - 1,

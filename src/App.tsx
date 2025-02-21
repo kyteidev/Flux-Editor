@@ -25,7 +25,7 @@ import EditorTabs, {
 } from "./components/Editor/components/EditorTabs";
 import { initSettings } from "./settingsManager";
 import { info } from "@tauri-apps/plugin-log";
-import { basename } from "./utils/path";
+import { basename, normalizePath } from "./utils/path";
 import { addListeners } from "./menu/menuListeners";
 import SplitPane from "./components/SplitPane/SplitPane";
 import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
@@ -69,8 +69,8 @@ export const loadEditor = (
   openFile?: boolean,
   fileName?: string,
 ) => {
-  setDir(dirPath);
-  loadDir(dirPath);
+  setDir(normalizePath(dirPath));
+  loadDir(normalizePath(dirPath));
 
   setProjectName(basename(dirPath)); // sets project name to be directory name
 
