@@ -37,7 +37,7 @@ export const about = async () => {
   }
 
   dialog.message(
-    "Copyright © 2024 kyteidev.\nLicensed under the GNU General Public License v3.0.\n\nSee " +
+    "Copyright © 2024-2025 kyteidev.\nLicensed under the GNU General Public License v3.0.\n\nSee " +
       licensesLocation +
       " for license notices.",
     { title: "Flux Editor " + (await appVersion) },
