@@ -43,7 +43,6 @@ import {
   normalizePath,
   pathSep,
 } from "../../utils/path";
-import Startup from "./Startup";
 import { invoke } from "@tauri-apps/api/core";
 import { updateBreadcrumbs } from "../Editor/components/EditorBreadcrumbs";
 import { isContextMenuShown } from "../ContextMenu/ContextMenu";
@@ -473,7 +472,7 @@ const FileBrowser = (props: Props) => {
         }
       }}
     >
-      <Show when={props.loaded} fallback={<Startup />}>
+      <Show when={props.loaded}>
         <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold text-content-main">
           {`${props.rootDirName}`}
         </div>
