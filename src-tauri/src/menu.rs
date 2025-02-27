@@ -112,34 +112,30 @@ pub fn menu(app: &AppHandle) -> Menu<Wry> {
         .build()
         .unwrap();
 
-    let view_menu = SubmenuBuilder::new(app, "View")
-        .text("themes", "Themes")
-        .text("focus_mode", "Focus Mode")
-        .build()
-        .unwrap();
-
-    let modules_search = MenuItemBuilder::new("Search")
+    let view_search = MenuItemBuilder::new("Search")
         .id("search")
         .accelerator("Alt+Space")
         .build(app)
         .unwrap();
 
-    let modules_file_browser = MenuItemBuilder::new("File Browser")
+    let view_file_browser = MenuItemBuilder::new("File Browser")
         .id("file_browser")
-        .accelerator("CmdOrCtrl+1")
+        .accelerator("CmdOrCtrl+Shift+E")
         .build(app)
         .unwrap();
 
-    let modules_terminal = MenuItemBuilder::new("Terminal")
+    let view_terminal = MenuItemBuilder::new("Terminal")
         .id("terminal")
-        .accelerator("CmdOrCtrl+2")
+        .accelerator("CmdOrCtrl+Shift+T")
         .build(app)
         .unwrap();
 
-    let modules_menu = SubmenuBuilder::new(app, "Modules")
-        .item(&modules_search)
-        .item(&modules_file_browser)
-        .item(&modules_terminal)
+    let view_menu = SubmenuBuilder::new(app, "View")
+        .text("themes", "Themes")
+        .separator()
+        .item(&view_search)
+        .item(&view_file_browser)
+        .item(&view_terminal)
         .build()
         .unwrap();
 
@@ -158,14 +154,7 @@ pub fn menu(app: &AppHandle) -> Menu<Wry> {
         .unwrap();
 
     let menu = MenuBuilder::new(app)
-        .items(&[
-            &app_menu,
-            &file_menu,
-            &edit_menu,
-            &view_menu,
-            &modules_menu,
-            &help_menu,
-        ])
+        .items(&[&app_menu, &file_menu, &edit_menu, &view_menu, &help_menu])
         .build()
         .unwrap();
 
