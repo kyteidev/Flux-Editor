@@ -4092,7 +4092,6 @@ dependencies = [
 
 [[package]]
 name = "tauri-build"
-=======
 version = "2.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8e950124f6779c6cf98e3260c7a6c8488a74aa6350dd54c6950fdaa349bca2df"
