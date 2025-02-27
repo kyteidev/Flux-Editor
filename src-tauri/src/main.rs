@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -37,8 +37,6 @@ use cocoa::appkit::NSWindow;
 use cocoa::base::id;
 #[cfg(target_os = "macos")]
 use objc::runtime::{NO, YES};
-#[cfg(target_os = "windows")]
-use window_shadows::set_shadow;
 
 #[cfg(target_os = "macos")]
 use window_ext::WindowExt;
@@ -49,7 +47,7 @@ mod window_ext;
 mod commands;
 use commands::{
     cmd::{abort_all_commands, abort_command, spawn_command},
-    fs::{get_dir_contents, is_dir, path_exists},
+    fs::{get_dir_contents, is_dir, path_exists, reveal_location},
     git::{clone_repo, current_branch},
     path::{app_data_dir, user_home_dir},
     trash::remove_file,
@@ -156,9 +154,6 @@ fn main() {
             #[cfg(target_os = "macos")]
             win.set_window_controls_pos(10., 12.5);
 
-            #[cfg(windows)]
-            set_shadow(&win, true).unwrap();
-
             let app_clone = app.handle();
 
             app.set_menu(menu(&app_clone))?;
@@ -203,6 +198,7 @@ fn main() {
             abort_all_commands,
             current_branch,
             remove_file,
+            reveal_location,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
