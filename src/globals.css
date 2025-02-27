@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -124,7 +124,7 @@ You should have received a copy of the GNU General Public License along with Flu
 }
 
 /*
-! tailwindcss v3.4.13 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -567,7 +567,7 @@ video {
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 
-[hidden] {
+[hidden]:where(:not([hidden="until-found"])) {
   display: none;
 }
 
@@ -643,6 +643,10 @@ video {
   margin: 0px;
 }
 
+.m-8 {
+  margin: 2rem;
+}
+
 .me-auto {
   margin-inline-end: auto;
 }
@@ -665,6 +669,18 @@ video {
 
 .mt-1 {
   margin-top: 0.25rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
 }
 
 .block {
@@ -853,20 +869,16 @@ video {
   max-width: 13rem;
 }
 
+.max-w-72 {
+  max-width: 18rem;
+}
+
 .max-w-\[64px\] {
   max-width: 64px;
 }
 
 .max-w-full {
   max-width: 100%;
-}
-
-.max-w-64 {
-  max-width: 16rem;
-}
-
-.max-w-72 {
-  max-width: 18rem;
 }
 
 .flex-shrink-0 {
@@ -975,16 +987,22 @@ video {
   margin-left: calc(13px * calc(1 - var(--tw-space-x-reverse)));
 }
 
-.space-y-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
-}
-
 .space-y-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.space-y-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .overflow-auto {
@@ -1021,6 +1039,10 @@ video {
 
 .whitespace-pre {
   white-space: pre;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
 }
 
 .rounded {
@@ -1149,8 +1171,16 @@ video {
   padding-bottom: 0.25rem;
 }
 
+.pl-0 {
+  padding-left: 0px;
+}
+
 .pl-\[10px\] {
   padding-left: 10px;
+}
+
+.pr-10 {
+  padding-right: 2.5rem;
 }
 
 .pr-\[5px\] {
@@ -1187,6 +1217,31 @@ video {
   line-height: 1rem;
 }
 
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.text-9xl {
+  font-size: 8rem;
+  line-height: 1;
+}
+
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
+.text-8xl {
+  font-size: 6rem;
+  line-height: 1;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1205,6 +1260,10 @@ video {
 
 .text-transparent {
   color: transparent;
+}
+
+.text-base-100 {
+  color: var(--base-100);
 }
 
 .underline {
@@ -1412,7 +1471,7 @@ dialog[open] {
 
 .hover\:bg-\[\#c42b1c\]:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(196 43 28 / var(--tw-bg-opacity));
+  background-color: rgb(196 43 28 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-accent:hover {
