@@ -136,6 +136,7 @@ pub fn menu(app: &AppHandle) -> Menu<Wry> {
         .item(&view_search)
         .item(&view_file_browser)
         .item(&view_terminal)
+        .separator()
         .build()
         .unwrap();
 
