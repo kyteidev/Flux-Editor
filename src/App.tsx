@@ -85,6 +85,7 @@ export const loadEditor = (
 
   info("Editor loaded");
   setLoaded(true);
+  setHideFB(false);
   emit("flux:event:editor-loaded");
 };
 
