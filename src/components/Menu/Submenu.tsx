@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -36,7 +36,7 @@ const Submenu = (props: {
   return (
     <>
       <div
-        class={`menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-base-50 border-t-[1px]"} hover:bg-base-50 absolute z-[51] flex h-6 w-32 items-center bg-base-100 px-2 align-middle text-sm text-content-main`}
+        class={`menu ${props.first && "rounded-t"} ${props.last && "rounded-b"} ${props.separator && "border-t-[1px] border-base-50"} absolute z-[51] flex h-6 w-32 items-center bg-base-100 px-2 align-middle text-sm text-content-main hover:bg-base-50`}
         style={{ top: `calc(${props.item} * 1.5rem + 0.5rem)` }}
         onMouseOver={() => {
           setShow(true);

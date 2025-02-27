@@ -20,7 +20,7 @@
   },
   "productName": "Flux Editor",
   "mainBinaryName": "Flux Editor",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "identifier": "dev.kyteidev.fluxeditor",
   "plugins": {
     "updater": {
@@ -28,6 +28,9 @@
       "endpoints": [
         "https://raw.githubusercontent.com/kyteidev/FluxEditor/dev/latest.json"
       ]
+    },
+    "fs": {
+      "requireLiteralLeadingDot": false
     }
   },
   "app": {
@@ -39,6 +42,7 @@
         "minWidth": 660,
         "minHeight": 450,
         "decorations": false,
+        "shadow": true,
         "visible": false
       }
     ],

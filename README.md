@@ -1,38 +1,7 @@
-<p align="center"><img src="./images/FluxEditorLogo.png"
-     alt="Flux Editor logo"
-     width="160px"
-     height="160px" />
-</p>
+![Flux-Editor](https://socialify.git.ci/kyteidev/Flux-Editor/image?description=1&font=Source+Code+Pro&issues=1&language=1&logo=https%3A%2F%2Fgithub.com%2Fkyteidev%2FFlux-Editor%2Fblob%2Fdev%2Fimages%2FFluxEditorLogo.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Circuit+Board&pulls=1&stargazers=1&theme=Auto)
 
-<h1 align="center">Flux Editor</h1>
-
-<div align="center">
-<a>
-  <img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkyteidev%2FFluxEditor.svg?type=small" alt="fossa-scan">
-</a>
-<a href="https://github.com/kyteidev/FluxEditor/issues">
-  <img src="https://img.shields.io/github/issues/kyteidev/FluxEditor?style=flat-square" alt="issues">
-</a>
-<a href="https://github.com/kyteidev/FluxEditor/pulls">
-  <img src="https://img.shields.io/github/issues-pr/kyteidev/FluxEditor?style=flat-square" alt="pr-open">
-</a>
-<a href="https://github.com/kyteidev/FluxEditor/pulls">
-  <img src="https://img.shields.io/github/issues-pr-closed-raw/kyteidev/FluxEditor?style=flat-square" alt="pr-closed">
-</a>
-<a>
-  <img src="https://img.shields.io/github/stars/kyteidev/FluxEditor?style=flat-square" alt="stars">
-</a>
-  <a>
-    <img src="https://img.shields.io/github/package-json/v/kyteidev/FluxEditor?style=flat-square&color=blue" alt="version">
-  </a>
-  <a href="https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE">
-    <img src="https://img.shields.io/badge/license-GPL--3.0-orange?style=flat-square" alt="license">
-  </a>
-</div>
-
-<p align="center">
-(NOTE! This project is still WIP. Expect bugs and unfinished features)
-</p>
+> [!NOTE]
+> This project is still in beta. Expect bugs and unfinished features.
 
 ## Screenshots
 
@@ -58,15 +27,17 @@
 - Built-in terminal
 - Code suggestions (soon)
 - Git integration (partially complete)
-- Incredibly lightweight
+- Very fast
 - Minimalist UI
-- Tiny binary
-- No bloat
 - and many more!
 
 ## Installation <a name="installation"></a>
 
-You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page. (NOTE: since I don't have a code-signing certificate yet, you may encounter a "unidentified developer" or "Windows protected your PC" popup. If you don't trust the builds, you can always build Flux Editor from source. See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md) for instructions)
+You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page.
+
+> [!WARNING]
+> I don't have an Apple Developer account yet. You may encounter a dialog that says Apple cannot verify this app or something similar. Click **Okay**, then go to **System Settings** > **Privacy and Security**, scroll down and click **Open Anyway**.
+> If you don't trust the builds, you can always build Flux Editor from source. See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md) for instructions)
 
 ## Known Issues <a name="known-issues"></a>
 
@@ -85,7 +56,7 @@ See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTI
 
 ## Copyright and Licenses <a name="license"></a>
 
-Copyright © 2024 [kyteidev](https://github.com/kyteidev/). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
+Copyright © 2024-2025 [kyteidev](https://github.com/kyteidev/). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
 
 The original designer of the Flux Editor Logo is [kyteidev](https://github.com/kyteidev/).
 

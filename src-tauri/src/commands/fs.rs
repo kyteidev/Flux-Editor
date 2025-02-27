@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use std::{fs, path::PathBuf};
+use std::{fs, path::PathBuf, process::Command};
 
 use log::error;
 use serde::{Deserialize, Serialize};
@@ -80,4 +80,16 @@ pub fn path_exists(path: PathBuf) -> bool {
 #[tauri::command]
 pub fn is_dir(path: PathBuf) -> bool {
     path.is_dir()
+}
+
+#[tauri::command]
+pub fn reveal_location(path: PathBuf) {
+    #[cfg(target_os = "macos")]
+    Command::new("open").arg(path).spawn().unwrap();
+
+    #[cfg(target_os = "windows")]
+    Command::new("explorer").arg(path).spawn().unwrap();
+
+    #[cfg(target_os = "linux")]
+    Command::new("xdg-open").arg(path).spawn().unwrap();
 }
