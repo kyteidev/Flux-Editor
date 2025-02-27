@@ -277,7 +277,13 @@ const Menu = () => {
               />
             </Submenu>
             <Submenu text="View" item={3} main={true}>
-              <MenuItem first={true} item={1} text="Themes" separator />
+              <MenuItem
+                first={true}
+                item={1}
+                text="Themes"
+                width="w-44"
+                separator
+              />
               <MenuItem
                 first={true}
                 item={2}
@@ -301,7 +307,7 @@ const Menu = () => {
                 action={() => setHideTerm(!hideTerm())}
                 separator
               />
-              <MenuItem last={true} item={5} text="Fullscreen" />
+              <MenuItem last={true} item={5} text="Fullscreen" width="w-44" />
             </Submenu>
             <Submenu text="Help" item={4} main={true} last={true}>
               <MenuItem
