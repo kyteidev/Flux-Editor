@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -33,9 +33,9 @@ let failed = false;
 let errorMsg = "";
 
 let update: any;
-let unlisten: UnlistenFn;
+let unlisten!: UnlistenFn;
 
-export const checkUpdates = async () => {
+export const checkUpdates = async (firstCheck: boolean) => {
   setShow(true);
   setText("Checking for updates");
 
@@ -60,6 +60,11 @@ export const checkUpdates = async () => {
       setText("Click to apply update");
     } else {
       setShow(false);
+      if (!firstCheck) {
+        dialog.message("No updates available.", {
+          kind: "info",
+        });
+      }
     }
   } catch (e) {
     error(e as string);
@@ -68,13 +73,17 @@ export const checkUpdates = async () => {
 
 const Update = () => {
   onMount(async () => {
-    setOs(await getOS());
+    setOs(getOS());
 
-    checkUpdates();
+    checkUpdates(true);
   });
 
   onCleanup(async () => {
-    unlisten();
+    try {
+      unlisten();
+    } catch (e) {
+      error(e as string);
+    }
   });
 
   const handleClick = async () => {

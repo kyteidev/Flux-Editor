@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -194,7 +194,7 @@ const Search = () => {
       />
       <div
         id="separator"
-        class="bg-base-50 absolute z-50 h-[1px] w-[28rem]"
+        class="absolute z-50 h-[1px] w-[28rem] bg-base-50"
         style={{
           left: `calc((100vw - 28rem) / 2)`,
           top: `calc((100vh - 2.5rem) / 4 + 2.5rem)`,
@@ -246,7 +246,7 @@ const Search = () => {
 
               return (
                 <li
-                  class={`${index() === selected() && "bg-base-50"} hover:bg-base-50 group flex h-10 items-center bg-base-100 px-2 py-1 last:rounded-b active:brightness-125`}
+                  class={`${index() === selected() && "bg-base-50"} group flex h-10 items-center bg-base-100 px-2 py-1 last:rounded-b hover:bg-base-50 active:brightness-125`}
                   onClick={() => {
                     data[suggestion]();
                     toggleSearch();

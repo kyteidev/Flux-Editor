@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -25,7 +25,7 @@ import EditorTabs, {
 } from "./components/Editor/components/EditorTabs";
 import { initSettings } from "./settingsManager";
 import { info } from "@tauri-apps/plugin-log";
-import { basename } from "./utils/path";
+import { basename, normalizePath } from "./utils/path";
 import { addListeners } from "./menu/menuListeners";
 import SplitPane from "./components/SplitPane/SplitPane";
 import FileBrowser, { loadDir } from "./components/FileBrowser/FileBrowser";
@@ -41,13 +41,14 @@ import ContextMenu from "./components/ContextMenu/ContextMenu";
 import TitleBar from "./components/TitleBar/TitleBar";
 import { emit } from "@tauri-apps/api/event";
 import * as dialog from "@tauri-apps/plugin-dialog";
+import Startup from "./components/FileBrowser/Startup";
 const appWindow = getCurrentWebviewWindow();
 
 export const [dir, setDir] = createSignal<string>("");
 
 export const [loaded, setLoaded] = createSignal(false);
 
-export const [hideFB, setHideFB] = createSignal(false); // whether to hide File Browser
+export const [hideFB, setHideFB] = createSignal(true); // whether to hide File Browser
 export const [hideTerm, setHideTerm] = createSignal(true); // whether to hide Terminal
 
 const [projectName, setProjectName] = createSignal("");
@@ -69,8 +70,10 @@ export const loadEditor = (
   openFile?: boolean,
   fileName?: string,
 ) => {
-  setDir(dirPath);
-  loadDir(dirPath);
+  setDir(normalizePath(dirPath));
+  loadDir(normalizePath(dirPath));
+
+  setProjectName(basename(dirPath)); // sets project name to be directory name
 
   if (openFile && fileName) {
     setLoaded(true);
@@ -79,8 +82,6 @@ export const loadEditor = (
     emit("flux:event:editor-loaded");
     return;
   }
-
-  setProjectName(basename(dirPath)); // sets project name to be directory name
 
   info("Editor loaded");
   setLoaded(true);
@@ -157,13 +158,15 @@ export default function App() {
             <Show
               when={getTabs().length != 0}
               fallback={
-                <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-10 bg-base-200">
-                  <div
-                    style={{ width: "12rem", height: "auto", opacity: "0.8" }}
-                  >
-                    <FluxLogo color="base-100" />
+                <Show when={loaded()} fallback={<Startup />}>
+                  <div class="flex min-h-full min-w-full select-none items-center justify-center space-x-10 bg-base-200">
+                    <div
+                      style={{ width: "12rem", height: "auto", opacity: "0.8" }}
+                    >
+                      <FluxLogo color="base-100" />
+                    </div>
                   </div>
-                </div>
+                </Show>
               }
             >
               <EditorComponent />
