@@ -1,3 +1,20 @@
+/*
+Copyright © 2024-2025 kyteidev.
+
+This file is part of Flux Editor.
+
+Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+<https://www.gnu.org/licenses/>.
+*/
+
 use tauri::{
     menu::{Menu, MenuBuilder, MenuItemBuilder, SubmenuBuilder},
     AppHandle, Wry,
@@ -95,41 +112,37 @@ pub fn menu(app: &AppHandle) -> Menu<Wry> {
         .build()
         .unwrap();
 
-    let view_menu = SubmenuBuilder::new(app, "View")
-        .text("themes", "Themes")
-        .text("focus_mode", "Focus Mode")
-        .build()
-        .unwrap();
-
-    let modules_search = MenuItemBuilder::new("Search")
+    let view_search = MenuItemBuilder::new("Search")
         .id("search")
         .accelerator("Alt+Space")
         .build(app)
         .unwrap();
 
-    let modules_file_browser = MenuItemBuilder::new("File Browser")
+    let view_file_browser = MenuItemBuilder::new("File Browser")
         .id("file_browser")
-        .accelerator("CmdOrCtrl+1")
+        .accelerator("CmdOrCtrl+Shift+E")
         .build(app)
         .unwrap();
 
-    let modules_terminal = MenuItemBuilder::new("Terminal")
+    let view_terminal = MenuItemBuilder::new("Terminal")
         .id("terminal")
-        .accelerator("CmdOrCtrl+2")
+        .accelerator("CmdOrCtrl+Shift+T")
         .build(app)
         .unwrap();
 
-    let modules_menu = SubmenuBuilder::new(app, "Modules")
-        .item(&modules_search)
-        .item(&modules_file_browser)
-        .item(&modules_terminal)
+    let view_menu = SubmenuBuilder::new(app, "View")
+        .text("themes", "Themes")
+        .separator()
+        .item(&view_search)
+        .item(&view_file_browser)
+        .item(&view_terminal)
         .build()
         .unwrap();
 
     let help_submenu = SubmenuBuilder::new(app, "Legal Notices")
         .text("license", "Flux Editor License")
-        .text("licenses-third-party-js", "JS Third Party Licenses")
-        .text("licenses-third-party-rust", "Rust Third Party Licenses")
+        .text("licenses-third-party-npm", "NPM Third Party Licenses")
+        .text("licenses-third-party-cargo", "Cargo Third Party Licenses")
         .text("licenses-fonts", "Font Licenses and Legal Notices")
         .build()
         .unwrap();
@@ -141,14 +154,7 @@ pub fn menu(app: &AppHandle) -> Menu<Wry> {
         .unwrap();
 
     let menu = MenuBuilder::new(app)
-        .items(&[
-            &app_menu,
-            &file_menu,
-            &edit_menu,
-            &view_menu,
-            &modules_menu,
-            &help_menu,
-        ])
+        .items(&[&app_menu, &file_menu, &edit_menu, &view_menu, &help_menu])
         .build()
         .unwrap();
 

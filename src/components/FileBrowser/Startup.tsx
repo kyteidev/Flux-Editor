@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -32,6 +32,7 @@ import {
 } from "../../utils/path";
 import * as dialog from "@tauri-apps/plugin-dialog";
 import * as fs from "@tauri-apps/plugin-fs";
+import { FluxLogo } from "../Icons/FluxLogo";
 
 const Startup = () => {
   const [isCloning, setIsCloning] = createSignal<boolean>(false);
@@ -131,7 +132,7 @@ const Startup = () => {
               fs.writeTextFile(joinPath(dirPath(), name()), "").catch((e) => {
                 error("Failed to create file: " + e);
               });
-              loadEditor(joinPath(dirPath(), name()), true, name());
+              loadEditor(dirPath(), true, name());
               break;
             case "Project":
               if (await fs.exists(joinPath(dirPath(), name()))) {
@@ -163,7 +164,7 @@ const Startup = () => {
   };
 
   return (
-    <div class="flex flex-col space-y-2 px-2 pb-1 text-content">
+    <div class="flex min-h-full min-w-full select-none flex-col items-center justify-center space-y-1 bg-base-200 px-2 pb-1">
       <dialog id="modal-new">
         <Modal
           width={60}
@@ -322,9 +323,23 @@ const Startup = () => {
           </div>
         </Modal>
       </dialog>
+      <div class="flex items-center space-x-4" style={{ margin: "48px" }}>
+        <div
+          style={{
+            width: "8rem",
+            height: "auto",
+            opacity: "0.8",
+            margin: "16px",
+          }}
+        >
+          <FluxLogo color="base-100" />
+        </div>
+        <h1 class="text-nowrap text-8xl text-base-100">Flux Editor</h1>
+      </div>
       <Button
-        width="100%"
+        width="120px"
         text="New"
+        colorBg
         action={() => {
           const modal = document.getElementById(
             "modal-new",
@@ -334,10 +349,11 @@ const Startup = () => {
           }
         }}
       />
-      <Button width="100%" text="Open" action={openDir} />
+      <Button width="120px" colorBg text="Open" action={openDir} />
       <Button
-        width="100%"
+        width="120px"
         text="Clone"
+        colorBg
         action={() => {
           const modal = document.getElementById(
             "modal-clone",

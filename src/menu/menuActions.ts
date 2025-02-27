@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -30,14 +30,14 @@ export const about = async () => {
   const appVersion = getVersion();
 
   let licensesLocation: string;
-  if ((await getOS()) === "darwin") {
+  if (getOS() === "darwin") {
     licensesLocation = "Help > Legal Notices";
   } else {
     licensesLocation = "Menu > Help";
   }
 
   dialog.message(
-    "Copyright © 2024 kyteidev.\nLicensed under the GNU General Public License v3.0.\n\nSee " +
+    "Copyright © 2024-2025 kyteidev.\nLicensed under the GNU General Public License v3.0.\n\nSee " +
       licensesLocation +
       " for license notices.",
     { title: "Flux Editor " + (await appVersion) },
@@ -47,26 +47,26 @@ export const about = async () => {
 // TODO: maybe merge these two functions?
 export const license = async () => {
   const resourcePath = await resolveResource("../resources/LICENSE.txt");
-  addTab(["flux:file:LICENSE", resourcePath]);
+  addTab(["LICENSE", resourcePath]);
   openFile(resourcePath, true);
 };
-export const licenseThirdPartyJS = async () => {
+export const licenseThirdPartyNPM = async () => {
   const resourcePath = await resolveResource(
-    "../resources/THIRD-PARTY-LICENSES-JS.txt",
+    "../resources/THIRD-PARTY-LICENSES-NPM.txt",
   );
-  addTab(["flux:file:JS THIRD PARTY LICENSES", resourcePath]);
+  addTab(["NPM THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
-export const licenseThirdPartyRust = async () => {
+export const licenseThirdPartyCargo = async () => {
   const resourcePath = await resolveResource(
-    "../resources/THIRD-PARTY-LICENSES-Rust.txt",
+    "../resources/THIRD-PARTY-LICENSES-Cargo.txt",
   );
-  addTab(["flux:file:RUST THIRD PARTY LICENSES", resourcePath]);
+  addTab(["Cargo THIRD PARTY LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
 export const licenseFonts = async () => {
   const resourcePath = await resolveResource("../resources/FONT-LICENSES.txt");
-  addTab(["flux:file:FONT LICENSES", resourcePath]);
+  addTab(["FONT LICENSES", resourcePath]);
   openFile(resourcePath, true);
 };
 
@@ -74,7 +74,7 @@ export const viewLogs = async () => {
   const logDir = joinPath(await appDataDir(), "logs");
   const logFilePath = joinPath(logDir, "main.log");
 
-  addTab([":FLUX LOGS", logFilePath]);
+  addTab(["Flux Editor Logs", logFilePath]);
   openFile(logFilePath, true);
   updateBreadcrumbs(logFilePath);
 };

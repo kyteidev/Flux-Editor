@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 kyteidev.
+Copyright © 2024-2025 kyteidev.
 
 This file is part of Flux Editor.
 
@@ -26,7 +26,7 @@ interface Props {
 const ButtonIcon = (props: Props) => {
   return (
     <button
-      class="hover:bg-base-50 flex items-center justify-center rounded bg-base-200 active:brightness-125"
+      class="flex items-center justify-center rounded bg-base-200 hover:bg-base-50 active:brightness-125"
       style={{
         width: `${props.size}`,
         height: `${props.size}`,
