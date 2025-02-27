@@ -20,8 +20,8 @@ import {
   about,
   license,
   licenseFonts,
-  licenseThirdPartyJS,
-  licenseThirdPartyRust,
+  licenseThirdPartyCargo,
+  licenseThirdPartyNPM,
   settings,
   viewLogs,
 } from "../../menu/menuActions";
@@ -31,7 +31,7 @@ const appWindow = getCurrentWebviewWindow();
 
 export const cmdFlux: { [key: string]: () => void } = {
   "Flux: About": () => about(),
-  "Flux: Check updates": () => checkUpdates(),
+  "Flux: Check updates": () => checkUpdates(false),
   "Flux: Fullscreen": async () =>
     appWindow.setFullscreen(!(await appWindow.isFullscreen())),
   "Flux: Maximize": async () => {
@@ -43,8 +43,8 @@ export const cmdFlux: { [key: string]: () => void } = {
   },
   "Flux: Minimize": () => appWindow.minimize(),
   "Flux: Open license": () => license(),
-  "Flux: Open JS third party licenses": () => licenseThirdPartyJS(),
-  "Flux: Open Rust third party licenses": () => licenseThirdPartyRust(),
+  "Flux: Open NPM third party licenses": () => licenseThirdPartyNPM(),
+  "Flux: Open Cargo third party licenses": () => licenseThirdPartyCargo(),
   "Flux: Open Font Licenses and Legal Notices": () => licenseFonts(),
   "Flux: Open settings": () => settings(),
   "Flux: View logs": () => viewLogs(),

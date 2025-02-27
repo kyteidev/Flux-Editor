@@ -23,8 +23,8 @@ import {
   about,
   license,
   licenseFonts,
-  licenseThirdPartyJS,
-  licenseThirdPartyRust,
+  licenseThirdPartyNPM,
+  licenseThirdPartyCargo,
   newWindow,
   settings,
   viewLogs,
@@ -88,10 +88,10 @@ const shortcuts: { [key: string]: () => void } = {
   "Alt,Space": () => {
     toggleSearch();
   },
-  "Control,1": () => {
+  "Control,Shift,E": () => {
     setHideFB(!hideFB());
   },
-  "Control,2": () => {
+  "Control,Shift,T": () => {
     setHideTerm(!hideTerm());
   },
 };
@@ -100,7 +100,7 @@ const runShortcut = () => {
   for (const shortcut of Object.keys(shortcuts)) {
     const shortcutKeys = shortcut.split(",");
     const filteredKeysPressed = keysPressed.map((key) =>
-      key.replace("Left", "").replace("Right", ""),
+      key.replace("Left", "").replace("Right", "").replace("Key", ""),
     );
     if (shortcutKeys.every((key) => filteredKeysPressed.includes(key))) {
       shortcuts[shortcut]();
@@ -277,35 +277,39 @@ const Menu = () => {
               />
             </Submenu>
             <Submenu text="View" item={3} main={true}>
-              <MenuItem first={true} item={1} text="Themes" />
-              <MenuItem item={2} text="Focus Mode" />
-              <MenuItem last={true} item={3} text="Fullscreen" />
-            </Submenu>
-            <Submenu text="Modules" item={4} main={true}>
               <MenuItem
                 first={true}
                 item={1}
+                text="Themes"
+                width="w-44"
+                separator
+              />
+              <MenuItem
+                first={true}
+                item={2}
                 text="Search"
                 shortcut="Alt+Space"
                 width="w-44"
               />
               <MenuItem
-                item={2}
+                item={3}
                 text="File Browser"
-                shortcut="Ctrl+1"
+                shortcut="Ctrl+Shift+E"
                 width="w-44"
                 action={() => setHideFB(!hideFB())}
               />
               <MenuItem
                 last={true}
-                item={3}
+                item={4}
                 text="Terminal"
-                shortcut="Ctrl+2"
+                shortcut="Ctrl+Shift+T"
                 width="w-44"
                 action={() => setHideTerm(!hideTerm())}
+                separator
               />
+              <MenuItem last={true} item={5} text="Fullscreen" width="w-44" />
             </Submenu>
-            <Submenu text="Help" item={5} main={true} last={true}>
+            <Submenu text="Help" item={4} main={true} last={true}>
               <MenuItem
                 first
                 item={1}
@@ -334,15 +338,15 @@ const Menu = () => {
               />
               <MenuItem
                 item={5}
-                text="JS Third Party Licenses"
+                text="NPM Third Party Licenses"
                 width="w-60"
-                action={() => licenseThirdPartyJS()}
+                action={() => licenseThirdPartyNPM()}
               />
               <MenuItem
                 item={6}
-                text="Rust Third Party Licenses"
+                text="Cargo Third Party Licenses"
                 width="w-60"
-                action={() => licenseThirdPartyRust()}
+                action={() => licenseThirdPartyCargo()}
               />
               <MenuItem
                 last={true}

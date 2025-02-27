@@ -27,7 +27,7 @@ import { IconLineVertical } from "../Icons/Icons";
 import * as FI from "../Icons/FileIcons";
 import { fileIcons, specialFileIcons } from "../../utils/file";
 import { getSetting } from "../../settingsManager";
-import { error } from "@tauri-apps/plugin-log";
+import { error, info } from "@tauri-apps/plugin-log";
 import { closeFile, openFile } from "../Editor/EditorComponent";
 import {
   addTab,
@@ -43,7 +43,6 @@ import {
   normalizePath,
   pathSep,
 } from "../../utils/path";
-import Startup from "./Startup";
 import { invoke } from "@tauri-apps/api/core";
 import { updateBreadcrumbs } from "../Editor/components/EditorBreadcrumbs";
 import { isContextMenuShown } from "../ContextMenu/ContextMenu";
@@ -81,7 +80,13 @@ const forceUnlisten = async () => {
   }
 };
 
+export const revealLocation = () => {
+  invoke("reveal_location", { path: dirname(selectedItem) });
+};
+
 export const newItem = (type: string) => {
+  info("Creating new item in file browser");
+
   const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
   if (selectedItem === "") {
     setNewItemDir(normalizePath(rootDir()));
@@ -90,7 +95,7 @@ export const newItem = (type: string) => {
   }
   setNewItemType(type);
 
-  emit("flux:event:contextMenuClicked", { type: "newItem" });
+  emit("flux:event:contextMenuClicked", { type: "newItem" }); // event listener in hovered item
 };
 
 export const removeItem = throttle((trash: boolean) => {
@@ -350,7 +355,6 @@ const FileBrowser = (props: Props) => {
                               }
                               break;
                             case "removeItem":
-                              console.log(selectedItem);
                               const item = selectedItem.slice(
                                 0,
                                 selectedItem.length - 1,
@@ -468,7 +472,7 @@ const FileBrowser = (props: Props) => {
         }
       }}
     >
-      <Show when={props.loaded} fallback={<Startup />}>
+      <Show when={props.loaded}>
         <div class="z-10 block h-6 w-full select-none items-center overflow-hidden overflow-ellipsis bg-base-200 px-2 font-bold text-content-main">
           {`${props.rootDirName}`}
         </div>

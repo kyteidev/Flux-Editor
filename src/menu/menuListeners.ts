@@ -23,8 +23,8 @@ import {
   about,
   license,
   licenseFonts,
-  licenseThirdPartyJS,
-  licenseThirdPartyRust,
+  licenseThirdPartyNPM as licenseThirdPartyNPM,
+  licenseThirdPartyCargo as licenseThirdPartyCargo,
   settings,
   viewLogs,
 } from "./menuActions";
@@ -51,11 +51,11 @@ export const addListeners = () => {
   appWindow.listen("flux:menu:license", async () => {
     license();
   });
-  appWindow.listen("flux:menu:licenses-third-party-js", async () => {
-    licenseThirdPartyJS();
+  appWindow.listen("flux:menu:licenses-third-party-npm", async () => {
+    licenseThirdPartyNPM();
   });
-  appWindow.listen("flux:menu:licenses-third-party-rust", async () => {
-    licenseThirdPartyRust();
+  appWindow.listen("flux:menu:licenses-third-party-cargo", async () => {
+    licenseThirdPartyCargo();
   });
   appWindow.listen("flux:menu:licenses-fonts", async () => {
     licenseFonts();
@@ -87,7 +87,7 @@ export const addListeners = () => {
   appWindow.listen("flux:menu:file_browser", () => {
     setHideFB(!hideFB());
   });
-  appWindow.listen("flux:menu:menu:terminal", () => {
+  appWindow.listen("flux:menu:terminal", () => {
     setHideTerm(!hideTerm());
   });
 

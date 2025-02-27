@@ -23,9 +23,6 @@ use crate::utils::time::time_ms;
 #[cfg(target_os = "macos")]
 use crate::window_ext::WindowExt;
 
-#[cfg(any(windows))]
-use window_shadows::set_shadow;
-
 #[tauri::command]
 pub async fn new_window(app: tauri::AppHandle) {
     let id = time_ms();
@@ -51,10 +48,10 @@ pub async fn new_window(app: tauri::AppHandle) {
 
     #[cfg(not(target_os = "macos"))]
     {
-        let _win = WindowBuilder::new(
+        let _win = WebviewWindowBuilder::new(
             &app,
             id.to_string(),
-            tauri::WindowUrl::App("index.html".into()),
+            tauri::WebviewUrl::App("index.html".into()),
         )
         .title("Flux Editor")
         .decorations(false)
@@ -62,8 +59,5 @@ pub async fn new_window(app: tauri::AppHandle) {
         .min_inner_size(660., 450.)
         .build()
         .unwrap();
-
-        #[cfg(any(windows))]
-        set_shadow(&_win, true).unwrap();
     }
 }

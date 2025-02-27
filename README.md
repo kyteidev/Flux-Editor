@@ -27,10 +27,8 @@
 - Built-in terminal
 - Code suggestions (soon)
 - Git integration (partially complete)
-- Incredibly lightweight
+- Very fast
 - Minimalist UI
-- Tiny binary
-- No bloat
 - and many more!
 
 ## Installation <a name="installation"></a>

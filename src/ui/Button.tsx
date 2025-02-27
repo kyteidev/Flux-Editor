@@ -15,7 +15,6 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-import { Show } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 
 interface Props {
