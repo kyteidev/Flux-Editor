@@ -60,8 +60,8 @@ interface Props {
 
 let checkMustOpenDir: UnlistenFn[] = [];
 
-let selectedItem = "";
-let selectedDir = false;
+const [selectedItem, setSelectedItem] = createSignal("");
+const [selectedDir, setSelectedDir] = createSignal(false);
 
 const [rootDir, setRootDir] = createSignal("");
 
@@ -81,14 +81,14 @@ const forceUnlisten = async () => {
 };
 
 export const revealLocation = () => {
-  invoke("reveal_location", { path: dirname(selectedItem) });
+  invoke("reveal_location", { path: dirname(selectedItem()) });
 };
 
 export const newItem = (type: string) => {
   info("Creating new item in file browser");
 
-  const parentDir = selectedDir ? selectedItem : dirname(selectedItem);
-  if (selectedItem === "") {
+  const parentDir = selectedDir() ? selectedItem() : dirname(selectedItem());
+  if (selectedItem() === "") {
     setNewItemDir(normalizePath(rootDir()));
   } else {
     setNewItemDir(normalizePath(parentDir));
@@ -102,9 +102,9 @@ export const removeItem = throttle((trash: boolean) => {
   invoke("remove_file", { trash: trash, path: selectedItem });
   emit("flux:event:contextMenuClicked", { type: "removeItem" });
 
-  if (!selectedDir && isTabOpen(selectedItem)) {
+  if (!selectedDir && isTabOpen(selectedItem())) {
     closeFile();
-    closeTabGlobal(selectedItem);
+    closeTabGlobal(selectedItem());
   }
 }, 500);
 
@@ -334,10 +334,10 @@ const FileBrowser = (props: Props) => {
                   class="group min-w-fit cursor-pointer select-none px-1 hover:bg-base-100 active:bg-base-50"
                   onMouseEnter={async () => {
                     if (!isContextMenuShown()) {
-                      selectedItem = normalizePath(itemPath);
-                      selectedDir = isDir();
+                      setSelectedItem(normalizePath(itemPath));
+                      setSelectedDir(isDir());
 
-                      let normalizedItemPath = selectedItem; // reusing normalized item path in selectedItem
+                      let normalizedItemPath = selectedItem(); // reusing normalized item path in selectedItem
                       const id = await once<{ type: string }>(
                         "flux:event:contextMenuClicked",
                         (e) => {
@@ -355,11 +355,11 @@ const FileBrowser = (props: Props) => {
                               }
                               break;
                             case "removeItem":
-                              const item = selectedItem.slice(
+                              const item = selectedItem().slice(
                                 0,
-                                selectedItem.length - 1,
+                                selectedItem().length - 1,
                               );
-                              if (selectedDir) {
+                              if (selectedDir()) {
                                 nestedDirs.splice(nestedDirs.indexOf(item), 1);
                               } else {
                                 nestedFiles.splice(
@@ -460,8 +460,8 @@ const FileBrowser = (props: Props) => {
       class={`${props.loaded && "context-0"} h-full min-h-full w-full min-w-full max-w-full bg-base-200`}
       onMouseLeave={() => {
         if (!isContextMenuShown()) {
-          selectedItem = "";
-          selectedDir = false;
+          setSelectedItem("");
+          setSelectedDir(false);
 
           if (!isContextMenuShown() && checkMustOpenDir.length > 0) {
             checkMustOpenDir[0]();
