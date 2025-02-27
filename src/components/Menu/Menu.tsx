@@ -100,7 +100,7 @@ const runShortcut = () => {
   for (const shortcut of Object.keys(shortcuts)) {
     const shortcutKeys = shortcut.split(",");
     const filteredKeysPressed = keysPressed.map((key) =>
-      key.replace("Left", "").replace("Right", ""),
+      key.replace("Left", "").replace("Right", "").replace("Key", ""),
     );
     if (shortcutKeys.every((key) => filteredKeysPressed.includes(key))) {
       shortcuts[shortcut]();
