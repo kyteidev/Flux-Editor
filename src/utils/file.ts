@@ -68,7 +68,7 @@ export const fileIcons: { [key: string]: () => JSX.Element } = {
   bat: FI.Terminal,
   c: FI.C,
   vue: FI.Vue,
-  h: FI.CPPHeader,
+  h: FI.C,
   tsx: FI.React,
   jsx: FI.React,
   bf: FI.Brainfuck,

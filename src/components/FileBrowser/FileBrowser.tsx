@@ -419,8 +419,8 @@ const FileBrowser = (props: Props) => {
                             </div>
                           }
                         >
-                          <Show when={open()} fallback={<FI.IconFolder />}>
-                            <FI.IconFolderOpen />
+                          <Show when={open()} fallback={<FI.Folder />}>
+                            <FI.FolderOpen />
                           </Show>
                         </Show>
                       </div>

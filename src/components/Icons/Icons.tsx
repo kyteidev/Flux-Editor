@@ -1,5 +1,11 @@
 // All icons sourced from Tabler Icons (tabler.io/icons). SVG icons licensed under MIT. License notice found in resources/THIRD-PARTY-LICENSES-JS.txt
 
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconChevronUp,
+} from "@tabler/icons-solidjs";
+
 export const IconClose = () => {
   return (
     <svg
@@ -20,39 +26,11 @@ export const IconClose = () => {
 };
 
 export const IconExpand = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M6 9l6 6l6 -6" />
-    </svg>
-  );
+  return <IconChevronDown />;
 };
 
-export const IconUnexpand = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M6 15l6 -6l6 6" />
-    </svg>
-  );
+export const IconShrink = () => {
+  return <IconChevronUp />;
 };
 
 // Designed by kyteidev. SVG licensed under CC-BY-SA.
@@ -144,22 +122,7 @@ export const IconSettings = () => {
 };
 
 export const IconExpandRight = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="var(--content-main)"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M9 6l6 6l-6 6" />
-    </svg>
-  );
+  return <IconChevronRight />;
 };
 
 export const IconMenu = () => {

@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License along with Flu
 import { For, onCleanup, onMount, Show } from "solid-js";
 import { createSignal } from "solid-js";
 
-import { IconExpand, IconUnexpand } from "../components/Icons/Icons";
+import { IconExpand, IconShrink } from "../components/Icons/Icons";
 
 interface Props {
   items: string[];
@@ -71,7 +71,7 @@ const Dropdown = (props: Props) => {
         </div>
         <div class="absolute right-2 stroke-content group-hover:stroke-content-main">
           <Show when={isOpen()} fallback={<IconExpand />}>
-            <IconUnexpand />
+            <IconShrink />
           </Show>
         </div>
       </button>
