@@ -127,7 +127,7 @@ export default function App() {
         <SplitPane
           grow={true}
           size={200}
-          firstMinSize={180}
+          firstMinSize={90}
           secondMinSize={480}
           canFirstHide={true}
           hideFirst={hideFB()}
@@ -148,10 +148,10 @@ export default function App() {
           <SplitPane
             vertical={true}
             grow={true}
-            size={250}
-            firstMinSize={170}
+            size={120}
+            firstMinSize={80}
             canFirstHide={true}
-            secondMinSize={250}
+            secondMinSize={300}
             canSecondHide={false}
             swapPriority={true}
             hideSecond={hideTerm()}

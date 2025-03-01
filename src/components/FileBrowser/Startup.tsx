@@ -323,7 +323,10 @@ const Startup = () => {
           </div>
         </Modal>
       </dialog>
-      <div class="flex items-center space-x-4" style={{ margin: "48px" }}>
+      <div
+        class="pointer-events-none flex items-center space-x-4"
+        style={{ margin: "48px" }}
+      >
         <div
           style={{
             width: "8rem",
