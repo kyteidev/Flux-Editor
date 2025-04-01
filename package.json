@@ -15,7 +15,7 @@
   "license": "GPL-3.0-only",
   "dependencies": {
     "@tabler/icons-solidjs": "^3.30.0",
-    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/api": "^2.4.0",
     "@tauri-apps/plugin-dialog": "^2.0.0",
     "@tauri-apps/plugin-fs": "^2.0.0",
     "@tauri-apps/plugin-log": "^2.0.0",
