@@ -27,6 +27,9 @@ export const specialCodeFileType: { [key: string]: string } = {
   vue: "html",
   h: "cpp",
   bf: "brainfuck",
+  ex: "elixir",
+  exs: "elixir",
+  erl: "erlang"
 };
 
 export const specialFileIcons: { [key: string]: () => JSX.Element } = {
