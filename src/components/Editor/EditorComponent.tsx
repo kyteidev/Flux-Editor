@@ -46,6 +46,7 @@ import "prismjs/components/prism-docker.min.js";
 import "prismjs/components/prism-editorconfig.min.js";
 import "prismjs/components/prism-ejs.min.js";
 import "prismjs/components/prism-elixir.min.js";
+import "prismjs/components/prism-erlang.min.js";
 import "prismjs/components/prism-fsharp.min.js";
 import "prismjs/components/prism-gdscript.min.js";
 import "prismjs/components/prism-go.min.js";
