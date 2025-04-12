@@ -54,6 +54,8 @@ See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTI
 - Syntax highlighting is powered by PrismJS
 - The search bar was inspired by VSCode and Zed
 
+Special thanks to everyone who contributed to this project :)
+
 ## Copyright and Licenses <a name="license"></a>
 
 Copyright © 2024-2025 [kyteidev](https://github.com/kyteidev/). Licensed under [GNU General Public License v3.0](https://github.com/kyteidev/FluxEditor/blob/dev/LICENSE).
