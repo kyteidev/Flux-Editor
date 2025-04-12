@@ -29,7 +29,7 @@ export const specialCodeFileType: { [key: string]: string } = {
   bf: "brainfuck",
   ex: "elixir",
   exs: "elixir",
-  erl: "erlang"
+  erl: "erlang",
 };
 
 export const specialFileIcons: { [key: string]: () => JSX.Element } = {
@@ -77,6 +77,9 @@ export const fileIcons: { [key: string]: () => JSX.Element } = {
   bf: FI.Brainfuck,
   sql: FI.SQL,
   rb: FI.Ruby,
+  ex: FI.Elixir,
+  exs: FI.Elixir,
+  erl: FI.Erlang,
 
   // config files
   json: FI.Config,

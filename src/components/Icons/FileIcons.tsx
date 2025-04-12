@@ -24,6 +24,7 @@ import {
   IconCoffee,
   IconCopyright,
   IconDiamond,
+  IconDroplet,
   IconFavicon,
   IconFile,
   IconFileInfo,
@@ -33,6 +34,8 @@ import {
   IconFileZip,
   IconHexagonLetterC,
   IconLetterCase,
+  IconLetterE,
+  IconLetterESmall,
   IconLock,
   IconMarkdown,
   IconMoustache,
@@ -241,4 +244,12 @@ export const Lockfile = () => {
 
 export const Handlebars = () => {
   return <IconMoustache />;
+};
+
+export const Elixir = () => {
+  return <IconDroplet />;
+};
+
+export const Erlang = () => {
+  return <IconLetterE />;
 };
