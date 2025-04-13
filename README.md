@@ -42,7 +42,7 @@ You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEd
 ### Running unsigned applications on macOS
 
 > [!WARNING]
-> **DISCLAIMER: I AM NOT RESPONSIBLE OF ANYTHING THAT HAPPENS TO YOUR COMPUTER AS A RESULT OF THE FOLLOWING GUIDE. ALWAYS MAKE SURE THE APPLICATION YOU ARE RUNNING IS SAFE AND FROM A TRUSTED SOURCE. USE AT YOUR OWN RISK.**
+> **DISCLAIMER: I AM NOT RESPONSIBLE FOR ANYTHING THAT HAPPENS TO YOUR COMPUTER AS A RESULT OF THE FOLLOWING GUIDE. ALWAYS MAKE SURE THE APPLICATION YOU RUN IS SAFE AND FROM A TRUSTED SOURCE. USE AT YOUR OWN RISK.**
 
 Since I do not have an Apple Developer account, I am unable to sign Flux Editor. This results in users getting a popup that says the app cannot be verified or the app is damaged. However, these popups can be bypassed, but ALWAYS remember to check if the unsigned app you are running is safe and from a trusted source.
 
