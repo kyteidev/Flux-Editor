@@ -36,19 +36,8 @@
 You can find built binaries in the [Releases](https://github.com/kyteidev/FluxEditor/releases) page.
 
 > [!WARNING]
-> I don't have an Apple Developer account yet. You may encounter a popup that says Apple cannot verify this app or this app is damaged. To bypass these dialogs, read below.
+> I don't have an Apple Developer account yet. You may encounter a popup that says Apple cannot verify this app or this app is damaged.
 > If you don't trust the builds, you can always build Flux Editor from source. See [CONTRIBUTING.md](https://github.com/kyteidev/FluxEditor/blob/dev/CONTRIBUTING.md) for instructions
-
-### Running unsigned applications on macOS
-
-> [!WARNING]
-> **DISCLAIMER: I AM NOT RESPONSIBLE FOR ANYTHING THAT HAPPENS TO YOUR COMPUTER AS A RESULT OF THE FOLLOWING GUIDE. ALWAYS MAKE SURE THE APPLICATION YOU RUN IS SAFE AND FROM A TRUSTED SOURCE. USE AT YOUR OWN RISK.**
-
-Since I do not have an Apple Developer account, I am unable to sign Flux Editor. This results in users getting a popup that says the app cannot be verified or the app is damaged. However, these popups can be bypassed, but ALWAYS remember to check if the unsigned app you are running is safe and from a trusted source.
-
-To bypass the popup, Click **Okay**, then go to **System Settings** > **Privacy and Security**, scroll down and click **Open Anyway**.
-
-If you are getting a popup that says the app is damaged, it basically means the same thing as "this app cannot be verified". Apple reworded the popup and made it harder for users to bypass it in the latest versions of macOS. To bypass this, run ```xattr -d com.apple.quarantine /path/to/app```
 
 ## Known Issues <a name="known-issues"></a>
 
