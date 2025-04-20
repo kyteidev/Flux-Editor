@@ -1,6 +1,6 @@
 {
   "name": "flux-editor",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A minimalist and lightweight code editor",
   "type": "module",
   "scripts": {
