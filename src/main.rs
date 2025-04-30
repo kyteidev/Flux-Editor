@@ -1,6 +1,14 @@
 use freya::hotreload::FreyaCtx;
 use freya::prelude::*;
 
+mod themes;
+//use themes::dark::DARK_THEME;
+
+mod components;
+use components::editor::editor::Editor;
+
+pub static BG_COLOR: GlobalSignal<&str> = GlobalSignal::new(|| "white");
+
 fn main() {
     dioxus_hot_reload::hot_reload_init!(Config::<FreyaCtx>::default());
 
@@ -16,11 +24,7 @@ fn app() -> Element {
     rsx!(rect {
         width: "100%",
         height: "100%",
-        background: "white",
-        border: "1px solid black",
-        padding: "10px",
-        label {
-            "Flux Editor"
-        }
+        background: "{BG_COLOR}",
+        Editor {}
     })
 }
