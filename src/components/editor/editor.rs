@@ -12,6 +12,7 @@ pub fn Editor() -> Element {
     );
 
     let editor = editable.editor().read();
+    let cursor_reference = editable.cursor_attr();
     let cursor_char = editor.cursor_pos();
     let highlights = editable.highlights_attr(0);
 
@@ -21,6 +22,8 @@ pub fn Editor() -> Element {
         height: "100%",
         background: "{BG_COLOR}",
         ScrollView {
+            width: "100%",
+            height: "100%",
             scroll_with_arrows: false,
             paragraph {
                 width: "100%",
@@ -30,11 +33,25 @@ pub fn Editor() -> Element {
                 cursor_mode: "editable",
                 cursor_color: "black",
                 highlights,
-                onkeydown: move |e| {
+                cursor_reference,
+                onglobalkeydown: move |e| {
                     editable.process_event(&EditableEvent::KeyDown(e.data));
-                    },
-                onclick: move |e| {
-                    editable.process_event(&EditableEvent::MouseDown(e.data, 0));
+                },
+                onglobalkeyup: move |e| {
+                    editable.process_event(&EditableEvent::KeyUp(e.data));
+                },
+                onclick: move |_| {
+                    editable.process_event(&EditableEvent::Click);
+                },
+                onmousemove: move |e| {
+                    editable.process_event(&EditableEvent::MouseMove(e.data, 0));
+                },
+                onmousedown: move |e| {
+                    if e.data.trigger_button.unwrap() == MouseButton::Left { // prevent RMB from selecting text
+                        editable.process_event(&EditableEvent::MouseDown(e.data, 0));
+                    }
+
+                    // implement context menu?
                 },
                 onmouseenter: move |_| {
                     platform.set_cursor(CursorIcon::Text);

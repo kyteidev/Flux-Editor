@@ -1,11 +1,16 @@
 [package]
 name = "FluxEditor"
-version = "0.9.0"
+version = "0.7.0"
 edition = "2021"
 
 [dependencies]
-freya = "0.2"
+freya = { version = "0.3.0-rc.4" }
 dioxus = { version = "0.6", features = [
     "macro",
     "hooks",
 ], default-features = false }
+self_update = "0.42.0"
+semver = "1.0.26"
+log = "0.4.27"
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
