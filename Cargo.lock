@@ -3,19 +3,6 @@
 version = 4
 
 [[package]]
-name = "FluxEditor"
-version = "0.7.0"
-dependencies = [
- "dioxus",
- "freya",
- "log",
- "self_update",
- "semver",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "ab_glyph"
 version = "0.2.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1430,6 +1417,19 @@ checksum = "7ced92e76e966ca2fd84c8f7aa01a4aea65b0eb6648d72f7c8f3e2764a67fece"
 dependencies = [
  "crc32fast",
  "miniz_oxide",
+]
+
+[[package]]
+name = "flux_editor"
+version = "0.9.0"
+dependencies = [
+ "dioxus",
+ "freya",
+ "log",
+ "self_update",
+ "semver",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
