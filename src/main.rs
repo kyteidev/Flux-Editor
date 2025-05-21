@@ -11,23 +11,18 @@ use tracing::{error, info, Level};
 use tracing_subscriber::FmtSubscriber;
 
 #[cfg(target_os = "macos")]
-use cocoa::base::id;
-
-#[cfg(target_os = "macos")]
-use objc::msg_send;
-#[cfg(target_os = "macos")]
-use objc::runtime::Object;
-#[cfg(target_os = "macos")]
-use objc::sel;
-#[cfg(target_os = "macos")]
-use objc::sel_impl;
-#[cfg(target_os = "macos")]
-use winit::raw_window_handle::{HasWindowHandle, RawWindowHandle};
+use {
+    cocoa::base::id,
+    objc::{msg_send, runtime::Object, sel, sel_impl},
+    winit::raw_window_handle::{HasWindowHandle, RawWindowHandle},
+};
 
 mod window;
 use window::set_transparent_titlebar;
 
 pub static BG_COLOR: GlobalSignal<&str> = GlobalSignal::new(|| "white");
+
+const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
 
 pub fn get_colors(color: &str) -> String {
     match color {
@@ -50,6 +45,7 @@ fn main() {
         LaunchConfig::<()>::new()
             .with_title("Flux Editor")
             .with_decorations(true)
+            .with_icon(LaunchConfig::load_icon(ICON))
             .on_setup(|window| {
                 #[cfg(target_os = "macos")]
                 {
