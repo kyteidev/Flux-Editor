@@ -1,3 +1,20 @@
+/*
+Copyright © 2024-2025 kyteidev.
+
+This file is part of Flux Editor.
+
+Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+<https://www.gnu.org/licenses/>.
+*/
+
 use freya::prelude::*;
 
 mod themes;
@@ -20,13 +37,15 @@ use {
 mod window;
 use window::set_transparent_titlebar;
 
-pub static BG_COLOR: GlobalSignal<&str> = GlobalSignal::new(|| "white");
+pub static BG_100: GlobalSignal<&str> = GlobalSignal::new(|| "white");
+pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "white");
 
 const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
 
 pub fn get_colors(color: &str) -> String {
     match color {
-        "bg" => BG_COLOR.read().to_string(),
+        "bg-100" => BG_100.read().to_string(),
+        "bg-200" => BG_200.read().to_string(),
         _ => "".to_string(),
     }
 }
@@ -75,7 +94,7 @@ fn app() -> Element {
     rsx!(rect {
         width: "100%",
         height: "100%",
-        background: "{BG_COLOR}",
+        background: "{BG_200}",
         TitleBar {}
         Editor {}
     })

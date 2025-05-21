@@ -1,3 +1,20 @@
+/*
+Copyright © 2024-2025 kyteidev.
+
+This file is part of Flux Editor.
+
+Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
+option) any later version.
+
+Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+<https://www.gnu.org/licenses/>.
+*/
+
 use freya::prelude::*;
 use syntect::{
     easy::HighlightLines,
@@ -5,7 +22,7 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
-use crate::BG_COLOR;
+use crate::BG_200;
 
 #[allow(non_snake_case)]
 pub fn Editor() -> Element {
@@ -35,7 +52,7 @@ pub fn Editor() -> Element {
     rect {
         width: "100%",
         height: "100%",
-        background: "{BG_COLOR}",
+        background: "{BG_200}",
         ScrollView {
             width: "100%",
             height: "100%",
