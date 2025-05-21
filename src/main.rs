@@ -37,8 +37,9 @@ use {
 mod window;
 use window::set_transparent_titlebar;
 
-pub static BG_100: GlobalSignal<&str> = GlobalSignal::new(|| "white");
-pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "white");
+// Default theme
+pub static BG_100: GlobalSignal<&str> = GlobalSignal::new(|| "#1d232a");
+pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "#13171c");
 
 const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
 

@@ -22,6 +22,7 @@ use crate::get_colors;
 #[allow(non_snake_case)]
 pub fn TitleBar() -> Element {
     let bg_color = get_colors("bg-200");
+    let border_color = get_colors("bg-100");
 
     rsx!(
         WindowDragArea {
@@ -29,6 +30,7 @@ pub fn TitleBar() -> Element {
                 width: "100%",
                 height: "30",
                 background: "{bg_color}",
+                border: "0 0 2 0 inner {border_color}"
             }
         }
     )
