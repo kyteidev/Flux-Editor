@@ -4,11 +4,28 @@ mod themes;
 //use themes::dark::DARK_THEME;
 
 mod components;
-use components::editor::editor::Editor;
+use components::{editor::editor::Editor, title_bar::title_bar::TitleBar};
 use self_update::cargo_crate_version;
 use semver::Version;
 use tracing::{error, info, Level};
 use tracing_subscriber::FmtSubscriber;
+
+#[cfg(target_os = "macos")]
+use cocoa::base::id;
+
+#[cfg(target_os = "macos")]
+use objc::msg_send;
+#[cfg(target_os = "macos")]
+use objc::runtime::Object;
+#[cfg(target_os = "macos")]
+use objc::sel;
+#[cfg(target_os = "macos")]
+use objc::sel_impl;
+#[cfg(target_os = "macos")]
+use winit::raw_window_handle::{HasWindowHandle, RawWindowHandle};
+
+mod window;
+use window::set_transparent_titlebar;
 
 pub static BG_COLOR: GlobalSignal<&str> = GlobalSignal::new(|| "white");
 
@@ -21,7 +38,34 @@ fn main() {
 
     check_update(false);
 
-    launch_cfg(app, LaunchConfig::<()>::new().with_title("Flux Editor"));
+    launch_cfg(
+        app,
+        LaunchConfig::<()>::new()
+            .with_title("Flux Editor")
+            .with_decorations(true)
+            .on_setup(|window| {
+                #[cfg(target_os = "macos")]
+                {
+                    let handle = window.window_handle().unwrap().as_raw();
+
+                    if let RawWindowHandle::AppKit(appkit) = handle {
+                        let ns_view_ptr = appkit.ns_view.as_ptr();
+
+                        let ns_view: *mut Object = ns_view_ptr as *mut _;
+
+                        unsafe {
+                            let ns_window: id = msg_send![ns_view, window];
+                            if ns_window.is_null() {
+                                error!("ns_window is null, unable to set transparent titlebar");
+                                return;
+                            }
+
+                            set_transparent_titlebar(ns_window);
+                        }
+                    }
+                }
+            }),
+    );
 }
 
 fn app() -> Element {
@@ -29,6 +73,7 @@ fn app() -> Element {
         width: "100%",
         height: "100%",
         background: "{BG_COLOR}",
+        TitleBar {}
         Editor {}
     })
 }

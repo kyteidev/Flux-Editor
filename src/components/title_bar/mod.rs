@@ -1,2 +1,1 @@
-pub mod editor;
 pub mod title_bar;

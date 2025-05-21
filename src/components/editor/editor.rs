@@ -39,9 +39,8 @@ pub fn Editor() -> Element {
         ScrollView {
             width: "100%",
             height: "100%",
-            scroll_with_arrows: false,
             paragraph {
-                width: "100%",
+                width: "1000%",
                 font_size: "20",
                 line_height: "1.5",
                 font_family: "Menlo, Monaco",
