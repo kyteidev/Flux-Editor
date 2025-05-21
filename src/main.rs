@@ -41,6 +41,7 @@ use window::set_transparent_titlebar;
 pub static BG_100: GlobalSignal<&str> = GlobalSignal::new(|| "#1d232a");
 pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "#13171c");
 
+#[cfg(not(target_os = "macos"))]
 const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
 
 pub fn get_colors(color: &str) -> String {
@@ -60,35 +61,39 @@ fn main() {
 
     check_update(false);
 
-    launch_cfg(
-        app,
-        LaunchConfig::<()>::new()
-            .with_title("Flux Editor")
-            .with_decorations(true)
-            .with_icon(LaunchConfig::load_icon(ICON))
-            .on_setup(|window| {
-                #[cfg(target_os = "macos")]
-                {
-                    let handle = window.window_handle().unwrap().as_raw();
+    #[cfg(not(target_os = "macos"))]
+    let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
+        .with_title("Flux Editor")
+        .with_icon(LaunchConfig::load_icon(ICON))
+        .with_decorations(false);
 
-                    if let RawWindowHandle::AppKit(appkit) = handle {
-                        let ns_view_ptr = appkit.ns_view.as_ptr();
+    #[cfg(target_os = "macos")]
+    let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
+        .with_title("Flux Editor")
+        .on_setup(|window| {
+            #[cfg(target_os = "macos")]
+            {
+                let handle = window.window_handle().unwrap().as_raw();
 
-                        let ns_view: *mut Object = ns_view_ptr as *mut _;
+                if let RawWindowHandle::AppKit(appkit) = handle {
+                    let ns_view_ptr = appkit.ns_view.as_ptr();
 
-                        unsafe {
-                            let ns_window: id = msg_send![ns_view, window];
-                            if ns_window.is_null() {
-                                error!("ns_window is null, unable to set transparent titlebar");
-                                return;
-                            }
+                    let ns_view: *mut Object = ns_view_ptr as *mut _;
 
-                            set_transparent_titlebar(ns_window);
+                    unsafe {
+                        let ns_window: id = msg_send![ns_view, window];
+                        if ns_window.is_null() {
+                            error!("ns_window is null, unable to set transparent titlebar");
+                            return;
                         }
+
+                        set_transparent_titlebar(ns_window);
                     }
                 }
-            }),
-    );
+            }
+        });
+
+    launch_cfg(app, launch_config);
 }
 
 fn app() -> Element {
