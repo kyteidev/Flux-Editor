@@ -29,6 +29,13 @@ use window::set_transparent_titlebar;
 
 pub static BG_COLOR: GlobalSignal<&str> = GlobalSignal::new(|| "white");
 
+pub fn get_colors(color: &str) -> String {
+    match color {
+        "bg" => BG_COLOR.read().to_string(),
+        _ => "".to_string(),
+    }
+}
+
 fn main() {
     let subscriber = FmtSubscriber::builder()
         .with_max_level(Level::INFO)
