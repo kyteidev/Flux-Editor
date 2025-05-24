@@ -22,10 +22,16 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
+use crate::state::EDITOR_LINES;
 use crate::BG_200;
 
+#[derive(Props, Clone, PartialEq)]
+pub struct Props {
+    scroll_controller: ScrollController,
+}
+
 #[allow(non_snake_case)]
-pub fn Editor() -> Element {
+pub fn Editor(props: Props) -> Element {
     let mut highlighted_lines = use_signal(|| Vec::<Vec<(Style, String)>>::new());
 
     let platform = use_platform();
@@ -44,20 +50,33 @@ pub fn Editor() -> Element {
     let ts = ThemeSet::load_defaults();
 
     use_effect(move || {
-        let new_highlights = highlight_lines(&ps, &ts, &editable.editor().read().to_string());
-        highlighted_lines.set(new_highlights);
+        let editor_text = editable.editor().read().to_string();
+        let new_highlights = highlight_lines(&ps, &ts, &editor_text);
+        highlighted_lines.set(new_highlights.clone());
+
+        let line_count = if editor_text.is_empty() {
+            1
+        } else if editor_text.ends_with('\n') {
+            // highlight_lines does not include the trailing newline, so add 1
+            new_highlights.len() + 1
+        } else {
+            new_highlights.len()
+        };
+        *EDITOR_LINES.write() = line_count;
     });
 
     rsx!(
     rect {
-        width: "100%",
-        height: "100%",
+        width: "fill",
+        height: "fill",
         background: "{BG_200}",
         ScrollView {
             width: "100%",
             height: "100%",
+            padding: "4 0 0 0",
+            scroll_controller: props.scroll_controller,
             paragraph {
-                width: "1000%",
+                width: "1000%", // fix this
                 font_size: "20",
                 line_height: "1.5",
                 font_family: "Menlo, Monaco",

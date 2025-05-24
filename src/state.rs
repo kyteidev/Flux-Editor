@@ -15,5 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-pub mod editor;
-pub mod line_numbers;
+use freya::prelude::*;
+
+pub static EDITOR_LINES: GlobalSignal<usize> = GlobalSignal::new(|| 1);
+pub static LINE_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);

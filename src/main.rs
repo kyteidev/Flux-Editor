@@ -20,8 +20,13 @@ use freya::prelude::*;
 mod themes;
 //use themes::dark::DARK_THEME;
 
+mod state;
+
 mod components;
-use components::{editor::editor::Editor, title_bar::title_bar::TitleBar};
+use components::{
+    editor::{editor::Editor, line_numbers::LineNumbers},
+    title_bar::title_bar::TitleBar,
+};
 use self_update::cargo_crate_version;
 use semver::Version;
 use tracing::{error, info, Level};
@@ -97,12 +102,24 @@ fn main() {
 }
 
 fn app() -> Element {
+    let scroll_controller = use_scroll_controller(|| ScrollConfig::default());
+
     rsx!(rect {
         width: "100%",
         height: "100%",
         background: "{BG_200}",
         TitleBar {}
-        Editor {}
+        rect {
+            width: "fill",
+            height: "fill",
+            direction: "horizontal",
+            LineNumbers {
+                scroll_controller: scroll_controller,
+            }
+            Editor {
+                scroll_controller: scroll_controller,
+            }
+        }
     })
 }
 
