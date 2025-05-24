@@ -1468,6 +1468,7 @@ dependencies = [
  "objc",
  "self_update",
  "semver",
+ "skia-safe",
  "syntect",
  "tracing",
  "tracing-subscriber",

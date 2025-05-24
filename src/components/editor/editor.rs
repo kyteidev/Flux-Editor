@@ -22,7 +22,7 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
-use crate::state::EDITOR_LINES;
+use crate::state::{CHAR_WIDTH, EDITOR_LINES};
 use crate::BG_200;
 
 #[derive(Props, Clone, PartialEq)]
@@ -33,6 +33,7 @@ pub struct Props {
 #[allow(non_snake_case)]
 pub fn Editor(props: Props) -> Element {
     let mut highlighted_lines = use_signal(|| Vec::<Vec<(Style, String)>>::new());
+    let mut estimated_line_width: Signal<f32> = use_signal(|| 0.0);
 
     let platform = use_platform();
 
@@ -54,7 +55,7 @@ pub fn Editor(props: Props) -> Element {
     let ts = ThemeSet::load_defaults();
 
     use_effect(move || {
-        let editor_text = editable.editor().read().to_string();
+        let editor_text = editable.editor().to_string();
         let new_highlights = highlight_lines(&ps, &ts, &editor_text);
         highlighted_lines.set(new_highlights.clone());
 
@@ -67,6 +68,14 @@ pub fn Editor(props: Props) -> Element {
             new_highlights.len()
         };
         *EDITOR_LINES.write() = line_count;
+
+        let longest_line_length = editor_text
+            .lines()
+            .map(|line| line.chars().count())
+            .max()
+            .unwrap_or(1);
+
+        estimated_line_width.set(*CHAR_WIDTH.read() * longest_line_length as f32);
     });
 
     rsx!(
@@ -80,7 +89,7 @@ pub fn Editor(props: Props) -> Element {
             padding: "4 0 0 0",
             scroll_controller: props.scroll_controller,
             paragraph {
-                width: "1000%", // fix this
+                width: "calc({estimated_line_width} + 30)",
                 font_size: "20",
                 line_height: "1.5",
                 font_family: "Menlo, Monaco",

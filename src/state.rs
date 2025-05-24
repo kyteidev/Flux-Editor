@@ -19,3 +19,4 @@ use freya::prelude::*;
 
 pub static EDITOR_LINES: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 pub static LINE_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
+pub static CHAR_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 12.05);
