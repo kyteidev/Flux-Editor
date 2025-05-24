@@ -37,7 +37,11 @@ pub fn Editor(props: Props) -> Element {
     let platform = use_platform();
 
     let mut editable = use_editable(
-        || EditableConfig::new("".to_string()),
+        || {
+            EditableConfig::new("".to_string())
+                .with_allow_tabs(true)
+                .with_identation(4)
+        },
         EditableMode::MultipleLinesSingleEditor,
     );
 
