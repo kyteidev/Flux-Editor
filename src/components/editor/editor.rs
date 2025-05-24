@@ -87,7 +87,7 @@ pub fn Editor(props: Props) -> Element {
                 cursor_id: "0",
                 cursor_index: "{cursor_char}",
                 cursor_mode: "editable",
-                cursor_color: "black",
+                cursor_color: "white",
                 highlights,
                 cursor_reference,
                 onglobalkeydown: move |e| {
