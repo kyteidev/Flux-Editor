@@ -46,6 +46,8 @@ pub fn Editor(props: Props) -> Element {
     let mut highlighted_lines = use_signal(|| Vec::<Vec<(Style, String)>>::new());
     let mut estimated_line_width: Signal<f32> = use_signal(|| 0.0);
 
+    let mut editor_height: Signal<f32> = use_signal(|| 30.0);
+
     let platform = use_platform();
 
     let mut editable = use_editable(
@@ -91,6 +93,10 @@ pub fn Editor(props: Props) -> Element {
         estimated_line_width.set(*CHAR_WIDTH.read() * longest_line_length as f32);
     });
 
+    use_effect(move || {
+        editor_height.set(*EDITOR_LINES.read() as f32 * *LINE_HEIGHT.read());
+    });
+
     rsx!(
     rect {
         width: "fill",
@@ -103,6 +109,7 @@ pub fn Editor(props: Props) -> Element {
             scroll_controller: props.scroll_controller,
             paragraph {
                 width: "calc({estimated_line_width} + 30)",
+                height: "calc({editor_height} + 26)", // add offset because VirtualScrollView has offset for some reason
                 font_size: "20",
                 line_height: "1.5",
                 font_family: "Menlo, Monaco",
