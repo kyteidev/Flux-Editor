@@ -15,12 +15,19 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+use std::time::Duration;
+
 use freya::prelude::*;
 
 mod themes;
 //use themes::dark::DARK_THEME;
 
 mod state;
+
+mod utils;
+
+use tokio::time::sleep;
+use utils::char::get_char_width;
 
 mod components;
 use components::{
@@ -29,12 +36,7 @@ use components::{
 };
 use self_update::cargo_crate_version;
 use semver::Version;
-use skia_safe::{
-    scalar,
-    textlayout::{FontCollection, ParagraphBuilder, ParagraphStyle, TextStyle},
-    FontMgr,
-};
-use state::CHAR_WIDTH;
+use state::{CHAR_WIDTH, SCALE_FACTOR, WINDOW};
 use tracing::{error, info, Level};
 use tracing_subscriber::FmtSubscriber;
 
@@ -63,6 +65,17 @@ pub fn get_colors(color: &str) -> String {
     }
 }
 
+pub fn get_scale_factor() {
+    WINDOW.with(|cell| {
+        if let Some(ptr) = cell.get() {
+            let window = unsafe { &**ptr };
+            let factor = window.scale_factor();
+            *SCALE_FACTOR.write() = factor;
+            println!("factor: {}", factor);
+        }
+    });
+}
+
 fn main() {
     let subscriber = FmtSubscriber::builder()
         .with_max_level(Level::INFO)
@@ -76,14 +89,23 @@ fn main() {
     let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
         .with_title("Flux Editor")
         .with_icon(LaunchConfig::load_icon(ICON))
-        .with_decorations(false);
+        .with_decorations(false)
+        .on_setup(move |window| {
+            WINDOW.with(|w| {
+                w.set(window).ok();
+            });
+        });
 
     #[cfg(target_os = "macos")]
     let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
         .with_title("Flux Editor")
-        .on_setup(|window| {
+        .on_setup(move |window| {
             #[cfg(target_os = "macos")]
             {
+                WINDOW.with(|w| {
+                    w.set(window).ok();
+                });
+
                 let handle = window.window_handle().unwrap().as_raw();
 
                 if let RawWindowHandle::AppKit(appkit) = handle {
@@ -112,6 +134,12 @@ fn app() -> Element {
 
     *CHAR_WIDTH.write() = get_char_width();
 
+    // WINDOW is not immediately available
+    use_future(move || async move {
+        sleep(Duration::from_secs(1)).await;
+        get_scale_factor();
+    });
+
     rsx!(rect {
         width: "100%",
         height: "100%",
@@ -129,30 +157,6 @@ fn app() -> Element {
             }
         }
     })
-}
-
-fn get_char_width() -> f32 {
-    let mut paragraph_style = ParagraphStyle::default();
-    let mut text_style = TextStyle::default();
-    text_style.set_font_size(20.0);
-    text_style.set_font_families(&["Menlo", "Monaco"]);
-    paragraph_style.set_text_style(&text_style);
-
-    let mut font_collection = FontCollection::new();
-    font_collection
-        .set_default_font_manager_and_family_names(FontMgr::default(), &["Menlo", "Monaco"]);
-
-    let mut paragraph_builder = ParagraphBuilder::new(&paragraph_style, font_collection);
-
-    paragraph_builder.add_text("uwu"); // ;)
-
-    let mut paragraph = paragraph_builder.build();
-    paragraph.layout(scalar::MAX);
-
-    let char_width = paragraph.longest_line() / 3.0;
-    info!("Character width: {}", char_width);
-
-    char_width
 }
 
 fn check_update(should_update: bool) -> bool {

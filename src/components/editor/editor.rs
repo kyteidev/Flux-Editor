@@ -22,8 +22,14 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
-use crate::state::{CHAR_WIDTH, EDITOR_LINES};
-use crate::BG_200;
+use crate::{
+    state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, TITLE_BAR_HEIGHT},
+    utils::char::get_cursor_line_and_column,
+};
+use crate::{
+    state::{LINE_NUMBER_WIDTH, SCALE_FACTOR},
+    BG_200,
+};
 
 #[derive(Props, Clone, PartialEq)]
 pub struct Props {
@@ -32,6 +38,14 @@ pub struct Props {
 
 #[allow(non_snake_case)]
 pub fn Editor(props: Props) -> Element {
+    let line_number_width = *LINE_NUMBER_WIDTH.read();
+    let title_bar_height = *TITLE_BAR_HEIGHT.read();
+
+    let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
+    let scale_factor = *SCALE_FACTOR.read() as f32;
+
+    let mut scroll_controller = props.scroll_controller;
+
     let mut highlighted_lines = use_signal(|| Vec::<Vec<(Style, String)>>::new());
     let mut estimated_line_width: Signal<f32> = use_signal(|| 0.0);
 
@@ -55,6 +69,7 @@ pub fn Editor(props: Props) -> Element {
     let ts = ThemeSet::load_defaults();
 
     use_effect(move || {
+        // syntax highlight text
         let editor_text = editable.editor().to_string();
         let new_highlights = highlight_lines(&ps, &ts, &editor_text);
         highlighted_lines.set(new_highlights.clone());
@@ -69,6 +84,7 @@ pub fn Editor(props: Props) -> Element {
         };
         *EDITOR_LINES.write() = line_count;
 
+        // adjust width of paragraph component based on longest line width
         let longest_line_length = editor_text
             .lines()
             .map(|line| line.chars().count())
@@ -101,6 +117,26 @@ pub fn Editor(props: Props) -> Element {
                 cursor_reference,
                 onglobalkeydown: move |e| {
                     editable.process_event(&EditableEvent::KeyDown(e.data));
+
+                    // auto scroll so caret is visible
+                    let editor_text = editable.editor().to_string();
+
+                    let (cursor_line, cursor_column) = get_cursor_line_and_column(&editor_text, cursor_char);
+
+                    let caret_x = cursor_column as f32 * *CHAR_WIDTH.read();
+                    let caret_y =
+                        cursor_line as f32 * *LINE_HEIGHT.read();
+
+                    let caret_absolute_x = caret_x + *scroll_controller.x().read() as f32 + line_number_width;
+                    let caret_absolute_y = caret_y + *scroll_controller.y().read() as f32 + title_bar_height;
+
+                    if caret_absolute_x > viewport_size.width / scale_factor - 30.0 || caret_absolute_x < line_number_width {
+                        scroll_controller.scroll_to_x(-caret_x as i32);
+                    }
+
+                    if caret_absolute_y > viewport_size.height / scale_factor + title_bar_height || caret_absolute_y < title_bar_height {
+                        scroll_controller.scroll_to_y(-caret_y as i32);
+                    }
                 },
                 onglobalkeyup: move |e| {
                     editable.process_event(&EditableEvent::KeyUp(e.data));

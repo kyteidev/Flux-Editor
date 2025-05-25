@@ -16,7 +16,17 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 use freya::prelude::*;
+use once_cell::sync::OnceCell;
+
+pub static LINE_NUMBER_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 80.0);
+pub static TITLE_BAR_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 
 pub static EDITOR_LINES: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 pub static LINE_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 pub static CHAR_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 12.05);
+
+pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
+
+thread_local! {
+    pub static WINDOW: OnceCell<*mut Window> = OnceCell::new();
+}

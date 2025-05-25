@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 use freya::prelude::*;
 
-use crate::state::{EDITOR_LINES, LINE_HEIGHT};
+use crate::state::{EDITOR_LINES, LINE_HEIGHT, LINE_NUMBER_WIDTH};
 use crate::BG_200;
 
 #[derive(Props, Clone, PartialEq)]
@@ -27,11 +27,13 @@ pub struct Props {
 
 #[allow(non_snake_case)]
 pub fn LineNumbers(props: Props) -> Element {
+    let line_number_width = *LINE_NUMBER_WIDTH.read();
+
     let line_height = *LINE_HEIGHT.read();
     let editor_lines = *EDITOR_LINES.read();
 
     rsx!(rect {
-        width: "80",
+        width: "{line_number_width}",
         height: "fill",
         background: "{BG_200}",
         VirtualScrollView {
