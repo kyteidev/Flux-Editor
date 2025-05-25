@@ -22,10 +22,7 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
-use crate::{
-    state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, TITLE_BAR_HEIGHT},
-    utils::char::get_cursor_line_and_column,
-};
+use crate::state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, TITLE_BAR_HEIGHT};
 use crate::{
     state::{LINE_NUMBER_WIDTH, SCALE_FACTOR},
     BG_200,
@@ -119,9 +116,7 @@ pub fn Editor(props: Props) -> Element {
                     editable.process_event(&EditableEvent::KeyDown(e.data));
 
                     // auto scroll so caret is visible
-                    let editor_text = editable.editor().to_string();
-
-                    let (cursor_line, cursor_column) = get_cursor_line_and_column(&editor_text, cursor_char);
+                    let (cursor_line, cursor_column) = editable.editor().read().cursor_row_and_col();
 
                     let caret_x = cursor_column as f32 * *CHAR_WIDTH.read();
                     let caret_y =

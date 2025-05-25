@@ -28,23 +28,3 @@ pub fn get_char_width() -> f32 {
 
     char_width
 }
-
-pub fn get_cursor_line_and_column(text: &str, char_index: usize) -> (usize, usize) {
-    let mut line = 0;
-    let mut column = 0;
-    let mut current_index = 0;
-
-    for l in text.lines() {
-        let line_length = l.len() + 1; // +1 for the newline character
-
-        if current_index + line_length > char_index {
-            column = char_index - current_index;
-            break;
-        }
-
-        current_index += line_length;
-        line += 1;
-    }
-
-    (line, column)
-}
