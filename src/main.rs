@@ -42,8 +42,7 @@ use tracing_subscriber::FmtSubscriber;
 
 #[cfg(target_os = "macos")]
 use {
-    cocoa::base::id,
-    objc::{msg_send, runtime::Object, sel, sel_impl},
+    objc2::msg_send,
     winit::raw_window_handle::{HasWindowHandle, RawWindowHandle},
 };
 
@@ -102,6 +101,10 @@ fn main() {
         .on_setup(move |window| {
             #[cfg(target_os = "macos")]
             {
+                use objc2::msg_send;
+                use objc2::runtime::AnyObject;
+                use tracing::error;
+
                 WINDOW.with(|w| {
                     w.set(window).ok();
                 });
@@ -111,10 +114,10 @@ fn main() {
                 if let RawWindowHandle::AppKit(appkit) = handle {
                     let ns_view_ptr = appkit.ns_view.as_ptr();
 
-                    let ns_view: *mut Object = ns_view_ptr as *mut _;
+                    let ns_view: *mut AnyObject = ns_view_ptr.cast();
 
                     unsafe {
-                        let ns_window: id = msg_send![ns_view, window];
+                        let ns_window: *mut AnyObject = msg_send![ns_view, window];
                         if ns_window.is_null() {
                             error!("ns_window is null, unable to set transparent titlebar");
                             return;

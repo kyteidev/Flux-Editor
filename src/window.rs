@@ -16,22 +16,20 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 #[cfg(target_os = "macos")]
-use cocoa::{
-    appkit::{NSWindow, NSWindowStyleMask, NSWindowTitleVisibility},
-    base::id,
-};
+use objc2::msg_send;
+use objc2::runtime::AnyObject;
 
 #[cfg(target_os = "macos")]
-pub fn set_transparent_titlebar(ns_window: id) {
-    unsafe {
-        NSWindow::setTitlebarAppearsTransparent_(ns_window, cocoa::base::YES);
-        let mut style_mask = ns_window.styleMask();
-        style_mask.set(NSWindowStyleMask::NSFullSizeContentViewWindowMask, true);
+pub unsafe fn set_transparent_titlebar(ns_window: *mut AnyObject) {
+    let _: () = msg_send![ns_window, setTitlebarAppearsTransparent: true];
 
-        ns_window.setStyleMask_(style_mask);
+    let mut style_mask: u64 = msg_send![ns_window, styleMask];
 
-        ns_window.setTitleVisibility_(NSWindowTitleVisibility::NSWindowTitleHidden);
+    const NS_FULL_SIZE_CONTENT_VIEW_WINDOW_MASK: u64 = 1 << 15;
+    style_mask |= NS_FULL_SIZE_CONTENT_VIEW_WINDOW_MASK;
+    let _: () = msg_send![ns_window, setStyleMask: style_mask];
 
-        ns_window.setTitlebarAppearsTransparent_(cocoa::base::YES);
-    }
+    let _: () = msg_send![ns_window, setTitleVisibility: 1i64];
+
+    let _: () = msg_send![ns_window, setTitlebarAppearsTransparent: true];
 }
