@@ -131,9 +131,9 @@ pub fn Editor(props: Props) -> Element {
                     height: "100%",
                     VirtualScrollView {
                         height: "100%",
-                        length: *editor_lines.read(),
+                        length: *EDITOR_LINES.read(),
                         padding: "4 0 0 0",
-                        item_size: 15.0,
+                        item_size: line_height,
                         scroll_controller: props.scroll_controller,
                         builder: move |line_index, _: &Option<()>| {
                             let editor = editable.editor().read();
