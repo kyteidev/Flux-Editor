@@ -50,8 +50,6 @@ pub fn Editor(props: Props) -> Element {
     let mut highlighted_lines = use_signal(|| Vec::<Vec<(Style, String)>>::new());
     let mut estimated_line_width: Signal<f32> = use_signal(|| 0.0);
 
-    let mut editor_height: Signal<f32> = use_signal(|| 30.0);
-
     let platform = use_platform();
 
     let mut editable = use_editable(
@@ -95,10 +93,6 @@ pub fn Editor(props: Props) -> Element {
 
     use_effect(move || {
         *editor_lines.write() = editable.editor().read().len_lines();
-    });
-
-    use_effect(move || {
-        editor_height.set(*EDITOR_LINES.read() as f32 * line_height);
     });
 
     let onglobalclick = move |_: MouseEvent| {
