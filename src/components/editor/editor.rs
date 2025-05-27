@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use freya::prelude::*;
+use freya::{elements::rect::cross_align, prelude::*};
 use syntect::{
     easy::HighlightLines,
     highlighting::{Style, ThemeSet},
@@ -126,7 +126,7 @@ pub fn Editor(props: Props) -> Element {
                     VirtualScrollView {
                         height: "100%",
                         length: *EDITOR_LINES.read(),
-                        padding: "4 0 0 0",
+                        padding: "5 0 0 0",
                         item_size: line_height,
                         scroll_controller: props.scroll_controller,
                         builder: move |line_index, _: &Option<()>| {

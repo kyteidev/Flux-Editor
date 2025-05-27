@@ -48,13 +48,11 @@ pub fn LineNumbers(props: Props) -> Element {
                 rsx! {
                     rect{
                         height: "{line_height}",
-                        main_align: "center",
-                        cross_align: "center",
-                        font_family: "Menlo, Monaco",
-                        padding: "0 20",
+                        padding: "5 20 0",
                         label {
                             color: "white",
                             font_size: "20",
+                            font_family: "Menlo, Monaco",
                             line_height: "1.5",
                             text_align: "right",
                             width: "100%",
