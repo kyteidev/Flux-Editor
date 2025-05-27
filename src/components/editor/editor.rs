@@ -37,6 +37,10 @@ pub struct Props {
 pub fn Editor(props: Props) -> Element {
     let line_number_width = *LINE_NUMBER_WIDTH.read();
     let title_bar_height = *TITLE_BAR_HEIGHT.read();
+    let line_height = *LINE_HEIGHT.read();
+    let char_width = *CHAR_WIDTH.read();
+
+    let mut editor_lines: Signal<usize> = use_signal(|| 1);
 
     let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
     let scale_factor = *SCALE_FACTOR.read() as f32;
@@ -56,13 +60,8 @@ pub fn Editor(props: Props) -> Element {
                 .with_allow_tabs(true)
                 .with_identation(4)
         },
-        EditableMode::MultipleLinesSingleEditor,
+        EditableMode::SingleLineMultipleEditors,
     );
-
-    let editor = editable.editor().read();
-    let cursor_reference = editable.cursor_attr();
-    let cursor_char = editor.cursor_pos();
-    let highlights = editable.highlights_attr(0);
 
     let ps = SyntaxSet::load_defaults_newlines();
     let ts = ThemeSet::load_defaults();
@@ -73,6 +72,7 @@ pub fn Editor(props: Props) -> Element {
         let new_highlights = highlight_lines(&ps, &ts, &editor_text);
         highlighted_lines.set(new_highlights.clone());
 
+        // calculate lines in editor
         let line_count = if editor_text.is_empty() {
             1
         } else if editor_text.ends_with('\n') {
@@ -90,109 +90,131 @@ pub fn Editor(props: Props) -> Element {
             .max()
             .unwrap_or(1);
 
-        estimated_line_width.set(*CHAR_WIDTH.read() * longest_line_length as f32);
+        estimated_line_width.set(char_width * longest_line_length as f32);
     });
 
     use_effect(move || {
-        editor_height.set(*EDITOR_LINES.read() as f32 * *LINE_HEIGHT.read());
+        *editor_lines.write() = editable.editor().read().len_lines();
     });
 
+    use_effect(move || {
+        editor_height.set(*EDITOR_LINES.read() as f32 * line_height);
+    });
+
+    let onglobalclick = move |_: MouseEvent| {
+        editable.process_event(&EditableEvent::Click);
+    };
+
+    let onglobalkeydown = move |e: KeyboardEvent| {
+        editable.process_event(&EditableEvent::KeyDown(e.data));
+    };
+
+    let onglobalkeyup = move |e: KeyboardEvent| {
+        editable.process_event(&EditableEvent::KeyUp(e.data));
+    };
+
     rsx!(
-    rect {
-        width: "fill",
-        height: "fill",
-        background: "{BG_200}",
-        ScrollView {
-            width: "100%",
-            height: "100%",
-            padding: "4 0 0 0",
-            scroll_controller: props.scroll_controller,
-            paragraph {
-                width: "calc({estimated_line_width} + 30)",
-                height: "calc({editor_height} + 26)", // add offset because VirtualScrollView has offset for some reason
-                font_size: "20",
-                line_height: "1.5",
-                font_family: "Menlo, Monaco",
-                cursor_id: "0",
-                cursor_index: "{cursor_char}",
-                cursor_mode: "editable",
-                cursor_color: "white",
-                highlights,
-                cursor_reference,
-                onglobalkeydown: move |e| {
-                    editable.process_event(&EditableEvent::KeyDown(e.data));
+        rect {
+            width: "fill",
+            height: "fill",
+            background: "{BG_200}",
+            onglobalkeydown,
+            onglobalkeyup,
+            onglobalclick,
+            ScrollView {
+                direction: "horizontal",
+                width: "100%",
+                height: "100%",
+                rect {
+                    width: "{estimated_line_width}",
+                    min_width: "100%",
+                    height: "100%",
+                    VirtualScrollView {
+                        height: "100%",
+                        length: *editor_lines.read(),
+                        padding: "4 0 0 0",
+                        item_size: 15.0,
+                        scroll_controller: props.scroll_controller,
+                        builder: move |line_index, _: &Option<()>| {
+                            let editor = editable.editor().read();
+                            let highlighted_lines = highlighted_lines.read();
+                            let line = highlighted_lines.get(line_index).cloned().unwrap_or_default();
 
-                    // auto scroll so caret is visible
-                    let (cursor_line, cursor_column) = editable.editor().read().cursor_row_and_col();
+                            let is_line_selected = editor.cursor_row() == line_index;
+                            let character_index = if is_line_selected {
+                                editor.cursor_col().to_string()
+                            } else {
+                                "none".to_string()
+                            };
 
-                    let caret_x = cursor_column as f32 * *CHAR_WIDTH.read();
-                    let caret_y =
-                        cursor_line as f32 * *LINE_HEIGHT.read();
+                            let highlights = editable.highlights_attr(line_index);
 
-                    let caret_absolute_x = caret_x + *scroll_controller.x().read() as f32 + line_number_width;
-                    let caret_absolute_y = caret_y + *scroll_controller.y().read() as f32 + title_bar_height;
+                            let onmousemove = move |e: MouseEvent| {
+                                editable.process_event(&EditableEvent::MouseMove(e.data, line_index));
+                            };
+                            let onmousedown = move |e: MouseEvent| {
+                                if e.data.trigger_button.unwrap() == MouseButton::Left {
+                                    editable.process_event(&EditableEvent::MouseDown(e.data, line_index));
+                                }
+                            };
+                            let onmouseenter = move |_: MouseEvent| {
+                                platform.set_cursor(CursorIcon::Text);
+                            };
+                            let onmouseleave = move |_: MouseEvent| {
+                                platform.set_cursor(CursorIcon::Default);
+                            };
 
-                    if caret_absolute_x > viewport_size.width / scale_factor - 30.0 || caret_absolute_x < line_number_width {
-                        scroll_controller.scroll_to_x(-caret_x as i32);
-                    }
+                            rsx! {
+                                rect {
+                                    key: "{line_index}",
+                                    height: "{line_height}",
+                                    background: "{BG_200}",
+                                    paragraph {
+                                        width: "100%",
+                                        height: "100%",
+                                        font_size: "20",
+                                        line_height: "1.5",
+                                        font_family: "Menlo, Monaco",
+                                        cursor_reference: editable.cursor_attr(),
+                                        cursor_index: "{character_index}",
+                                        cursor_color: "white",
+                                        cursor_id: "{line_index}",
+                                        cursor_mode: "editable",
+                                        max_lines: 1,
+                                        onmousedown,
+                                        onmousemove,
+                                        onmouseenter,
+                                        onmouseleave,
+                                        highlights,
+                                        {
+                                            line.iter().enumerate().map(|(index, (style, text))| {
+                                                let mut text = text.clone();
 
-                    if caret_absolute_y > viewport_size.height / scale_factor + title_bar_height || caret_absolute_y < title_bar_height {
-                        scroll_controller.scroll_to_y(-caret_y as i32);
-                    }
-                },
-                onglobalkeyup: move |e| {
-                    editable.process_event(&EditableEvent::KeyUp(e.data));
-                },
-                onclick: move |_| {
-                    editable.process_event(&EditableEvent::Click);
-                },
-                onmousemove: move |e| {
-                    editable.process_event(&EditableEvent::MouseMove(e.data, 0));
-                },
-                onmousedown: move |e| {
-                    if e.data.trigger_button.unwrap() == MouseButton::Left { // prevent RMB from selecting text
-                        editable.process_event(&EditableEvent::MouseDown(e.data, 0));
-                    }
+                                                if index == line.len() - 1 && line_index != highlighted_lines.len() - 1 {
+                                                    text.push('\n');
+                                                }
 
-                    // implement context menu?
-                },
-                onmouseenter: move |_| {
-                    platform.set_cursor(CursorIcon::Text);
-                },
-                onmouseleave: move |_| {
-                    platform.set_cursor(CursorIcon::Default);
-                },
-                {highlighted_lines.read().iter().enumerate().flat_map(|(line_index, line)| {
-                    if line.is_empty() {
-                        return vec![rsx!(
-                            text {
-                                key: "{line_index}-empty",
-                                "\n"
+                                                let color = format!("rgb({},{},{})", style.foreground.r, style.foreground.g, style.foreground.b);
+
+                                                rsx!(
+                                                    text {
+                                                        key: "{line_index}-{index}",
+                                                        color: "{color}",
+                                                        {text}
+                                                    }
+                                                )
+                                            })
+                                        }
+                                    }
+                                }
                             }
-                        )];
-                    }
-
-                    line.iter().enumerate().map(move |(index, style)| {
-                        let mut text = style.1.to_string();
-
-                        if index == line.len() - 1 && line_index != highlighted_lines.len() - 1 {
-                            text.push('\n');
                         }
-
-                        let color = format!("rgb({},{},{})", style.0.foreground.r, style.0.foreground.g, style.0.foreground.b);
-
-                        rsx!(
-                            text {
-                                key: "{line_index}-{index}",
-                                color: "{color}",
-                                {text}
-                            }
-                        )
-                    }).collect::<Vec<_>>()
-                })}
+                    }
+                }
             }
         }
-    })
+
+    )
 }
 
 fn highlight_lines(ps: &SyntaxSet, ts: &ThemeSet, text: &str) -> Vec<Vec<(Style, String)>> {
