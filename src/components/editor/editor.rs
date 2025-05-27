@@ -15,14 +15,17 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use freya::{elements::rect::cross_align, prelude::*};
+use freya::prelude::*;
 use syntect::{
     easy::HighlightLines,
     highlighting::{Style, ThemeSet},
     parsing::SyntaxSet,
 };
 
-use crate::state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, TITLE_BAR_HEIGHT};
+use crate::{
+    state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, TITLE_BAR_HEIGHT},
+    BG_100,
+};
 use crate::{
     state::{LINE_NUMBER_WIDTH, SCALE_FACTOR},
     BG_200,
@@ -126,9 +129,10 @@ pub fn Editor(props: Props) -> Element {
                     VirtualScrollView {
                         height: "100%",
                         length: *EDITOR_LINES.read(),
-                        padding: "5 0 0 0",
                         item_size: line_height,
                         scroll_controller: props.scroll_controller,
+                        scroll_with_arrows: false,
+                        cache_elements: false,
                         builder: move |line_index, _: &Option<()>| {
                             let editor = editable.editor().read();
                             let highlighted_lines = highlighted_lines.read();
@@ -139,6 +143,14 @@ pub fn Editor(props: Props) -> Element {
                                 editor.cursor_col().to_string()
                             } else {
                                 "none".to_string()
+                            };
+
+                            // highlight active line
+                            let background_color = *BG_100.read();
+                            let line_background = if is_line_selected {
+                                background_color
+                            } else {
+                                "none"
                             };
 
                             let highlights = editable.highlights_attr(line_index);
@@ -161,11 +173,13 @@ pub fn Editor(props: Props) -> Element {
                             rsx! {
                                 rect {
                                     key: "{line_index}",
+                                    width: "100%",
                                     height: "{line_height}",
-                                    background: "{BG_200}",
+                                    background: line_background,
                                     paragraph {
                                         width: "100%",
                                         height: "100%",
+                                        main_align: "center", // bugged
                                         font_size: "20",
                                         line_height: "1.5",
                                         font_family: "Menlo, Monaco",
@@ -180,6 +194,7 @@ pub fn Editor(props: Props) -> Element {
                                         onmouseenter,
                                         onmouseleave,
                                         highlights,
+                                        highlight_mode: "expanded",
                                         {
                                             line.iter().enumerate().map(|(index, (style, text))| {
                                                 let mut text = text.clone();
