@@ -23,7 +23,7 @@ use syntect::{
 };
 
 use crate::{
-    state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, TITLE_BAR_HEIGHT},
+    state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, SELECTED_LINE, TITLE_BAR_HEIGHT},
     BG_100,
 };
 use crate::{
@@ -174,6 +174,8 @@ pub fn Editor(props: Props) -> Element {
                             let editor = editable.editor().read();
                             let highlighted_lines = highlighted_lines.read();
                             let line = highlighted_lines.get(line_index).cloned().unwrap_or_default();
+
+                            *SELECTED_LINE.write() = editor.cursor_row();
 
                             let is_line_selected = editor.cursor_row() == line_index;
                             let character_index = if is_line_selected {

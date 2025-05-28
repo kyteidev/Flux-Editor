@@ -17,8 +17,8 @@ You should have received a copy of the GNU General Public License along with Flu
 
 use freya::prelude::*;
 
-use crate::state::{EDITOR_LINES, LINE_HEIGHT, LINE_NUMBER_WIDTH};
-use crate::BG_200;
+use crate::state::{EDITOR_LINES, LINE_HEIGHT, LINE_NUMBER_WIDTH, SELECTED_LINE};
+use crate::{BG_100, BG_200};
 
 #[derive(Props, Clone, PartialEq)]
 pub struct Props {
@@ -45,11 +45,23 @@ pub fn LineNumbers(props: Props) -> Element {
             show_scrollbar: false,
             scroll_controller: props.scroll_controller,
             builder: move |index, _: &Option<()>| {
+                // highlight active line
+                let selected_line = *SELECTED_LINE.read();
+
+                let is_line_selected = selected_line == index;
+                let background_color = *BG_100.read();
+                let line_background = if is_line_selected {
+                    background_color
+                } else {
+                    "none"
+                };
+
                 rsx! {
                     rect{
                         height: "{line_height}",
                         main_align: "center",
                         padding: "0 20 0",
+                        background: "{line_background}",
                         label {
                             color: "white",
                             font_size: "20",

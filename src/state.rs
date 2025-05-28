@@ -24,6 +24,7 @@ pub static TITLE_BAR_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 pub static EDITOR_LINES: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 pub static LINE_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 pub static CHAR_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 12.05);
+pub static SELECTED_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 
 pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
 
