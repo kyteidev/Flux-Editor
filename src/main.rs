@@ -71,7 +71,6 @@ pub fn get_scale_factor() {
             let window = unsafe { &**ptr };
             let factor = window.scale_factor();
             *SCALE_FACTOR.write() = factor;
-            println!("factor: {}", factor);
         }
     });
 }
