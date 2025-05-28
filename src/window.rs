@@ -16,8 +16,7 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 #[cfg(target_os = "macos")]
-use objc2::msg_send;
-use objc2::runtime::AnyObject;
+use objc2::{msg_send, runtime::AnyObject};
 
 #[cfg(target_os = "macos")]
 pub unsafe fn set_transparent_titlebar(ns_window: *mut AnyObject) {

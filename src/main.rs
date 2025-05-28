@@ -47,6 +47,7 @@ use {
 };
 
 mod window;
+#[cfg(target_os = "macos")]
 use window::set_transparent_titlebar;
 
 // Default theme
