@@ -49,6 +49,7 @@ pub fn Editor(props: Props) -> Element {
     let scale_factor = *SCALE_FACTOR.read() as f32;
 
     let mut scroll_controller = props.scroll_controller;
+    let mut horizontal_scroll_controller = use_scroll_controller(|| ScrollConfig::default());
 
     let mut highlighted_lines = use_signal(|| Vec::<Vec<(Style, String)>>::new());
     let mut estimated_line_width: Signal<f32> = use_signal(|| 0.0);
@@ -98,6 +99,43 @@ pub fn Editor(props: Props) -> Element {
         *editor_lines.write() = editable.editor().read().len_lines();
     });
 
+    let mut previous_caret_position = use_signal(|| (0, 0));
+    use_effect(move || {
+        let editor = editable.editor().read();
+        let (cursor_line, cursor_col) = editor.cursor_row_and_col();
+        let (prev_line, prev_col) = *previous_caret_position.read();
+
+        if cursor_line == prev_line && cursor_col == prev_col {
+            return;
+        }
+
+        previous_caret_position.set((cursor_line, cursor_col));
+
+        let caret_x = cursor_col as f32 * *CHAR_WIDTH.read();
+        let caret_y = cursor_line as f32 * *LINE_HEIGHT.read();
+
+        let scroll_x = *scroll_controller.x().read() as f32;
+        let scroll_y = *scroll_controller.y().read() as f32;
+
+        let caret_absolute_x = caret_x + scroll_x + line_number_width;
+        let caret_absolute_y = caret_y + scroll_y + title_bar_height;
+
+        let view_width = viewport_size.width / scale_factor;
+        let view_height = viewport_size.height / scale_factor;
+
+        if caret_absolute_x > view_width - 30.0 {
+            horizontal_scroll_controller.scroll_to_x((-caret_x - 30.0) as i32);
+        } else if caret_absolute_x < line_number_width + 30.0 {
+            horizontal_scroll_controller.scroll_to_x((-caret_x + 30.0) as i32);
+        }
+
+        if caret_absolute_y > view_height - line_height {
+            scroll_controller.scroll_to_y((-caret_y - line_height) as i32);
+        } else if caret_absolute_y < title_bar_height + line_height {
+            scroll_controller.scroll_to_y((-caret_y + line_height) as i32);
+        }
+    });
+
     let onglobalclick = move |_: MouseEvent| {
         editable.process_event(&EditableEvent::Click);
     };
@@ -122,17 +160,16 @@ pub fn Editor(props: Props) -> Element {
                 direction: "horizontal",
                 width: "100%",
                 height: "100%",
+                scroll_controller: horizontal_scroll_controller,
                 rect {
-                    width: "{estimated_line_width}",
+                    width: "calc({estimated_line_width} + 30)",
                     min_width: "100%",
                     height: "100%",
                     VirtualScrollView {
                         height: "100%",
                         length: *EDITOR_LINES.read(),
                         item_size: line_height,
-                        scroll_controller: props.scroll_controller,
-                        scroll_with_arrows: false,
-                        cache_elements: false,
+                        scroll_controller: scroll_controller,
                         builder: move |line_index, _: &Option<()>| {
                             let editor = editable.editor().read();
                             let highlighted_lines = highlighted_lines.read();
@@ -179,7 +216,7 @@ pub fn Editor(props: Props) -> Element {
                                     paragraph {
                                         width: "100%",
                                         height: "100%",
-                                        main_align: "center", // bugged
+                                        main_align: "center",
                                         font_size: "20",
                                         line_height: "1.5",
                                         font_family: "Menlo, Monaco",
