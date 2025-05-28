@@ -29,5 +29,5 @@ pub static SELECTED_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
 
 thread_local! {
-    pub static WINDOW: OnceCell<*mut Window> = OnceCell::new();
+    pub static WINDOW: OnceCell<*mut Window> = const { OnceCell::new() };
 }

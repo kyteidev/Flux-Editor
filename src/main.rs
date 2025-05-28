@@ -30,10 +30,7 @@ use tokio::time::sleep;
 use utils::char::get_char_width;
 
 mod components;
-use components::{
-    editor::{editor::Editor, line_numbers::LineNumbers},
-    title_bar::title_bar::TitleBar,
-};
+use components::{editor::Editor, editor_line_numbers::LineNumbers, title_bar::TitleBar};
 use self_update::cargo_crate_version;
 use semver::Version;
 use state::{CHAR_WIDTH, SCALE_FACTOR, WINDOW};
@@ -133,7 +130,7 @@ fn main() {
 }
 
 fn app() -> Element {
-    let scroll_controller = use_scroll_controller(|| ScrollConfig::default());
+    let scroll_controller = use_scroll_controller(ScrollConfig::default);
 
     *CHAR_WIDTH.write() = get_char_width();
 

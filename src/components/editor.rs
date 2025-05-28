@@ -49,9 +49,9 @@ pub fn Editor(props: Props) -> Element {
     let scale_factor = *SCALE_FACTOR.read() as f32;
 
     let mut scroll_controller = props.scroll_controller;
-    let mut horizontal_scroll_controller = use_scroll_controller(|| ScrollConfig::default());
+    let mut horizontal_scroll_controller = use_scroll_controller(ScrollConfig::default);
 
-    let mut highlighted_lines = use_signal(|| Vec::<Vec<(Style, String)>>::new());
+    let mut highlighted_lines = use_signal(Vec::<Vec<(Style, String)>>::new);
     let mut estimated_line_width: Signal<f32> = use_signal(|| 0.0);
 
     let platform = use_platform();
