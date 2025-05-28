@@ -141,7 +141,29 @@ pub fn Editor(props: Props) -> Element {
     };
 
     let onglobalkeydown = move |e: KeyboardEvent| {
-        editable.process_event(&EditableEvent::KeyDown(e.data));
+        editable.process_event(&EditableEvent::KeyDown(e.clone().data));
+
+        let mut editor = editable.editor().write_unchecked();
+        let caret_pos = editor.cursor_pos();
+
+        match e.key.to_string().as_str() {
+            "{" => {
+                editor.insert_char('}', caret_pos);
+            }
+            "[" => {
+                editor.insert_char(']', caret_pos);
+            }
+            "(" => {
+                editor.insert_char(')', caret_pos);
+            }
+            "'" => {
+                editor.insert_char('\'', caret_pos);
+            }
+            "\"" => {
+                editor.insert_char('"', caret_pos);
+            }
+            _ => {}
+        }
     };
 
     let onglobalkeyup = move |e: KeyboardEvent| {
