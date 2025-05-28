@@ -22,14 +22,11 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
-use crate::{
-    state::{CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, SELECTED_LINE, TITLE_BAR_HEIGHT},
-    BG_100,
+use crate::state::{
+    CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, LINE_NUMBER_WIDTH, SCALE_FACTOR, SELECTED_LINE,
+    TITLE_BAR_HEIGHT,
 };
-use crate::{
-    state::{LINE_NUMBER_WIDTH, SCALE_FACTOR},
-    BG_200,
-};
+use crate::{BG_100, BG_200};
 
 #[derive(Props, Clone, PartialEq)]
 pub struct Props {
