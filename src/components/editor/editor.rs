@@ -197,11 +197,7 @@ pub fn Editor(props: Props) -> Element {
                                         highlight_mode: "expanded",
                                         {
                                             line.iter().enumerate().map(|(index, (style, text))| {
-                                                let mut text = text.clone();
-
-                                                if index == line.len() - 1 && line_index != highlighted_lines.len() - 1 {
-                                                    text.push('\n');
-                                                }
+                                                let text = text.clone();
 
                                                 let color = format!("rgb({},{},{})", style.foreground.r, style.foreground.g, style.foreground.b);
 
