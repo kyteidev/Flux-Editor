@@ -45,6 +45,7 @@ pub fn Editor(props: Props) -> Element {
     let char_width = *CHAR_WIDTH.read();
 
     let mut editor_lines: Signal<usize> = use_signal(|| 1);
+    let mut hovering_on_editor = use_signal(|| false);
 
     let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
     let scale_factor = *SCALE_FACTOR.read() as f32;
@@ -139,6 +140,12 @@ pub fn Editor(props: Props) -> Element {
 
     let onglobalclick = move |_: MouseEvent| {
         editable.process_event(&EditableEvent::Click);
+
+        if !*hovering_on_editor.read() {
+            let mut editor = editable.editor().write_unchecked();
+            let text_length = editor.len_chars();
+            editor.set_cursor_pos(text_length);
+        }
     };
 
     let onglobalkeydown = move |e: KeyboardEvent| {
@@ -218,6 +225,13 @@ pub fn Editor(props: Props) -> Element {
         editable.process_event(&EditableEvent::KeyUp(e.data));
     };
 
+    let onmouseenter = move |_: MouseEvent| {
+        platform.set_cursor(CursorIcon::Text);
+    };
+    let onmouseleave = move |_: MouseEvent| {
+        platform.set_cursor(CursorIcon::Default);
+    };
+
     rsx!(
         rect {
             width: "fill",
@@ -226,6 +240,8 @@ pub fn Editor(props: Props) -> Element {
             onglobalkeydown,
             onglobalkeyup,
             onglobalclick,
+            onmouseenter,
+            onmouseleave,
             ScrollView {
                 direction: "horizontal",
                 width: "100%",
@@ -273,10 +289,10 @@ pub fn Editor(props: Props) -> Element {
                                 }
                             };
                             let onmouseenter = move |_: MouseEvent| {
-                                platform.set_cursor(CursorIcon::Text);
+                                hovering_on_editor.set(true);
                             };
                             let onmouseleave = move |_: MouseEvent| {
-                                platform.set_cursor(CursorIcon::Default);
+                                hovering_on_editor.set(false);
                             };
 
                             rsx! {
