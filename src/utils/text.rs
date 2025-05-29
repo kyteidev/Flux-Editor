@@ -28,3 +28,7 @@ pub fn get_char_width() -> f32 {
 
     char_width
 }
+
+pub fn get_leading_whitespaces(s: &str) -> usize {
+    s.chars().take_while(|&c| c.is_whitespace()).count()
+}

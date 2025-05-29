@@ -27,6 +27,7 @@ pub static CHAR_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 12.05);
 pub static SELECTED_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 
 pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
+pub static TAB_SIZE: GlobalSignal<u8> = GlobalSignal::new(|| 4);
 
 thread_local! {
     pub static WINDOW: OnceCell<*mut Window> = const { OnceCell::new() };

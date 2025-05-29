@@ -25,9 +25,9 @@ mod themes;
 mod state;
 
 mod utils;
+use utils::text::get_char_width;
 
 use tokio::time::sleep;
-use utils::char::get_char_width;
 
 mod components;
 use components::{editor::Editor, editor_line_numbers::LineNumbers, title_bar::TitleBar};

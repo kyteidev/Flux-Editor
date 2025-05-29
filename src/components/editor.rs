@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+use std::ops::Range;
+
 use freya::prelude::*;
 use syntect::{
     easy::HighlightLines,
@@ -22,9 +24,11 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
+use crate::utils::text::get_leading_whitespaces;
+
 use crate::state::{
     CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, LINE_NUMBER_WIDTH, SCALE_FACTOR, SELECTED_LINE,
-    TITLE_BAR_HEIGHT,
+    TAB_SIZE, TITLE_BAR_HEIGHT,
 };
 use crate::{BG_100, BG_200};
 
@@ -57,7 +61,7 @@ pub fn Editor(props: Props) -> Element {
         || {
             EditableConfig::new("".to_string())
                 .with_allow_tabs(true)
-                .with_identation(4)
+                .with_identation(*TAB_SIZE.read())
         },
         EditableMode::SingleLineMultipleEditors,
     );
@@ -138,7 +142,9 @@ pub fn Editor(props: Props) -> Element {
     };
 
     let onglobalkeydown = move |e: KeyboardEvent| {
-        editable.process_event(&EditableEvent::KeyDown(e.clone().data));
+        if e.key.to_string() != "Enter" {
+            editable.process_event(&EditableEvent::KeyDown(e.clone().data));
+        }
 
         let mut editor = editable.editor().write_unchecked();
         let caret_pos = editor.cursor_pos();
@@ -159,7 +165,52 @@ pub fn Editor(props: Props) -> Element {
             "\"" => {
                 editor.insert_char('"', caret_pos);
             }
-            _ => {}
+            "Enter" => {
+                let current_line = editor.line(editor.cursor_row()).unwrap().to_string();
+                let mut chars = current_line.chars();
+
+                let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
+                let line_spaces = get_leading_whitespaces(&current_line);
+                let trailing_spaces = &" ".repeat(line_spaces as usize);
+                let trailing_spaces_with_tab =
+                    trailing_spaces.to_owned() + &" ".repeat(*TAB_SIZE.read() as usize);
+
+                editor.insert_char('\n', caret_pos);
+                editor.cursor_down();
+
+                match char_on_caret_right.as_str() {
+                    "}" | "]" | ")" => {
+                        editor.insert(
+                            ("\n".to_owned() + trailing_spaces_with_tab.as_str()).as_str(),
+                            caret_pos,
+                        );
+                        editor.set_cursor_pos(caret_pos + trailing_spaces_with_tab.len() + 1);
+
+                        let new_caret_pos = editor.cursor_pos();
+                        editor.insert(trailing_spaces.as_str(), new_caret_pos + 1);
+                    }
+                    _ => {}
+                }
+            }
+            "Backspace" => {
+                let current_line = editor.line(editor.cursor_row()).unwrap().to_string();
+                let mut chars = current_line.chars();
+
+                let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
+
+                match char_on_caret_right.as_str() {
+                    "}" | "]" | ")" | "'" | "\"" => {
+                        editor.remove(Range {
+                            start: caret_pos,
+                            end: caret_pos + 1,
+                        });
+                    }
+                    _ => {}
+                }
+            }
+            _ => {
+                println!("Key pressed: {}", e.key);
+            }
         }
     };
 
