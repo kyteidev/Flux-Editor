@@ -47,6 +47,11 @@ pub fn Editor(props: Props) -> Element {
     let line_height = *LINE_HEIGHT.read();
     let char_width = *CHAR_WIDTH.read();
 
+    let mut caret_x: Signal<f32> = use_signal(|| 0.0);
+    let mut caret_y: Signal<f32> = use_signal(|| 0.0);
+    let mut caret_absolute_x: Signal<f32> = use_signal(|| 0.0);
+    let mut caret_absolute_y: Signal<f32> = use_signal(|| 0.0);
+
     let mut syntax_set = use_signal::<Option<SyntaxSet>>(|| None);
     let mut syntax = use_signal::<Option<SyntaxReference>>(|| None);
     let mut theme = use_signal::<Option<syntect::highlighting::Theme>>(|| None);
@@ -121,40 +126,53 @@ pub fn Editor(props: Props) -> Element {
 
         // calculate largest line width
         let current_line_width = char_width * current_line.chars().count() as f32;
-        let previous_width = *estimated_line_width.read();
-
-        if current_line_width > previous_width {
-            estimated_line_width.set(current_line_width);
-        }
+        estimated_line_width.set(current_line_width);
     });
 
     use_effect(move || {
         *editor_lines.write() = editable.editor().read().len_lines();
     });
 
-    let mut previous_caret_position = use_signal(|| (0, 0));
+    let mut previous_caret_position = (0, 0);
     use_effect(move || {
         let editor = editable.editor().read();
         let (caret_line, caret_col) = editor.cursor_row_and_col();
-        let (prev_line, prev_col) = *previous_caret_position.read();
+        let (prev_line, prev_col) = previous_caret_position;
 
         if caret_line == prev_line && caret_col == prev_col {
             return;
         }
 
-        previous_caret_position.set((caret_line, caret_col));
+        previous_caret_position = (caret_line, caret_col);
 
-        let caret_x = caret_col as f32 * char_width;
-        let caret_y = caret_line as f32 * line_height;
+        let caret_x_local = caret_col as f32 * char_width;
+        let caret_y_local = caret_line as f32 * line_height;
+
+        caret_x.set(caret_x_local);
+        caret_y.set(caret_y_local);
 
         let scroll_x = *horizontal_scroll_controller.x().read() as f32;
         let scroll_y = *scroll_controller.y().read() as f32;
 
-        let caret_absolute_x = caret_x + scroll_x + line_number_width;
-        let caret_absolute_y = caret_y + scroll_y + title_bar_height;
+        let caret_absolute_x_local = caret_x_local + scroll_x + line_number_width;
+        let caret_absolute_y_local = caret_y_local + scroll_y + title_bar_height;
 
+        caret_absolute_x.set(caret_absolute_x_local);
+        caret_absolute_y.set(caret_absolute_y_local);
+
+        *CARET_LINE.write() = caret_line;
+        *CARET_COLUMN.write() = caret_col;
+    });
+
+    use_effect(move || {
         let view_width = viewport_size.width / scale_factor;
         let view_height = viewport_size.height / scale_factor;
+
+        let caret_x = *caret_x.read();
+        let caret_y = *caret_y.read();
+
+        let caret_absolute_x = *caret_absolute_x.read();
+        let caret_absolute_y = *caret_absolute_y.read();
 
         if caret_absolute_x > view_width - 30.0 {
             horizontal_scroll_controller.scroll_to_x((-caret_x - 30.0) as i32);
@@ -167,9 +185,6 @@ pub fn Editor(props: Props) -> Element {
         } else if caret_absolute_y < title_bar_height + line_height {
             scroll_controller.scroll_to_y((-caret_y + line_height) as i32);
         }
-
-        *CARET_LINE.write() = caret_line;
-        *CARET_COLUMN.write() = caret_col;
     });
 
     let onglobalclick = move |_: MouseEvent| {
