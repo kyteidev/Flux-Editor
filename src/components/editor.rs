@@ -104,8 +104,10 @@ pub fn Editor(props: Props) -> Element {
         };
         let Some(theme) = &*theme.read() else { return };
 
-        let new_highlights = highlight_lines(ps, syntax, theme, &current_line);
-        let new_line_highlight = new_highlights.into_iter().next().unwrap_or_default();
+        let highlighted_line = highlight_lines(ps, syntax, theme, &current_line)
+            .into_iter()
+            .next()
+            .unwrap_or_default();
 
         let mut highlights = highlighted_lines.write();
 
@@ -113,7 +115,7 @@ pub fn Editor(props: Props) -> Element {
             highlights.resize_with(selected_line + 1, Vec::new);
         }
 
-        highlights[selected_line] = new_line_highlight;
+        highlights[selected_line] = highlighted_line;
 
         *EDITOR_LINES.write() = editor.len_lines();
 
