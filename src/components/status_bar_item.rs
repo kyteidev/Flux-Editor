@@ -15,8 +15,27 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-pub mod editor;
-pub mod editor_line_numbers;
-pub mod status_bar;
-pub mod status_bar_item;
-pub mod title_bar;
+use freya::prelude::*;
+
+use crate::BG_100;
+
+#[derive(Props, Clone, PartialEq)]
+pub struct Props {
+    pub children: Element,
+}
+
+#[allow(non_snake_case)]
+pub fn StatusBarItem(props: Props) -> Element {
+    rsx! {
+        rect {
+            width: "auto",
+            height: "22",
+            corner_radius: "4",
+            background: *BG_100.read(),
+            padding: "2",
+            main_align: "center",
+            cross_align: "center",
+            {props.children}
+        }
+    }
+}

@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License along with Flu
 use freya::prelude::*;
 
 use crate::{
+    components::status_bar_item::StatusBarItem,
     state::{CARET_COLUMN, CARET_LINE},
     BG_100, BG_200,
 };
@@ -57,14 +58,7 @@ fn CaretPosition() -> Element {
     let caret_column = *CARET_COLUMN.read() + 1;
 
     rsx! {
-        rect {
-            width: "auto",
-            height: "22",
-            corner_radius: "4",
-            background: *BG_100.read(),
-            padding: "2",
-            main_align: "center",
-            cross_align: "center",
+        StatusBarItem {
             label {
                 color: "white",
                 "{caret_line}:{caret_column}"
