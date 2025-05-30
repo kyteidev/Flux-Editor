@@ -145,7 +145,7 @@ pub fn Editor(props: Props) -> Element {
         let caret_x = caret_col as f32 * char_width;
         let caret_y = caret_line as f32 * line_height;
 
-        let scroll_x = *scroll_controller.x().read() as f32;
+        let scroll_x = *horizontal_scroll_controller.x().read() as f32;
         let scroll_y = *scroll_controller.y().read() as f32;
 
         let caret_absolute_x = caret_x + scroll_x + line_number_width;
@@ -266,7 +266,7 @@ pub fn Editor(props: Props) -> Element {
 
     rsx!(
         rect {
-            width: "100%",
+            width: "fill",
             height: "100%",
             background: "{BG_200}",
             onglobalkeydown,
