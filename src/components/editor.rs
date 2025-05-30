@@ -24,7 +24,10 @@ use syntect::{
     parsing::SyntaxSet,
 };
 
-use crate::utils::text::get_leading_whitespaces;
+use crate::{
+    state::{CARET_COLUMN, CARET_LINE},
+    utils::text::get_leading_whitespaces,
+};
 
 use crate::state::{
     CHAR_WIDTH, EDITOR_LINES, LINE_HEIGHT, LINE_NUMBER_WIDTH, SCALE_FACTOR, SELECTED_LINE,
@@ -104,17 +107,17 @@ pub fn Editor(props: Props) -> Element {
     let mut previous_caret_position = use_signal(|| (0, 0));
     use_effect(move || {
         let editor = editable.editor().read();
-        let (cursor_line, cursor_col) = editor.cursor_row_and_col();
+        let (caret_line, caret_col) = editor.cursor_row_and_col();
         let (prev_line, prev_col) = *previous_caret_position.read();
 
-        if cursor_line == prev_line && cursor_col == prev_col {
+        if caret_line == prev_line && caret_col == prev_col {
             return;
         }
 
-        previous_caret_position.set((cursor_line, cursor_col));
+        previous_caret_position.set((caret_line, caret_col));
 
-        let caret_x = cursor_col as f32 * *CHAR_WIDTH.read();
-        let caret_y = cursor_line as f32 * *LINE_HEIGHT.read();
+        let caret_x = caret_col as f32 * *CHAR_WIDTH.read();
+        let caret_y = caret_line as f32 * *LINE_HEIGHT.read();
 
         let scroll_x = *scroll_controller.x().read() as f32;
         let scroll_y = *scroll_controller.y().read() as f32;
@@ -136,6 +139,9 @@ pub fn Editor(props: Props) -> Element {
         } else if caret_absolute_y < title_bar_height + line_height {
             scroll_controller.scroll_to_y((-caret_y + line_height) as i32);
         }
+
+        *CARET_LINE.write() = caret_line;
+        *CARET_COLUMN.write() = caret_col;
     });
 
     let onglobalclick = move |_: MouseEvent| {
@@ -234,8 +240,8 @@ pub fn Editor(props: Props) -> Element {
 
     rsx!(
         rect {
-            width: "fill",
-            height: "fill",
+            width: "100%",
+            height: "100%",
             background: "{BG_200}",
             onglobalkeydown,
             onglobalkeyup,

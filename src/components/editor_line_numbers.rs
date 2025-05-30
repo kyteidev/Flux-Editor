@@ -34,7 +34,7 @@ pub fn LineNumbers(props: Props) -> Element {
 
     rsx!(rect {
         width: "{line_number_width}",
-        height: "fill",
+        height: "100%",
         background: "{BG_200}",
         VirtualScrollView {
             length: editor_lines,

@@ -26,6 +26,9 @@ pub static LINE_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 pub static CHAR_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 12.05);
 pub static SELECTED_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 
+pub static CARET_COLUMN: GlobalSignal<usize> = GlobalSignal::new(|| 0);
+pub static CARET_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 0);
+
 pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
 pub static TAB_SIZE: GlobalSignal<u8> = GlobalSignal::new(|| 4);
 

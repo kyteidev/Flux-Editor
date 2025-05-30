@@ -30,7 +30,9 @@ use utils::text::get_char_width;
 use tokio::time::sleep;
 
 mod components;
-use components::{editor::Editor, editor_line_numbers::LineNumbers, title_bar::TitleBar};
+use components::{
+    editor::Editor, editor_line_numbers::LineNumbers, status_bar::StatusBar, title_bar::TitleBar,
+};
 use self_update::cargo_crate_version;
 use semver::Version;
 use state::{CHAR_WIDTH, SCALE_FACTOR, WINDOW};
@@ -144,10 +146,11 @@ fn app() -> Element {
         width: "100%",
         height: "100%",
         background: "{BG_200}",
+        content: "flex",
         TitleBar {}
         rect {
-            width: "fill",
-            height: "fill",
+            width: "100%",
+            height: "flex",
             direction: "horizontal",
             LineNumbers {
                 scroll_controller: scroll_controller,
@@ -156,6 +159,7 @@ fn app() -> Element {
                 scroll_controller: scroll_controller,
             }
         }
+        StatusBar {}
     })
 }
 
