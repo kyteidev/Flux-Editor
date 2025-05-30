@@ -21,7 +21,7 @@ use freya::prelude::*;
 use syntect::{
     easy::HighlightLines,
     highlighting::{Style, ThemeSet},
-    parsing::SyntaxSet,
+    parsing::{SyntaxReference, SyntaxSet},
 };
 
 use crate::{
@@ -47,6 +47,10 @@ pub fn Editor(props: Props) -> Element {
     let line_height = *LINE_HEIGHT.read();
     let char_width = *CHAR_WIDTH.read();
 
+    let mut syntax_set = use_signal::<Option<SyntaxSet>>(|| None);
+    let mut syntax = use_signal::<Option<SyntaxReference>>(|| None);
+    let mut theme = use_signal::<Option<syntect::highlighting::Theme>>(|| None);
+
     let mut editor_lines: Signal<usize> = use_signal(|| 1);
     let mut hovering_on_editor = use_signal(|| false);
 
@@ -70,8 +74,20 @@ pub fn Editor(props: Props) -> Element {
         EditableMode::SingleLineMultipleEditors,
     );
 
-    let ps = SyntaxSet::load_defaults_newlines();
-    let ts = ThemeSet::load_defaults();
+    use_effect(move || {
+        let loaded_ps = SyntaxSet::load_defaults_newlines();
+        let loaded_syntax = loaded_ps.find_syntax_by_extension("rs").cloned();
+        let loaded_theme = ThemeSet::load_defaults()
+            .themes
+            .get("base16-ocean.dark")
+            .cloned();
+
+        if loaded_syntax.is_some() && loaded_theme.is_some() {
+            syntax_set.set(Some(loaded_ps));
+            syntax.set(loaded_syntax);
+            theme.set(loaded_theme);
+        }
+    });
 
     use_effect(move || {
         // syntax highlight active line only
@@ -80,7 +96,15 @@ pub fn Editor(props: Props) -> Element {
 
         let current_line = editor.line(selected_line).unwrap().to_string();
 
-        let new_highlights = highlight_lines(&ps, &ts, &current_line);
+        let Some(ps) = &*syntax_set.read() else {
+            return;
+        };
+        let Some(syntax) = &*syntax.read() else {
+            return;
+        };
+        let Some(theme) = &*theme.read() else { return };
+
+        let new_highlights = highlight_lines(ps, syntax, theme, &current_line);
         let new_line_highlight = new_highlights.into_iter().next().unwrap_or_default();
 
         let mut highlights = highlighted_lines.write();
@@ -357,22 +381,22 @@ pub fn Editor(props: Props) -> Element {
     )
 }
 
-fn highlight_lines(ps: &SyntaxSet, ts: &ThemeSet, text: &str) -> Vec<Vec<(Style, String)>> {
-    let syntax = ps.find_syntax_by_extension("rs").unwrap();
-    let theme = ts.themes.get("base16-ocean.dark").unwrap();
-    let mut h = HighlightLines::new(syntax, theme);
+fn highlight_lines(
+    ps: &SyntaxSet,
+    syntax: &SyntaxReference,
+    theme: &syntect::highlighting::Theme,
+    text: &str,
+) -> Vec<Vec<(Style, String)>> {
+    let mut highlighter = HighlightLines::new(syntax, theme);
 
-    let mut highlights = Vec::new();
-
-    for line in text.lines() {
-        let ranges = h.highlight_line(line, ps).unwrap();
-        highlights.push(
-            ranges
+    text.lines()
+        .map(|line| {
+            highlighter
+                .highlight_line(line, ps)
+                .unwrap_or_default()
                 .into_iter()
                 .map(|(style, s)| (style, s.to_string()))
-                .collect(),
-        );
-    }
-
-    highlights
+                .collect()
+        })
+        .collect()
 }
