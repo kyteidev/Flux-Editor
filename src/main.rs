@@ -56,14 +56,6 @@ pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "#13171c");
 #[cfg(not(target_os = "macos"))]
 const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
 
-pub fn get_colors(color: &str) -> String {
-    match color {
-        "bg-100" => BG_100.read().to_string(),
-        "bg-200" => BG_200.read().to_string(),
-        _ => "".to_string(),
-    }
-}
-
 pub fn get_scale_factor() {
     WINDOW.with(|cell| {
         if let Some(ptr) = cell.get() {

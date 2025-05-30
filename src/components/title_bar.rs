@@ -17,14 +17,14 @@ You should have received a copy of the GNU General Public License along with Flu
 
 use freya::prelude::*;
 
-use crate::{get_colors, get_scale_factor, state::TITLE_BAR_HEIGHT};
+use crate::{get_scale_factor, state::TITLE_BAR_HEIGHT, BG_100, BG_200};
 
 #[allow(non_snake_case)]
 pub fn TitleBar() -> Element {
     let title_bar_height = *TITLE_BAR_HEIGHT.read();
 
-    let bg_color = get_colors("bg-200");
-    let border_color = get_colors("bg-100");
+    let bg_color = *BG_200.read();
+    let border_color = *BG_100.read();
 
     rsx!(
         WindowDragArea {
