@@ -74,30 +74,32 @@ pub fn Editor(props: Props) -> Element {
     let ts = ThemeSet::load_defaults();
 
     use_effect(move || {
-        // syntax highlight text
-        let editor_text = editable.editor().to_string();
-        let new_highlights = highlight_lines(&ps, &ts, &editor_text);
-        highlighted_lines.set(new_highlights.clone());
+        // syntax highlight active line only
+        let editor = editable.editor().read();
+        let selected_line = *CARET_LINE.read();
 
-        // calculate lines in editor
-        let line_count = if editor_text.is_empty() {
-            1
-        } else if editor_text.ends_with('\n') {
-            // highlight_lines does not include the trailing newline, so add 1
-            new_highlights.len() + 1
-        } else {
-            new_highlights.len()
-        };
-        *EDITOR_LINES.write() = line_count;
+        let current_line = editor.line(selected_line).unwrap().to_string();
 
-        // adjust width of paragraph component based on longest line width
-        let longest_line_length = editor_text
-            .lines()
-            .map(|line| line.chars().count())
-            .max()
-            .unwrap_or(1);
+        let new_highlights = highlight_lines(&ps, &ts, &current_line);
+        let new_line_highlight = new_highlights.into_iter().next().unwrap_or_default();
 
-        estimated_line_width.set(char_width * longest_line_length as f32);
+        let mut highlights = highlighted_lines.write();
+
+        if highlights.len() <= selected_line {
+            highlights.resize_with(selected_line + 1, Vec::new);
+        }
+
+        highlights[selected_line] = new_line_highlight;
+
+        *EDITOR_LINES.write() = editor.len_lines();
+
+        // calculate largest line width
+        let current_line_width = char_width * current_line.chars().count() as f32;
+        let previous_width = *estimated_line_width.read();
+
+        if current_line_width > previous_width {
+            estimated_line_width.set(current_line_width);
+        }
     });
 
     use_effect(move || {
@@ -116,8 +118,8 @@ pub fn Editor(props: Props) -> Element {
 
         previous_caret_position.set((caret_line, caret_col));
 
-        let caret_x = caret_col as f32 * *CHAR_WIDTH.read();
-        let caret_y = caret_line as f32 * *LINE_HEIGHT.read();
+        let caret_x = caret_col as f32 * char_width;
+        let caret_y = caret_line as f32 * line_height;
 
         let scroll_x = *scroll_controller.x().read() as f32;
         let scroll_y = *scroll_controller.y().read() as f32;
@@ -179,7 +181,7 @@ pub fn Editor(props: Props) -> Element {
                 editor.insert_char('"', caret_pos);
             }
             "Enter" => {
-                let current_line = editor.line(editor.cursor_row()).unwrap().to_string();
+                let current_line = editor.line(*CARET_LINE.read()).unwrap().to_string();
                 let mut chars = current_line.chars();
 
                 let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
@@ -206,7 +208,7 @@ pub fn Editor(props: Props) -> Element {
                 }
             }
             "Backspace" => {
-                let current_line = editor.line(editor.cursor_row()).unwrap().to_string();
+                let current_line = editor.line(*CARET_LINE.read()).unwrap().to_string();
                 let mut chars = current_line.chars();
 
                 let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
@@ -267,9 +269,11 @@ pub fn Editor(props: Props) -> Element {
                             let highlighted_lines = highlighted_lines.read();
                             let line = highlighted_lines.get(line_index).cloned().unwrap_or_default();
 
-                            *SELECTED_LINE.write() = editor.cursor_row();
+                            let selected_line = *CARET_LINE.read();
 
-                            let is_line_selected = editor.cursor_row() == line_index;
+                            *SELECTED_LINE.write() = selected_line;
+
+                            let is_line_selected = selected_line == line_index;
                             let character_index = if is_line_selected {
                                 editor.cursor_col().to_string()
                             } else {
