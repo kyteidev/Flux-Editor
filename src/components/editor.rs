@@ -133,17 +133,9 @@ pub fn Editor(props: Props) -> Element {
         *editor_lines.write() = editable.editor().read().len_lines();
     });
 
-    let mut previous_caret_position = (0, 0);
     use_effect(move || {
         let editor = editable.editor().read();
         let (caret_line, caret_col) = editor.cursor_row_and_col();
-        let (prev_line, prev_col) = previous_caret_position;
-
-        if caret_line == prev_line && caret_col == prev_col {
-            return;
-        }
-
-        previous_caret_position = (caret_line, caret_col);
 
         let caret_x_local = caret_col as f32 * char_width;
         let caret_y_local = caret_line as f32 * line_height;
