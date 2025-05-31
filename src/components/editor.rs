@@ -166,7 +166,18 @@ pub fn Editor(props: Props) -> Element {
         *CARET_COLUMN.write() = caret_col;
     });
 
-    use_effect(move || {
+    let onglobalclick = move |_: MouseEvent| {
+        editable.process_event(&EditableEvent::Click);
+
+        if !*hovering_on_editor.read() {
+            let mut editor = editable.editor().write_unchecked();
+            let text_length = editor.len_chars();
+            editor.set_cursor_pos(text_length);
+        }
+    };
+
+    let onglobalkeydown = move |e: KeyboardEvent| {
+        // auto scroll to caret position if it goes out of view
         let view_width = viewport_size.width / scale_factor;
         let view_height = viewport_size.height / scale_factor;
 
@@ -181,19 +192,8 @@ pub fn Editor(props: Props) -> Element {
         } else if caret_absolute_y() < title_bar_height + line_height {
             scroll_controller.scroll_to_y((-caret_y() + line_height) as i32);
         }
-    });
 
-    let onglobalclick = move |_: MouseEvent| {
-        editable.process_event(&EditableEvent::Click);
-
-        if !*hovering_on_editor.read() {
-            let mut editor = editable.editor().write_unchecked();
-            let text_length = editor.len_chars();
-            editor.set_cursor_pos(text_length);
-        }
-    };
-
-    let onglobalkeydown = move |e: KeyboardEvent| {
+        // custom enter key implementation below
         if e.key.to_string() != "Enter" {
             editable.process_event(&EditableEvent::KeyDown(e.clone().data));
         }
