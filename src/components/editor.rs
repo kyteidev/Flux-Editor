@@ -130,13 +130,7 @@ pub fn Editor(props: Props) -> Element {
         let editor = editable.editor().read();
         let selected_line = *CARET_LINE.read();
 
-        let current_line = match editor.line(selected_line) {
-            Some(line) => line.to_string(),
-            None => {
-                error!("Failed to get current line: the value is None");
-                String::new()
-            }
-        };
+        let current_line = get_current_line(&editor, selected_line);
 
         highlight_lines_range(&editor, selected_line..=selected_line);
 
@@ -228,13 +222,7 @@ pub fn Editor(props: Props) -> Element {
             }
             "Enter" => {
                 let caret_line = *CARET_LINE.read();
-                let current_line = match editor.line(caret_line) {
-                    Some(line) => line.to_string(),
-                    None => {
-                        error!("Failed to get current line: the value is None");
-                        String::new()
-                    }
-                };
+                let current_line = get_current_line(&editor, caret_line);
                 let mut chars = current_line.chars();
 
                 let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
@@ -263,13 +251,7 @@ pub fn Editor(props: Props) -> Element {
                 }
             }
             "Backspace" => {
-                let current_line = match editor.line(*CARET_LINE.read()) {
-                    Some(line) => line.to_string(),
-                    None => {
-                        error!("Failed to get current line: the value is None");
-                        String::new()
-                    }
-                };
+                let current_line = get_current_line(&editor, *CARET_LINE.read());
 
                 let mut chars = current_line.chars();
 
@@ -437,4 +419,14 @@ fn highlight_lines(
                 .collect()
         })
         .collect()
+}
+
+fn get_current_line(editor: &RopeEditor, line_index: usize) -> String {
+    match editor.line(line_index) {
+        Some(line) => line.to_string(),
+        None => {
+            error!("Failed to get current line: the value is None");
+            String::new()
+        }
+    }
 }
