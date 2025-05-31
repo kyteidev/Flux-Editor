@@ -17,12 +17,15 @@ You should have received a copy of the GNU General Public License along with Flu
 
 use freya::prelude::*;
 
-use crate::{state::TITLE_BAR_HEIGHT, BG_200};
+use crate::{
+    state::{SCALE_FACTOR, STATUS_BAR_HEIGHT, TITLE_BAR_HEIGHT},
+    BG_200,
+};
 
 #[component]
 pub fn Panel(visible: bool, children: Element) -> Element {
     let animation = use_animation_with_dependencies(&visible, move |_conf, visible| {
-        let (start, end) = if visible { (-350., 0.) } else { (0., -350.) };
+        let (start, end) = if visible { (-250., 0.) } else { (0., -250.) };
         AnimNum::new(start, end)
             .time(256)
             .ease(Ease::InOut)
@@ -39,8 +42,15 @@ pub fn Panel(visible: bool, children: Element) -> Element {
         return rsx! {};
     }
 
+    let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
+
     let title_bar_height = *TITLE_BAR_HEIGHT.read() as i32;
     let offset_top = title_bar_height + 4;
+
+    let height = viewport_size.height / *SCALE_FACTOR.read() as f32
+        - *TITLE_BAR_HEIGHT.read()
+        - *STATUS_BAR_HEIGHT.read()
+        - 8.0;
 
     rsx! {
         rect {
@@ -49,9 +59,8 @@ pub fn Panel(visible: bool, children: Element) -> Element {
             position_top: "{offset_top}",
             position_left: "10",
             rect {
-                width: "30v",
-                max_width: "350",
-                height: "90v",
+                width: "250",
+                height: "{height}",
                 background: *BG_200.read(),
                 corner_radius: "4",
                 shadow: "0 0 1 2 rgb(0, 0, 0, 50)",
