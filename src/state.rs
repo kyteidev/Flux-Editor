@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+use std::sync::RwLock;
+
 use freya::prelude::*;
 use once_cell::sync::OnceCell;
 
@@ -31,6 +33,8 @@ pub static CARET_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 0);
 
 pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
 pub static TAB_SIZE: GlobalSignal<u8> = GlobalSignal::new(|| 4);
+
+pub static LARGEST_LINE_WIDTH: RwLock<f32> = RwLock::new(1.0);
 
 thread_local! {
     pub static WINDOW: OnceCell<*mut Window> = const { OnceCell::new() };

@@ -25,7 +25,7 @@ use syntect::{
 };
 
 use crate::{
-    state::{CARET_COLUMN, CARET_LINE},
+    state::{CARET_COLUMN, CARET_LINE, LARGEST_LINE_WIDTH},
     utils::text::get_leading_whitespaces,
 };
 
@@ -135,7 +135,12 @@ pub fn Editor(props: Props) -> Element {
 
         // calculate largest line width
         let current_line_width = char_width * current_line.chars().count() as f32;
-        estimated_line_width.set(current_line_width);
+
+        let mut max_width = LARGEST_LINE_WIDTH.write().unwrap();
+        if current_line_width > *max_width {
+            *max_width = current_line_width;
+            estimated_line_width.set(current_line_width);
+        }
     });
 
     let mut previous_caret_position = use_signal(|| (0, 0));
