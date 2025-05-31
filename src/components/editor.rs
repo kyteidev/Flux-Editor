@@ -23,6 +23,7 @@ use syntect::{
     highlighting::{Style, ThemeSet},
     parsing::{SyntaxReference, SyntaxSet},
 };
+use tracing::error;
 
 use crate::{
     state::{CARET_COLUMN, CARET_LINE, LARGEST_LINE_WIDTH, STATUS_BAR_HEIGHT},
@@ -129,7 +130,13 @@ pub fn Editor(props: Props) -> Element {
         let editor = editable.editor().read();
         let selected_line = *CARET_LINE.read();
 
-        let current_line = editor.line(selected_line).unwrap().to_string();
+        let current_line = match editor.line(selected_line) {
+            Some(line) => line.to_string(),
+            None => {
+                error!("Failed to get current line: the value is None");
+                String::new()
+            }
+        };
 
         highlight_lines_range(&editor, selected_line..=selected_line);
 
@@ -221,7 +228,13 @@ pub fn Editor(props: Props) -> Element {
             }
             "Enter" => {
                 let caret_line = *CARET_LINE.read();
-                let current_line = editor.line(caret_line).unwrap().to_string();
+                let current_line = match editor.line(caret_line) {
+                    Some(line) => line.to_string(),
+                    None => {
+                        error!("Failed to get current line: the value is None");
+                        String::new()
+                    }
+                };
                 let mut chars = current_line.chars();
 
                 let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
@@ -250,7 +263,14 @@ pub fn Editor(props: Props) -> Element {
                 }
             }
             "Backspace" => {
-                let current_line = editor.line(*CARET_LINE.read()).unwrap().to_string();
+                let current_line = match editor.line(*CARET_LINE.read()) {
+                    Some(line) => line.to_string(),
+                    None => {
+                        error!("Failed to get current line: the value is None");
+                        String::new()
+                    }
+                };
+
                 let mut chars = current_line.chars();
 
                 let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
