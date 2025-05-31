@@ -35,7 +35,7 @@ use components::{
 };
 use self_update::cargo_crate_version;
 use semver::Version;
-use state::{CHAR_WIDTH, SCALE_FACTOR, WINDOW};
+use state::{APP_VIEW, CHAR_WIDTH, SCALE_FACTOR, WINDOW};
 use tracing::{error, info, Level};
 use tracing_subscriber::FmtSubscriber;
 
@@ -55,6 +55,8 @@ pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "#13171c");
 
 #[cfg(not(target_os = "macos"))]
 const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
+
+static FLUX_LOGO: &[u8] = include_bytes!("./assets/icons/flux-logo.svg");
 
 pub fn get_scale_factor() {
     WINDOW.with(|cell| {
@@ -124,8 +126,6 @@ fn main() {
 }
 
 fn app() -> Element {
-    let scroll_controller = use_scroll_controller(ScrollConfig::default);
-
     *CHAR_WIDTH.write() = get_char_width();
 
     // WINDOW is not immediately available
@@ -133,6 +133,80 @@ fn app() -> Element {
         sleep(Duration::from_secs(1)).await;
         get_scale_factor();
     });
+
+    let view = *APP_VIEW.read();
+    match view {
+        Views::WelcomeView => rsx!(WelcomeView {}),
+        Views::EditorView => rsx!(EditorView {}),
+    }
+}
+
+#[derive(Copy, PartialEq, Clone)]
+pub enum Views {
+    WelcomeView,
+    EditorView,
+}
+
+#[allow(non_snake_case)]
+fn WelcomeView() -> Element {
+    let logo_data = static_bytes(FLUX_LOGO);
+
+    let button_theme = Theme {
+        button: ButtonTheme {
+            width: Cow::Borrowed("100"),
+            ..LIGHT_THEME.button
+        },
+        ..LIGHT_THEME
+    };
+
+    rsx!(rect {
+        width: "100%",
+        height: "100%",
+        background: "{BG_200}",
+        TitleBar {}
+        rect {
+            width: "100%",
+            height: "100%",
+            cross_align: "center",
+            main_align: "center",
+            spacing: "36",
+            svg {
+                fill: "white",
+                width: "30%",
+                height: "30%",
+                max_width: "120",
+                max_height: "120",
+                svg_data: logo_data.clone(),
+            }
+            rect {
+                cross_align: "center",
+                spacing: "8",
+                ThemeProvider {
+                    theme: button_theme,
+                    Button {
+                        label {
+                            "New File"
+                        }
+                    }
+                    Button {
+                        label {
+                            "Open"
+                        }
+                    }
+                    Button {
+                        label {
+                            "Clone"
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
+#[allow(non_snake_case)]
+fn EditorView() -> Element {
+    let scroll_controller = use_scroll_controller(ScrollConfig::default);
 
     rsx!(rect {
         width: "100%",

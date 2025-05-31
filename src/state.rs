@@ -20,6 +20,10 @@ use std::sync::RwLock;
 use freya::prelude::*;
 use once_cell::sync::OnceCell;
 
+use crate::Views;
+
+pub static APP_VIEW: GlobalSignal<Views> = GlobalSignal::new(|| Views::WelcomeView);
+
 pub static LINE_NUMBER_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 80.0);
 pub static TITLE_BAR_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 pub static STATUS_BAR_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
