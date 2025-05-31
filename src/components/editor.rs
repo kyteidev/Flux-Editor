@@ -158,8 +158,8 @@ pub fn Editor(props: Props) -> Element {
         let scroll_x = *horizontal_scroll_controller.x().read() as f32;
         let scroll_y = *scroll_controller.y().read() as f32;
 
-        let caret_absolute_x_local = caret_x + scroll_x + line_number_width;
-        let caret_absolute_y_local = caret_y + scroll_y + title_bar_height;
+        let caret_absolute_x_local = caret_x_local + scroll_x + line_number_width;
+        let caret_absolute_y_local = caret_y_local + scroll_y + title_bar_height;
 
         caret_absolute_x.set(caret_absolute_x_local);
         caret_absolute_y.set(caret_absolute_y_local);
