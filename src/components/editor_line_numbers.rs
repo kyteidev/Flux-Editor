@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License along with Flu
 use freya::prelude::*;
 
 use crate::state::{EDITOR_LINES, LINE_HEIGHT, LINE_NUMBER_WIDTH, SELECTED_LINE};
-use crate::{BG_100, BG_200};
+use crate::{BG_100, BG_200, CONTENT};
 
 #[derive(Props, Clone, PartialEq)]
 pub struct Props {
@@ -63,7 +63,7 @@ pub fn LineNumbers(props: Props) -> Element {
                         padding: "0 20 0",
                         background: "{line_background}",
                         label {
-                            color: "white",
+                            color: *CONTENT.read(),
                             font_size: "20",
                             font_family: "Menlo, Monaco",
                             line_height: "1.5",

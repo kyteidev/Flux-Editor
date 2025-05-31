@@ -28,6 +28,7 @@ use tracing::error;
 use crate::{
     state::{CARET_COLUMN, CARET_LINE, LARGEST_LINE_WIDTH, STATUS_BAR_HEIGHT},
     utils::text::get_leading_whitespaces,
+    CONTENT,
 };
 
 use crate::state::{
@@ -364,7 +365,7 @@ pub fn Editor(props: Props) -> Element {
                                         font_family: "Menlo, Monaco",
                                         cursor_reference: editable.cursor_attr(),
                                         cursor_index: "{character_index}",
-                                        cursor_color: "white",
+                                        cursor_color: *CONTENT.read(),
                                         cursor_id: "{line_index}",
                                         cursor_mode: "editable",
                                         max_lines: 1,

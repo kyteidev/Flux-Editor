@@ -20,7 +20,7 @@ use freya::prelude::*;
 use crate::{
     components::status_bar_item::StatusBarItem,
     state::{CARET_COLUMN, CARET_LINE, STATUS_BAR_HEIGHT},
-    BG_100, BG_200,
+    BG_100, BG_200, CONTENT,
 };
 
 #[allow(non_snake_case)]
@@ -60,7 +60,7 @@ fn CaretPosition() -> Element {
     rsx! {
         StatusBarItem {
             label {
-                color: "white",
+                color: *CONTENT.read(),
                 "{caret_line}:{caret_column}"
             }
         }

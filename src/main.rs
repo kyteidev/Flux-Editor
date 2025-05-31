@@ -53,6 +53,7 @@ use window::set_transparent_titlebar;
 pub static BG_50: GlobalSignal<&str> = GlobalSignal::new(|| "#2c3540");
 pub static BG_100: GlobalSignal<&str> = GlobalSignal::new(|| "#1d232a");
 pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "#13171c");
+pub static CONTENT: GlobalSignal<&str> = GlobalSignal::new(|| "#b1b1b3");
 
 #[cfg(not(target_os = "macos"))]
 const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
@@ -141,7 +142,7 @@ fn app() -> Element {
             hover_background: Cow::Borrowed(*BG_50.read()),
             border_fill: Cow::Borrowed(""),
             font_theme: FontTheme {
-                color: Cow::Borrowed("white"),
+                color: Cow::Borrowed(*CONTENT.read()),
             },
             ..DARK_THEME.button
         },
@@ -191,7 +192,7 @@ fn WelcomeView(props: Props) -> Element {
             main_align: "center",
             spacing: "36",
             svg {
-                fill: "white",
+                fill: *CONTENT.read(),
                 width: "30%",
                 height: "30%",
                 max_width: "120",
