@@ -50,6 +50,7 @@ mod window;
 use window::set_transparent_titlebar;
 
 // Default theme
+pub static BG_50: GlobalSignal<&str> = GlobalSignal::new(|| "#2c3540");
 pub static BG_100: GlobalSignal<&str> = GlobalSignal::new(|| "#1d232a");
 pub static BG_200: GlobalSignal<&str> = GlobalSignal::new(|| "#13171c");
 
@@ -134,9 +135,23 @@ fn app() -> Element {
         get_scale_factor();
     });
 
+    let theme: Theme = Theme {
+        button: ButtonTheme {
+            background: Cow::Borrowed(*BG_100.read()),
+            hover_background: Cow::Borrowed(*BG_50.read()),
+            border_fill: Cow::Borrowed(""),
+            font_theme: FontTheme {
+                color: Cow::Borrowed("white"),
+            },
+            ..DARK_THEME.button
+        },
+        ..DARK_THEME
+    };
+
+    use_init_theme(|| theme.clone());
     let view = *APP_VIEW.read();
     match view {
-        Views::WelcomeView => rsx!(WelcomeView {}),
+        Views::WelcomeView => rsx!(WelcomeView { theme: theme }),
         Views::EditorView => rsx!(EditorView {}),
     }
 }
@@ -147,16 +162,21 @@ pub enum Views {
     EditorView,
 }
 
+#[derive(Props, Clone, PartialEq)]
+struct Props {
+    theme: Theme,
+}
+
 #[allow(non_snake_case)]
-fn WelcomeView() -> Element {
+fn WelcomeView(props: Props) -> Element {
     let logo_data = static_bytes(FLUX_LOGO);
 
     let button_theme = Theme {
         button: ButtonTheme {
             width: Cow::Borrowed("100"),
-            ..LIGHT_THEME.button
+            ..props.theme.button
         },
-        ..LIGHT_THEME
+        ..props.theme
     };
 
     rsx!(rect {
@@ -180,7 +200,7 @@ fn WelcomeView() -> Element {
             }
             rect {
                 cross_align: "center",
-                spacing: "8",
+                spacing: "4",
                 ThemeProvider {
                     theme: button_theme,
                     Button {
