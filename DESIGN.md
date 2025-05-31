@@ -31,3 +31,8 @@ shadow: "0 0 1 2 rgb(0, 0, 0, 50)"
 ### Borders
 width: 2px
 color: BG_100
+
+### Animations
+duration: 256ms
+easing: ease-in-out
+function: quart
