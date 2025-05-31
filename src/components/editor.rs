@@ -300,6 +300,7 @@ pub fn Editor(props: Props) -> Element {
                 width: "100%",
                 height: "100%",
                 scroll_controller: horizontal_scroll_controller,
+                scroll_with_arrows: false,
                 rect {
                     width: "calc({estimated_line_width} + 30)",
                     min_width: "100%",
@@ -308,6 +309,7 @@ pub fn Editor(props: Props) -> Element {
                         height: "100%",
                         length: *EDITOR_LINES.read(),
                         item_size: line_height,
+                        scroll_with_arrows: false,
                         scroll_controller: scroll_controller,
                         builder: move |line_index, _: &Option<()>| {
                             let editor = editable.editor().read();
