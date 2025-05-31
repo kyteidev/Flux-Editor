@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use std::ops::Range;
+use std::ops::{Range, RangeInclusive};
 
 use freya::prelude::*;
 use syntect::{
@@ -56,7 +56,6 @@ pub fn Editor(props: Props) -> Element {
     let mut syntax = use_signal::<Option<SyntaxReference>>(|| None);
     let mut theme = use_signal::<Option<syntect::highlighting::Theme>>(|| None);
 
-    let mut editor_lines: Signal<usize> = use_signal(|| 1);
     let mut hovering_on_editor = use_signal(|| false);
 
     let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
@@ -78,6 +77,35 @@ pub fn Editor(props: Props) -> Element {
         },
         EditableMode::SingleLineMultipleEditors,
     );
+
+    let mut highlight_lines_range =
+        move |editor: &RopeEditor, lines_to_highlight: RangeInclusive<usize>| {
+            let Some(syntax_set) = &*syntax_set.read() else {
+                return;
+            };
+            let Some(syntax) = &*syntax.read() else {
+                return;
+            };
+            let Some(theme) = &*theme.read() else { return };
+
+            let mut highlights = highlighted_lines.write();
+
+            for line_index in lines_to_highlight {
+                if let Some(line) = editor.line(line_index) {
+                    let line_str = line.to_string();
+                    let line_highlight = highlight_lines(syntax_set, syntax, theme, &line_str)
+                        .into_iter()
+                        .next()
+                        .unwrap_or_default();
+
+                    if highlights.len() <= line_index {
+                        highlights.resize_with(line_index + 1, Vec::new);
+                    }
+
+                    highlights[line_index] = line_highlight;
+                }
+            }
+        };
 
     use_effect(move || {
         let loaded_ps = SyntaxSet::load_defaults_newlines();
@@ -101,36 +129,13 @@ pub fn Editor(props: Props) -> Element {
 
         let current_line = editor.line(selected_line).unwrap().to_string();
 
-        let Some(ps) = &*syntax_set.read() else {
-            return;
-        };
-        let Some(syntax) = &*syntax.read() else {
-            return;
-        };
-        let Some(theme) = &*theme.read() else { return };
-
-        let highlighted_line = highlight_lines(ps, syntax, theme, &current_line)
-            .into_iter()
-            .next()
-            .unwrap_or_default();
-
-        let mut highlights = highlighted_lines.write();
-
-        if highlights.len() <= selected_line {
-            highlights.resize_with(selected_line + 1, Vec::new);
-        }
-
-        highlights[selected_line] = highlighted_line;
+        highlight_lines_range(&editor, selected_line..=selected_line);
 
         *EDITOR_LINES.write() = editor.len_lines();
 
         // calculate largest line width
         let current_line_width = char_width * current_line.chars().count() as f32;
         estimated_line_width.set(current_line_width);
-    });
-
-    use_effect(move || {
-        *editor_lines.write() = editable.editor().read().len_lines();
     });
 
     let mut previous_caret_position = use_signal(|| (0, 0));
@@ -216,7 +221,8 @@ pub fn Editor(props: Props) -> Element {
                 editor.insert_char('"', caret_pos);
             }
             "Enter" => {
-                let current_line = editor.line(*CARET_LINE.read()).unwrap().to_string();
+                let caret_line = *CARET_LINE.read();
+                let current_line = editor.line(caret_line).unwrap().to_string();
                 let mut chars = current_line.chars();
 
                 let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
@@ -238,6 +244,8 @@ pub fn Editor(props: Props) -> Element {
 
                         let new_caret_pos = editor.cursor_pos();
                         editor.insert(trailing_spaces.as_str(), new_caret_pos + 1);
+
+                        highlight_lines_range(&editor, caret_line..=caret_line + 2);
                     }
                     _ => {}
                 }
