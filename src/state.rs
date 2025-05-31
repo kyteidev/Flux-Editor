@@ -22,6 +22,7 @@ use once_cell::sync::OnceCell;
 
 pub static LINE_NUMBER_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 80.0);
 pub static TITLE_BAR_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
+pub static STATUS_BAR_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 
 pub static EDITOR_LINES: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 pub static LINE_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);

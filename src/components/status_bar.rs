@@ -19,7 +19,7 @@ use freya::prelude::*;
 
 use crate::{
     components::status_bar_item::StatusBarItem,
-    state::{CARET_COLUMN, CARET_LINE},
+    state::{CARET_COLUMN, CARET_LINE, STATUS_BAR_HEIGHT},
     BG_100, BG_200,
 };
 
@@ -29,7 +29,7 @@ pub fn StatusBar() -> Element {
     rsx! {
         rect {
             width: "100%",
-            height: "30",
+            height: *STATUS_BAR_HEIGHT.read(),
             background: *BG_200.read(),
             padding: "4",
             border: "2 0 0 0 inner {border_color}",

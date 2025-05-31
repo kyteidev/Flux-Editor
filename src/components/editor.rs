@@ -25,7 +25,7 @@ use syntect::{
 };
 
 use crate::{
-    state::{CARET_COLUMN, CARET_LINE, LARGEST_LINE_WIDTH},
+    state::{CARET_COLUMN, CARET_LINE, LARGEST_LINE_WIDTH, STATUS_BAR_HEIGHT},
     utils::text::get_leading_whitespaces,
 };
 
@@ -44,6 +44,8 @@ pub struct Props {
 pub fn Editor(props: Props) -> Element {
     let line_number_width = *LINE_NUMBER_WIDTH.read();
     let title_bar_height = *TITLE_BAR_HEIGHT.read();
+    let status_bar_height = *STATUS_BAR_HEIGHT.read();
+
     let line_height = *LINE_HEIGHT.read();
     let char_width = *CHAR_WIDTH.read();
 
@@ -187,7 +189,7 @@ pub fn Editor(props: Props) -> Element {
             horizontal_scroll_controller.scroll_to_x((-caret_x() + 30.0) as i32);
         }
 
-        if caret_absolute_y() > view_height - line_height {
+        if caret_absolute_y() > view_height - line_height - status_bar_height {
             scroll_controller.scroll_to_y((-caret_y() - line_height) as i32);
         } else if caret_absolute_y() < title_bar_height + line_height {
             scroll_controller.scroll_to_y((-caret_y() + line_height) as i32);
