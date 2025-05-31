@@ -31,7 +31,8 @@ use tokio::time::sleep;
 
 mod components;
 use components::{
-    editor::Editor, editor_line_numbers::LineNumbers, status_bar::StatusBar, title_bar::TitleBar,
+    editor::Editor, editor_line_numbers::LineNumbers, panel::Panel, status_bar::StatusBar,
+    title_bar::TitleBar,
 };
 use self_update::cargo_crate_version;
 use semver::Version;
@@ -228,6 +229,7 @@ fn WelcomeView(props: Props) -> Element {
 #[allow(non_snake_case)]
 fn EditorView() -> Element {
     let scroll_controller = use_scroll_controller(ScrollConfig::default);
+    let mut visible = use_signal(|| true);
 
     rsx!(rect {
         width: "100%",
@@ -247,6 +249,14 @@ fn EditorView() -> Element {
             }
         }
         StatusBar {}
+        Panel {
+            visible: *visible.read(),
+            label {
+                color: "white",
+                font_size: "16",
+                "hi"
+            }
+        }
     })
 }
 
