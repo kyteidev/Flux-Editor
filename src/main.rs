@@ -25,6 +25,7 @@ mod themes;
 mod state;
 
 mod utils;
+use menu::init_menu_handler;
 use utils::text::get_char_width;
 
 use tokio::time::sleep;
@@ -49,6 +50,10 @@ use {
 mod window;
 #[cfg(target_os = "macos")]
 use window::set_transparent_titlebar;
+
+mod menu;
+#[cfg(target_os = "macos")]
+use menu::init_menu;
 
 // Default theme
 pub static BG_50: GlobalSignal<&str> = GlobalSignal::new(|| "#2c3540");
@@ -92,35 +97,41 @@ fn main() {
         });
 
     #[cfg(target_os = "macos")]
-    let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
+    init_menu_handler();
+
+    #[cfg(target_os = "macos")]
+    let menu_bar = init_menu();
+
+    #[cfg(target_os = "macos")]
+    let launch_config = LaunchConfig::<muda::Menu>::new()
         .with_title("Flux Editor")
+        .with_state(menu_bar.clone())
         .on_setup(move |window| {
-            #[cfg(target_os = "macos")]
-            {
-                use objc2::msg_send;
-                use objc2::runtime::AnyObject;
-                use tracing::error;
+            use objc2::msg_send;
+            use objc2::runtime::AnyObject;
+            use tracing::error;
 
-                WINDOW.with(|w| {
-                    w.set(window).ok();
-                });
+            menu_bar.init_for_nsapp();
 
-                let handle = window.window_handle().unwrap().as_raw();
+            WINDOW.with(|w| {
+                w.set(window).ok();
+            });
 
-                if let RawWindowHandle::AppKit(appkit) = handle {
-                    let ns_view_ptr = appkit.ns_view.as_ptr();
+            let handle = window.window_handle().unwrap().as_raw();
 
-                    let ns_view: *mut AnyObject = ns_view_ptr.cast();
+            if let RawWindowHandle::AppKit(appkit) = handle {
+                let ns_view_ptr = appkit.ns_view.as_ptr();
 
-                    unsafe {
-                        let ns_window: *mut AnyObject = msg_send![ns_view, window];
-                        if ns_window.is_null() {
-                            error!("ns_window is null, unable to set transparent titlebar");
-                            return;
-                        }
+                let ns_view: *mut AnyObject = ns_view_ptr.cast();
 
-                        set_transparent_titlebar(ns_window);
+                unsafe {
+                    let ns_window: *mut AnyObject = msg_send![ns_view, window];
+                    if ns_window.is_null() {
+                        error!("ns_window is null, unable to set transparent titlebar");
+                        return;
                     }
+
+                    set_transparent_titlebar(ns_window);
                 }
             }
         });
