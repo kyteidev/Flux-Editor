@@ -18,6 +18,7 @@ syntect = "5.2.0"
 skia-safe = { version = "0.82.0", features = ["textlayout"] }
 once_cell = "1.21.3"
 tokio = "1.45.1"
+rfd = "0.15.3"
 [target.'cfg(target_os = "macos")'.dependencies]
 muda = "0.16.1"
 winit = "0.30.10"

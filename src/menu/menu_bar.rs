@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License along with Flu
 
 #[cfg(target_os = "macos")]
 use {
+    crate::menu::menu_actions::about,
     freya::events::{Code, Modifiers},
     muda::{accelerator::Accelerator, Menu, MenuEvent, MenuItem, PredefinedMenuItem, Submenu},
 };
@@ -24,7 +25,13 @@ use {
 #[cfg(target_os = "macos")]
 pub fn init_menu_handler() {
     MenuEvent::set_event_handler(Some(Box::new(|event: MenuEvent| {
-        println!("Menu event: {:?}", event.id());
+        println!("test: {:?}", event.id());
+        match event.id().0.as_str() {
+            "3" => {
+                about();
+            }
+            _ => {}
+        }
     })));
 }
 

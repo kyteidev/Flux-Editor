@@ -25,7 +25,6 @@ mod themes;
 mod state;
 
 mod utils;
-use menu::init_menu_handler;
 use utils::text::get_char_width;
 
 use tokio::time::sleep;
@@ -53,7 +52,9 @@ use window::set_transparent_titlebar;
 
 mod menu;
 #[cfg(target_os = "macos")]
-use menu::init_menu;
+use menu::menu_bar::init_menu;
+#[cfg(target_os = "macos")]
+use menu::menu_bar::init_menu_handler;
 
 // Default theme
 pub static BG_50: GlobalSignal<&str> = GlobalSignal::new(|| "#2c3540");
