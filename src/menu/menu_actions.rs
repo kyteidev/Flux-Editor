@@ -15,7 +15,10 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+use freya::prelude::Readable;
 use rfd::{MessageButtons, MessageDialog};
+
+use crate::state::FILE_BROWSER_VISIBLE;
 
 pub fn about() {
     let os = std::env::consts::OS;
@@ -31,4 +34,9 @@ pub fn about() {
         .set_description(format!("{}{}{}", "Copyright © 2024-2025 kyteidev.\nLicensed under the GNU General Public License v3.0.\n\nSee ", licenses_location,  " for license notices."))
         .set_buttons(MessageButtons::Ok)
         .show();
+}
+
+pub fn toggle_file_browser() {
+    let visible = *FILE_BROWSER_VISIBLE.peek();
+    *FILE_BROWSER_VISIBLE.write() = !visible;
 }

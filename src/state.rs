@@ -23,6 +23,7 @@ use once_cell::sync::OnceCell;
 use crate::Views;
 
 pub static APP_VIEW: GlobalSignal<Views> = GlobalSignal::new(|| Views::EditorView);
+pub static FILE_BROWSER_VISIBLE: GlobalSignal<bool> = GlobalSignal::new(|| false);
 
 pub static LINE_NUMBER_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 80.0);
 pub static TITLE_BAR_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);

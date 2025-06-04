@@ -40,6 +40,8 @@ use state::{APP_VIEW, CHAR_WIDTH, SCALE_FACTOR, WINDOW};
 use tracing::{error, info, Level};
 use tracing_subscriber::FmtSubscriber;
 
+use crate::state::FILE_BROWSER_VISIBLE;
+
 #[cfg(target_os = "macos")]
 use {
     objc2::msg_send,
@@ -241,7 +243,8 @@ fn WelcomeView(props: Props) -> Element {
 #[allow(non_snake_case)]
 fn EditorView() -> Element {
     let scroll_controller = use_scroll_controller(ScrollConfig::default);
-    let mut visible = use_signal(|| true);
+
+    let file_browser_visible = *FILE_BROWSER_VISIBLE.read();
 
     rsx!(rect {
         width: "100%",
@@ -262,7 +265,7 @@ fn EditorView() -> Element {
         }
         StatusBar {}
         Panel {
-            visible: *visible.read(),
+            visible: file_browser_visible,
             label {
                 color: "white",
                 font_size: "16",

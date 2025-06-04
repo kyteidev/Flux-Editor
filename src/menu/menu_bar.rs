@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License along with Flu
 #[cfg(target_os = "macos")]
 use {
     crate::menu::menu_actions::about,
+    crate::menu::menu_actions::toggle_file_browser,
     freya::events::{Code, Modifiers},
     muda::{accelerator::Accelerator, Menu, MenuEvent, MenuItem, PredefinedMenuItem, Submenu},
 };
@@ -29,6 +30,9 @@ pub fn init_menu_handler() {
         match event.id().0.as_str() {
             "3" => {
                 about();
+            }
+            "38" => {
+                toggle_file_browser();
             }
             _ => {}
         }
