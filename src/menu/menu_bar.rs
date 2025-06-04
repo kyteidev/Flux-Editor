@@ -15,28 +15,58 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+use {
+    crate::{
+        menu::menu_actions::{about, toggle_file_browser},
+        state::MENU_EVENT_RECEIVER,
+        MenuEvent,
+    },
+    freya::prelude::spawn,
+    std::{sync::mpsc::TryRecvError, time::Duration},
+    tokio::time::interval,
+    tracing::error,
+};
 #[cfg(target_os = "macos")]
 use {
-    crate::menu::menu_actions::about,
-    crate::menu::menu_actions::toggle_file_browser,
     freya::events::{Code, Modifiers},
-    muda::{accelerator::Accelerator, Menu, MenuEvent, MenuItem, PredefinedMenuItem, Submenu},
+    muda::{accelerator::Accelerator, Menu, MenuItem, PredefinedMenuItem, Submenu},
 };
 
 #[cfg(target_os = "macos")]
 pub fn init_menu_handler() {
-    MenuEvent::set_event_handler(Some(Box::new(|event: MenuEvent| {
-        println!("test: {:?}", event.id());
-        match event.id().0.as_str() {
-            "3" => {
-                about();
-            }
-            "38" => {
-                toggle_file_browser();
-            }
-            _ => {}
+    muda::MenuEvent::set_event_handler(Some(Box::new(move |event: muda::MenuEvent| {
+        use crate::state::MENU_EVENT_SENDER;
+
+        if let Some(sender) = MENU_EVENT_SENDER.lock().unwrap().as_ref() {
+            let _ = sender.send(crate::MenuEvent::Event(event));
         }
     })));
+}
+
+pub fn init_menu_listener() {
+    spawn(async move {
+        let mut interval = interval(Duration::from_millis(200));
+        loop {
+            interval.tick().await;
+            if let Some(receiver) = MENU_EVENT_RECEIVER.lock().unwrap().as_ref() {
+                match receiver.try_recv() {
+                    Ok(MenuEvent::Event(menu_event)) => {
+                        println!("RECEIVED: {}", menu_event.id().0);
+                        match menu_event.id().0.as_str() {
+                            "3" => about(),
+                            "38" => toggle_file_browser(),
+                            _ => {}
+                        }
+                    }
+                    Err(TryRecvError::Empty) => {}
+                    Err(TryRecvError::Disconnected) => {
+                        error!("Menu receiver disconnected.");
+                        break;
+                    }
+                }
+            }
+        }
+    });
 }
 
 #[cfg(target_os = "macos")]

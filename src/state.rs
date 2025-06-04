@@ -16,10 +16,19 @@ You should have received a copy of the GNU General Public License along with Flu
 */
 
 use std::sync::RwLock;
+#[cfg(target_os = "macos")]
+use std::sync::{
+    mpsc::{Receiver, Sender},
+    Mutex,
+};
 
 use freya::prelude::*;
+#[cfg(target_os = "macos")]
+use once_cell::sync::Lazy;
 use once_cell::sync::OnceCell;
 
+#[cfg(target_os = "macos")]
+use crate::MenuEvent;
 use crate::Views;
 
 pub static APP_VIEW: GlobalSignal<Views> = GlobalSignal::new(|| Views::EditorView);
@@ -41,6 +50,14 @@ pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
 pub static TAB_SIZE: GlobalSignal<u8> = GlobalSignal::new(|| 4);
 
 pub static LARGEST_LINE_WIDTH: RwLock<f32> = RwLock::new(1.0);
+
+#[cfg(target_os = "macos")]
+pub static MENU_EVENT_SENDER: Lazy<Mutex<Option<Sender<MenuEvent>>>> =
+    Lazy::new(|| Mutex::new(None));
+
+#[cfg(target_os = "macos")]
+pub static MENU_EVENT_RECEIVER: Lazy<Mutex<Option<Receiver<MenuEvent>>>> =
+    Lazy::new(|| Mutex::new(None));
 
 thread_local! {
     pub static WINDOW: OnceCell<*mut Window> = const { OnceCell::new() };

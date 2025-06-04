@@ -40,23 +40,12 @@ use state::{APP_VIEW, CHAR_WIDTH, SCALE_FACTOR, WINDOW};
 use tracing::{error, info, Level};
 use tracing_subscriber::FmtSubscriber;
 
+use crate::menu::menu_bar::init_menu_listener;
 use crate::state::FILE_BROWSER_VISIBLE;
 
-#[cfg(target_os = "macos")]
-use {
-    objc2::msg_send,
-    winit::raw_window_handle::{HasWindowHandle, RawWindowHandle},
-};
-
 mod window;
-#[cfg(target_os = "macos")]
-use window::set_transparent_titlebar;
 
 mod menu;
-#[cfg(target_os = "macos")]
-use menu::menu_bar::init_menu;
-#[cfg(target_os = "macos")]
-use menu::menu_bar::init_menu_handler;
 
 // Default theme
 pub static BG_50: GlobalSignal<&str> = GlobalSignal::new(|| "#2c3540");
@@ -79,6 +68,11 @@ pub fn get_scale_factor() {
     });
 }
 
+#[cfg(target_os = "macos")]
+pub enum MenuEvent {
+    Event(muda::MenuEvent),
+}
+
 fn main() {
     let subscriber = FmtSubscriber::builder()
         .with_max_level(Level::INFO)
@@ -89,60 +83,70 @@ fn main() {
     check_update(false);
 
     #[cfg(not(target_os = "macos"))]
-    let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
-        .with_title("Flux Editor")
-        .with_icon(LaunchConfig::load_icon(ICON))
-        .with_decorations(false)
-        .on_setup(move |window| {
-            WINDOW.with(|w| {
-                w.set(window).ok();
+    {
+        let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
+            .with_title("Flux Editor")
+            .with_icon(LaunchConfig::load_icon(ICON))
+            .with_decorations(false)
+            .on_setup(move |window| {
+                WINDOW.with(|w| {
+                    w.set(window).ok();
+                });
             });
-        });
+        launch_cfg(app, launch_config);
+    }
 
     #[cfg(target_os = "macos")]
-    init_menu_handler();
+    {
+        use crate::state::{MENU_EVENT_RECEIVER, MENU_EVENT_SENDER};
+        use menu::menu_bar::init_menu;
+        use menu::menu_bar::init_menu_handler;
+        use objc2::msg_send;
+        use std::sync::mpsc::channel;
+        use window::set_transparent_titlebar;
+        use winit::raw_window_handle::{HasWindowHandle, RawWindowHandle};
 
-    #[cfg(target_os = "macos")]
-    let menu_bar = init_menu();
+        let (tx, rx) = channel::<MenuEvent>();
+        *MENU_EVENT_SENDER.lock().unwrap() = Some(tx);
+        *MENU_EVENT_RECEIVER.lock().unwrap() = Some(rx);
 
-    #[cfg(target_os = "macos")]
-    let launch_config = LaunchConfig::<muda::Menu>::new()
-        .with_title("Flux Editor")
-        .with_state(menu_bar.clone())
-        .on_setup(move |window| {
-            use objc2::msg_send;
-            use objc2::runtime::AnyObject;
-            use tracing::error;
+        let menu_bar = init_menu();
 
-            menu_bar.init_for_nsapp();
+        let launch_config = LaunchConfig::<muda::Menu>::new()
+            .with_title("Flux Editor")
+            .with_state(menu_bar.clone())
+            .on_setup(move |window| {
+                menu_bar.init_for_nsapp();
 
-            WINDOW.with(|w| {
-                w.set(window).ok();
-            });
+                WINDOW.with(|w| {
+                    w.set(window).ok();
+                });
 
-            let handle = window.window_handle().unwrap().as_raw();
-
-            if let RawWindowHandle::AppKit(appkit) = handle {
-                let ns_view_ptr = appkit.ns_view.as_ptr();
-
-                let ns_view: *mut AnyObject = ns_view_ptr.cast();
-
-                unsafe {
-                    let ns_window: *mut AnyObject = msg_send![ns_view, window];
-                    if ns_window.is_null() {
-                        error!("ns_window is null, unable to set transparent titlebar");
-                        return;
+                let handle = window.window_handle().unwrap().as_raw();
+                if let RawWindowHandle::AppKit(appkit) = handle {
+                    let ns_view_ptr = appkit.ns_view.as_ptr();
+                    let ns_view: *mut objc2::runtime::AnyObject = ns_view_ptr.cast();
+                    unsafe {
+                        let ns_window: *mut objc2::runtime::AnyObject = msg_send![ns_view, window];
+                        if ns_window.is_null() {
+                            tracing::error!(
+                                "ns_window is null, unable to set transparent titlebar"
+                            );
+                            return;
+                        }
+                        set_transparent_titlebar(ns_window);
                     }
-
-                    set_transparent_titlebar(ns_window);
                 }
-            }
-        });
+            });
 
-    launch_cfg(app, launch_config);
+        init_menu_handler();
+
+        launch_cfg(app, launch_config);
+    }
 }
 
 fn app() -> Element {
+    init_menu_listener();
     *CHAR_WIDTH.write() = get_char_width();
 
     // WINDOW is not immediately available
