@@ -43,6 +43,7 @@ pub fn init_menu_handler() {
     })));
 }
 
+#[cfg(target_os = "macos")]
 pub fn init_menu_listener() {
     spawn(async move {
         let mut interval = interval(Duration::from_millis(200));
