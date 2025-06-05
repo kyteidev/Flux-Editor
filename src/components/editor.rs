@@ -87,7 +87,7 @@ pub fn Editor(props: Props) -> Element {
     );
 
     let mut highlight_lines_range =
-        move |editor: &RopeEditor, lines_to_highlight: RangeInclusive<usize>| {
+        move |editor: &RopeEditor, lines_to_highlight: RangeInclusive<usize>, insert_mode: bool| {
             let Some(syntax_set) = &*syntax_set.read() else {
                 return;
             };
@@ -98,7 +98,7 @@ pub fn Editor(props: Props) -> Element {
 
             let mut highlights = highlighted_lines.write();
 
-            for line_index in lines_to_highlight {
+            for line_index in lines_to_highlight.clone() {
                 if let Some(line) = editor.line(line_index) {
                     let line_str = line.to_string();
                     let line_highlight = highlight_lines(syntax_set, syntax, theme, &line_str)
@@ -110,7 +110,11 @@ pub fn Editor(props: Props) -> Element {
                         highlights.resize_with(line_index + 1, Vec::new);
                     }
 
-                    highlights[line_index] = line_highlight;
+                    if insert_mode {
+                        highlights.insert(line_index, line_highlight);
+                    } else {
+                        highlights[line_index] = line_highlight;
+                    }
                 }
             }
         };
@@ -137,7 +141,7 @@ pub fn Editor(props: Props) -> Element {
 
         let active_line_content = get_current_line(&editor, active_line);
 
-        highlight_lines_range(&editor, active_line..=active_line);
+        highlight_lines_range(&editor, active_line..=active_line, false);
 
         *EDITOR_LINES.write() = editor.len_lines();
 
@@ -270,7 +274,8 @@ pub fn Editor(props: Props) -> Element {
                         let new_caret_pos = editor.cursor_pos();
                         editor.insert(trailing_spaces.as_str(), new_caret_pos + 1);
 
-                        highlight_lines_range(&editor, caret_line..=caret_line + 2);
+                        highlight_lines_range(&editor, caret_line..=caret_line, false);
+                        highlight_lines_range(&editor, caret_line + 1..=caret_line + 2, true);
                     }
                     _ => {}
                 }
