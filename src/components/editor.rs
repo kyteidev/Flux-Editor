@@ -44,12 +44,12 @@ pub struct Props {
 
 #[allow(non_snake_case)]
 pub fn Editor(props: Props) -> Element {
-    let line_number_width = *LINE_NUMBER_WIDTH.read();
-    let title_bar_height = *TITLE_BAR_HEIGHT.read();
-    let status_bar_height = *STATUS_BAR_HEIGHT.read();
+    let line_number_width = *LINE_NUMBER_WIDTH.peek();
+    let title_bar_height = *TITLE_BAR_HEIGHT.peek();
+    let status_bar_height = *STATUS_BAR_HEIGHT.peek();
 
-    let line_height = *LINE_HEIGHT.read();
-    let char_width = *CHAR_WIDTH.read();
+    let line_height = *LINE_HEIGHT.peek();
+    let char_width = *CHAR_WIDTH.peek();
 
     let mut caret_x: Signal<f32> = use_signal(|| 0.0);
     let mut caret_y: Signal<f32> = use_signal(|| 0.0);
@@ -181,8 +181,8 @@ pub fn Editor(props: Props) -> Element {
         caret_x.set(caret_x_local);
         caret_y.set(caret_y_local);
 
-        let scroll_x = *horizontal_scroll_controller.x().read() as f32;
-        let scroll_y = *scroll_controller.y().read() as f32;
+        let scroll_x = *horizontal_scroll_controller.x().peek() as f32;
+        let scroll_y = *scroll_controller.y().peek() as f32;
 
         let caret_absolute_x_local = caret_x_local + scroll_x + line_number_width;
         let caret_absolute_y_local = caret_y_local + scroll_y + title_bar_height;
@@ -197,7 +197,7 @@ pub fn Editor(props: Props) -> Element {
     let onglobalclick = move |_: MouseEvent| {
         editable.process_event(&EditableEvent::Click);
 
-        if !*hovering_on_editor.read() {
+        if !*hovering_on_editor.peek() {
             let mut editor = editable.editor().write_unchecked();
             let text_length = editor.len_chars();
             editor.set_cursor_pos(text_length);
@@ -246,7 +246,7 @@ pub fn Editor(props: Props) -> Element {
                 editor.insert_char('"', caret_pos);
             }
             "Enter" => {
-                let caret_line = *CARET_LINE.read();
+                let caret_line = *CARET_LINE.peek();
                 let current_line = get_current_line(&editor, caret_line);
                 let mut chars = current_line.chars();
 
@@ -254,7 +254,7 @@ pub fn Editor(props: Props) -> Element {
                 let line_spaces = get_leading_whitespaces(&current_line);
                 let trailing_spaces = &" ".repeat(line_spaces as usize);
                 let trailing_spaces_with_tab =
-                    trailing_spaces.to_owned() + &" ".repeat(*TAB_SIZE.read() as usize);
+                    trailing_spaces.to_owned() + &" ".repeat(*TAB_SIZE.peek() as usize);
 
                 editor.insert_char('\n', caret_pos);
                 editor.cursor_down();
@@ -276,7 +276,7 @@ pub fn Editor(props: Props) -> Element {
                 }
             }
             "Backspace" => {
-                let current_line = get_current_line(&editor, *CARET_LINE.read());
+                let current_line = get_current_line(&editor, *CARET_LINE.peek());
 
                 let mut chars = current_line.chars();
 
@@ -352,7 +352,7 @@ pub fn Editor(props: Props) -> Element {
                             };
 
                             // highlight active line
-                            let background_color = *BG_100.read();
+                            let background_color = *BG_100.peek();
                             let line_background = if is_line_selected {
                                 background_color
                             } else {
