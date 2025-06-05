@@ -1,6 +1,6 @@
 ## Design Guide
 
-All values preferably divisible by 4 (use 4pt spacing system)
+All values preferably divisible by 4 (use tailwind spacing system)
 
 ### Colors
 BG 50: lightest color. Used in hover states only
