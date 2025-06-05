@@ -24,6 +24,8 @@ use crate::{
 
 #[component]
 pub fn Panel(visible: bool, children: Element) -> Element {
+    let mut run_initial_animation: Signal<bool> = use_signal(|| false);
+
     let animation = use_animation_with_dependencies(&visible, move |_conf, visible| {
         let (start, end) = if visible { (-250., 0.) } else { (0., -250.) };
         AnimNum::new(start, end)
@@ -33,14 +35,17 @@ pub fn Panel(visible: bool, children: Element) -> Element {
     });
 
     use_memo(use_reactive(&visible, move |_| {
-        animation.run(AnimDirection::Forward)
+        if *run_initial_animation.peek() {
+            animation.run(AnimDirection::Forward)
+        }
     }));
 
-    let pos = animation.get().read().read();
-
     if !visible && !animation.is_running() {
+        run_initial_animation.set(true);
         return rsx! {};
     }
+
+    let pos = animation.get().read().read();
 
     let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
 
