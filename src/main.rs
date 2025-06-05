@@ -193,7 +193,7 @@ fn WelcomeView(props: Props) -> Element {
 
     let button_theme = Theme {
         button: ButtonTheme {
-            width: Cow::Borrowed("100"),
+            width: Cow::Borrowed("112"),
             ..props.theme.button
         },
         ..props.theme
@@ -203,6 +203,7 @@ fn WelcomeView(props: Props) -> Element {
         width: "100%",
         height: "100%",
         background: "{BG_200}",
+        font_family: "Menlo, Monaco",
         TitleBar {}
         rect {
             width: "100%",
@@ -255,6 +256,7 @@ fn EditorView() -> Element {
         height: "100%",
         background: "{BG_200}",
         content: "flex",
+        font_family: "Menlo, Monaco",
         TitleBar {}
         rect {
             width: "100%",

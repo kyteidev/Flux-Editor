@@ -393,7 +393,6 @@ pub fn Editor(props: Props) -> Element {
                                         main_align: "center",
                                         font_size: "20",
                                         line_height: "1.5",
-                                        font_family: "Menlo, Monaco",
                                         cursor_reference: editable.cursor_attr(),
                                         cursor_index: "{character_index}",
                                         cursor_color: *CONTENT.read(),

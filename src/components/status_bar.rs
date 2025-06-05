@@ -34,7 +34,7 @@ pub fn StatusBar() -> Element {
             padding: "4",
             border: "2 0 0 0 inner {border_color}",
             direction: "horizontal",
-            font_size: "14",
+            font_size: "12",
             cross_align: "center",
             rect {
                 width: "50%",
