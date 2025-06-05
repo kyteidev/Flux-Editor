@@ -1,6 +1,6 @@
 ## Design Guide
 
-All values preferably powers of 2 (excluding width and height)
+All values preferably divisible by 4 (use 4pt spacing system)
 
 ### Colors
 BG 50: lightest color. Used in hover states only
@@ -14,10 +14,9 @@ Spacing separating components in same group: 4.
 Spacing separating different groups: 8
 
 ### Typography
-Font size: 16px (20px in editor, 14px in places with low height, e.g. title bar and status bar)
+Font size: 16px (20px in editor, 12px in places with low height, e.g. title bar and status bar)
 Line height: 1.5
-Font (UI): system default
-Font (Editor): Menlo, Monaco
+Font: Menlo, Monaco
 
 ### Alignment
 all centered using main_align or cross_align
@@ -29,7 +28,7 @@ Radius: 4px
 shadow: "0 0 1 2 rgb(0, 0, 0, 50)"
 
 ### Borders
-width: 2px
+width: 2px (exception to 4pt system)
 color: BG_100
 
 ### Animations
