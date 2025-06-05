@@ -15,7 +15,6 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
-use std::sync::RwLock;
 #[cfg(target_os = "macos")]
 use std::sync::{
     mpsc::{Receiver, Sender},
@@ -48,8 +47,6 @@ pub static CARET_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 0);
 
 pub static SCALE_FACTOR: GlobalSignal<f64> = GlobalSignal::new(|| 1.0);
 pub static TAB_SIZE: GlobalSignal<u8> = GlobalSignal::new(|| 4);
-
-pub static LARGEST_LINE_WIDTH: RwLock<f32> = RwLock::new(1.0);
 
 #[cfg(target_os = "macos")]
 pub static MENU_EVENT_SENDER: Lazy<Mutex<Option<Sender<MenuEvent>>>> =
