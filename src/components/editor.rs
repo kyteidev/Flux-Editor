@@ -56,9 +56,9 @@ pub fn Editor(props: Props) -> Element {
     let mut caret_absolute_x: Signal<f32> = use_signal(|| 0.0);
     let mut caret_absolute_y: Signal<f32> = use_signal(|| 0.0);
 
-    let mut largest_line_width: GlobalSignal<f32> = GlobalSignal::new(|| 1.0);
-    let mut largest_line_index: GlobalSignal<usize> = GlobalSignal::new(|| 1);
-    let mut largest_line_char_count: GlobalSignal<usize> = GlobalSignal::new(|| 1);
+    let mut largest_line_width: Signal<f32> = use_signal(|| 1.0);
+    let mut largest_line_index: Signal<usize> = use_signal(|| 1);
+    let mut largest_line_char_count: Signal<usize> = use_signal(|| 1);
 
     let mut syntax_set = use_signal::<Option<SyntaxSet>>(|| None);
     let mut syntax = use_signal::<Option<SyntaxReference>>(|| None);
@@ -149,7 +149,7 @@ pub fn Editor(props: Props) -> Element {
         let char_width = *CHAR_WIDTH.peek();
         let active_line_width = char_width * active_line_content.chars().count() as f32;
 
-        let recalculate_line_widths = || {
+        let mut recalculate_line_widths = move || {
             let longest_line = editor
                 .to_string()
                 .lines()
@@ -157,7 +157,7 @@ pub fn Editor(props: Props) -> Element {
                 .max()
                 .unwrap_or(0); // Use 0 if the string is empty
 
-            *largest_line_width.write() = char_width * longest_line as f32;
+            largest_line_width.set(char_width * longest_line as f32);
         };
 
         if active_line_width > *largest_line_width.peek() {
