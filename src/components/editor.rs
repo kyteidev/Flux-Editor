@@ -326,15 +326,15 @@ pub fn Editor(props: Props) -> Element {
             onmouseleave,
             ScrollView {
                 direction: "horizontal",
-                width: "100%",
                 height: "100%",
                 scroll_controller: horizontal_scroll_controller,
                 scroll_with_arrows: false,
                 rect {
-                    width: "calc({estimated_line_width} + 30)",
+                    width: "auto",
                     min_width: "100%",
                     height: "100%",
                     VirtualScrollView {
+                        width: "auto",
                         height: "100%",
                         length: *EDITOR_LINES.read(),
                         item_size: line_height,
@@ -384,11 +384,13 @@ pub fn Editor(props: Props) -> Element {
                             rsx! {
                                 rect {
                                     key: "{line_index}",
-                                    width: "100%",
+                                    min_width: "100%",
                                     height: "{line_height}",
                                     background: line_background,
+                                    padding: "0 30 0 0",
                                     paragraph {
-                                        width: "100%",
+                                        width: "auto",
+                                        min_width: "100%",
                                         height: "100%",
                                         main_align: "center",
                                         font_size: "20",
@@ -398,7 +400,7 @@ pub fn Editor(props: Props) -> Element {
                                         cursor_color: *CONTENT.read(),
                                         cursor_id: "{line_index}",
                                         cursor_mode: "editable",
-                                        max_lines: 1,
+                                        max_lines: "1",
                                         onmousedown,
                                         onmousemove,
                                         onmouseenter,
