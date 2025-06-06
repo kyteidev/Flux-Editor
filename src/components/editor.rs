@@ -56,6 +56,8 @@ pub fn Editor(props: Props) -> Element {
     let mut caret_absolute_x: Signal<f32> = use_signal(|| 0.0);
     let mut caret_absolute_y: Signal<f32> = use_signal(|| 0.0);
 
+    let mut widest_line_length: Signal<String> = use_signal(|| "100%".to_string());
+
     let mut syntax_set = use_signal::<Option<SyntaxSet>>(|| None);
     let mut syntax = use_signal::<Option<SyntaxReference>>(|| None);
     let mut theme = use_signal::<Option<syntect::highlighting::Theme>>(|| None);
@@ -160,6 +162,30 @@ pub fn Editor(props: Props) -> Element {
 
         *CARET_LINE.write() = caret_line;
         *CARET_COLUMN.write() = caret_col;
+    });
+
+    let mut old_caret_line: Signal<usize> = use_signal(|| 1);
+    use_effect(move || {
+        let new_caret_line = *CARET_LINE.read();
+        if new_caret_line != *old_caret_line.peek() {
+            old_caret_line.set(new_caret_line);
+
+            let editor = editable.editor().peek().to_string();
+            let widest_line = editor
+                .lines()
+                .map(|line| line.chars().count())
+                .max()
+                .unwrap_or(0);
+
+            let new_line_length = widest_line as f32 * char_width;
+            let view_width = viewport_size.width / scale_factor;
+
+            if new_line_length < view_width {
+                widest_line_length.set("100%".to_string());
+            } else {
+                widest_line_length.set((new_line_length + 30.0).to_string());
+            }
+        }
     });
 
     let onglobalclick = move |_: MouseEvent| {
@@ -295,7 +321,7 @@ pub fn Editor(props: Props) -> Element {
                 scroll_with_arrows: false,
                 rect {
                     width: "auto",
-                    min_width: "100%",
+                    min_width: widest_line_length(),
                     height: "100%",
                     VirtualScrollView {
                         width: "auto",
