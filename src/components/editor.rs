@@ -287,9 +287,7 @@ pub fn Editor(props: Props) -> Element {
                     _ => {}
                 }
             }
-            _ => {
-                println!("Key pressed: {}", e.key);
-            }
+            _ => {}
         }
     };
 
