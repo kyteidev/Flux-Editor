@@ -366,6 +366,7 @@ pub fn Editor(props: Props) -> Element {
                                         min_width: "100%",
                                         height: "100%",
                                         main_align: "center",
+                                        margin: "0 1 0 0",
                                         font_size: "20",
                                         line_height: "1.5",
                                         cursor_reference: editable.cursor_attr(),
