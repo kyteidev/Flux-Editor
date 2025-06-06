@@ -37,7 +37,7 @@ pub fn LineNumbers(props: Props) -> Element {
         height: "100%",
         background: "{BG_200}",
         VirtualScrollView {
-            length: editor_lines,
+            length: editor_lines + 1,
             item_size: line_height,
             height: "100%",
             width: "100%",
@@ -45,6 +45,11 @@ pub fn LineNumbers(props: Props) -> Element {
             show_scrollbar: false,
             scroll_controller: props.scroll_controller,
             builder: move |index, _: &Option<()>| {
+                // add extra space at the end
+                if index == editor_lines {
+                    return rsx! {};
+                }
+
                 // highlight active line
                 let selected_line = *SELECTED_LINE.read();
 

@@ -336,11 +336,20 @@ pub fn Editor(props: Props) -> Element {
                     VirtualScrollView {
                         width: "auto",
                         height: "100%",
-                        length: *EDITOR_LINES.read(),
+                        length: *EDITOR_LINES.read() + 1,
                         item_size: line_height,
                         scroll_with_arrows: false,
                         scroll_controller: scroll_controller,
                         builder: move |line_index, _: &Option<()>| {
+                            // add extra space at the end
+                            if line_index == *EDITOR_LINES.read() {
+                                return rsx! {
+                                    rect {
+                                        key: "{line_index}",
+                                    }
+                                };
+                            }
+
                             let editor = editable.editor().read();
                             let highlighted_lines = highlighted_lines.read();
                             let line = highlighted_lines.get(line_index).cloned().unwrap_or_default();
