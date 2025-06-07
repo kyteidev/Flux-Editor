@@ -67,7 +67,6 @@ pub fn Editor(props: Props) -> Element {
     let scale_factor = *SCALE_FACTOR.read() as f32;
 
     let mut scroll_controller = props.scroll_controller;
-    let mut horizontal_scroll_controller = use_scroll_controller(ScrollConfig::default);
 
     let mut highlighted_lines = use_signal(Vec::<Vec<(Style, String)>>::new);
 
@@ -150,7 +149,7 @@ pub fn Editor(props: Props) -> Element {
         caret_x.set(caret_x_local);
         caret_y.set(caret_y_local);
 
-        let scroll_x = *horizontal_scroll_controller.x().peek() as f32;
+        let scroll_x = *scroll_controller.x().peek() as f32;
         let scroll_y = *scroll_controller.y().peek() as f32;
 
         let caret_absolute_x_local = caret_x_local + scroll_x + line_number_width;
@@ -198,9 +197,9 @@ pub fn Editor(props: Props) -> Element {
         let view_height = viewport_size.height / scale_factor;
 
         if caret_absolute_x() > view_width - 30.0 {
-            horizontal_scroll_controller.scroll_to_x((-caret_x() - 30.0) as i32);
+            scroll_controller.scroll_to_x((-caret_x() - 30.0) as i32);
         } else if caret_absolute_x() < line_number_width + 30.0 {
-            horizontal_scroll_controller.scroll_to_x((-caret_x() + 30.0) as i32);
+            scroll_controller.scroll_to_x((-caret_x() + 30.0) as i32);
         }
 
         if caret_absolute_y() > view_height - line_height - status_bar_height {
