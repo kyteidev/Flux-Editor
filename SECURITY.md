@@ -16,8 +16,8 @@ The last three minor updates prior to the latest version are supported with secu
 
 Security vulnerabilities are automatically checked every week. If found, they will be resolved as soon as possible. All dependencies are also updated every week.
 
-To report a security vulnerability, you can go [here](https://github.com/kyteidev/FluxEditor/security/advisories/new) or send an email to fluxeditordevs@proton.me
+To report a security vulnerability, you can go [here](https://github.com/kyteidev/Fluxium/security/advisories/new) or send an email to Fluxiumdevs@proton.me
 
 Security vulnerability fixes are usually accepted, but if it's suspected to be a false positive or is just not important enough to spend hours fixing it, they may be ignored.
 
-Security is a top priority in the development of Flux Editor. If you have any questions, create a new issue!
+Security is a top priority in the development of Fluxium. If you have any questions, create a new issue!

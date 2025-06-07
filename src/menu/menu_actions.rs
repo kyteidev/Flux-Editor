@@ -1,17 +1,17 @@
 /*
 Copyright © 2024-2025 kyteidev.
 
-This file is part of Flux Editor.
+This file is part of Fluxium.
 
-Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Fluxium is free software: you can redistribute it and/or modify it under the terms of the GNU General
 Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
 option) any later version.
 
-Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+Fluxium is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
 the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+You should have received a copy of the GNU General Public License along with Fluxium. If not, see
 <https://www.gnu.org/licenses/>.
 */
 
@@ -30,7 +30,7 @@ pub fn about() {
     };
 
     MessageDialog::new()
-        .set_title("Flux Editor")
+        .set_title("Fluxium")
         .set_description(format!("{}{}{}", "Copyright © 2024-2025 kyteidev.\nLicensed under the GNU General Public License v3.0.\n\nSee ", licenses_location,  " for license notices."))
         .set_buttons(MessageButtons::Ok)
         .show();

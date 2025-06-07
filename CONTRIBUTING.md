@@ -1,4 +1,4 @@
-### Before contributing, please see the [Code of Conduct](https://github.com/kyteidev/FluxEditor/blob/dev/CODE_OF_CONDUCT.md).
+### Before contributing, please see the [Code of Conduct](https://github.com/kyteidev/fluxium/blob/dev/CODE_OF_CONDUCT.md).
 
 ## Table of Contents
 
@@ -32,7 +32,7 @@ This project uses NPM as the package manager for frontend. If you want to use an
 
 run
 ```
-git clone https://github.com/kyteidev/FluxEditor.git
+git clone https://github.com/kyteidev/Fluxium.git
 ```
 to clone the repo. Afterwards open the folder and run
 ```
@@ -43,7 +43,7 @@ Cargo dependencies will be installed and built when the application is run.
 
 ### Running <a name="running"></a>
 
-To run Flux Editor in dev environment, run
+To run Fluxium in dev environment, run
 ```
 npm run tauri dev
 ```
@@ -53,7 +53,7 @@ npm run serve
 ```
 
 ## Compiling <a name="compiling"></a>
-To compile Flux Editor locally as release build, run
+To compile Fluxium locally as release build, run
 ```
 npm run tauri build
 ```

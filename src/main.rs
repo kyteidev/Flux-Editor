@@ -1,17 +1,17 @@
 /*
 Copyright © 2024-2025 kyteidev.
 
-This file is part of Flux Editor.
+This file is part of Fluxium.
 
-Flux Editor is free software: you can redistribute it and/or modify it under the terms of the GNU General
+Fluxium is free software: you can redistribute it and/or modify it under the terms of the GNU General
 Public License as published by the Free Software Foundation, either version 3 of the License, or (at your
 option) any later version.
 
-Flux Editor is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+Fluxium is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
 the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with Flux Editor. If not, see
+You should have received a copy of the GNU General Public License along with Fluxium. If not, see
 <https://www.gnu.org/licenses/>.
 */
 
@@ -85,7 +85,7 @@ fn main() {
     #[cfg(not(target_os = "macos"))]
     {
         let launch_config: LaunchConfig<'_> = LaunchConfig::<()>::new()
-            .with_title("Flux Editor")
+            .with_title("Fluxium")
             .with_icon(LaunchConfig::load_icon(ICON))
             .with_decorations(false)
             .on_setup(move |window| {
@@ -113,7 +113,7 @@ fn main() {
         let menu_bar = init_menu();
 
         let launch_config = LaunchConfig::<muda::Menu>::new()
-            .with_title("Flux Editor")
+            .with_title("Fluxium")
             .with_state(menu_bar.clone())
             .on_setup(move |window| {
                 menu_bar.init_for_nsapp();

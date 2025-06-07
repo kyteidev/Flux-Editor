@@ -1529,7 +1529,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flux_editor"
+name = "fluxium"
 version = "0.9.0"
 dependencies = [
  "dioxus",
