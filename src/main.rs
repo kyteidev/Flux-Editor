@@ -56,7 +56,7 @@ pub static CONTENT: GlobalSignal<&str> = GlobalSignal::new(|| "#b1b1b3");
 #[cfg(not(target_os = "macos"))]
 const ICON: &[u8] = include_bytes!("./assets/icons/app/icon.png");
 
-static FLUX_LOGO: &[u8] = include_bytes!("./assets/icons/flux-logo.svg");
+static FLUXIUM_LOGO: &[u8] = include_bytes!("./assets/icons/fluxium-logo.svg");
 
 pub fn get_scale_factor() {
     WINDOW.with(|cell| {
@@ -189,7 +189,7 @@ struct Props {
 
 #[allow(non_snake_case)]
 fn WelcomeView(props: Props) -> Element {
-    let logo_data = static_bytes(FLUX_LOGO);
+    let logo_data = static_bytes(FLUXIUM_LOGO);
 
     let button_theme = Theme {
         button: ButtonTheme {
