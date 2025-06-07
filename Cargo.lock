@@ -1535,6 +1535,7 @@ dependencies = [
  "dioxus",
  "freya",
  "freya-devtools",
+ "freya-hooks",
  "log",
  "muda",
  "objc2 0.6.1",

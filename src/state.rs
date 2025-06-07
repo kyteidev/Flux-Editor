@@ -42,6 +42,8 @@ pub static LINE_HEIGHT: GlobalSignal<f32> = GlobalSignal::new(|| 30.0);
 pub static CHAR_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 12.05);
 pub static SELECTED_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 1);
 
+pub static WIDEST_LINE_WIDTH: GlobalSignal<f32> = GlobalSignal::new(|| 0.0);
+
 pub static CARET_COLUMN: GlobalSignal<usize> = GlobalSignal::new(|| 0);
 pub static CARET_LINE: GlobalSignal<usize> = GlobalSignal::new(|| 0);
 

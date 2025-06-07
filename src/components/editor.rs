@@ -26,7 +26,8 @@ use syntect::{
 use tracing::error;
 
 use crate::{
-    state::{CARET_COLUMN, CARET_LINE, STATUS_BAR_HEIGHT},
+    components::editor_scroll_view::EditorScrollView,
+    state::{CARET_COLUMN, CARET_LINE, STATUS_BAR_HEIGHT, WIDEST_LINE_WIDTH},
     utils::text::get_leading_whitespaces,
     CONTENT,
 };
@@ -55,8 +56,6 @@ pub fn Editor(props: Props) -> Element {
     let mut caret_y: Signal<f32> = use_signal(|| 0.0);
     let mut caret_absolute_x: Signal<f32> = use_signal(|| 0.0);
     let mut caret_absolute_y: Signal<f32> = use_signal(|| 0.0);
-
-    let mut widest_line_length: Signal<String> = use_signal(|| "100%".to_string());
 
     let mut syntax_set = use_signal::<Option<SyntaxSet>>(|| None);
     let mut syntax = use_signal::<Option<SyntaxReference>>(|| None);
@@ -178,13 +177,8 @@ pub fn Editor(props: Props) -> Element {
                 .unwrap_or(0);
 
             let new_line_length = widest_line as f32 * char_width;
-            let view_width = viewport_size.width / scale_factor;
 
-            if new_line_length < view_width {
-                widest_line_length.set("100%".to_string());
-            } else {
-                widest_line_length.set((new_line_length + 30.0).to_string());
-            }
+            *WIDEST_LINE_WIDTH.write() = new_line_length;
         }
     });
 
@@ -312,115 +306,105 @@ pub fn Editor(props: Props) -> Element {
             onglobalclick,
             onmouseenter,
             onmouseleave,
-            ScrollView {
-                direction: "horizontal",
+            EditorScrollView {
+                width: "100%",
                 height: "100%",
-                scroll_controller: horizontal_scroll_controller,
-                scroll_with_arrows: false,
-                rect {
-                    width: "auto",
-                    min_width: widest_line_length(),
-                    height: "100%",
-                    VirtualScrollView {
-                        width: "auto",
-                        height: "100%",
-                        length: *EDITOR_LINES.read() + 1,
-                        item_size: line_height,
-                        scroll_with_arrows: false,
-                        scroll_controller: scroll_controller,
-                        builder: move |line_index, _: &Option<()>| {
-                            // add extra space at the end
-                            if line_index == *EDITOR_LINES.read() {
-                                return rsx! {
-                                    rect {
-                                        key: "{line_index}",
-                                    }
-                                };
+                length: *EDITOR_LINES.read() + 1,
+                item_size: line_height,
+                scroll_controller: scroll_controller,
+                builder: move |line_index, _: &Option<()>| {
+                    // add extra space at the end
+                    if line_index == *EDITOR_LINES.read() {
+                        return rsx! {
+                            rect {
+                                key: "{line_index}",
                             }
+                        };
+                    }
 
-                            let editor = editable.editor().read();
-                            let highlighted_lines = highlighted_lines.read();
-                            let line = highlighted_lines.get(line_index).cloned().unwrap_or_default();
+                    let editor = editable.editor().read();
+                    let highlighted_lines = highlighted_lines.read();
+                    let line = highlighted_lines.get(line_index).cloned().unwrap_or_default();
 
-                            let selected_line = *CARET_LINE.read();
+                    let selected_line = *CARET_LINE.read();
 
-                            *SELECTED_LINE.write() = selected_line;
+                    *SELECTED_LINE.write() = selected_line;
 
-                            let is_line_selected = selected_line == line_index;
-                            let character_index = if is_line_selected {
-                                editor.cursor_col().to_string()
-                            } else {
-                                "none".to_string()
-                            };
+                    let is_line_selected = selected_line == line_index;
+                    let character_index = if is_line_selected {
+                        editor.cursor_col().to_string()
+                    } else {
+                        "none".to_string()
+                    };
 
-                            // highlight active line
-                            let background_color = *BG_100.peek();
-                            let line_background = if is_line_selected {
-                                background_color
-                            } else {
-                                "none"
-                            };
+                    // highlight active line
+                    let background_color = *BG_100.peek();
+                    let line_background = if is_line_selected {
+                        background_color
+                    } else {
+                        "none"
+                    };
 
-                            let highlights = editable.highlights_attr(line_index);
+                    let highlights = editable.highlights_attr(line_index);
 
-                            let onmousemove = move |e: MouseEvent| {
-                                editable.process_event(&EditableEvent::MouseMove(e.data, line_index));
-                            };
-                            let onmousedown = move |e: MouseEvent| {
-                                if e.data.trigger_button.unwrap() == MouseButton::Left {
-                                    editable.process_event(&EditableEvent::MouseDown(e.data, line_index));
-                                }
-                            };
-                            let onmouseenter = move |_: MouseEvent| {
-                                hovering_on_editor.set(true);
-                            };
-                            let onmouseleave = move |_: MouseEvent| {
-                                hovering_on_editor.set(false);
-                            };
+                    let onmousemove = move |e: MouseEvent| {
+                        editable.process_event(&EditableEvent::MouseMove(e.data, line_index));
+                    };
+                    let onmousedown = move |e: MouseEvent| {
+                        if e.data.trigger_button.unwrap() == MouseButton::Left {
+                            editable.process_event(&EditableEvent::MouseDown(e.data, line_index));
+                        }
+                    };
+                    let onmouseenter = move |_: MouseEvent| {
+                        hovering_on_editor.set(true);
+                    };
+                    let onmouseleave = move |_: MouseEvent| {
+                        hovering_on_editor.set(false);
+                    };
 
-                            rsx! {
-                                rect {
-                                    key: "{line_index}",
-                                    min_width: "100%",
-                                    height: "{line_height}",
-                                    background: line_background,
-                                    padding: "0 30 0 0",
-                                    paragraph {
-                                        width: "auto",
-                                        min_width: "100%",
-                                        height: "100%",
-                                        main_align: "center",
-                                        margin: "0 1 0 0",
-                                        font_size: "20",
-                                        line_height: "1.5",
-                                        cursor_reference: editable.cursor_attr(),
-                                        cursor_index: "{character_index}",
-                                        cursor_color: *CONTENT.read(),
-                                        cursor_id: "{line_index}",
-                                        cursor_mode: "editable",
-                                        max_lines: "1",
-                                        onmousedown,
-                                        onmousemove,
-                                        onmouseenter,
-                                        onmouseleave,
-                                        highlights,
-                                        highlight_mode: "expanded",
-                                        {
-                                            line.iter().enumerate().map(|(index, (style, text))| {
-                                                let text = text.clone();
+                    let widest_line_width = *WIDEST_LINE_WIDTH.read();
 
-                                                let color = format!("rgb({},{},{})", style.foreground.r, style.foreground.g, style.foreground.b);
+                    rsx! {
+                        rect {
+                            key: "{line_index}",
+                            min_width: "100%",
+                            height: "{line_height}",
+                            background: line_background,
+                            padding: "0 30 0 0",
+                            paragraph {
+                                width: "auto",
+                                min_width: "{widest_line_width}",
+                                height: "100%",
+                                main_align: "center",
+                                margin: "0 1 0 0",
+                                font_size: "20",
+                                line_height: "1.5",
+                                cursor_reference: editable.cursor_attr(),
+                                cursor_index: "{character_index}",
+                                cursor_color: *CONTENT.read(),
+                                cursor_id: "{line_index}",
+                                cursor_mode: "editable",
+                                max_lines: "1",
+                                onmousedown,
+                                onmousemove,
+                                onmouseenter,
+                                onmouseleave,
+                                highlights,
+                                highlight_mode: "expanded",
+                                {
+                                    line.iter().enumerate().map(|(index, (style, text))| {
+                                        let text = text.clone();
 
-                                                rsx!(
-                                                    text {
-                                                        key: "{line_index}-{index}",
-                                                        color: "{color}",
-                                                        {text}
-                                                    }
-                                                )
-                                            })
-                                        }
-                                    }
+                                        let color = format!("rgb({},{},{})", style.foreground.r, style.foreground.g, style.foreground.b);
+
+                                        rsx!(
+                                            text {
+                                                key: "{line_index}-{index}",
+                                                color: "{color}",
+                                                {text}
+                                            }
+                                        )
+                                    })
                                 }
                             }
                         }

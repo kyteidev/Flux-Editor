@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 freya = { version = "0.3", features = ["devtools"] }
+freya-hooks = "0.3.4"
 freya-devtools = "^0.3.4"
 dioxus = { version = "0.6", features = [
     "macro",
