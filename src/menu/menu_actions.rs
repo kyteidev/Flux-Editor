@@ -22,6 +22,7 @@ use crate::state::FILE_BROWSER_VISIBLE;
 
 pub fn about() {
     let os = std::env::consts::OS;
+    let version = env!("CARGO_PKG_VERSION");
 
     let licenses_location = if os == "macos" {
         "Help > Legal Notices"
@@ -30,7 +31,7 @@ pub fn about() {
     };
 
     MessageDialog::new()
-        .set_title("Fluxium")
+        .set_title(format!("Fluxium v{}", version))
         .set_description(format!("{}{}{}", "Copyright © 2024-2025 kyteidev.\nLicensed under the GNU General Public License v3.0.\n\nSee ", licenses_location,  " for license notices."))
         .set_buttons(MessageButtons::Ok)
         .show();
