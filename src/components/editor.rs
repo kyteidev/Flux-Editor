@@ -81,38 +81,39 @@ pub fn Editor(props: Props) -> Element {
         EditableMode::SingleLineMultipleEditors,
     );
 
-    let mut highlight_lines_range =
-        move |editor: &RopeEditor, lines_to_highlight: RangeInclusive<usize>, insert_mode: bool| {
-            let Some(syntax_set) = &*syntax_set.read() else {
-                return;
-            };
-            let Some(syntax) = &*syntax.read() else {
-                return;
-            };
-            let Some(theme) = &*theme.read() else { return };
+    let mut highlight_lines_range = move |editor: &RopeEditor,
+                                          lines_to_highlight: RangeInclusive<usize>,
+                                          insert_mode: bool| {
+        let Some(syntax_set) = &*syntax_set.read() else {
+            return;
+        };
+        let Some(syntax) = &*syntax.read() else {
+            return;
+        };
+        let Some(theme) = &*theme.read() else { return };
 
-            let mut highlights = highlighted_lines.write();
+        let mut highlighter = HighlightLines::new(syntax, theme);
+        let mut highlights = highlighted_lines.write();
 
-            for line_index in lines_to_highlight.clone() {
-                if let Some(line) = editor.line(line_index) {
-                    let line_str = line.to_string();
-                    let line_highlight = highlight_lines(syntax_set, syntax, theme, &line_str)
-                        .into_iter()
-                        .next()
-                        .unwrap_or_default();
+        // Ensure the highlights vector has enough capacity
+        if highlights.len() < editor.len_lines() {
+            highlights.resize_with(editor.len_lines(), Vec::new);
+        }
 
-                    if highlights.len() <= line_index {
-                        highlights.resize_with(line_index + 1, Vec::new);
-                    }
+        for line_index in lines_to_highlight {
+            if let Some(line) = editor.line(line_index) {
+                let line_str = line.to_string();
+                let line_highlight = highlight_single_line(&mut highlighter, syntax_set, &line_str);
 
-                    if insert_mode {
-                        highlights.insert(line_index, line_highlight);
-                    } else {
-                        highlights[line_index] = line_highlight;
-                    }
+                if insert_mode {
+                    highlights.insert(line_index, line_highlight);
+                } else {
+                    highlights[line_index] = line_highlight;
                 }
             }
-        };
+        }
+        *EDITOR_LINES.write() = editor.len_lines();
+    };
 
     use_effect(move || {
         let loaded_ps = SyntaxSet::load_defaults_newlines();
@@ -127,16 +128,6 @@ pub fn Editor(props: Props) -> Element {
             syntax.set(loaded_syntax);
             theme.set(loaded_theme);
         }
-    });
-
-    use_effect(move || {
-        // syntax highlight active line only
-        let editor = editable.editor().read();
-        let active_line = *CARET_LINE.read();
-
-        highlight_lines_range(&editor, active_line..=active_line, false);
-
-        *EDITOR_LINES.write() = editor.len_lines();
     });
 
     use_effect(move || {
@@ -157,9 +148,6 @@ pub fn Editor(props: Props) -> Element {
 
         caret_absolute_x.set(caret_absolute_x_local);
         caret_absolute_y.set(caret_absolute_y_local);
-
-        *CARET_LINE.write() = caret_line;
-        *CARET_COLUMN.write() = caret_col;
     });
 
     let mut old_caret_line: Signal<usize> = use_signal(|| 1);
@@ -209,79 +197,91 @@ pub fn Editor(props: Props) -> Element {
         }
 
         // custom enter key implementation below
-        if e.key.to_string() != "Enter" {
-            editable.process_event(&EditableEvent::KeyDown(e.clone().data));
-        }
+        editable.process_event(&EditableEvent::KeyDown(e.clone().data));
 
         let mut editor = editable.editor().write_unchecked();
-        let caret_pos = editor.cursor_pos();
+        let (caret_line, caret_col) = editor.cursor_row_and_col();
+        let caret_index = editor.cursor_pos();
 
         match e.key.to_string().as_str() {
-            "{" => {
-                editor.insert_char('}', caret_pos);
-            }
-            "[" => {
-                editor.insert_char(']', caret_pos);
-            }
-            "(" => {
-                editor.insert_char(')', caret_pos);
-            }
-            "'" => {
-                editor.insert_char('\'', caret_pos);
-            }
-            "\"" => {
-                editor.insert_char('"', caret_pos);
+            "{" | "[" | "(" | "'" | "\"" => {
+                let closing_char = match e.key.to_string().as_str() {
+                    "{" => '}',
+                    "[" => ']',
+                    "(" => ')',
+                    "'" => '\'',
+                    "\"" => '"',
+                    _ => ' ',
+                };
+                editor.insert_char(closing_char, caret_index);
+                highlight_lines_range(&editor, caret_line..=caret_line, false);
             }
             "Enter" => {
-                let caret_line = *CARET_LINE.peek();
+                let prev_line = get_current_line(&editor, caret_line - 1);
                 let current_line = get_current_line(&editor, caret_line);
                 let mut chars = current_line.chars();
 
-                let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
-                let line_spaces = get_leading_whitespaces(&current_line);
+                let char_on_caret_right = chars.nth(caret_col).unwrap_or(' ').to_string();
+
+                let line_spaces = get_leading_whitespaces(&prev_line);
                 let trailing_spaces = &" ".repeat(line_spaces as usize);
                 let trailing_spaces_with_tab =
                     trailing_spaces.to_owned() + &" ".repeat(*TAB_SIZE.peek() as usize);
 
-                editor.insert_char('\n', caret_pos);
-                editor.cursor_down();
+                let start_highlight = caret_line.saturating_sub(1);
 
                 match char_on_caret_right.as_str() {
                     "}" | "]" | ")" => {
                         editor.insert(
-                            ("\n".to_owned() + trailing_spaces_with_tab.as_str()).as_str(),
-                            caret_pos,
+                            (trailing_spaces_with_tab.as_str().to_owned() + "\n").as_str(),
+                            caret_index,
                         );
-                        editor.set_cursor_pos(caret_pos + trailing_spaces_with_tab.len() + 1);
+                        editor.set_cursor_pos(caret_index + trailing_spaces_with_tab.len());
 
-                        let new_caret_pos = editor.cursor_pos();
-                        editor.insert(trailing_spaces.as_str(), new_caret_pos + 1);
+                        let new_caret_index = editor.cursor_pos();
+                        editor.insert(trailing_spaces.as_str(), new_caret_index + 1);
 
-                        highlight_lines_range(&editor, caret_line..=caret_line, false);
-                        highlight_lines_range(&editor, caret_line + 1..=caret_line + 2, true);
+                        highlight_lines_range(&editor, start_highlight..=start_highlight, false);
+                        highlight_lines_range(&editor, start_highlight + 1..=caret_line + 1, true);
                     }
-                    _ => {}
+                    _ => {
+                        // TODO: Implement auto indentation
+
+                        highlight_lines_range(&editor, start_highlight..=caret_line, false);
+                    }
                 }
             }
             "Backspace" => {
-                let current_line = get_current_line(&editor, *CARET_LINE.peek());
-
+                let current_line = get_current_line(&editor, caret_line);
                 let mut chars = current_line.chars();
+                let char_on_caret_right = chars.nth(caret_col).unwrap_or(' ').to_string();
 
-                let char_on_caret_right = chars.nth(editor.cursor_col()).unwrap_or(' ').to_string();
-
-                match char_on_caret_right.as_str() {
-                    "}" | "]" | ")" | "'" | "\"" => {
-                        editor.remove(Range {
-                            start: caret_pos,
-                            end: caret_pos + 1,
-                        });
-                    }
-                    _ => {}
+                if matches!(char_on_caret_right.as_str(), "}" | "]" | ")" | "'" | "\"") {
+                    editor.remove(Range {
+                        start: caret_col,
+                        end: caret_col + 1,
+                    });
                 }
+
+                let start_line = if caret_line > 0
+                    && editor
+                        .line(caret_line)
+                        .map_or(true, |l| l.to_string() == "")
+                {
+                    caret_line - 1
+                } else {
+                    caret_line
+                };
+                let end_line = caret_line + 1;
+                highlight_lines_range(&editor, start_line..=end_line, false);
             }
-            _ => {}
+            _ => {
+                highlight_lines_range(&editor, caret_line..=caret_line, false);
+            }
         }
+
+        *CARET_LINE.write() = caret_line;
+        *CARET_COLUMN.write() = caret_col;
     };
 
     let onglobalkeyup = move |e: KeyboardEvent| {
@@ -415,23 +415,16 @@ pub fn Editor(props: Props) -> Element {
     )
 }
 
-fn highlight_lines(
+fn highlight_single_line(
+    highlighter: &mut HighlightLines,
     ps: &SyntaxSet,
-    syntax: &SyntaxReference,
-    theme: &syntect::highlighting::Theme,
-    text: &str,
-) -> Vec<Vec<(Style, String)>> {
-    let mut highlighter = HighlightLines::new(syntax, theme);
-
-    text.lines()
-        .map(|line| {
-            highlighter
-                .highlight_line(line, ps)
-                .unwrap_or_default()
-                .into_iter()
-                .map(|(style, s)| (style, s.to_string()))
-                .collect()
-        })
+    line: &str,
+) -> Vec<(Style, String)> {
+    highlighter
+        .highlight_line(line, ps)
+        .unwrap_or_default()
+        .into_iter()
+        .map(|(style, s)| (style, s.to_string()))
         .collect()
 }
 
