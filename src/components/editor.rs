@@ -325,7 +325,7 @@ pub fn Editor(props: Props) -> Element {
                     let highlighted_lines = highlighted_lines.read();
                     let line = highlighted_lines.get(line_index).cloned().unwrap_or_default();
 
-                    let selected_line = *CARET_LINE.read();
+                    let selected_line = editor.cursor_row();
 
                     *SELECTED_LINE.write() = selected_line;
 
