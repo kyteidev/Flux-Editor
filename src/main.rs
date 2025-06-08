@@ -34,10 +34,9 @@ use components::{
     editor::Editor, editor_line_numbers::LineNumbers, panel::Panel, status_bar::StatusBar,
     title_bar::TitleBar,
 };
-use self_update::cargo_crate_version;
-use semver::Version;
+
 use state::{APP_VIEW, CHAR_WIDTH, SCALE_FACTOR, WINDOW};
-use tracing::{error, info, Level};
+use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
 use crate::menu::menu_bar::init_menu_listener;
@@ -46,6 +45,13 @@ use crate::state::FILE_BROWSER_VISIBLE;
 mod window;
 
 mod menu;
+
+#[cfg(not(debug_assertions))]
+use {
+    self_update::cargo_crate_version,
+    semver::Version,
+    tracing::{error, info},
+};
 
 // Default theme
 pub static BG_50: GlobalSignal<&str> = GlobalSignal::new(|| "#2c3540");
@@ -80,6 +86,7 @@ fn main() {
 
     tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
+    #[cfg(not(debug_assertions))]
     check_update(false);
 
     #[cfg(not(target_os = "macos"))]
@@ -281,6 +288,7 @@ fn EditorView() -> Element {
     })
 }
 
+#[cfg(not(debug_assertions))]
 fn check_update(should_update: bool) -> bool {
     // TODO: Add key verification
 
