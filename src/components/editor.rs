@@ -81,39 +81,48 @@ pub fn Editor(props: Props) -> Element {
         EditableMode::SingleLineMultipleEditors,
     );
 
-    let mut highlight_lines_range = move |editor: &RopeEditor,
-                                          lines_to_highlight: RangeInclusive<usize>,
-                                          insert_mode: bool| {
-        let Some(syntax_set) = &*syntax_set.read() else {
-            return;
-        };
-        let Some(syntax) = &*syntax.read() else {
-            return;
-        };
-        let Some(theme) = &*theme.read() else { return };
+    let mut highlight_lines_range =
+        move |editor: &RopeEditor, lines_to_highlight: RangeInclusive<usize>| {
+            let Some(syntax_set) = &*syntax_set.read() else {
+                return;
+            };
+            let Some(syntax) = &*syntax.read() else {
+                return;
+            };
+            let Some(theme) = &*theme.read() else {
+                return;
+            };
 
-        let mut highlighter = HighlightLines::new(syntax, theme);
-        let mut highlights = highlighted_lines.write();
+            let mut highlighter = HighlightLines::new(syntax, theme);
+            let mut highlights = highlighted_lines.write();
 
-        // Ensure the highlights vector has enough capacity
-        if highlights.len() < editor.len_lines() {
-            highlights.resize_with(editor.len_lines(), Vec::new);
-        }
+            // Ensure the highlights vector has enough capacity
+            if highlights.len() < editor.len_lines() {
+                highlights.resize_with(editor.len_lines(), Vec::new);
+            }
 
-        for line_index in lines_to_highlight {
-            if let Some(line) = editor.line(line_index) {
-                let line_str = line.to_string();
-                let line_highlight = highlight_single_line(&mut highlighter, syntax_set, &line_str);
+            let mut iter = lines_to_highlight.into_iter();
 
-                if insert_mode {
-                    highlights.insert(line_index, line_highlight);
-                } else {
-                    highlights[line_index] = line_highlight;
+            if let Some(first_index) = iter.next() {
+                if let Some(line) = editor.line(first_index) {
+                    let line_str = line.to_string();
+                    let line_highlight =
+                        highlight_single_line(&mut highlighter, syntax_set, &line_str);
+                    highlights[first_index] = line_highlight;
+                }
+
+                for line_index in iter {
+                    if let Some(line) = editor.line(line_index) {
+                        let line_str = line.to_string();
+                        let line_highlight =
+                            highlight_single_line(&mut highlighter, syntax_set, &line_str);
+                        highlights.insert(line_index, line_highlight);
+                    }
                 }
             }
-        }
-        *EDITOR_LINES.write() = editor.len_lines();
-    };
+
+            *EDITOR_LINES.write() = editor.len_lines();
+        };
 
     use_effect(move || {
         let loaded_ps = SyntaxSet::load_defaults_newlines();
@@ -213,7 +222,7 @@ pub fn Editor(props: Props) -> Element {
                     _ => ' ',
                 };
                 editor.insert_char(closing_char, caret_index);
-                highlight_lines_range(&editor, caret_line..=caret_line, false);
+                highlight_lines_range(&editor, caret_line..=caret_line);
             }
             "Enter" => {
                 let prev_line = get_current_line(&editor, caret_line - 1);
@@ -240,15 +249,13 @@ pub fn Editor(props: Props) -> Element {
                         let new_caret_index = editor.cursor_pos();
                         editor.insert(trailing_spaces.as_str(), new_caret_index + 1);
 
-                        highlight_lines_range(&editor, start_highlight..=start_highlight, false);
-                        highlight_lines_range(&editor, start_highlight + 1..=caret_line + 1, true);
+                        highlight_lines_range(&editor, start_highlight..=caret_line + 1);
                     }
                     _ => {
                         editor.insert(trailing_spaces.as_str(), caret_index);
                         editor.set_cursor_pos(caret_index + trailing_spaces.len());
 
-                        highlight_lines_range(&editor, start_highlight..=start_highlight, false);
-                        highlight_lines_range(&editor, caret_line..=caret_line, true);
+                        highlight_lines_range(&editor, start_highlight..=caret_line);
                     }
                 }
             }
@@ -274,10 +281,10 @@ pub fn Editor(props: Props) -> Element {
                     caret_line
                 };
                 let end_line = caret_line + 1;
-                highlight_lines_range(&editor, start_line..=end_line, false);
+                highlight_lines_range(&editor, start_line..=end_line);
             }
             _ => {
-                highlight_lines_range(&editor, caret_line..=caret_line, false);
+                highlight_lines_range(&editor, caret_line..=caret_line);
             }
         }
 
