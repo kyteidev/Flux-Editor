@@ -196,7 +196,6 @@ pub fn Editor(props: Props) -> Element {
             scroll_controller.scroll_to_y((-caret_y() + line_height) as i32);
         }
 
-        // custom enter key implementation below
         editable.process_event(&EditableEvent::KeyDown(e.clone().data));
 
         let mut editor = editable.editor().write_unchecked();
@@ -245,9 +244,11 @@ pub fn Editor(props: Props) -> Element {
                         highlight_lines_range(&editor, start_highlight + 1..=caret_line + 1, true);
                     }
                     _ => {
-                        // TODO: Implement auto indentation
+                        editor.insert(trailing_spaces.as_str(), caret_index);
+                        editor.set_cursor_pos(caret_index + trailing_spaces.len());
 
-                        highlight_lines_range(&editor, start_highlight..=caret_line, false);
+                        highlight_lines_range(&editor, start_highlight..=start_highlight, false);
+                        highlight_lines_range(&editor, caret_line..=caret_line, true);
                     }
                 }
             }

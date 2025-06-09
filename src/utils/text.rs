@@ -47,5 +47,5 @@ pub fn get_char_width() -> f32 {
 }
 
 pub fn get_leading_whitespaces(s: &str) -> usize {
-    s.chars().take_while(|&c| c.is_whitespace()).count()
+    s.chars().take_while(|&c| c == ' ' || c == '\t').count()
 }
