@@ -38,6 +38,10 @@ use crate::state::{
 };
 use crate::{BG_100, BG_200};
 
+static SYNTAX_SET: GlobalSignal<Option<SyntaxSet>> = GlobalSignal::new(|| None);
+static SYNTAX: GlobalSignal<Option<SyntaxReference>> = GlobalSignal::new(|| None);
+static THEME: GlobalSignal<Option<syntect::highlighting::Theme>> = GlobalSignal::new(|| None);
+
 #[derive(Props, Clone, PartialEq)]
 pub struct Props {
     scroll_controller: ScrollController,
@@ -57,10 +61,6 @@ pub fn Editor(props: Props) -> Element {
     let mut caret_absolute_x: Signal<f32> = use_signal(|| 0.0);
     let mut caret_absolute_y: Signal<f32> = use_signal(|| 0.0);
 
-    let mut syntax_set = use_signal::<Option<SyntaxSet>>(|| None);
-    let mut syntax = use_signal::<Option<SyntaxReference>>(|| None);
-    let mut theme = use_signal::<Option<syntect::highlighting::Theme>>(|| None);
-
     let mut hovering_on_editor = use_signal(|| false);
 
     let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
@@ -68,7 +68,7 @@ pub fn Editor(props: Props) -> Element {
 
     let mut scroll_controller = props.scroll_controller;
 
-    let mut highlighted_lines = use_signal(Vec::<Vec<(Style, String)>>::new);
+    let highlighted_lines = use_signal(Vec::<Vec<(Style, String)>>::new);
 
     let platform = use_platform();
 
@@ -81,49 +81,6 @@ pub fn Editor(props: Props) -> Element {
         EditableMode::SingleLineMultipleEditors,
     );
 
-    let mut highlight_lines_range =
-        move |editor: &RopeEditor, lines_to_highlight: RangeInclusive<usize>| {
-            let Some(syntax_set) = &*syntax_set.read() else {
-                return;
-            };
-            let Some(syntax) = &*syntax.read() else {
-                return;
-            };
-            let Some(theme) = &*theme.read() else {
-                return;
-            };
-
-            let mut highlighter = HighlightLines::new(syntax, theme);
-            let mut highlights = highlighted_lines.write();
-
-            // Ensure the highlights vector has enough capacity
-            if highlights.len() < editor.len_lines() {
-                highlights.resize_with(editor.len_lines(), Vec::new);
-            }
-
-            let mut iter = lines_to_highlight.into_iter();
-
-            if let Some(first_index) = iter.next() {
-                if let Some(line) = editor.line(first_index) {
-                    let line_str = line.to_string();
-                    let line_highlight =
-                        highlight_single_line(&mut highlighter, syntax_set, &line_str);
-                    highlights[first_index] = line_highlight;
-                }
-
-                for line_index in iter {
-                    if let Some(line) = editor.line(line_index) {
-                        let line_str = line.to_string();
-                        let line_highlight =
-                            highlight_single_line(&mut highlighter, syntax_set, &line_str);
-                        highlights.insert(line_index, line_highlight);
-                    }
-                }
-            }
-
-            *EDITOR_LINES.write() = editor.len_lines();
-        };
-
     use_effect(move || {
         let loaded_ps = SyntaxSet::load_defaults_newlines();
         let loaded_syntax = loaded_ps.find_syntax_by_extension("rs").cloned();
@@ -133,9 +90,9 @@ pub fn Editor(props: Props) -> Element {
             .cloned();
 
         if loaded_syntax.is_some() && loaded_theme.is_some() {
-            syntax_set.set(Some(loaded_ps));
-            syntax.set(loaded_syntax);
-            theme.set(loaded_theme);
+            *SYNTAX_SET.write() = Some(loaded_ps);
+            *SYNTAX.write() = loaded_syntax;
+            *THEME.write() = loaded_theme;
         }
     });
 
@@ -222,7 +179,7 @@ pub fn Editor(props: Props) -> Element {
                     _ => ' ',
                 };
                 editor.insert_char(closing_char, caret_index);
-                highlight_lines_range(&editor, caret_line..=caret_line);
+                highlight_lines_range(&editor, highlighted_lines, caret_line..=caret_line);
             }
             "Enter" => {
                 let prev_line = get_current_line(&editor, caret_line - 1);
@@ -249,13 +206,21 @@ pub fn Editor(props: Props) -> Element {
                         let new_caret_index = editor.cursor_pos();
                         editor.insert(trailing_spaces.as_str(), new_caret_index + 1);
 
-                        highlight_lines_range(&editor, start_highlight..=caret_line + 1);
+                        highlight_lines_range(
+                            &editor,
+                            highlighted_lines,
+                            start_highlight..=caret_line + 1,
+                        );
                     }
                     _ => {
                         editor.insert(trailing_spaces.as_str(), caret_index);
                         editor.set_cursor_pos(caret_index + trailing_spaces.len());
 
-                        highlight_lines_range(&editor, start_highlight..=caret_line);
+                        highlight_lines_range(
+                            &editor,
+                            highlighted_lines,
+                            start_highlight..=caret_line,
+                        );
                     }
                 }
             }
@@ -281,10 +246,10 @@ pub fn Editor(props: Props) -> Element {
                     caret_line
                 };
                 let end_line = caret_line + 1;
-                highlight_lines_range(&editor, start_line..=end_line);
+                highlight_lines_range(&editor, highlighted_lines, start_line..=end_line);
             }
             _ => {
-                highlight_lines_range(&editor, caret_line..=caret_line);
+                highlight_lines_range(&editor, highlighted_lines, caret_line..=caret_line);
             }
         }
 
@@ -421,6 +386,50 @@ pub fn Editor(props: Props) -> Element {
         }
 
     )
+}
+
+fn highlight_lines_range(
+    editor: &RopeEditor,
+    mut highlighted_lines: Signal<Vec<Vec<(Style, String)>>>,
+    lines_to_highlight: RangeInclusive<usize>,
+) {
+    let Some(syntax_set) = &*SYNTAX_SET.read() else {
+        return;
+    };
+    let Some(syntax) = &*SYNTAX.read() else {
+        return;
+    };
+    let Some(theme) = &*THEME.read() else {
+        return;
+    };
+
+    let mut highlighter = HighlightLines::new(syntax, theme);
+    let mut highlights = highlighted_lines.write();
+
+    // Ensure the highlights vector has enough capacity
+    if highlights.len() < editor.len_lines() {
+        highlights.resize_with(editor.len_lines(), Vec::new);
+    }
+
+    let mut iter = lines_to_highlight.into_iter();
+
+    if let Some(first_index) = iter.next() {
+        if let Some(line) = editor.line(first_index) {
+            let line_str = line.to_string();
+            let line_highlight = highlight_single_line(&mut highlighter, syntax_set, &line_str);
+            highlights[first_index] = line_highlight;
+        }
+
+        for line_index in iter {
+            if let Some(line) = editor.line(line_index) {
+                let line_str = line.to_string();
+                let line_highlight = highlight_single_line(&mut highlighter, syntax_set, &line_str);
+                highlights.insert(line_index, line_highlight);
+            }
+        }
+    }
+
+    *EDITOR_LINES.write() = editor.len_lines();
 }
 
 fn highlight_single_line(
