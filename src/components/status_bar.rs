@@ -23,7 +23,7 @@ use crate::{
     BG_100, BG_200, CONTENT,
 };
 
-#[allow(non_snake_case)]
+#[component]
 pub fn StatusBar() -> Element {
     let border_color = *BG_100.read();
     rsx! {

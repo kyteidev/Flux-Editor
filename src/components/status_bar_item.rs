@@ -24,7 +24,7 @@ pub struct Props {
     pub children: Element,
 }
 
-#[allow(non_snake_case)]
+#[component]
 pub fn StatusBarItem(props: Props) -> Element {
     rsx! {
         rect {

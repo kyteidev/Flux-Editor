@@ -98,7 +98,7 @@ fn get_render_range(
     render_index_start as usize..(render_index_end as usize)
 }
 
-#[allow(non_snake_case)]
+#[component]
 pub fn EditorScrollView<
     Builder: Clone + Fn(usize, &Option<BuilderArgs>) -> Element,
     BuilderArgs: Clone + PartialEq,

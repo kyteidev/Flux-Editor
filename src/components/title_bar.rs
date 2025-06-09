@@ -19,7 +19,7 @@ use freya::prelude::*;
 
 use crate::{get_scale_factor, state::TITLE_BAR_HEIGHT, BG_100, BG_200};
 
-#[allow(non_snake_case)]
+#[component]
 pub fn TitleBar() -> Element {
     let title_bar_height = *TITLE_BAR_HEIGHT.read();
 

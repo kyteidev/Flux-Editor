@@ -47,7 +47,7 @@ pub struct Props {
     scroll_controller: ScrollController,
 }
 
-#[allow(non_snake_case)]
+#[component]
 pub fn Editor(props: Props) -> Element {
     let line_number_width = *LINE_NUMBER_WIDTH.peek();
     let title_bar_height = *TITLE_BAR_HEIGHT.peek();

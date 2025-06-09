@@ -194,7 +194,7 @@ struct Props {
     theme: Theme,
 }
 
-#[allow(non_snake_case)]
+#[component]
 fn WelcomeView(props: Props) -> Element {
     let logo_data = static_bytes(FLUXIUM_LOGO);
 
@@ -252,7 +252,7 @@ fn WelcomeView(props: Props) -> Element {
     })
 }
 
-#[allow(non_snake_case)]
+#[component]
 fn EditorView() -> Element {
     let scroll_controller = use_scroll_controller(ScrollConfig::default);
 
