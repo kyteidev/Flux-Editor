@@ -19,7 +19,7 @@ use freya::prelude::*;
 
 use crate::{
     state::{SCALE_FACTOR, STATUS_BAR_HEIGHT, TITLE_BAR_HEIGHT},
-    BG_200,
+    BG_100, BG_200,
 };
 
 #[component]
@@ -57,6 +57,8 @@ pub fn Panel(visible: bool, children: Element) -> Element {
         - *STATUS_BAR_HEIGHT.read()
         - 8.0;
 
+    let border_color = *BG_100.read();
+
     rsx! {
         rect {
             offset_x: "{pos}",
@@ -69,6 +71,8 @@ pub fn Panel(visible: bool, children: Element) -> Element {
                 background: *BG_200.read(),
                 corner_radius: "4",
                 shadow: "0 0 1 2 rgb(0, 0, 0, 50)",
+                border: "2 inner {border_color}",
+                padding: "2",
                 layer: "-999",
                 {children}
             }
