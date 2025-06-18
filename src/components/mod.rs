@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License along with Flu
 pub mod editor;
 pub mod editor_line_numbers;
 pub mod editor_scroll_view;
+pub mod file_browser;
 pub mod panel;
 pub mod status_bar;
 pub mod status_bar_item;

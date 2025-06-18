@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along with Flu
 <https://www.gnu.org/licenses/>.
 */
 
+use std::path::PathBuf;
 use std::time::Duration;
 
 use freya::prelude::*;
@@ -22,6 +23,7 @@ use freya::prelude::*;
 mod themes;
 //use themes::dark::DARK_THEME;
 
+mod icons;
 mod state;
 
 mod utils;
@@ -39,8 +41,8 @@ use state::{APP_VIEW, CHAR_WIDTH, SCALE_FACTOR, WINDOW};
 use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
-use crate::menu::menu_bar::init_menu_listener;
 use crate::state::FILE_BROWSER_VISIBLE;
+use crate::{components::file_browser::FileBrowser, menu::menu_bar::init_menu_listener};
 
 mod window;
 
@@ -262,6 +264,7 @@ fn EditorView() -> Element {
         width: "100%",
         height: "100%",
         background: "{BG_200}",
+        color: "{CONTENT}",
         content: "flex",
         font_family: "Menlo, Monaco",
         TitleBar {}
@@ -279,10 +282,8 @@ fn EditorView() -> Element {
         StatusBar {}
         Panel {
             visible: file_browser_visible,
-            label {
-                color: "white",
-                font_size: "16",
-                "hi"
+            FileBrowser {
+                path: PathBuf::from("/Users"),
             }
         }
     })
