@@ -21,9 +21,6 @@ use {
         state::MENU_EVENT_RECEIVER,
         MenuEvent,
     },
-    freya::prelude::spawn,
-    std::{sync::mpsc::TryRecvError, time::Duration},
-    tokio::time::interval,
     tracing::error,
 };
 #[cfg(target_os = "macos")]
@@ -45,12 +42,12 @@ pub fn init_menu_handler() {
 
 #[cfg(target_os = "macos")]
 pub fn init_menu_listener() {
-    spawn(async move {
-        let mut interval = interval(Duration::from_millis(200));
-        loop {
-            interval.tick().await;
-            if let Some(receiver) = MENU_EVENT_RECEIVER.lock().unwrap().as_ref() {
-                match receiver.try_recv() {
+    use std::thread;
+
+    thread::spawn(move || {
+        if let Some(receiver) = MENU_EVENT_RECEIVER.lock().unwrap().as_ref() {
+            loop {
+                match receiver.recv() {
                     Ok(MenuEvent::Event(menu_event)) => {
                         println!("RECEIVED: {}", menu_event.id().0);
                         match menu_event.id().0.as_str() {
@@ -59,8 +56,7 @@ pub fn init_menu_listener() {
                             _ => {}
                         }
                     }
-                    Err(TryRecvError::Empty) => {}
-                    Err(TryRecvError::Disconnected) => {
+                    Err(_) => {
                         error!("Menu receiver disconnected.");
                         break;
                     }
