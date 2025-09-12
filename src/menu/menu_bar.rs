@@ -51,8 +51,8 @@ pub fn init_menu_listener() {
                     Ok(MenuEvent::Event(menu_event)) => {
                         println!("RECEIVED: {}", menu_event.id().0);
                         match menu_event.id().0.as_str() {
-                            "3" => about(),
-                            "38" => toggle_file_browser(),
+                            "about" => about(),
+                            "file_browser" => toggle_file_browser(),
                             _ => {}
                         }
                     }
@@ -74,10 +74,11 @@ pub fn init_menu() -> Menu {
         "Fluxium",
         true,
         &[
-            &MenuItem::new("About", true, None),
-            &MenuItem::new("Check for Updates", true, None),
+            &MenuItem::with_id("about", "About", true, None),
+            &MenuItem::with_id("update", "Check for Updates", true, None),
             &PredefinedMenuItem::separator(),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "settings",
                 "Settings",
                 true,
                 Some(Accelerator::new(Some(Modifiers::META), Code::Comma)),
@@ -94,25 +95,29 @@ pub fn init_menu() -> Menu {
         "File",
         true,
         &[
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "new_file",
                 "New File",
                 true,
                 Some(Accelerator::new(Some(Modifiers::META), Code::KeyN)),
             ),
             &PredefinedMenuItem::separator(),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "open",
                 "Open...",
                 true,
                 Some(Accelerator::new(Some(Modifiers::META), Code::KeyO)),
             ),
-            &MenuItem::new("Open Recent...", true, None),
+            &MenuItem::with_id("open_recent", "Open Recent...", true, None),
             &PredefinedMenuItem::separator(),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "save",
                 "Save",
                 true,
                 Some(Accelerator::new(Some(Modifiers::META), Code::KeyS)),
             ),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "save_as",
                 "Save As...",
                 true,
                 Some(Accelerator::new(
@@ -120,7 +125,8 @@ pub fn init_menu() -> Menu {
                     Code::KeyS,
                 )),
             ),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "save_all",
                 "Save All",
                 true,
                 Some(Accelerator::new(
@@ -144,12 +150,14 @@ pub fn init_menu() -> Menu {
             &PredefinedMenuItem::paste(Some("Paste")),
             &PredefinedMenuItem::select_all(Some("Select All")),
             &PredefinedMenuItem::separator(),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "find",
                 "Find",
                 true,
                 Some(Accelerator::new(Some(Modifiers::META), Code::KeyF)),
             ),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "replace",
                 "Replace",
                 true,
                 Some(Accelerator::new(
@@ -165,14 +173,16 @@ pub fn init_menu() -> Menu {
         "View",
         true,
         &[
-            &MenuItem::new("Themes", true, None),
+            &MenuItem::with_id("themes", "Themes", true, None),
             &PredefinedMenuItem::separator(),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "search_bar",
                 "Toggle Search",
                 true,
                 Some(Accelerator::new(Some(Modifiers::ALT), Code::Space)),
             ),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "file_browser",
                 "Toggle File Browser",
                 true,
                 Some(Accelerator::new(
@@ -180,7 +190,8 @@ pub fn init_menu() -> Menu {
                     Code::KeyE,
                 )),
             ),
-            &MenuItem::new(
+            &MenuItem::with_id(
+                "terminal",
                 "Toggle Terminal",
                 true,
                 Some(Accelerator::new(
@@ -202,8 +213,8 @@ pub fn init_menu() -> Menu {
                 "Legal Notices",
                 true,
                 &[
-                    &MenuItem::new("License", true, None),
-                    &MenuItem::new("Third Party Licenses", true, None),
+                    &MenuItem::with_id("license", "License", true, None),
+                    &MenuItem::with_id("third_party_licenses", "Third Party Licenses", true, None),
                 ],
             )
             .unwrap(),
