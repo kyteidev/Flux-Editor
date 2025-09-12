@@ -47,17 +47,17 @@ pub fn Panel(visible: bool, children: Element) -> Element {
 
     let pos = animation.get().read().read();
 
-    let PlatformInformation { viewport_size, .. } = *use_platform_information().read();
+    let PlatformInformation { viewport_size, .. } = *use_platform_information().peek();
 
-    let title_bar_height = *TITLE_BAR_HEIGHT.read() as i32;
+    let title_bar_height = *TITLE_BAR_HEIGHT.peek() as i32;
     let offset_top = title_bar_height + 4;
 
-    let height = viewport_size.height / *SCALE_FACTOR.read() as f32
-        - *TITLE_BAR_HEIGHT.read()
-        - *STATUS_BAR_HEIGHT.read()
+    let height = viewport_size.height / *SCALE_FACTOR.peek() as f32
+        - title_bar_height as f32
+        - *STATUS_BAR_HEIGHT.peek()
         - 8.0;
 
-    let border_color = *BG_100.read();
+    let border_color = *BG_100.peek();
 
     rsx! {
         rect {

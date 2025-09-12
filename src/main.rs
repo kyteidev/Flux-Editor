@@ -42,7 +42,7 @@ use tracing::Level;
 use tracing_subscriber::FmtSubscriber;
 
 use crate::state::FILE_BROWSER_VISIBLE;
-use crate::{components::file_browser::FileBrowser, menu::menu_bar::init_menu_listener};
+use crate::{components::file_browser::FileBrowser, menu::menu_bar::handle_menu_events};
 
 mod window;
 
@@ -155,8 +155,17 @@ fn main() {
 }
 
 fn app() -> Element {
-    init_menu_listener();
-    *CHAR_WIDTH.write() = get_char_width();
+    use_hook(|| {
+        *CHAR_WIDTH.write() = get_char_width();
+    });
+
+    use_future(move || async move {
+        let mut interval = tokio::time::interval(Duration::from_millis(200));
+        loop {
+            interval.tick().await;
+            handle_menu_events();
+        }
+    });
 
     // WINDOW is not immediately available
     use_future(move || async move {

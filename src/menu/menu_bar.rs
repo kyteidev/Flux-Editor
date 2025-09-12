@@ -41,29 +41,18 @@ pub fn init_menu_handler() {
 }
 
 #[cfg(target_os = "macos")]
-pub fn init_menu_listener() {
-    use std::thread;
-
-    thread::spawn(move || {
-        if let Some(receiver) = MENU_EVENT_RECEIVER.lock().unwrap().as_ref() {
-            loop {
-                match receiver.recv() {
-                    Ok(MenuEvent::Event(menu_event)) => {
-                        println!("RECEIVED: {}", menu_event.id().0);
-                        match menu_event.id().0.as_str() {
-                            "about" => about(),
-                            "file_browser" => toggle_file_browser(),
-                            _ => {}
-                        }
-                    }
-                    Err(_) => {
-                        error!("Menu receiver disconnected.");
-                        break;
-                    }
+pub fn handle_menu_events() {
+    if let Some(receiver) = MENU_EVENT_RECEIVER.lock().unwrap().as_ref() {
+        while let Ok(MenuEvent::Event(menu_event)) = receiver.try_recv() {
+            match menu_event.id().0.as_str() {
+                "about" => about(),
+                "file_browser" => toggle_file_browser(),
+                _ => {
+                    error!("Received unknown event: {}", menu_event.id().0.as_str());
                 }
             }
         }
-    });
+    }
 }
 
 #[cfg(target_os = "macos")]
