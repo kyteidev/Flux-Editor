@@ -25,7 +25,7 @@ use freya::prelude::*;
 use tokio::fs;
 use tracing::{error, warn};
 
-use crate::{icons::get_icon, CONTENT};
+use crate::{icons::get_icon, BG_100, BG_200, CONTENT};
 
 #[derive(Clone, Debug)]
 struct Item {
@@ -45,6 +45,8 @@ pub fn FileBrowser(props: Props) -> Element {
     let items = use_signal(Vec::new);
     let open_folders = use_signal(HashMap::new);
     let root_path = Arc::new(props.path);
+
+    let mut hovered_item: Signal<usize> = use_signal(|| 0);
 
     fn build_items(
         path: PathBuf,
@@ -165,7 +167,9 @@ pub fn FileBrowser(props: Props) -> Element {
                         main_align: "start",
                         cross_align: "center",
                         max_lines: "1",
+                        background: if *hovered_item.read() == index { *BG_100.peek() } else { *BG_200.peek() },
                         onclick: move |_| on_click(item_clone.clone()),
+                        onmouseenter: move |_| *hovered_item.write() = index,
                         rect {
                             padding: "4",
                             margin: "0 4 0 {margin}",
