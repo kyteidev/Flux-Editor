@@ -1,5 +1,5 @@
 /*
-Copyright © 2024-2025 kyteidev.
+Copyright © 2024-2026 kyteidev.
 
 This file is part of Fluxium.
 
