@@ -2,6 +2,7 @@
 
 > [!NOTE]
 > This is currently being rewritten in Rust! See the `rust-rewrite` branch for updates!
+> Please compile from source using this branch for the latest security updates.
 
 ## Screenshots
 
