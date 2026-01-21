@@ -1,7 +1,7 @@
 ![Flux-Editor](https://socialify.git.ci/kyteidev/Flux-Editor/image?description=1&font=Source+Code+Pro&issues=1&language=1&logo=https%3A%2F%2Fgithub.com%2Fkyteidev%2FFlux-Editor%2Fblob%2Fdev%2Fimages%2FFluxEditorLogo.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Circuit+Board&pulls=1&stargazers=1&theme=Auto)
 
 > [!NOTE]
-> This project is still in beta. Expect bugs and unfinished features.
+> This is currently being rewritten in Rust! See the `rust-rewrite` branch for updates!
 
 ## Screenshots
 
