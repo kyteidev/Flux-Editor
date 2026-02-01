@@ -24,7 +24,7 @@
     "@tauri-apps/plugin-updater": "^2.9.0",
     "ansi-to-html": "^0.7.2",
     "prismjs": "^1.30.0",
-    "solid-js": "^1.9.6",
+    "solid-js": "^1.9.11",
     "strip-ansi": "^7.1.2"
   },
   "devDependencies": {
